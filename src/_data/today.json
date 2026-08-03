@@ -1,0 +1,35 @@
+{
+  "fetchedAt": "2026-08-03T18:58:51.807Z",
+  "weather": {
+    "ok": true,
+    "tempC": 18,
+    "description": "Overcast",
+    "windMph": 22,
+    "windDir": "ENE"
+  },
+  "tides": {
+    "ok": true,
+    "events": [
+      {
+        "type": "Low",
+        "time": "2026-08-03T19:43:02.608Z"
+      },
+      {
+        "type": "High",
+        "time": "2026-08-04T02:45:20.930Z"
+      },
+      {
+        "type": "Low",
+        "time": "2026-08-04T08:16:00.000Z"
+      },
+      {
+        "type": "High",
+        "time": "2026-08-04T15:19:42.857Z"
+      },
+      {
+        "type": "Low",
+        "time": "2026-08-04T20:35:13.043Z"
+      }
+    ]
+  }
+}

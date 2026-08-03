@@ -1,0 +1,70 @@
+# Rebuilds and deploys the site:
+#   - every half hour (so the "Largs today" board stays fresh)
+#   - on every push to main
+#   - on demand, from the Actions tab ("Run workflow")
+#
+# Deploys by DIRECT UPLOAD to Cloudflare Pages (wrangler pages deploy),
+# not Cloudflare's own git-connected build system. That matters: direct
+# uploads don't count against Cloudflare's 500-builds-per-month free
+# quota, and this schedule alone is ~1,450 builds a month. GitHub
+# Actions minutes are free and unlimited on public repositories, which
+# is why this repo should stay public.
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN   — custom token with "Cloudflare Pages: Edit"
+#   CLOUDFLARE_ACCOUNT_ID  — shown in the Cloudflare dashboard sidebar
+#
+# Two GitHub quirks worth knowing:
+#   - Jobs scheduled on the hour queue behind everyone else's; the odd
+#     minutes below (:17 and :47) run noticeably more reliably.
+#   - GitHub disables scheduled workflows after 60 days without repo
+#     activity. If the Today board goes stale, check the Actions tab —
+#     one click re-enables it (or any small commit resets the clock).
+
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "17,47 * * * *"
+
+# Never let two deploys overlap; a newer run supersedes an older one.
+concurrency:
+  group: build-and-deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # npm ci = clean, reproducible install from package-lock.json
+      # (think: resolving from Package.resolved rather than Package.swift).
+      # It fails hard if the lockfile is missing — run `npm install`
+      # locally once and commit the lockfile before the first push.
+      - run: npm ci
+
+      - name: Fetch live data
+        run: node scripts/fetch-data.mjs
+
+      - name: Build site
+        run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy _site --project-name=largs-org

@@ -1,0 +1,25 @@
+{
+  "digestMonth": "July",
+  "digest": [
+    {
+      "decided": "Promenade bins to be upgraded at three hotspots",
+      "who": "Action: NAC Streetscene · raised by LCC",
+      "status": "progress"
+    },
+    {
+      "decided": "Seafront shelter repainting — volunteer day agreed",
+      "who": "Action: LCC amenity group · date to be set",
+      "status": "watching"
+    },
+    {
+      "decided": "Station forecourt planting completed",
+      "who": "Action: Largs Community Garden",
+      "status": "done"
+    }
+  ],
+  "planning": [
+    { "item": "Extension, Netherpark Cres", "note": "submitted" },
+    { "item": "Shopfront alteration, Main St", "note": "decided" }
+  ],
+  "meeting": { "when": "Thu 20 Aug, 19:00", "note": "all welcome" }
+}

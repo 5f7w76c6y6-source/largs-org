@@ -1,0 +1,149 @@
+---
+layout: layouts/base.njk
+---
+{# ================= LARGS TODAY ================= #}
+<section class="board wrap" aria-labelledby="today-h">
+  <div class="kicker">
+    <span id="today-h">Largs today</span>
+    {% if today.fetchedAt %}
+    <span class="stamp">Updated {{ today.fetchedAt | hhmm }} · rebuilt every half hour</span>
+    {% else %}
+    <span class="stamp">Sample values — run npm run fetch</span>
+    {% endif %}
+  </div>
+  <div class="tiles">
+
+    <div class="tile">
+      <div class="label">Weather
+        {% if today.weather.ok %}<span class="badge live">live</span>{% else %}<span class="badge sample">sample</span>{% endif %}
+      </div>
+      {% if today.weather.ok %}
+      <div class="figure">{{ today.weather.tempC }}°C</div>
+      <div class="sub">{{ today.weather.description }} · <span class="mono">{{ today.weather.windDir }} {{ today.weather.windMph }} mph</span></div>
+      {% else %}
+      <div class="figure">—</div>
+      <div class="sub">Live feed not fetched yet</div>
+      {% endif %}
+    </div>
+
+    {% set ev = today.tides.events or [] %}
+    {% set tidesLive = today.tides.ok and (ev | length) >= 3 %}
+    <div class="tile">
+      <div class="label">Tides · Largs
+        {% if tidesLive %}<span class="badge live">live</span>{% else %}<span class="badge sample">sample</span>{% endif %}
+      </div>
+      {% if tidesLive %}
+      <div class="figure">{{ ev[0].type }} {{ ev[0].time | hhmm }}</div>
+      <div class="sub">{{ ev[1].type }} <span class="mono">{{ ev[1].time | hhmm }}</span> · next {{ ev[2].type | lower }} <span class="mono">{{ ev[2].time | hhmm }}</span></div>
+      {% else %}
+      <div class="figure">—</div>
+      <div class="sub">Live feed not fetched yet</div>
+      {% endif %}
+    </div>
+
+    <div class="tile">
+      <div class="label"><span class="dot ok" aria-hidden="true"></span>Cumbrae ferry <span class="badge timetable">timetable</span></div>
+      <div class="figure">Every 15 min</div>
+      <div class="sub">Summer service from the Slip · <a href="{{ site.links.calmacStatus }}">live status: CalMac →</a></div>
+    </div>
+
+    <div class="tile">
+      <div class="label"><span class="dot ok" aria-hidden="true"></span>Trains <span class="badge timetable">timetable</span></div>
+      <div class="figure">xx:14 / xx:44</div>
+      <div class="sub">To Glasgow Central · <a href="{{ site.links.rail }}">live departures →</a></div>
+    </div>
+
+    <div class="tile">
+      <div class="label"><span class="dot warn" aria-hidden="true"></span>Roadworks <span class="badge sample">sample</span></div>
+      <div class="figure">1 active</div>
+      <div class="sub">Temporary lights, Brisbane Rd until <span class="mono">14 Aug</span></div>
+    </div>
+
+  </div>
+  <p class="board-legend">live = fetched at the last rebuild · timetable = fixed pattern with a link out · sample = placeholder until the feed is wired up</p>
+</section>
+
+{# ================= WEEK + COUNCIL ================= #}
+<div class="cols wrap">
+  <section aria-labelledby="week-h">
+    <h2 id="week-h">This week in Largs</h2>
+    <div class="rule" aria-hidden="true"></div>
+
+    {% for e in events %}
+    <article class="event">
+      <div class="when">
+        <div class="dow">{% if e.farOut %}{{ e.date | monthShort }}{% else %}{{ e.date | dow }}{% endif %}</div>
+        <div class="dom">{{ e.date | dom }}</div>
+      </div>
+      <div>
+        <h3>{{ e.title }}</h3>
+        <div class="meta">{{ e.venue | upper }} · {{ e.time | upper }}</div>
+        <p>{{ e.blurb }}</p>
+      </div>
+    </article>
+    {% endfor %}
+
+    <a class="more" href="#">Add your event — it's free →</a>
+  </section>
+
+  <aside class="council" aria-labelledby="council-h">
+    <h2 id="council-h">Council corner</h2>
+    <div class="rule" aria-hidden="true"></div>
+
+    <h4>Community Council · {{ council.digestMonth }} digest</h4>
+
+    {% set statusLabels = { "progress": "In progress", "watching": "Watching", "done": "Done" } %}
+    {% for item in council.digest %}
+    <div class="digest-item">
+      <div class="decided">{{ item.decided }}</div>
+      <div class="who">{{ item.who }}</div>
+      <span class="chip {{ item.status }}">{{ statusLabels[item.status] }}</span>
+    </div>
+    {% endfor %}
+
+    <h4>Planning · KA30 this fortnight</h4>
+    <ul>
+      {% for p in council.planning %}
+      <li>{{ p.item }} <span class="mono">· {{ p.note }}</span></li>
+      {% endfor %}
+      <li><a href="#">All applications on the map →</a></li>
+    </ul>
+
+    <h4>Next meeting</h4>
+    <ul>
+      <li>{{ council.meeting.when }} <span class="mono">· {{ council.meeting.note }}</span></li>
+      <li><a href="#">Read the full minutes →</a></li>
+    </ul>
+  </aside>
+</div>
+
+{# ================= NEWSLETTER ================= #}
+<section class="newsletter" aria-labelledby="letter-h">
+  <div class="newsletter-inner wrap">
+    <div>
+      <h2 id="letter-h">The Largs Letter</h2>
+      <p>The month's essentials in one email — first Friday, no clutter.</p>
+    </div>
+    <div class="signup">
+      <input type="email" placeholder="you@example.com" aria-label="Email address">
+      <button type="button">Sign up</button>
+    </div>
+  </div>
+</section>
+
+{# ================= DIRECTORY ================= #}
+<section class="directory wrap" aria-labelledby="dir-h">
+  <h2 id="dir-h">Town directory</h2>
+  <div class="rule" aria-hidden="true"></div>
+  <div class="chips">
+    <a href="#">Clubs &amp; societies</a>
+    <a href="#">Cafés &amp; food</a>
+    <a href="#">Trades</a>
+    <a href="#">Accommodation</a>
+    <a href="#">Halls for hire</a>
+    <a href="#">Churches</a>
+    <a href="#">Sport &amp; leisure</a>
+    <a href="#">Sailing &amp; marina</a>
+  </div>
+  <p class="note">180+ local listings, carried over in full from the original largs.org. Listings remain free.</p>
+</section>
