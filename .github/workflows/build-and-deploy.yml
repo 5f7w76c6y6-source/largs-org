@@ -62,6 +62,20 @@ jobs:
       # locally once and commit the lockfile before the first push.
       - run: npm ci
 
+      # SRWR roadworks: the register publishes ~90 MB of monthly archives
+      # that change once a day. This cache carries a few-KB distillate of
+      # "current Largs works" between runs, so only the first build after
+      # each overnight publication does the heavy pull; the other ~47
+      # builds a day reuse it. The key is always-new so every run saves;
+      # restore-keys pulls the most recent previous save.
+      - name: Cache SRWR roadworks state
+        uses: actions/cache@v4
+        with:
+          path: .cache/srwr-state.json
+          key: srwr-state-${{ github.run_id }}
+          restore-keys: |
+            srwr-state-
+
       - name: Fetch live data
         run: node scripts/fetch-data.mjs
         env:

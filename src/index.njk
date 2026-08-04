@@ -53,14 +53,27 @@ layout: layouts/base.njk
       <div class="sub">To Glasgow Central · <a href="{{ site.links.rail }}">live departures →</a></div>
     </div>
 
+    {% set rw = today.roadworks %}
     <div class="tile">
-      <div class="label"><span class="dot warn" aria-hidden="true"></span>Roadworks <span class="badge sample">sample</span></div>
+      <div class="label"><span class="dot {% if rw.ok and rw.count == 0 %}ok{% else %}warn{% endif %}" aria-hidden="true"></span>Roadworks
+        {% if rw.ok %}<span class="badge daily">daily</span>{% else %}<span class="badge sample">sample</span>{% endif %}
+      </div>
+      {% if rw.ok %}
+      <div class="figure">{% if rw.count == 0 %}None{% else %}{{ rw.count }} active{% endif %}</div>
+      {% if rw.count > 0 %}
+      {% set w = rw.items[0] %}
+      <div class="sub">{{ w.what }}{% if w.what and w.where %}, {% endif %}{{ w.where }}{% if w.until %} until <span class="mono">{{ w.until | dom }} {{ w.until | monthShort }}</span>{% endif %}</div>
+      {% else %}
+      <div class="sub">Nothing registered on Largs streets</div>
+      {% endif %}
+      {% else %}
       <div class="figure">1 active</div>
       <div class="sub">Temporary lights, Brisbane Rd until <span class="mono">14 Aug</span></div>
+      {% endif %}
     </div>
 
   </div>
-  <p class="board-legend">live = fetched at the last rebuild · model = ocean-model estimate, measured up to an hour out here — official times: <a href="https://easytide.admiralty.co.uk">EasyTide</a> · timetable = fixed pattern with a link out · sample = placeholder until the feed is wired up</p>
+  <p class="board-legend">live = fetched at the last rebuild · daily = official register, refreshed overnight · model = ocean-model estimate, measured up to an hour out here — official times: <a href="https://easytide.admiralty.co.uk">EasyTide</a> · timetable = fixed pattern with a link out · sample = placeholder until the feed is wired up</p>
 </section>
 
 {# ================= WEEK + COUNCIL ================= #}

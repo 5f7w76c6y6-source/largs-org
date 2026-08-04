@@ -27,11 +27,13 @@
  *
  * TODO ferry: CalMac Largs–Cumbrae service status (no public JSON feed;
  *   fetch and parse their service-status page here, server-side).
- * TODO roadworks: Scottish Road Works Register open data — daily CSVs
- *   under OGL v3 at https://downloads.srwr.scot/export (no key needed).
+ *
+ * Roadworks are implemented below via the Scottish Road Works Register
+ * open data (OGL v3) — see the roadworks section for the design.
  */
 
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { inflateRawSync } from "node:zlib";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -278,11 +280,404 @@ async function loadTides() {
   return loadTidesModel();
 }
 
+/* ---------- roadworks: Scottish Road Works Register ---------- */
+/* Open data (OGL v3) from the statutory register. The downloads site
+ * is a Django app fronting Azure blob storage with short-lived signed
+ * links, so nothing has a stable file URL — instead we ask its API:
+ *   GET  .../export/api/v1/files/        -> JSON list: name, size, date
+ *   GET  .../export/api/v1/file/NAME/    -> tiny JSON envelope holding
+ *                                            a signed blob URL
+ * (behaviour verified against the live service, 4 Aug 2026; the
+ * downloader below also handles a direct redirect or direct bytes, in
+ * case the service changes its mind).
+ *
+ * Per the format spec (Data Extract v2.02), each daily file contains
+ * the FULL history of every Activity touched that day, and "if
+ * attempting to find the latest position for a particular Activity,
+ * simply use the most recent occurrence" — so we ingest a rolling
+ * window (the newest two monthly archives plus the current dailies,
+ * chosen from what the list actually offers), dedupe by Activity ID
+ * with latest-wins, and keep phases In Progress on Largs streets.
+ * Yearly and Historical archives (hundreds of MB) are deliberately
+ * ignored: the ~9-week window is the policy.
+ *
+ * Citizenship: monthly archives are 40–50 MB and change once a day.
+ * The tiny list is fetched every build; the heavy pull happens only
+ * when the list shows something newer than the cached distillate in
+ * .cache/srwr-state.json, which the Actions cache carries between
+ * runs. Total failure falls back to the cached state, then to the
+ * previous build's values.
+ */
+
+const SRWR_API = "https://downloads.srwr.scot/export/api/v1/";
+const SRWR_LIST_URL = SRWR_API + "files/";
+const SRWR_FILE_URL = SRWR_API + "file/"; // + "NAME.zip/"
+const SRWR_MONTHS_BACK = 2; // window: ~9 weeks; works untouched in the
+                            // register for longer are rare — notices
+                            // and inspections keep live records moving.
+const SRWR_CACHE_FILE = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+  ".cache",
+  "srwr-state.json"
+);
+
+// Bounding box for Largs in British National Grid metres (easting,
+// northing) — generous enough for the town plus Routenburn/Netherhall,
+// tight enough to exclude Fairlie and Skelmorlie. Tune here if edge
+// streets are missed.
+const LARGS_BBOX = { eMin: 218500, eMax: 223000, nMin: 656000, nMax: 663500 };
+const LARGS_RE = /\bLARGS\b/i;
+
+const SRWR_MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+// Traffic Management Type codes (spec: Traffic Management Types table),
+// current-use codes only, phrased for the tile.
+const SRWR_TM = {
+  "06": "Road closure",
+  "31": "Road narrowing",
+  "32": "Temporary lights",
+  "33": "Convoy working",
+  "34": "Stop/go boards",
+  "35": "Priority working",
+  "36": "Give and take",
+  "37": "Lane closure",
+  "38": "Hard shoulder closed",
+  "39": "Slip road closed",
+  "40": "Contraflow",
+  "41": "Footway works"
+};
+
+// Activity Category (Works Type) fallbacks when no TM type is recorded.
+const SRWR_CATEGORY = {
+  "01": "Minor works", "02": "Minor works", "03": "Minor works",
+  "04": "Major works", "05": "Roadworks", "06": "Urgent works",
+  "07": "Emergency works", "09": "Remedial works", "10": "Remedial works",
+  "16": "Road restriction", "22": "Event"
+};
+
+/* Minimal ZIP reader — enough for these archives (stored or deflated
+ * entries, < 4 GB). A zip is a table of contents at the end pointing
+ * at deflate streams; Node's zlib does deflate, we do the table. */
+function unzipEntries(buf) {
+  let eocd = -1;
+  const scanStart = Math.max(0, buf.length - 65557);
+  for (let i = buf.length - 22; i >= scanStart; i--) {
+    if (buf.readUInt32LE(i) === 0x06054b50) { eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error("not a zip file (no end-of-central-directory)");
+  const count = buf.readUInt16LE(eocd + 10);
+  let off = buf.readUInt32LE(eocd + 16);
+  const entries = [];
+  for (let n = 0; n < count; n++) {
+    if (buf.readUInt32LE(off) !== 0x02014b50) throw new Error("bad zip central directory");
+    const method = buf.readUInt16LE(off + 10);
+    const compSize = buf.readUInt32LE(off + 20);
+    const nameLen = buf.readUInt16LE(off + 28);
+    const extraLen = buf.readUInt16LE(off + 30);
+    const commentLen = buf.readUInt16LE(off + 32);
+    const localOff = buf.readUInt32LE(off + 42);
+    const name = buf.toString("utf8", off + 46, off + 46 + nameLen);
+    entries.push({
+      name,
+      read() {
+        if (buf.readUInt32LE(localOff) !== 0x04034b50) throw new Error("bad zip local header");
+        const lNameLen = buf.readUInt16LE(localOff + 26);
+        const lExtraLen = buf.readUInt16LE(localOff + 28);
+        const start = localOff + 30 + lNameLen + lExtraLen;
+        const data = buf.subarray(start, start + compSize);
+        if (method === 0) return data;
+        if (method === 8) return inflateRawSync(data);
+        throw new Error(`unsupported zip compression method ${method}`);
+      }
+    });
+    off += 46 + nameLen + extraLen + commentLen;
+  }
+  return entries;
+}
+
+/* Streaming CSV parser (RFC 4180: quoted fields may contain commas,
+ * newlines, and doubled quotes). Stateful so multi-hundred-MB files can
+ * be fed in chunks without ever holding one giant string — V8 caps
+ * strings around 512 MB and the inflated monthly archives flirt with
+ * that. */
+class CSVParser {
+  constructor(onRow) {
+    this.onRow = onRow;
+    this.field = "";
+    this.row = [];
+    this.inQuotes = false;
+    this.closingQuote = false; // saw a quote at a chunk boundary; is it an escape?
+  }
+  push(s) {
+    let i = 0;
+    const n = s.length;
+    if (this.closingQuote) {
+      this.closingQuote = false;
+      if (s[0] === '"') { this.field += '"'; this.inQuotes = true; i = 1; }
+      else { this.inQuotes = false; }
+    }
+    while (i < n) {
+      if (this.inQuotes) {
+        let start = i;
+        while (i < n && s[i] !== '"') i++;
+        this.field += s.slice(start, i);
+        if (i < n) {
+          if (i + 1 === n) { this.closingQuote = true; i++; }
+          else if (s[i + 1] === '"') { this.field += '"'; i += 2; }
+          else { this.inQuotes = false; i++; }
+        }
+      } else {
+        const c = s[i];
+        if (c === '"' && this.field === "") { this.inQuotes = true; i++; }
+        else if (c === ",") { this.row.push(this.field); this.field = ""; i++; }
+        else if (c === "\n") { this.row.push(this.field); this.field = ""; this.onRow(this.row); this.row = []; i++; }
+        else if (c === "\r") { i++; }
+        else {
+          let start = i;
+          while (i < n) {
+            const ch = s[i];
+            if (ch === "," || ch === "\n" || ch === "\r" || ch === '"') break;
+            i++;
+          }
+          this.field += s.slice(start, i);
+        }
+      }
+    }
+  }
+  end() {
+    if (this.closingQuote) { this.inQuotes = false; this.closingQuote = false; }
+    if (this.field !== "" || this.row.length) { this.row.push(this.field); this.onRow(this.row); this.row = []; this.field = ""; }
+  }
+}
+
+// Feed a Buffer to a CSVParser in slices without splitting a UTF-8
+// character across the boundary.
+function feedBuffer(buf, parser, chunkBytes = 32 * 1024 * 1024) {
+  let start = 0;
+  while (start < buf.length) {
+    let end = Math.min(start + chunkBytes, buf.length);
+    while (end < buf.length && (buf[end] & 0xc0) === 0x80) end--;
+    parser.push(buf.toString("utf8", start, end));
+    start = end;
+  }
+  parser.end();
+}
+
+function geomInBbox(wkt) {
+  if (!wkt) return false;
+  const re = /(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)/g;
+  let m;
+  while ((m = re.exec(wkt)) !== null) {
+    const e = Number(m[1]);
+    const n = Number(m[2]);
+    if (e >= LARGS_BBOX.eMin && e <= LARGS_BBOX.eMax && n >= LARGS_BBOX.nMin && n <= LARGS_BBOX.nMax) return true;
+  }
+  return false;
+}
+
+function tidyLocation(text) {
+  const t = (text || "").replace(/\s+/g, " ").trim();
+  if (!t) return "";
+  const letters = t.replace(/[^A-Za-z]/g, "");
+  const upper = letters.replace(/[^A-Z]/g, "");
+  let out = t;
+  if (letters.length > 3 && upper.length / letters.length > 0.6) {
+    out = t.toLowerCase().replace(/(^|[\s\-/(])([a-z])/g, (all, pre, ch) => pre + ch.toUpperCase());
+  }
+  return out.length > 44 ? out.slice(0, 43).trimEnd() + "…" : out;
+}
+
+function firstDateOf(...values) {
+  for (const v of values) {
+    const d = (v || "").slice(0, 10);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+  }
+  return "";
+}
+
+function lastDayOfMonth(y, m) {
+  return `${y}-${String(m).padStart(2, "0")}-${String(new Date(Date.UTC(y, m, 0)).getUTCDate()).padStart(2, "0")}`;
+}
+
+
+// The register publishes dates as DD/MM/YYYY.
+function parseUKDate(s) {
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec((s || "").trim());
+  return m ? { y: +m[3], mo: +m[2], d: +m[1] } : null;
+}
+function isoOf(y, mo, d) {
+  return `${y}-${String(mo).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+}
+function minusOneDay(y, mo, d) {
+  const t = new Date(Date.UTC(y, mo - 1, d));
+  t.setUTCDate(t.getUTCDate() - 1);
+  return isoOf(t.getUTCFullYear(), t.getUTCMonth() + 1, t.getUTCDate());
+}
+
+/* Turn the register's file list into a pull plan: the newest
+ * SRWR_MONTHS_BACK monthly archives plus all current dailies, in
+ * chronological order (so latest-occurrence-wins falls out naturally),
+ * each tagged with the date its data runs to. A daily published on the
+ * 4th covers the 3rd; JUL.zip published 2 Aug covers July. */
+function srwrPlan(files) {
+  const dailies = [];
+  const months = [];
+  for (const f of files || []) {
+    const pub = parseUKDate(f.date);
+    if (!pub || !f.name) continue;
+    if (/^\d{2}\.zip$/i.test(f.name)) {
+      dailies.push({ name: f.name, covers: minusOneDay(pub.y, pub.mo, pub.d) });
+    } else if (/^[A-Z]{3}\.zip$/i.test(f.name)) {
+      const mi = SRWR_MONTHS.indexOf(f.name.slice(0, 3).toUpperCase()) + 1;
+      if (!mi) continue;
+      const coveredYear = mi >= pub.mo ? pub.y - 1 : pub.y; // DEC.zip publishes in January
+      months.push({ name: f.name, covers: lastDayOfMonth(coveredYear, mi) });
+    }
+    // yearly (YYYY.zip) and Historical archives: ignored by policy.
+  }
+  months.sort((a, b) => (a.covers < b.covers ? -1 : 1));
+  dailies.sort((a, b) => (a.covers < b.covers ? -1 : 1));
+  const plan = [...months.slice(-SRWR_MONTHS_BACK), ...dailies];
+  return { plan, newestCovers: plan.length ? plan[plan.length - 1].covers : null };
+}
+
+/* Download one archive. The file endpoint answers with a small JSON
+ * envelope containing a short-lived signed Azure URL; we scan the
+ * envelope for the first https:// string rather than assuming a field
+ * name. If the endpoint ever returns a redirect or raw bytes instead,
+ * both still work. */
+async function srwrDownload(name) {
+  const res = await fetch(SRWR_FILE_URL + name + "/", { signal: AbortSignal.timeout(180000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const type = res.headers.get("content-type") || "";
+  if (/json/i.test(type)) {
+    const body = await res.json();
+    const url =
+      (typeof body === "string" && /^https?:\/\//.test(body) && body) ||
+      (body && Object.values(body).find((v) => typeof v === "string" && /^https?:\/\//.test(v)));
+    if (!url) throw new Error("file endpoint returned JSON without a download URL");
+    const blob = await fetch(url, { signal: AbortSignal.timeout(180000) });
+    if (!blob.ok) throw new Error(`HTTP ${blob.status} from signed URL`);
+    return Buffer.from(await blob.arrayBuffer());
+  }
+  return Buffer.from(await res.arrayBuffer());
+}
+
+async function loadRoadworks() {
+  let cached = null;
+  try { cached = JSON.parse(await readFile(SRWR_CACHE_FILE, "utf8")); } catch { /* no cache yet */ }
+
+  const fromCache = (state, note) => {
+    if (note) console.log(`roadworks: ${note}`);
+    return { ok: true, source: "srwr", dataDate: state.dataDate, count: state.count, items: state.items };
+  };
+
+  let listing;
+  try {
+    const res = await fetch(SRWR_LIST_URL, { signal: AbortSignal.timeout(20000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    listing = (await res.json()).files;
+  } catch (error) {
+    if (cached) return fromCache(cached, `register list unreachable (${error.message}) — reusing state to ${cached.dataDate}`);
+    throw new Error(`SRWR file list unreachable and no cached state (${error.message})`);
+  }
+
+  const { plan, newestCovers } = srwrPlan(listing);
+  if (!plan.length) {
+    if (cached) return fromCache(cached, "register list held no usable files — reusing state");
+    throw new Error("SRWR list held no usable files");
+  }
+  if (cached && cached.dataDate >= newestCovers) {
+    return fromCache(cached, `cached state matches newest register publication (${cached.dataDate})`);
+  }
+  if (cached && cached.attemptedAt && Date.now() - Date.parse(cached.attemptedAt) < 3600000) {
+    return fromCache(cached, `newer register data listed but last pull attempt was under an hour ago — reusing state to ${cached.dataDate}`);
+  }
+
+  // ---- heavy pull
+  const activities = new Map();
+  const orgs = new Map();
+  const act = (id) => {
+    let a = activities.get(id);
+    if (!a) { a = { phases: {}, und: {} }; activities.set(id, a); }
+    return a;
+  };
+  const onRow = (r) => {
+    switch (r[1]) {
+      case "001": { const a = act(r[2]); a.promoter = r[5]; a.latestPhase = r[11]; break; }
+      case "004": { const a = act(r[2]); if (r[5]) a.street = r[5]; break; }
+      case "007": { const a = act(r[2]); a.phases[r[7]] = { loc: r[6], cat: r[9], status: r[10], cancelled: r[11], geom: r[12] }; break; }
+      case "008": { const a = act(r[2]); a.und[r[3]] = { tm: r[21], estProposed: r[8], latestPossible: r[14], reasonable: r[16], inProgress: r[71] || "" }; break; }
+      case "098": { orgs.set(String(r[3]).padStart(6, "0"), r[4]); break; }
+    }
+  };
+
+  let newestLoaded = null;
+  let loadedCount = 0;
+  for (const f of plan) {
+    try {
+      const buf = await srwrDownload(f.name);
+      const entries = unzipEntries(buf);
+      const entry =
+        entries.find((e) => /redacted/i.test(e.name) && /\.csv$/i.test(e.name)) ||
+        entries.find((e) => /\.csv$/i.test(e.name));
+      if (!entry) throw new Error("no CSV inside archive");
+      const parser = new CSVParser(onRow);
+      feedBuffer(entry.read(), parser);
+      newestLoaded = f.covers;
+      loadedCount++;
+      console.log(`roadworks: ingested ${f.name} (${(buf.length / 1048576).toFixed(1)} MB zipped, data to ${f.covers})`);
+    } catch (error) {
+      console.warn(`roadworks: skipped ${f.name} — ${error.message}`);
+    }
+  }
+
+  if (!loadedCount) {
+    if (cached) {
+      const kept = { ...cached, attemptedAt: new Date().toISOString() };
+      try {
+        await mkdir(path.dirname(SRWR_CACHE_FILE), { recursive: true });
+        await writeFile(SRWR_CACHE_FILE, JSON.stringify(kept, null, 2) + "\n");
+      } catch { /* cache write is best-effort */ }
+      return fromCache(cached, "no register archives reachable — reusing previous state");
+    }
+    throw new Error("no SRWR archives could be fetched and no cached state exists");
+  }
+
+  const items = [];
+  let count = 0;
+  for (const a of activities.values()) {
+    const phaseNo = a.latestPhase && a.phases[a.latestPhase] ? a.latestPhase
+      : Object.keys(a.phases).sort((x, y) => Number(y) - Number(x))[0];
+    const ph = phaseNo ? a.phases[phaseNo] : null;
+    if (!ph) continue;
+    if (ph.status !== "05" || ph.cancelled === "True") continue; // 05 = In Progress
+    const inLargs = geomInBbox(ph.geom) || LARGS_RE.test(ph.loc || "") || LARGS_RE.test(a.street || "");
+    if (!inLargs) continue;
+    count++;
+    const u = a.und[phaseNo] || {};
+    items.push({
+      what: SRWR_TM[u.tm] || SRWR_CATEGORY[ph.cat] || "Road works",
+      where: tidyLocation(ph.loc || a.street || ""),
+      until: firstDateOf(u.inProgress, u.estProposed, u.latestPossible, u.reasonable),
+      promoter: orgs.get(String(a.promoter || "").replace(/\D/g, "").padStart(9, "0").slice(0, 6)) || ""
+    });
+  }
+  items.sort((x, y) => ((x.until || "9999") < (y.until || "9999") ? -1 : 1));
+
+  const now = new Date().toISOString();
+  const state = { dataDate: newestLoaded, fetchedAt: now, attemptedAt: now, count, items: items.slice(0, 8) };
+  await mkdir(path.dirname(SRWR_CACHE_FILE), { recursive: true });
+  await writeFile(SRWR_CACHE_FILE, JSON.stringify(state, null, 2) + "\n");
+  return { ok: true, source: "srwr", dataDate: state.dataDate, count: state.count, items: state.items };
+}
+
 /* ---------- main ---------- */
 
 // Start from the previous build's data so a failed source degrades to
 // stale rather than blank.
-let out = { fetchedAt: null, weather: { ok: false }, tides: { ok: false, events: [] } };
+let out = { fetchedAt: null, weather: { ok: false }, tides: { ok: false, events: [] }, roadworks: { ok: false, items: [] } };
 try {
   out = { ...out, ...JSON.parse(await readFile(DATA_FILE, "utf8")) };
 } catch {
@@ -306,6 +701,14 @@ try {
   console.log(`tides: ${label} — next ${out.tides.events[0].type.toLowerCase()} at ${out.tides.events[0].time}`);
 } catch (error) {
   console.warn(`tides: keeping previous value — ${error.message}`);
+}
+
+try {
+  out.roadworks = await loadRoadworks();
+  anySuccess = true;
+  console.log(`roadworks: ${out.roadworks.count} active in Largs (register data to ${out.roadworks.dataDate})`);
+} catch (error) {
+  console.warn(`roadworks: keeping previous value — ${error.message}`);
 }
 
 if (anySuccess) out.fetchedAt = new Date().toISOString();

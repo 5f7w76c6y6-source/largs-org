@@ -72,6 +72,19 @@ Setting it is the UKHO go-live switch and waits for their written OK.
 `gh secret list` shows names and dates only — safe to share anywhere.
 Re-running `gh secret set NAME` overwrites cleanly.
 
+**Roadworks come from the Scottish Road Works Register** (open data,
+OGL v3, downloads.srwr.scot). Monthly archives are ~45 MB and change
+once a day, so the fetch script distils "current Largs works" into
+`.cache/srwr-state.json` and the workflow's actions/cache step carries
+it between runs — only the first build after each overnight publication
+does the heavy pull. The script asks the register's own
+list API what files exist rather than computing names, so month-end
+rollups need no special handling. The Largs filter is a British
+National Grid bounding box plus a text match (constants at the top of
+the roadworks section in `scripts/fetch-data.mjs`). Around the month-end rollup the
+register briefly locks its archives; fetches skip and self-heal, per
+the register's own guidance. Data questions: enquiries@roadworks.scot.
+
 **The UKHO subscription lasts one year.** When it lapses, nothing
 breaks loudly: the fetch quietly falls back to the ocean model and the
 colophon credit switches back to Open-Meteo. Calendar the renewal, and
@@ -159,6 +172,10 @@ transfer, re-enter the secrets on the repository's new home.
   re-set.
 - Tides unexpectedly credited to Open-Meteo in the colophon → the UKHO
   key has lapsed or their API is down; the fetch logs say which.
+- Roadworks tile stuck on an old date → check the fetch step's log for
+  "roadworks:" lines; a missed overnight publication self-heals, a
+  changed download URL means updating the `SRWR_API` constant in the
+  fetch script.
 - Site stale and no recent runs → schedule auto-disabled at the 60-day
   mark; Actions tab, one click.
 - Locally, "could not read package.json" → wrong directory; `pwd`.
