@@ -106,6 +106,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 .badge.live{background:var(--foam-tint);color:var(--teal)}
 .badge.timetable{background:var(--sand);color:var(--muted)}
 .badge.sample{background:#F6EEDD;color:var(--warn)}
+.badge.model{background:var(--sand);color:var(--muted)}
 .board-legend{
   font-family:"Spline Sans Mono",monospace;font-size:.68rem;color:var(--muted);
   letter-spacing:.04em;margin-top:10px;

@@ -146,9 +146,9 @@ async function loadWeather() {
 }
 
 /* ---------- tides: UKHO Admiralty (authoritative) ---------- */
-/* UK Tidal API, Discovery tier: high/low water events for the Largs
- * station, looked up by name each run (2 calls per build ≈ 3,000 a
- * month against the 10,000 limit). Date-times are documented as UTC
+/* UK Tidal API, Discovery tier: high/low water events for a pinned
+ * station (1 call per build ≈ 1,500 a month against the 10,000
+ * limit). Date-times are documented as UTC
  * but carry no timezone suffix, so a "Z" is appended before parsing —
  * verify the first wired-up run against ADMIRALTY EasyTide, which
  * draws on the same predictions and should agree to the minute.
@@ -156,16 +156,20 @@ async function loadWeather() {
 
 const UKHO_BASE = "https://admiraltyapi.azure-api.net/uktidalapi/api/V1";
 
+// UKHO's 608 stations include no Largs. The pick is MILLPORT (0398):
+// directly across the channel on Great Cumbrae, the same body of
+// water, and the reference gauge for this stretch of the Clyde —
+// differences from the Largs shore are minutes at most. Verified
+// against the live /Stations list on 4 Aug 2026. To re-derive: GET
+// /Stations with the subscription key and search the Clyde names
+// (nearby alternatives: Wemyss Bay 0399A, GREENOCK 0404).
+const UKHO_STATION_ID = "0398";
+const UKHO_STATION_NAME = "Millport";
+
 async function loadTidesUKHO(key) {
   const headers = { "Ocp-Apim-Subscription-Key": key };
 
-  const stations = await fetchJSON(`${UKHO_BASE}/Stations?name=Largs`, headers);
-  const station = stations?.features?.[0];
-  if (!station) throw new Error("station lookup returned no match for Largs");
-  const stationId = station.properties.Id;
-  const stationName = station.properties.Name;
-
-  const raw = await fetchJSON(`${UKHO_BASE}/Stations/${stationId}/TidalEvents?duration=3`, headers);
+  const raw = await fetchJSON(`${UKHO_BASE}/Stations/${UKHO_STATION_ID}/TidalEvents?duration=3`, headers);
 
   const cutoff = Date.now() - 10 * 60 * 1000;
   const upcoming = raw
@@ -186,7 +190,7 @@ async function loadTidesUKHO(key) {
 
   if (upcoming.length < 3) throw new Error("fewer than 3 upcoming tide events returned");
 
-  return { ok: true, source: "ukho", station: stationName, events: upcoming };
+  return { ok: true, source: "ukho", station: UKHO_STATION_NAME, events: upcoming };
 }
 
 /* ---------- tides: Open-Meteo ocean model (fallback) ---------- */

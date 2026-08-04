@@ -27,12 +27,12 @@ layout: layouts/base.njk
     </div>
 
     {% set ev = today.tides.events or [] %}
-    {% set tidesLive = today.tides.ok and (ev | length) >= 3 %}
+    {% set tidesOk = today.tides.ok and (ev | length) >= 3 %}
     <div class="tile">
       <div class="label">Tides · Largs
-        {% if tidesLive %}<span class="badge live">live</span>{% else %}<span class="badge sample">sample</span>{% endif %}
+        {% if tidesOk and today.tides.source == "ukho" %}<span class="badge live">live</span>{% elif tidesOk %}<span class="badge model">model</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
-      {% if tidesLive %}
+      {% if tidesOk %}
       <div class="figure">{{ ev[0].type }} {{ ev[0].time | hhmm }}</div>
       <div class="sub">{{ ev[1].type }} <span class="mono">{{ ev[1].time | hhmm }}</span> · next {{ ev[2].type | lower }} <span class="mono">{{ ev[2].time | hhmm }}</span></div>
       {% else %}
@@ -60,7 +60,7 @@ layout: layouts/base.njk
     </div>
 
   </div>
-  <p class="board-legend">live = fetched at the last rebuild · timetable = fixed pattern with a link out · sample = placeholder until the feed is wired up</p>
+  <p class="board-legend">live = fetched at the last rebuild · model = ocean-model estimate, measured up to an hour out here — official times: <a href="https://easytide.admiralty.co.uk">EasyTide</a> · timetable = fixed pattern with a link out · sample = placeholder until the feed is wired up</p>
 </section>
 
 {# ================= WEEK + COUNCIL ================= #}
