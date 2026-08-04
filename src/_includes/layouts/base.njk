@@ -22,11 +22,11 @@
     </div>
     <nav class="mainnav" aria-label="Main">
       <ul>
-        <li><a href="/" aria-current="page">Today</a></li>
+        <li><a href="/"{% if page.url == "/" %} aria-current="page"{% endif %}>Today</a></li>
         <li><a href="#">What's on</a></li>
         <li><a href="#">Council corner</a></li>
         <li><a href="#">Directory</a></li>
-        <li><a href="#">Getting about</a></li>
+        <li><a href="/getting-about/"{% if page.url == "/getting-about/" %} aria-current="page"{% endif %}>Getting about</a></li>
         <li><a href="#">Archive</a></li>
         <li><a href="#">About</a></li>
       </ul>

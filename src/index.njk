@@ -62,9 +62,9 @@ layout: layouts/base.njk
       <div class="figure">{% if rw.count == 0 %}None{% else %}{{ rw.count }} active{% endif %}</div>
       {% if rw.count > 0 %}
       {% set w = rw.items[0] %}
-      <div class="sub">{{ w.what }}{% if w.what and w.where %}, {% endif %}{{ w.where }}{% if w.until %} until <span class="mono">{{ w.until | dom }} {{ w.until | monthShort }}</span>{% endif %}</div>
+      <div class="sub">{{ w.what }}{% if w.what and w.where %}, {% endif %}{{ w.where }}{% if w.until %} until <span class="mono">{{ w.until | dom }} {{ w.until | monthShort }}</span>{% endif %} · <a href="/getting-about/">map →</a></div>
       {% else %}
-      <div class="sub">Nothing registered on Largs streets</div>
+      <div class="sub">Nothing registered on Largs streets · <a href="/getting-about/">map →</a></div>
       {% endif %}
       {% else %}
       <div class="figure">1 active</div>

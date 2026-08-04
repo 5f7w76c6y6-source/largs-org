@@ -246,3 +246,30 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 @media (prefers-reduced-motion:reduce){
   *{transition:none !important;animation:none !important}
 }
+
+/* ---------- getting about: works map & list ---------- */
+.page-intro{max-width:70ch;margin-bottom:6px}
+.works-legend{
+  font-family:"Spline Sans Mono",monospace;font-size:.7rem;color:var(--muted);
+  letter-spacing:.04em;display:flex;gap:18px;align-items:center;flex-wrap:wrap;
+  margin:10px 0 4px;
+}
+.works-legend .swatch{
+  width:11px;height:11px;border-radius:50%;display:inline-block;
+  margin-right:6px;vertical-align:-1px;border:2px solid var(--paper);
+  box-shadow:0 0 0 1px var(--sand);
+}
+.swatch.active{background:var(--red)}
+.swatch.planned{background:var(--warn)}
+#works-map{
+  height:430px;border:1px solid var(--sand);border-radius:12px;
+  margin:12px 0 20px;background:var(--foam-tint);
+}
+.work-row{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--sand);align-items:baseline}
+.work-row:last-of-type{border-bottom:none}
+.work-row .chip{flex:none;margin-top:0}
+.chip.active{background:#F6E1DD;color:var(--red)}
+.chip.planned{background:#F6EEDD;color:var(--warn)}
+.work-main{flex:1}
+.work-main h3{font-size:1.02rem;font-weight:700;color:var(--slate)}
+.work-main .meta{font-family:"Spline Sans Mono",monospace;font-size:.76rem;color:var(--muted);margin-top:2px}

@@ -83,7 +83,12 @@ rollups need no special handling. The Largs filter is a British
 National Grid bounding box plus a text match (constants at the top of
 the roadworks section in `scripts/fetch-data.mjs`). Around the month-end rollup the
 register briefly locks its archives; fetches skip and self-heal, per
-the register's own guidance. Data questions: enquiries@roadworks.scot.
+the register's own guidance. A Getting About page (/getting-about/) maps the
+works with Leaflet — grid references converted to WGS84 at build time,
+planned works (register status 04) shown amber alongside active red.
+The distillate carries a schema number: bump `SRWR_SCHEMA` in the fetch
+script whenever its shape changes, which forces one fresh heavy pull.
+Data questions: enquiries@roadworks.scot.
 
 **The UKHO subscription lasts one year.** When it lapses, nothing
 breaks loudly: the fetch quietly falls back to the ocean model and the

@@ -312,6 +312,7 @@ async function loadTides() {
 const SRWR_API = "https://downloads.srwr.scot/export/api/v1/";
 const SRWR_LIST_URL = SRWR_API + "files/";
 const SRWR_FILE_URL = SRWR_API + "file/"; // + "NAME.zip/"
+const SRWR_SCHEMA = 2; // bump when the distillate shape changes: forces one fresh heavy pull
 const SRWR_MONTHS_BACK = 2; // window: ~9 weeks; works untouched in the
                             // register for longer are rare — notices
                             // and inspections keep live records moving.
@@ -542,6 +543,85 @@ function srwrPlan(files) {
   return { plan, newestCovers: plan.length ? plan[plan.length - 1].covers : null };
 }
 
+/* British National Grid (OSGB36, EPSG:27700) -> WGS84 lat/lon. The
+ * classic Ordnance Survey mathematics: inverse Transverse Mercator on
+ * the Airy 1830 ellipsoid, then a Helmert datum shift. Accurate to a
+ * few metres — ample for map dots. */
+function osgbToWgs84(E, N) {
+  const a = 6377563.396, b = 6356256.909, F0 = 0.9996012717;
+  const lat0 = (49 * Math.PI) / 180, lon0 = (-2 * Math.PI) / 180;
+  const N0 = -100000, E0 = 400000;
+  const e2 = 1 - (b * b) / (a * a);
+  const n = (a - b) / (a + b), n2 = n * n, n3 = n * n * n;
+
+  let lat = lat0, M = 0;
+  do {
+    lat = (N - N0 - M) / (a * F0) + lat;
+    const dl = lat - lat0, sl = lat + lat0;
+    M = b * F0 * (
+      (1 + n + 1.25 * n2 + 1.25 * n3) * dl
+      - (3 * n + 3 * n2 + 2.625 * n3) * Math.sin(dl) * Math.cos(sl)
+      + (1.875 * n2 + 1.875 * n3) * Math.sin(2 * dl) * Math.cos(2 * sl)
+      - (35 / 24) * n3 * Math.sin(3 * dl) * Math.cos(3 * sl)
+    );
+  } while (N - N0 - M >= 0.00001);
+
+  const sinLat = Math.sin(lat), cosLat = Math.cos(lat), tanLat = Math.tan(lat);
+  const nu = (a * F0) / Math.sqrt(1 - e2 * sinLat * sinLat);
+  const rho = (a * F0 * (1 - e2)) / Math.pow(1 - e2 * sinLat * sinLat, 1.5);
+  const eta2 = nu / rho - 1;
+  const t2 = tanLat * tanLat, t4 = t2 * t2, t6 = t4 * t2;
+  const dE = E - E0, dE2 = dE * dE;
+
+  const VII = tanLat / (2 * rho * nu);
+  const VIII = (tanLat / (24 * rho * nu ** 3)) * (5 + 3 * t2 + eta2 - 9 * t2 * eta2);
+  const IX = (tanLat / (720 * rho * nu ** 5)) * (61 + 90 * t2 + 45 * t4);
+  const X = 1 / (cosLat * nu);
+  const XI = (nu / rho + 2 * t2) / (6 * cosLat * nu ** 3);
+  const XII = (5 + 28 * t2 + 24 * t4) / (120 * cosLat * nu ** 5);
+  const XIIA = (61 + 662 * t2 + 1320 * t4 + 720 * t6) / (5040 * cosLat * nu ** 7);
+
+  const phi = lat - VII * dE2 + VIII * dE2 * dE2 - IX * dE2 * dE2 * dE2;
+  const lam = lon0 + X * dE - XI * dE * dE2 + XII * dE * dE2 * dE2 - XIIA * dE * dE2 * dE2 * dE2;
+
+  // Helmert OSGB36 -> WGS84 via cartesian coordinates
+  const toCart = (la, lo, ea, eb) => {
+    const ee2 = 1 - (eb * eb) / (ea * ea);
+    const v = ea / Math.sqrt(1 - ee2 * Math.sin(la) ** 2);
+    return [v * Math.cos(la) * Math.cos(lo), v * Math.cos(la) * Math.sin(lo), v * (1 - ee2) * Math.sin(la)];
+  };
+  const [x1, y1, z1] = toCart(phi, lam, a, b);
+  const tx = 446.448, ty = -125.157, tz = 542.06;
+  const s = -20.4894e-6;
+  const rx = (0.1502 / 3600) * (Math.PI / 180);
+  const ry = (0.247 / 3600) * (Math.PI / 180);
+  const rz = (0.8421 / 3600) * (Math.PI / 180);
+  const x2 = tx + (1 + s) * x1 - rz * y1 + ry * z1;
+  const y2 = ty + rz * x1 + (1 + s) * y1 - rx * z1;
+  const z2 = tz - ry * x1 + rx * y1 + (1 + s) * z1;
+
+  const wa = 6378137, wb = 6356752.3141;
+  const we2 = 1 - (wb * wb) / (wa * wa);
+  const p = Math.sqrt(x2 * x2 + y2 * y2);
+  let wlat = Math.atan2(z2, p * (1 - we2));
+  for (let i = 0; i < 6; i++) {
+    const v = wa / Math.sqrt(1 - we2 * Math.sin(wlat) ** 2);
+    wlat = Math.atan2(z2 + we2 * v * Math.sin(wlat), p);
+  }
+  return { lat: (wlat * 180) / Math.PI, lng: (Math.atan2(y2, x2) * 180) / Math.PI };
+}
+
+// Centroid of a WKT geometry's grid references, as WGS84 (or null).
+function geomCentroidWgs84(wkt) {
+  if (!wkt) return null;
+  const re = /(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)/g;
+  let m, se = 0, sn = 0, k = 0;
+  while ((m = re.exec(wkt)) !== null) { se += Number(m[1]); sn += Number(m[2]); k++; }
+  if (!k) return null;
+  const point = osgbToWgs84(se / k, sn / k);
+  return { lat: Math.round(point.lat * 1e5) / 1e5, lng: Math.round(point.lng * 1e5) / 1e5 };
+}
+
 /* Download one archive. The file endpoint answers with a small JSON
  * envelope containing a short-lived signed Azure URL; we scan the
  * envelope for the first https:// string rather than assuming a field
@@ -567,10 +647,20 @@ async function srwrDownload(name) {
 async function loadRoadworks() {
   let cached = null;
   try { cached = JSON.parse(await readFile(SRWR_CACHE_FILE, "utf8")); } catch { /* no cache yet */ }
+  if (cached && cached.schema !== SRWR_SCHEMA) {
+    console.log("roadworks: cached state uses an older schema — refreshing");
+    cached = null;
+  }
 
   const fromCache = (state, note) => {
     if (note) console.log(`roadworks: ${note}`);
-    return { ok: true, source: "srwr", dataDate: state.dataDate, count: state.count, items: state.items };
+    return {
+      ok: true, source: "srwr", dataDate: state.dataDate,
+      count: state.count,
+      activeCount: state.activeCount ?? state.count,
+      plannedCount: state.plannedCount ?? 0,
+      items: state.items
+    };
   };
 
   let listing;
@@ -608,7 +698,7 @@ async function loadRoadworks() {
       case "001": { const a = act(r[2]); a.promoter = r[5]; a.latestPhase = r[11]; break; }
       case "004": { const a = act(r[2]); if (r[5]) a.street = r[5]; break; }
       case "007": { const a = act(r[2]); a.phases[r[7]] = { loc: r[6], cat: r[9], status: r[10], cancelled: r[11], geom: r[12] }; break; }
-      case "008": { const a = act(r[2]); a.und[r[3]] = { tm: r[21], estProposed: r[8], latestPossible: r[14], reasonable: r[16], inProgress: r[71] || "" }; break; }
+      case "008": { const a = act(r[2]); a.und[r[3]] = { tm: r[21], proposedStart: r[4], earliestProposed: r[12], estProposed: r[8], latestPossible: r[14], reasonable: r[16], inProgress: r[71] || "" }; break; }
       case "098": { orgs.set(String(r[3]).padStart(6, "0"), r[4]); break; }
     }
   };
@@ -645,32 +735,58 @@ async function loadRoadworks() {
     throw new Error("no SRWR archives could be fetched and no cached state exists");
   }
 
+  const todayIso = new Intl.DateTimeFormat("en-CA", {
+    timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit"
+  }).format(new Date());
+
   const items = [];
-  let count = 0;
+  let activeCount = 0;
+  let plannedCount = 0;
   for (const a of activities.values()) {
     const phaseNo = a.latestPhase && a.phases[a.latestPhase] ? a.latestPhase
       : Object.keys(a.phases).sort((x, y) => Number(y) - Number(x))[0];
     const ph = phaseNo ? a.phases[phaseNo] : null;
     if (!ph) continue;
-    if (ph.status !== "05" || ph.cancelled === "True") continue; // 05 = In Progress
+    const status = ph.status === "05" ? "active" : ph.status === "04" ? "planned" : null; // 05 In Progress, 04 Proposed
+    if (!status || ph.cancelled === "True") continue;
     const inLargs = geomInBbox(ph.geom) || LARGS_RE.test(ph.loc || "") || LARGS_RE.test(a.street || "");
     if (!inLargs) continue;
-    count++;
+    if (status === "active") activeCount++; else plannedCount++;
     const u = a.und[phaseNo] || {};
+    const ll = geomCentroidWgs84(ph.geom);
     items.push({
+      status,
       what: SRWR_TM[u.tm] || SRWR_CATEGORY[ph.cat] || "Road works",
       where: tidyLocation(ph.loc || a.street || ""),
       until: firstDateOf(u.inProgress, u.estProposed, u.latestPossible, u.reasonable),
-      promoter: orgs.get(String(a.promoter || "").replace(/\D/g, "").padStart(9, "0").slice(0, 6)) || ""
+      from: firstDateOf(u.proposedStart, u.earliestProposed),
+      promoter: orgs.get(String(a.promoter || "").replace(/\D/g, "").padStart(9, "0").slice(0, 6)) || "",
+      lat: ll ? ll.lat : null,
+      lng: ll ? ll.lng : null
     });
   }
-  items.sort((x, y) => ((x.until || "9999") < (y.until || "9999") ? -1 : 1));
+  // Active works first (future end dates leading, overruns sinking),
+  // then planned works by start date — so the tile's items[0] is always
+  // the most relevant live work.
+  const sortKey = (w) => w.status === "active"
+    ? (w.until && w.until >= todayIso ? "A1" + w.until : w.until ? "A2" + w.until : "A3")
+    : (w.from ? "B1" + w.from : "B3");
+  items.sort((x, y) => (sortKey(x) < sortKey(y) ? -1 : 1));
 
   const now = new Date().toISOString();
-  const state = { dataDate: newestLoaded, fetchedAt: now, attemptedAt: now, count, items: items.slice(0, 8) };
+  const state = {
+    schema: SRWR_SCHEMA,
+    dataDate: newestLoaded,
+    fetchedAt: now,
+    attemptedAt: now,
+    count: activeCount,
+    activeCount,
+    plannedCount,
+    items: items.slice(0, 40)
+  };
   await mkdir(path.dirname(SRWR_CACHE_FILE), { recursive: true });
   await writeFile(SRWR_CACHE_FILE, JSON.stringify(state, null, 2) + "\n");
-  return { ok: true, source: "srwr", dataDate: state.dataDate, count: state.count, items: state.items };
+  return { ok: true, source: "srwr", dataDate: state.dataDate, count: state.count, activeCount, plannedCount, items: state.items };
 }
 
 /* ---------- main ---------- */
@@ -706,7 +822,7 @@ try {
 try {
   out.roadworks = await loadRoadworks();
   anySuccess = true;
-  console.log(`roadworks: ${out.roadworks.count} active in Largs (register data to ${out.roadworks.dataDate})`);
+  console.log(`roadworks: ${out.roadworks.count} active, ${out.roadworks.plannedCount ?? 0} planned in Largs (register data to ${out.roadworks.dataDate})`);
 } catch (error) {
   console.warn(`roadworks: keeping previous value — ${error.message}`);
 }

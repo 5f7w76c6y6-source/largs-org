@@ -1,0 +1,101 @@
+---
+layout: layouts/base.njk
+permalink: /getting-about/
+---
+{% set rw = today.roadworks %}
+<section class="board wrap" aria-labelledby="ga-h">
+  <div class="kicker">
+    <span id="ga-h">Getting about · road works</span>
+    {% if rw.ok %}
+    <span class="stamp">Register data to {{ rw.dataDate | dom }} {{ rw.dataDate | monthShort }} · refreshed overnight</span>
+    {% endif %}
+  </div>
+
+  <p class="page-intro">Every registered occupation of a Largs street, from the
+  Scottish Road Works Register — the statutory record all utilities and the
+  council must file into. <strong>Red</strong> is under way now;
+  <strong>amber</strong> is planned, so you can route round it before it
+  arrives. The map shows where; the list below has the detail.</p>
+
+  {% if rw.ok %}
+  <p class="works-legend">
+    <span><span class="swatch active"></span>{{ rw.activeCount }} under way</span>
+    <span><span class="swatch planned"></span>{{ rw.plannedCount }} planned</span>
+    <span>tap a dot for details</span>
+  </p>
+
+  <div id="works-map" role="application" aria-label="Map of road works in Largs. The same information is listed below."></div>
+
+  {% for w in rw.items %}
+  <article class="work-row">
+    <span class="chip {{ w.status }}">{% if w.status == "active" %}Under way{% else %}Planned{% endif %}</span>
+    <div class="work-main">
+      <h3>{{ w.what }}{% if w.what and w.where %} — {% endif %}{{ w.where }}</h3>
+      <p class="meta">
+        {%- if w.promoter %}{{ w.promoter }}{% endif -%}
+        {%- if w.status == "active" and w.until %} · due to finish {{ w.until | dom }} {{ w.until | monthShort }}{% endif -%}
+        {%- if w.status == "planned" and w.from %} · starts {{ w.from | dom }} {{ w.from | monthShort }}{% endif -%}
+        {%- if w.status == "planned" and w.until %} · until {{ w.until | dom }} {{ w.until | monthShort }}{% endif -%}
+      </p>
+    </div>
+  </article>
+  {% endfor %}
+
+  <p class="note">Source: Scottish Road Works Register open data (OGL v3),
+  updated each night. Positions are as registered by the works promoter and
+  can be approximate. Full national map:
+  <a href="https://roadworksscotland.org">Scottish Road Works Online</a>.</p>
+
+  {% else %}
+  <p class="note">Road works data hasn't been fetched yet — the register feed
+  will appear here after the next build.</p>
+  {% endif %}
+</section>
+
+{% if rw.ok %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* This page is the one place the site runs JavaScript in the browser —
+   the homepage stays pure HTML. Works data is baked in at build time. */
+(function () {
+  "use strict";
+  var WORKS = {{ rw.items | dump | safe }};
+  if (!window.L) return; // CDN unreachable: the list above stands alone.
+
+  var map = L.map("works-map", { scrollWheelZoom: false });
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  function shortDate(iso) {
+    var d = new Date(iso + "T12:00:00Z");
+    return isNaN(d) ? "" : d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  }
+
+  var bounds = [];
+  WORKS.forEach(function (w) {
+    if (w.lat == null || w.lng == null) return;
+    var active = w.status === "active";
+    var marker = L.circleMarker([w.lat, w.lng], {
+      radius: 9,
+      color: "#FBF8F1",
+      weight: 2,
+      fillColor: active ? "#C03B2B" : "#B07A1F",
+      fillOpacity: 0.9
+    }).addTo(map);
+    var lines = ["<strong>" + (w.what || "Road works") + "</strong>"];
+    if (w.where) lines.push(w.where);
+    if (w.promoter) lines.push(w.promoter);
+    if (active) lines.push(w.until ? "Due to finish " + shortDate(w.until) : "No end date registered");
+    else lines.push(w.from ? "Starts " + shortDate(w.from) : "Start date to be confirmed");
+    marker.bindPopup(lines.join("<br>"));
+    bounds.push([w.lat, w.lng]);
+  });
+
+  if (bounds.length) map.fitBounds(bounds, { padding: [28, 28], maxZoom: 16 });
+  else map.setView([55.795, -4.868], 14); // Largs, when nothing is mappable
+})();
+</script>
+{% endif %}
