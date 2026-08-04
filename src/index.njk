@@ -82,7 +82,12 @@ layout: layouts/base.njk
     <h2 id="week-h">This week in Largs</h2>
     <div class="rule" aria-hidden="true"></div>
 
-    {% for e in events %}
+    {% if events.sample %}
+    <p class="sample-note">These entries show the layout only — none is a
+    confirmed event yet. Real listings will replace them.</p>
+    {% endif %}
+
+    {% for e in events.items %}
     <article class="event">
       <div class="when">
         <div class="dow">{% if e.farOut %}{{ e.date | monthShort }}{% else %}{{ e.date | dow }}{% endif %}</div>

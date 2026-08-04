@@ -1,38 +1,41 @@
-[
-  {
-    "date": "2026-08-04",
-    "title": "Farmers' and makers' market",
-    "venue": "Gallowgate Square",
-    "time": "10:00–15:00",
-    "blurb": "Ayrshire produce, home baking and crafts on the square."
-  },
-  {
-    "date": "2026-08-06",
-    "title": "Waverley sails from Largs Pier",
-    "venue": "Largs Pier",
-    "time": "Departs 14:10",
-    "blurb": "Afternoon cruise on the last seagoing paddle steamer — booking advised."
-  },
-  {
-    "date": "2026-08-07",
-    "title": "Quiz night for the RNLI",
-    "venue": "Largs Sailing Club",
-    "time": "19:30",
-    "blurb": "Teams of four, £2 a head, all proceeds to the lifeboats."
-  },
-  {
-    "date": "2026-08-08",
-    "title": "Bowling club open pairs",
-    "venue": "Douglas Park",
-    "time": "From 10:00",
-    "blurb": "Visitors welcome — spare bowls at the clubhouse."
-  },
-  {
-    "date": "2026-09-05",
-    "farOut": true,
-    "title": "Largs Viking Festival — one month to go",
-    "venue": "The Pencil Field",
-    "time": "Full week",
-    "blurb": "The village rises again on the shorefront. Programme published here as soon as it's out."
-  }
-]
+{
+  "sample": true,
+  "items": [
+    {
+      "date": "2026-08-04",
+      "title": "Farmers' and makers' market",
+      "venue": "Gallowgate Square",
+      "time": "10:00–15:00",
+      "blurb": "Ayrshire produce, home baking and crafts on the square."
+    },
+    {
+      "date": "2026-08-06",
+      "title": "Waverley sails from Largs Pier",
+      "venue": "Largs Pier",
+      "time": "Departs 14:10",
+      "blurb": "Afternoon cruise on the last seagoing paddle steamer — booking advised."
+    },
+    {
+      "date": "2026-08-07",
+      "title": "Quiz night for the RNLI",
+      "venue": "Largs Sailing Club",
+      "time": "19:30",
+      "blurb": "Teams of four, £2 a head, all proceeds to the lifeboats."
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Bowling club open pairs",
+      "venue": "Douglas Park",
+      "time": "From 10:00",
+      "blurb": "Visitors welcome — spare bowls at the clubhouse."
+    },
+    {
+      "date": "2026-09-05",
+      "farOut": true,
+      "title": "Largs Viking Festival — one month to go",
+      "venue": "The Pencil Field",
+      "time": "Full week",
+      "blurb": "The village rises again on the shorefront. Programme published here as soon as it's out."
+    }
+  ]
+}
