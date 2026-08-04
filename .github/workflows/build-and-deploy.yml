@@ -13,6 +13,12 @@
 # Required repository secrets (Settings → Secrets and variables → Actions):
 #   CLOUDFLARE_API_TOKEN   — custom token with "Cloudflare Pages: Edit"
 #   CLOUDFLARE_ACCOUNT_ID  — shown in the Cloudflare dashboard sidebar
+# Optional:
+#   ADMIRALTY_KEY          — UK Tidal API (Discovery) subscription key.
+#                            Absent = tides come from the ocean model.
+#                            Setting it is the go-live switch for UKHO
+#                            tides — only after their written OK for
+#                            the bake-and-display pattern.
 #
 # Two GitHub quirks worth knowing:
 #   - Jobs scheduled on the hour queue behind everyone else's; the odd
@@ -58,6 +64,8 @@ jobs:
 
       - name: Fetch live data
         run: node scripts/fetch-data.mjs
+        env:
+          ADMIRALTY_KEY: ${{ secrets.ADMIRALTY_KEY }}
 
       - name: Build site
         run: npm run build

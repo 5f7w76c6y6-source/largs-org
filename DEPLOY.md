@@ -50,8 +50,9 @@ manual, either from the Actions tab (*Build and deploy → Run workflow*)
 or `gh workflow run build-and-deploy.yml`.
 
 **Cron is best-effort.** A few minutes of jitter is normal, more at
-busy times, and GitHub occasionally skips a slot entirely. One missed
-half-hour does not matter for tide times.
+busy times, and GitHub occasionally skips a slot entirely — the first
+night it honoured one slot in twenty, then perked up by morning. One
+missed half-hour does not matter for tide times.
 
 **Overlaps cancel.** The workflow declares a concurrency group with
 `cancel-in-progress: true`: if a new run starts while an older one is
@@ -63,10 +64,18 @@ anti-abandonment measure. Symptom: the site's Updated stamp goes stale
 and `gh run list` shows nothing recent. Fix: Actions tab → re-enable
 the workflow (one click), or make any small commit.
 
-**Secrets.** Two, held on the repo (Settings → Secrets and variables →
-Actions): `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
+**Secrets.** Held on the repo (Settings → Secrets and variables →
+Actions): `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are
+required; `ADMIRALTY_KEY` is optional — absent, the tide tile uses the
+Open-Meteo ocean model; present, it uses UKHO Admiralty predictions.
+Setting it is the UKHO go-live switch and waits for their written OK.
 `gh secret list` shows names and dates only — safe to share anywhere.
 Re-running `gh secret set NAME` overwrites cleanly.
+
+**The UKHO subscription lasts one year.** When it lapses, nothing
+breaks loudly: the fetch quietly falls back to the ocean model and the
+colophon credit switches back to Open-Meteo. Calendar the renewal, and
+treat "colophon says Open-Meteo again" as the symptom.
 
 ## Fresh machine setup
 
@@ -120,15 +129,16 @@ Tokens → Create Token → **Custom token**:
   updating on some future anniversary. The leak mitigation is the
   narrow scope, not a countdown.
 - **A seen token is a burned token.** Screenshot, chat message, note —
-  if the secret has existed anywhere outside Cloudflare and the
+  if the secret has existed anywhere outside its vault and the
   clipboard, Roll it (⋯ menu next to the token: same name and
   permissions, new secret) and re-run
   `gh secret set CLOUDFLARE_API_TOKEN`.
 - **Never run the "Test this token" curl** offered on the reveal page —
   it embeds the secret in plain text in shell history. The pipeline is
   the test.
-- The token's entire journey: Cloudflare → clipboard →
-  `gh secret set`. Nowhere else, ever.
+- Every secret's entire journey: vault → clipboard → `gh secret set`
+  (or `read -s` + `export` for a session-only local test). Nowhere
+  else, ever. The same rules cover the UKHO key.
 
 ## Renames and the long game
 
@@ -137,7 +147,7 @@ Renaming the GitHub account is not free: repository URLs redirect, but
 username becomes claimable by anyone. The better long-term move is a
 community GitHub **organisation** for the town's code — transferring a
 repository into an organisation preserves redirects. After any
-transfer, re-enter the two secrets on the repository's new home.
+transfer, re-enter the secrets on the repository's new home.
 
 ## When it breaks
 
@@ -147,6 +157,8 @@ transfer, re-enter the two secrets on the repository's new home.
 - Deploy step fails with an authentication error → token permission
   (Read instead of Edit?) or a rolled token whose new secret was never
   re-set.
+- Tides unexpectedly credited to Open-Meteo in the colophon → the UKHO
+  key has lapsed or their API is down; the fetch logs say which.
 - Site stale and no recent runs → schedule auto-disabled at the 60-day
   mark; Actions tab, one click.
 - Locally, "could not read package.json" → wrong directory; `pwd`.

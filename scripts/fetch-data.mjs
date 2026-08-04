@@ -9,23 +9,26 @@
  * fetched independently; on failure we keep whatever value the previous
  * build baked in and log a warning. The exit code is always 0.
  *
+ * Tides have a three-step fallback chain:
+ *   UKHO Admiralty (if ADMIRALTY_KEY is set) → Open-Meteo ocean model
+ *   → previous build's values.
+ * The ADMIRALTY_KEY comes from the environment: a GitHub Actions secret
+ * in CI (setting it is the go-live switch, once UKHO's written blessing
+ * for the display pattern arrives), or `read -s` + `export` in a local
+ * terminal for private testing. Never commit it, never echo it.
+ *
  * Timezone rule: GitHub's runners are UTC. The marine request asks for
- * `timeformat=unixtime` (epoch seconds — unambiguous everywhere), and
- * the one place we need "the current hour in Largs" computes it through
- * Intl with an explicit Europe/London timezone. Never call Date methods
- * that depend on the machine's local timezone in this script.
+ * `timeformat=unixtime` (epoch seconds — unambiguous everywhere); UKHO
+ * date-times are documented as UTC but arrive without a trailing "Z",
+ * so we append one before parsing (see loadTidesUKHO). Never call Date
+ * methods that depend on the machine's local timezone in this script.
  *
- * ---- Seams for later (each needs an API key, held as a GitHub Actions
- *      secret and read here via process.env — never committed):
+ * ---- Seams still open (each needs a key or a parse, wired the same way):
  *
- * TODO tides: swap Open-Meteo's ocean model for UKHO Admiralty tidal
- *   predictions (free developer tier). Read the key from
- *   process.env.ADMIRALTY_KEY, look up the Largs station ID from their
- *   station list, and replace loadTides() below. Keep Open-Meteo as the
- *   fallback if the key is absent so local builds still work.
  * TODO ferry: CalMac Largs–Cumbrae service status (no public JSON feed;
  *   fetch and parse their service-status page here, server-side).
- * TODO roadworks: Scottish Road Works Register / Traffic Scotland feed.
+ * TODO roadworks: Scottish Road Works Register open data — daily CSVs
+ *   under OGL v3 at https://downloads.srwr.scot/export (no key needed).
  */
 
 import { readFile, writeFile } from "node:fs/promises";
@@ -48,8 +51,8 @@ const MARINE_POINT = { lat: 55.78, lon: -4.92 };
 
 /* ---------- helpers ---------- */
 
-async function fetchJSON(url) {
-  const response = await fetch(url, { signal: AbortSignal.timeout(9000) });
+async function fetchJSON(url, headers = {}) {
+  const response = await fetch(url, { headers, signal: AbortSignal.timeout(9000) });
   if (!response.ok) throw new Error(`HTTP ${response.status} from ${url}`);
   return response.json();
 }
@@ -142,13 +145,56 @@ async function loadWeather() {
   };
 }
 
-/* ---------- tides ---------- */
-/* Open-Meteo's marine model gives hourly sea level including tides.
- * We find local maxima/minima and sharpen each turning point by
- * fitting a parabola through the three surrounding hourly samples —
- * good to a few minutes. Model data, fine for a glance at the prom;
- * swap in UKHO Admiralty predictions for chart-grade times (see the
- * TODO at the top of this file). */
+/* ---------- tides: UKHO Admiralty (authoritative) ---------- */
+/* UK Tidal API, Discovery tier: high/low water events for the Largs
+ * station, looked up by name each run (2 calls per build ≈ 3,000 a
+ * month against the 10,000 limit). Date-times are documented as UTC
+ * but carry no timezone suffix, so a "Z" is appended before parsing —
+ * verify the first wired-up run against ADMIRALTY EasyTide, which
+ * draws on the same predictions and should agree to the minute.
+ */
+
+const UKHO_BASE = "https://admiraltyapi.azure-api.net/uktidalapi/api/V1";
+
+async function loadTidesUKHO(key) {
+  const headers = { "Ocp-Apim-Subscription-Key": key };
+
+  const stations = await fetchJSON(`${UKHO_BASE}/Stations?name=Largs`, headers);
+  const station = stations?.features?.[0];
+  if (!station) throw new Error("station lookup returned no match for Largs");
+  const stationId = station.properties.Id;
+  const stationName = station.properties.Name;
+
+  const raw = await fetchJSON(`${UKHO_BASE}/Stations/${stationId}/TidalEvents?duration=3`, headers);
+
+  const cutoff = Date.now() - 10 * 60 * 1000;
+  const upcoming = raw
+    .filter((event) => event && event.DateTime && event.EventType)
+    .map((event) => {
+      // Append "Z" unless an explicit offset is already present.
+      const hasOffset = /[Zz]$|[+-]\d{2}:?\d{2}$/.test(event.DateTime);
+      const t = Date.parse(hasOffset ? event.DateTime : event.DateTime + "Z");
+      return {
+        type: event.EventType === "HighWater" ? "High" : "Low",
+        t
+      };
+    })
+    .filter((event) => Number.isFinite(event.t) && event.t > cutoff)
+    .sort((a, b) => a.t - b.t)
+    .slice(0, 5)
+    .map((event) => ({ type: event.type, time: new Date(event.t).toISOString() }));
+
+  if (upcoming.length < 3) throw new Error("fewer than 3 upcoming tide events returned");
+
+  return { ok: true, source: "ukho", station: stationName, events: upcoming };
+}
+
+/* ---------- tides: Open-Meteo ocean model (fallback) ---------- */
+/* Hourly sea level including tides; we find local maxima/minima and
+ * sharpen each turning point by fitting a parabola through the three
+ * surrounding samples — good to a few minutes. Model data, fine for a
+ * glance at the prom; the UKHO path above replaces it when a key and
+ * UKHO's blessing both exist. */
 
 function tideEvents(timesSeconds, heights) {
   const points = [];
@@ -159,10 +205,10 @@ function tideEvents(timesSeconds, heights) {
   }
 
   const raw = [];
-  for (let i = 1; i < points.length - 1; i++) {
-    const a = points[i - 1].v;
-    const b = points[i].v;
-    const c = points[i + 1].v;
+  for (let j = 1; j < points.length - 1; j++) {
+    const a = points[j - 1].v;
+    const b = points[j].v;
+    const c = points[j + 1].v;
     const isMax = b > a && b >= c;
     const isMin = b < a && b <= c;
     if (!isMax && !isMin) continue;
@@ -174,7 +220,7 @@ function tideEvents(timesSeconds, heights) {
 
     raw.push({
       type: isMax ? "High" : "Low",
-      t: points[i].t + offset * 3600000,
+      t: points[j].t + offset * 3600000,
       v: b
     });
   }
@@ -194,7 +240,7 @@ function tideEvents(timesSeconds, heights) {
   return clean;
 }
 
-async function loadTides() {
+async function loadTidesModel() {
   const url =
     "https://marine-api.open-meteo.com/v1/marine" +
     `?latitude=${MARINE_POINT.lat}&longitude=${MARINE_POINT.lon}` +
@@ -211,7 +257,21 @@ async function loadTides() {
 
   if (upcoming.length < 3) throw new Error("fewer than 3 upcoming tide events in model data");
 
-  return { ok: true, events: upcoming };
+  return { ok: true, source: "open-meteo", events: upcoming };
+}
+
+/* ---------- tides: dispatcher ---------- */
+
+async function loadTides() {
+  const key = process.env.ADMIRALTY_KEY;
+  if (key) {
+    try {
+      return await loadTidesUKHO(key);
+    } catch (error) {
+      console.warn(`tides: UKHO failed (${error.message}) — falling back to ocean model`);
+    }
+  }
+  return loadTidesModel();
 }
 
 /* ---------- main ---------- */
@@ -238,7 +298,8 @@ try {
 try {
   out.tides = await loadTides();
   anySuccess = true;
-  console.log(`tides: next ${out.tides.events[0].type.toLowerCase()} at ${out.tides.events[0].time}`);
+  const label = out.tides.source === "ukho" ? `UKHO station "${out.tides.station}"` : "ocean model";
+  console.log(`tides: ${label} — next ${out.tides.events[0].type.toLowerCase()} at ${out.tides.events[0].time}`);
 } catch (error) {
   console.warn(`tides: keeping previous value — ${error.message}`);
 }
