@@ -312,7 +312,7 @@ async function loadTides() {
 const SRWR_API = "https://downloads.srwr.scot/export/api/v1/";
 const SRWR_LIST_URL = SRWR_API + "files/";
 const SRWR_FILE_URL = SRWR_API + "file/"; // + "NAME.zip/"
-const SRWR_SCHEMA = 2; // bump when the distillate shape changes: forces one fresh heavy pull
+const SRWR_SCHEMA = 3; // bump when the distillate shape or filter changes: forces one fresh heavy pull
 const SRWR_MONTHS_BACK = 2; // window: ~9 weeks; works untouched in the
                             // register for longer are rare — notices
                             // and inspections keep live records moving.
@@ -749,11 +749,17 @@ async function loadRoadworks() {
     if (!ph) continue;
     const status = ph.status === "05" ? "active" : ph.status === "04" ? "planned" : null; // 05 In Progress, 04 Proposed
     if (!status || ph.cancelled === "True") continue;
-    const inLargs = geomInBbox(ph.geom) || LARGS_RE.test(ph.loc || "") || LARGS_RE.test(a.street || "");
+    // Coordinates are the promoter's own registered position — when they
+    // exist, they decide. The text match only rescues records with no
+    // usable geometry (otherwise "the Greenock–Largs road" plants dots
+    // in Greenock and drags the map's bounds up the coast).
+    const ll = geomCentroidWgs84(ph.geom);
+    const inLargs = ll
+      ? geomInBbox(ph.geom)
+      : (LARGS_RE.test(ph.loc || "") || LARGS_RE.test(a.street || ""));
     if (!inLargs) continue;
     if (status === "active") activeCount++; else plannedCount++;
     const u = a.und[phaseNo] || {};
-    const ll = geomCentroidWgs84(ph.geom);
     items.push({
       status,
       what: SRWR_TM[u.tm] || SRWR_CATEGORY[ph.cat] || "Road works",
