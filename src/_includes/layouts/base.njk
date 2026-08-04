@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ site.title }}</title>
+<title>{% if title %}{{ title }} — largs.org{% else %}{{ site.title }}{% endif %}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
       <ul>
         <li><a href="/"{% if page.url == "/" %} aria-current="page"{% endif %}>Today</a></li>
         <li><a href="#">What's on</a></li>
-        <li><a href="#">Council corner</a></li>
+        <li><a href="/council/"{% if page.url == "/council/" %} aria-current="page"{% endif %}>Council corner</a></li>
         <li><a href="#">Directory</a></li>
         <li><a href="/getting-about/"{% if page.url == "/getting-about/" %} aria-current="page"{% endif %}>Getting about</a></li>
         <li><a href="#">Archive</a></li>

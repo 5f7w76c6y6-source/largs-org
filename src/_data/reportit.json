@@ -1,0 +1,69 @@
+{
+  "_comment": "The report-it-right router. Front doors only: organisation names, long-stable national numbers, and top-level URLs that won't rot. Deep links to specific council forms go stale — add them only if you're prepared to re-check them. NAC deep links worth adding later: their 'report it' landing page, planning portal search.",
+  "routes": [
+    {
+      "problem": "Missed bin, or a new bin",
+      "route": "North Ayrshire Council — waste services.",
+      "url": "https://www.north-ayrshire.gov.uk",
+      "urlLabel": "north-ayrshire.gov.uk"
+    },
+    {
+      "problem": "Pothole or street light — town streets",
+      "route": "North Ayrshire Council — roads. They maintain every street in Largs except the A78.",
+      "url": "https://www.north-ayrshire.gov.uk",
+      "urlLabel": "north-ayrshire.gov.uk"
+    },
+    {
+      "problem": "Fault on the A78",
+      "route": "The A78 is a trunk road — Transport Scotland's contractors, not NAC. Report it through Traffic Scotland.",
+      "url": "https://trafficscotland.org",
+      "urlLabel": "trafficscotland.org"
+    },
+    {
+      "problem": "Dog fouling, litter, fly-tipping",
+      "route": "North Ayrshire Council — streetscene.",
+      "url": "https://www.north-ayrshire.gov.uk",
+      "urlLabel": "north-ayrshire.gov.uk"
+    },
+    {
+      "problem": "Water leak, burst pipe, no supply",
+      "route": "Scottish Water, any hour.",
+      "tel": "0800 0778 778",
+      "url": "https://www.scottishwater.co.uk",
+      "urlLabel": "scottishwater.co.uk"
+    },
+    {
+      "problem": "Power cut",
+      "route": "Call 105 — free, from any phone, whoever your supplier is.",
+      "tel": "105"
+    },
+    {
+      "problem": "Smell of gas",
+      "route": "National gas emergency line, 24 hours. Call before anything else.",
+      "tel": "0800 111 999"
+    },
+    {
+      "problem": "Ferry disruption",
+      "route": "CalMac's own status page is the live word on the Cumbrae crossing.",
+      "url": "https://www.calmac.co.uk/en-gb/service-status/",
+      "urlLabel": "CalMac service status"
+    },
+    {
+      "problem": "Train disruption",
+      "route": "National Rail carries ScotRail's live running.",
+      "url": "https://www.nationalrail.co.uk",
+      "urlLabel": "nationalrail.co.uk"
+    },
+    {
+      "problem": "Comment on a planning application",
+      "route": "North Ayrshire Council's planning portal — comments go on the file, where they count.",
+      "url": "https://www.north-ayrshire.gov.uk",
+      "urlLabel": "north-ayrshire.gov.uk"
+    },
+    {
+      "problem": "Police, non-emergency",
+      "route": "101 for anything that doesn't need blue lights. An emergency is always 999.",
+      "tel": "101"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "_comment": "North Ayrshire Council ward roster. Alphabetical by surname — identical treatment for everyone, always. Party labels are stated as plain fact and CHURN MID-TERM (Ferguson was elected Conservative, sits as Reform UK) — the NAC website is the authoritative record; re-verify this file after any election, by-election or defection. Email/phone/profileUrl/surgeries are lifted from each councillor's official NAC profile page — fill them from there, leave empty until then and the template shows the NAC fallback link instead. Headshots stay off: NAC's photos are their copyright.",
+  "ward": "North Coast",
+  "seats": 5,
+  "verified": "2026-08-04",
+  "nacListUrl": "https://www.north-ayrshire.gov.uk/council-voting-elections",
+  "members": [
+    { "name": "Eleanor Collier", "party": "SNP", "email": "", "phone": "", "surgeries": "", "profileUrl": "" },
+    { "name": "Todd Ferguson", "party": "Reform UK", "email": "", "phone": "", "surgeries": "", "profileUrl": "" },
+    { "name": "Alan Hill", "party": "SNP", "email": "", "phone": "", "surgeries": "", "profileUrl": "" },
+    { "name": "Tom Marshall", "party": "Conservative", "email": "", "phone": "", "surgeries": "", "profileUrl": "" },
+    { "name": "Ian Murdoch", "party": "Independent", "email": "", "phone": "", "surgeries": "", "profileUrl": "" }
+  ]
+}

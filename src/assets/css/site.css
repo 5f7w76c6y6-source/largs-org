@@ -207,7 +207,7 @@ h2{
   padding:8px 15px;border-radius:999px;
 }
 .chips a:hover{border-color:var(--teal);color:var(--teal)}
-.directory .note{color:var(--muted);font-size:.92rem;margin-top:12px}
+.note{color:var(--muted);font-size:.92rem;margin-top:12px;max-width:70ch}
 
 /* ---------- footer ---------- */
 footer{background:var(--slate-deep);color:#C9D8D2;margin-top:44px}
@@ -273,3 +273,60 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .work-main{flex:1}
 .work-main h3{font-size:1.02rem;font-weight:700;color:var(--slate)}
 .work-main .meta{font-family:"Spline Sans Mono",monospace;font-size:.76rem;color:var(--muted);margin-top:2px}
+
+/* ---------- council corner page ---------- */
+.council-page{padding:26px 20px 4px}
+.council-page.council-last{padding-bottom:14px}
+.mono-h{
+  font-family:"Spline Sans Mono",monospace;font-size:.7rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);margin:14px 0 6px;
+}
+.sample-note{
+  background:#F6EEDD;border:1px solid var(--sand);border-radius:8px;
+  padding:10px 14px;font-size:.93rem;max-width:70ch;margin:0 0 14px;
+}
+.cc-note{
+  background:var(--foam-tint);border-radius:8px;padding:12px 16px;
+  font-size:.93rem;max-width:70ch;margin:16px 0 6px;
+}
+.meeting-line{font-size:1.02rem;max-width:70ch;margin-bottom:10px}
+.fact-list{list-style:none;max-width:70ch}
+.fact-list li{padding:7px 0;border-bottom:1px dotted var(--sand);font-size:.95rem}
+.fact-list li:last-child{border-bottom:none}
+.mono{font-family:"Spline Sans Mono",monospace;font-size:.85em}
+.councillor-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:12px;margin:14px 0 8px;
+}
+.councillor{
+  background:var(--card);border:1px solid var(--sand);border-radius:10px;
+  padding:14px 16px;
+}
+.councillor .name{font-weight:700;color:var(--slate);font-size:1.02rem}
+/* One muted style for every party label — identical treatment is the point. */
+.councillor .party{
+  font-family:"Spline Sans Mono",monospace;font-size:.72rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  margin:2px 0 8px;
+}
+.councillor .clink{display:block;font-size:.9rem;padding:2px 0}
+.verified-note{
+  font-family:"Spline Sans Mono",monospace;font-size:.72rem;color:var(--muted);
+  margin-top:10px;
+}
+.route-row{
+  display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--sand);
+  align-items:baseline;flex-wrap:wrap;
+}
+.route-row:last-of-type{border-bottom:none}
+.route-row .problem{flex:none;width:240px;font-weight:700;color:var(--slate)}
+.route-row .route{flex:1;min-width:250px;font-size:.95rem}
+.route-row .route a{margin-left:4px}
+@media (max-width:880px){
+  .route-row{flex-direction:column;gap:2px}
+  .route-row .problem{width:auto}
+}
+.aside-sample{
+  font-family:"Spline Sans Mono",monospace;font-size:.72rem;color:var(--warn);
+  margin:2px 0 4px;
+}

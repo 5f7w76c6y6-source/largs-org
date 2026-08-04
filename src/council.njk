@@ -1,0 +1,160 @@
+---
+layout: layouts/base.njk
+title: Council corner
+permalink: /council/
+---
+{# Council corner. Two rules are load-bearing on this page and encoded
+   below rather than left to memory:
+   1. Neutrality — the digest reports what the minutes record, same
+      format for every item and every person; names appear exactly as
+      the minutes give them; nothing is rated, ranked or scored. The
+      official record is always linked.
+   2. Honesty about state — while council.sample is true the digest is
+      clearly labelled as layout, and unconfirmed meeting details never
+      render as fact. #}
+
+<section class="board wrap" aria-labelledby="cc-h">
+  <div class="kicker">
+    <span id="cc-h">Council corner</span>
+    {% if council.sample %}
+    <span class="stamp">Sample layout — first real digest to follow</span>
+    {% else %}
+    <span class="stamp">{{ council.digestMonth }} digest</span>
+    {% endif %}
+  </div>
+
+  <p class="page-intro">Two different councils serve Largs, and a lot of wasted
+  letters come from mixing them up. <strong>Largs Community Council</strong> is
+  volunteers — residents who meet monthly and put the town's case to the
+  authorities. <strong>North Ayrshire Council</strong> is the local authority —
+  the elected body that runs bins, roads, schools and planning. This page keeps
+  track of both, and routes the everyday problems to the right front door.</p>
+</section>
+
+{# ================= THE DIGEST ================= #}
+<section class="wrap council-page" aria-labelledby="digest-h">
+  <h2 id="digest-h">The Community Council digest</h2>
+  <div class="rule" aria-hidden="true"></div>
+
+  {% if council.sample %}
+  <p class="sample-note">These entries show the layout only — none of them is
+  a real decision. The first real digest follows the Community Council's next
+  published minutes.</p>
+  {% endif %}
+
+  <div class="mono-h">{{ council.digestMonth }} · what was decided · who's responsible · what happened to last month's actions</div>
+
+  {% set statusLabels = { "progress": "In progress", "watching": "Watching", "done": "Done" } %}
+  {% for item in council.digest %}
+  <div class="digest-item">
+    <div class="decided">{{ item.decided }}</div>
+    <div class="who">{{ item.who }}</div>
+    <span class="chip {{ item.status }}">{{ statusLabels[item.status] }}</span>
+  </div>
+  {% endfor %}
+
+  <p class="cc-note">How this digest works: it reports what the published
+  minutes record — what was decided, who took the action, and whether last
+  month's actions happened. The same format for every item and every person,
+  names exactly as the minutes give them, nothing rated and nothing ranked.
+  The minutes themselves are always the official record.</p>
+
+  {% if council.minutesUrl %}
+  <a class="more" href="{{ council.minutesUrl }}">Read the full minutes →</a>
+  {% endif %}
+</section>
+
+{# ================= MEETINGS & TAKING PART ================= #}
+<section class="wrap council-page" aria-labelledby="meet-h">
+  <h2 id="meet-h">Meetings and how to take part</h2>
+  <div class="rule" aria-hidden="true"></div>
+
+  {% if council.meeting.confirmed %}
+  <p class="meeting-line">Next meeting: <strong>{{ council.meeting.when }}</strong>{% if council.meeting.venue %}, {{ council.meeting.venue }}{% endif %} <span class="mono">· {{ council.meeting.note }}</span></p>
+  {% else %}
+  <p class="meeting-line">The next meeting date is being confirmed with the
+  Community Council — it will appear here and on the front page.</p>
+  {% endif %}
+
+  <ul class="fact-list">
+    <li>Meetings are open to the public — anyone can come along, listen, and
+    raise a point.</li>
+    <li>Something for the agenda? Ask for it to be raised{% if council.ccContact %} —
+    <a href="mailto:{{ council.ccContact }}">{{ council.ccContact }}</a>{% else %} —
+    contact details will appear here once confirmed{% endif %}.</li>
+    <li>Community councils run on volunteers and almost always have room for
+    more. If you can give an evening a month, you'd be welcome — ask at any
+    meeting.</li>
+  </ul>
+</section>
+
+{# ================= WARD COUNCILLORS ================= #}
+<section class="wrap council-page" aria-labelledby="ward-h">
+  <h2 id="ward-h">Your North Ayrshire councillors</h2>
+  <div class="rule" aria-hidden="true"></div>
+
+  <p class="page-intro">Largs sits in the <strong>{{ councillors.ward }}</strong> ward,
+  which elects {{ councillors.seats }} councillors — and all {{ councillors.seats }}
+  represent you. There's no "your" councillor by street or by party: write to any
+  of them, or to all of them.</p>
+
+  <div class="councillor-grid">
+    {% for c in councillors.members %}
+    <div class="councillor">
+      <div class="name">{{ c.name }}</div>
+      <div class="party">{{ c.party }}</div>
+      {% if c.email %}<a class="clink" href="mailto:{{ c.email }}">{{ c.email }}</a>{% endif %}
+      {% if c.phone %}<a class="clink" href="tel:{{ c.phone | replace(" ", "") }}">{{ c.phone }}</a>{% endif %}
+      {% if c.surgeries %}<div class="clink">Surgeries: {{ c.surgeries }}</div>{% endif %}
+      {% if c.profileUrl %}
+      <a class="clink" href="{{ c.profileUrl }}">Official profile →</a>
+      {% else %}
+      <a class="clink" href="{{ councillors.nacListUrl }}">Contact details: NAC website →</a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <p class="verified-note">Roster checked {{ councillors.verified | dateLong }}.
+  Party labels can change mid-term — the council's own website is the
+  authoritative record, especially after any election.</p>
+</section>
+
+{# ================= REPORT IT RIGHT ================= #}
+<section class="wrap council-page" aria-labelledby="report-h">
+  <h2 id="report-h">Report it right</h2>
+  <div class="rule" aria-hidden="true"></div>
+
+  <p class="page-intro">Most problems have a proper front door, and it's rarely
+  a councillor's inbox. Reported straight to the right desk, a fault gets
+  logged, tracked and fixed sooner. And if the front door fails — that's
+  exactly what your councillors are for.</p>
+
+  {% for r in reportit.routes %}
+  <div class="route-row">
+    <div class="problem">{{ r.problem }}</div>
+    <div class="route">{{ r.route }}
+      {% if r.tel %}<a class="mono" href="tel:{{ r.tel | replace(" ", "") }}">{{ r.tel }}</a>{% endif %}
+      {% if r.url %}<a href="{{ r.url }}">{{ r.urlLabel }} →</a>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</section>
+
+{# ================= PLANNING ================= #}
+<section class="wrap council-page council-last" aria-labelledby="plan-h">
+  <h2 id="plan-h">Planning in KA30</h2>
+  <div class="rule" aria-hidden="true"></div>
+
+  <ul class="fact-list">
+    {% for p in council.planning %}
+    <li>{{ p.item }} <span class="mono">· {{ p.note }}</span></li>
+    {% endfor %}
+    <li>The full register, and the comment forms that count, are on
+    <a href="https://www.north-ayrshire.gov.uk">North Ayrshire Council's
+    planning pages</a>.</li>
+  </ul>
+
+  <p class="note">A live feed of Largs applications is on the build list — the
+  same treatment the road works got.</p>
+</section>

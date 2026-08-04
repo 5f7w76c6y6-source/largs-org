@@ -105,6 +105,11 @@ layout: layouts/base.njk
 
     <h4>Community Council · {{ council.digestMonth }} digest</h4>
 
+    {% if council.sample %}
+    <p class="aside-sample">Sample layout — the first real digest follows the
+    next published minutes.</p>
+    {% endif %}
+
     {% set statusLabels = { "progress": "In progress", "watching": "Watching", "done": "Done" } %}
     {% for item in council.digest %}
     <div class="digest-item">
@@ -124,8 +129,8 @@ layout: layouts/base.njk
 
     <h4>Next meeting</h4>
     <ul>
-      <li>{{ council.meeting.when }} <span class="mono">· {{ council.meeting.note }}</span></li>
-      <li><a href="#">Read the full minutes →</a></li>
+      <li>{% if council.meeting.confirmed %}{{ council.meeting.when }} <span class="mono">· {{ council.meeting.note }}</span>{% else %}Next date to be confirmed{% endif %}</li>
+      <li><a href="/council/">Council corner: the full page →</a></li>
     </ul>
   </aside>
 </div>
