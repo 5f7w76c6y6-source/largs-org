@@ -1,41 +1,44 @@
 {
-  "sample": true,
+  "sample": false,
   "items": [
     {
-      "date": "2026-08-04",
-      "title": "Farmers' and makers' market",
-      "venue": "Gallowgate Square",
-      "time": "10:00–15:00",
-      "blurb": "Ayrshire produce, home baking and crafts on the square."
-    },
-    {
-      "date": "2026-08-06",
-      "title": "Waverley sails from Largs Pier",
+      "date": "2026-08-05",
+      "title": "Waverley calls at Largs Pier",
       "venue": "Largs Pier",
-      "time": "Departs 14:10",
-      "blurb": "Afternoon cruise on the last seagoing paddle steamer — booking advised."
-    },
-    {
-      "date": "2026-08-07",
-      "title": "Quiz night for the RNLI",
-      "venue": "Largs Sailing Club",
-      "time": "19:30",
-      "blurb": "Teams of four, £2 a head, all proceeds to the lifeboats."
+      "time": "Departs 11:35",
+      "blurb": "Cruise of the Holy Loch, Loch Long and Loch Goil on the last seagoing paddle steamer — book ahead or on board."
     },
     {
       "date": "2026-08-08",
-      "title": "Bowling club open pairs",
-      "venue": "Douglas Park",
-      "time": "From 10:00",
-      "blurb": "Visitors welcome — spare bowls at the clubhouse."
+      "title": "The McDougalls: Pirate Adventure",
+      "venue": "Barrfields Theatre",
+      "time": "13:00",
+      "blurb": "Family singalong show — pirates, songs and sea shanties. Tickets from Barrfields."
     },
     {
-      "date": "2026-09-05",
+      "date": "2026-08-15",
+      "title": "Spiders on Mars",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "The music of David Bowie from a long-running Glasgow six-piece."
+    },
+    {
+      "date": "2026-08-21",
+      "until": "2026-08-30",
       "farOut": true,
-      "title": "Largs Viking Festival — one month to go",
-      "venue": "The Pencil Field",
-      "time": "Full week",
-      "blurb": "The village rises again on the shorefront. Programme published here as soon as it's out."
+      "title": "Largs Regatta Festival",
+      "venue": "The Clyde",
+      "time": "21–30 Aug",
+      "blurb": "Ten days of yacht and dinghy racing on the water off Largs."
+    },
+    {
+      "date": "2026-08-29",
+      "until": "2026-09-06",
+      "farOut": true,
+      "title": "Largs Viking Festival",
+      "venue": "The Promenade",
+      "time": "29 Aug – 6 Sep",
+      "blurb": "The Viking Village returns to the seafront, 10:00–17:00 daily, building to the Festival of Fire."
     }
   ]
 }

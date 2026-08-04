@@ -62,6 +62,17 @@ module.exports = function (eleventyConfig) {
   // every month sits identically in the fixed-width event badge.
   eleventyConfig.addFilter("monthShort", (value) => ukParts(value, { month: "short" }).month.slice(0, 3));
 
+  // Build-time expiry for the events list: keep an item while today
+  // (Largs wall-clock, not the build machine's UTC) is on or before
+  // its last day — `until` for a multi-day span, otherwise its `date`.
+  // The half-hourly rebuild makes yesterday's event disappear on its
+  // own; no client JavaScript involved.
+  eleventyConfig.addFilter("upcoming", (items) => {
+    const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });
+    const today = `${p.year}-${p.month}-${p.day}`;
+    return (items || []).filter((e) => (e.until || e.date) >= today);
+  });
+
   return {
     dir: {
       input: "src",
