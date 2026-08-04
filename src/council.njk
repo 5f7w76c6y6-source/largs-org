@@ -44,6 +44,11 @@ permalink: /council/
 
   <div class="mono-h">{{ council.digestMonth }} · what was decided · who's responsible · what happened to last month's actions</div>
 
+  {% if council.sourceNote %}
+  <p class="note">{{ council.sourceNote }}
+  {% if council.minutesUrl %}<a href="{{ council.minutesUrl }}">Minutes archive →</a>{% endif %}</p>
+  {% endif %}
+
   {% set statusLabels = { "progress": "In progress", "watching": "Watching", "done": "Done" } %}
   {% for item in council.digest %}
   <div class="digest-item">
@@ -73,7 +78,8 @@ permalink: /council/
   <p class="meeting-line">Next meeting: <strong>{{ council.meeting.when }}</strong>{% if council.meeting.venue %}, {{ council.meeting.venue }}{% endif %} <span class="mono">· {{ council.meeting.note }}</span></p>
   {% else %}
   <p class="meeting-line">The next meeting date is being confirmed with the
-  Community Council — it will appear here and on the front page.</p>
+  Community Council — it will appear here and on the front page.{% if council.meeting.venueNote %}
+  {{ council.meeting.venueNote }}{% endif %}</p>
   {% endif %}
 
   <ul class="fact-list">
@@ -121,7 +127,7 @@ permalink: /council/
 </section>
 
 {# ================= REPORT IT RIGHT ================= #}
-<section class="wrap council-page" aria-labelledby="report-h">
+<section class="wrap council-page council-last" aria-labelledby="report-h">
   <h2 id="report-h">Report it right</h2>
   <div class="rule" aria-hidden="true"></div>
 
@@ -139,22 +145,4 @@ permalink: /council/
     </div>
   </div>
   {% endfor %}
-</section>
-
-{# ================= PLANNING ================= #}
-<section class="wrap council-page council-last" aria-labelledby="plan-h">
-  <h2 id="plan-h">Planning in KA30</h2>
-  <div class="rule" aria-hidden="true"></div>
-
-  <ul class="fact-list">
-    {% for p in council.planning %}
-    <li>{{ p.item }} <span class="mono">· {{ p.note }}</span></li>
-    {% endfor %}
-    <li>The full register, and the comment forms that count, are on
-    <a href="https://www.north-ayrshire.gov.uk">North Ayrshire Council's
-    planning pages</a>.</li>
-  </ul>
-
-  <p class="note">A live feed of Largs applications is on the build list — the
-  same treatment the road works got.</p>
 </section>

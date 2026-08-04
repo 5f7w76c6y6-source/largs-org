@@ -1,33 +1,46 @@
 {
-  "sample": true,
-  "digestMonth": "July",
+  "sample": false,
+  "digestMonth": "November 2025",
+  "sourceNote": "From the most recent published minutes — the AGM and ordinary meeting of Thursday 20 November 2025.",
   "digest": [
     {
-      "decided": "Promenade bins to be upgraded at three hotspots",
-      "who": "Action: NAC Streetscene · raised by LCC",
+      "decided": "£2,000 ringfenced for Christmas food support — dinners at Largs Naz Church and BEC, Common Ground meals, the Foodbank and the Food Hub",
+      "who": "Action: LCC Access to Food group · proposed by CCllr Stevenson, agreed by all",
       "status": "progress"
     },
     {
-      "decided": "Seafront shelter repainting — volunteer day agreed",
-      "who": "Action: LCC amenity group · date to be set",
+      "decided": "Banking hub — Kenneth Gibson MSP to meet Link at Holyrood; Cash Access UK viewed possible temporary premises in town",
+      "who": "Action: Kenneth Gibson MSP · premises visit with Cllr Hill and Cllr Collier",
+      "status": "progress"
+    },
+    {
+      "decided": "Kerry Canning appointed to the Community Council; Alexander Hughes appointed adviser for youth",
+      "who": "New youth group formed — Alex with Tom, Robbie, Jamie and Kerry — to agree a plan",
+      "status": "done"
+    },
+    {
+      "decided": "The Chair will step down in early 2026 — an interim Chair is sought until the elections",
+      "who": "CCllr Phillips · Community Council elections agreed for 2026 at September's meeting",
       "status": "watching"
     },
     {
-      "decided": "Station forecourt planting completed",
-      "who": "Action: Largs Community Garden",
-      "status": "done"
+      "decided": "Mackerston play area — around £350,000 of play-park funding expected; LCC asking NAC for the plans",
+      "who": "Action: LCC to NAC · following Kenneth Gibson MSP's enquiry (September)",
+      "status": "watching"
+    },
+    {
+      "decided": "Handrail for the beach steps at May Street — still being pursued with NAC after two reported injuries",
+      "who": "Action: Cllr Murdoch with NAC · LCC following progress (September)",
+      "status": "watching"
     }
   ],
-  "planning": [
-    { "item": "Extension, Netherpark Cres", "note": "submitted" },
-    { "item": "Shopfront alteration, Main St", "note": "decided" }
-  ],
   "meeting": {
-    "when": "Thu 20 Aug, 19:00",
+    "when": "",
     "venue": "",
     "note": "all welcome",
-    "confirmed": false
+    "confirmed": false,
+    "venueNote": "Recent meetings have been held at Vikingar."
   },
-  "minutesUrl": "",
+  "minutesUrl": "https://northayrshire.community/your-community/north-coast-cumbrae/community-council/",
   "ccContact": ""
 }

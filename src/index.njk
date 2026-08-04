@@ -119,14 +119,6 @@ layout: layouts/base.njk
     </div>
     {% endfor %}
 
-    <h4>Planning · KA30 this fortnight</h4>
-    <ul>
-      {% for p in council.planning %}
-      <li>{{ p.item }} <span class="mono">· {{ p.note }}</span></li>
-      {% endfor %}
-      <li><a href="#">All applications on the map →</a></li>
-    </ul>
-
     <h4>Next meeting</h4>
     <ul>
       <li>{% if council.meeting.confirmed %}{{ council.meeting.when }} <span class="mono">· {{ council.meeting.note }}</span>{% else %}Next date to be confirmed{% endif %}</li>
