@@ -34,7 +34,7 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: "17,47 * * * *"
+    - cron: "2,17,32,47 * * * *"
 
 # Never let two deploys overlap; a newer run supersedes an older one.
 concurrency:
