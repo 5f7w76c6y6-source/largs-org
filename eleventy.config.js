@@ -79,6 +79,14 @@ module.exports = function (eleventyConfig) {
     return (items || []).filter((e) => (e.until || e.date) >= today);
   });
 
+  // todayOnly: events whose date is exactly today (or a multi-day span
+  // that includes today — date <= today <= until).
+  eleventyConfig.addFilter("todayOnly", (items) => {
+    const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });
+    const today = `${p.year}-${p.month}-${p.day}`;
+    return (items || []).filter((e) => e.date <= today && (e.until || e.date) >= today);
+  });
+
   return {
     dir: {
       input: "src",

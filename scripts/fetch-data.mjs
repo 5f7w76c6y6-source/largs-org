@@ -118,16 +118,13 @@ async function loadWeather() {
     `?latitude=${WEATHER_POINT.lat}&longitude=${WEATHER_POINT.lon}` +
     "&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,is_day" +
     "&hourly=precipitation_probability" +
+    "&daily=sunrise,sunset" +
     "&forecast_days=1&wind_speed_unit=mph&timezone=Europe%2FLondon";
 
   const data = await fetchJSON(url);
   const current = data.current;
   let description = describe(current.weather_code, current.is_day === 1);
 
-  // "shower later" if rain probability spikes in the next 8 hours and
-  // it isn't already precipitating. The hourly array starts at 00:00
-  // London time (we asked for that timezone), so the current London
-  // hour is a direct index into it — no time-string parsing needed.
   if (current.weather_code < 51) {
     const hour = currentLondonHour();
     const window = (data.hourly?.precipitation_probability ?? [])
@@ -138,12 +135,16 @@ async function loadWeather() {
     }
   }
 
+  const hhmm = iso => iso ? iso.slice(11, 16) : null;
+
   return {
     ok: true,
     tempC: Math.round(current.temperature_2m),
     description,
     windMph: Math.round(current.wind_speed_10m),
-    windDir: compass(current.wind_direction_10m)
+    windDir: compass(current.wind_direction_10m),
+    sunrise: hhmm(data.daily?.sunrise?.[0]),
+    sunset:  hhmm(data.daily?.sunset?.[0])
   };
 }
 
@@ -308,7 +309,7 @@ async function loadTidesModel() {
   const url =
     "https://marine-api.open-meteo.com/v1/marine" +
     `?latitude=${MARINE_POINT.lat}&longitude=${MARINE_POINT.lon}` +
-    "&hourly=sea_level_height_msl&forecast_days=3&timeformat=unixtime";
+    "&hourly=sea_level_height_msl&current=sea_surface_temperature&forecast_days=3&timeformat=unixtime";
 
   const data = await fetchJSON(url);
   const events = tideEvents(data.hourly.time, data.hourly.sea_level_height_msl);
@@ -335,7 +336,10 @@ async function loadTidesModel() {
 
   if (upcoming.length < 3) throw new Error("fewer than 3 upcoming tide events in model data");
 
-  return { ok: true, source: "open-meteo", events: upcoming, curve };
+  const seaTempC = data.current?.sea_surface_temperature != null
+    ? Math.round(data.current.sea_surface_temperature)
+    : null;
+  return { ok: true, source: "open-meteo", events: upcoming, curve, seaTempC };
 }
 
 /* ---------- tides: dispatcher ---------- */
