@@ -62,6 +62,12 @@ module.exports = function (eleventyConfig) {
   // every month sits identically in the fixed-width event badge.
   eleventyConfig.addFilter("monthShort", (value) => ukParts(value, { month: "short" }).month.slice(0, 3));
 
+  // "August 2026" — used to group the photo gallery by month.
+  eleventyConfig.addFilter("monthYear", (value) => {
+    const p = ukParts(value, { month: "long", year: "numeric" });
+    return `${p.month} ${p.year}`;
+  });
+
   // Build-time expiry for the events list: keep an item while today
   // (Largs wall-clock, not the build machine's UTC) is on or before
   // its last day — `until` for a multi-day span, otherwise its `date`.

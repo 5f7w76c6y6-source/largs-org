@@ -1,0 +1,84 @@
+---
+layout: layouts/base.njk
+title: Photos
+permalink: /photos/
+---
+<section class="board wrap" aria-labelledby="photos-h">
+  <div class="kicker">
+    <span id="photos-h">Photos</span>
+    {% if photos.sample %}
+    <span class="stamp">Gallery coming soon — real photos to follow</span>
+    {% else %}
+    <span class="stamp">© Alison Swinburne · newest first</span>
+    {% endif %}
+  </div>
+
+  <p class="page-intro">Largs through the year — the town, the shore, the
+  Clyde, and the light that makes this place what it is. All photographs
+  © Alison Swinburne.</p>
+</section>
+
+{% if photos.sample %}
+<section class="wrap photos-coming">
+  <div class="coming-card">
+    <div class="coming-icon" aria-hidden="true">⌛</div>
+    <h2>Gallery coming soon</h2>
+    <p>Photographs of Largs by Alison Swinburne are on their way —
+    the first ones will appear here shortly.</p>
+  </div>
+</section>
+
+{% else %}
+<section class="wrap" aria-labelledby="photos-h">
+
+  {# Group by year-month for natural chronological navigation #}
+  {% set lastMonth = "" %}
+  <div class="photo-grid" id="photo-grid">
+  {% for p in photos.photos %}
+    {% set thisMonth = p.date | monthYear %}
+    {% if thisMonth != lastMonth %}
+    </div>{# close previous grid #}
+    <h2 class="month-rule">{{ thisMonth }}</h2>
+    <div class="photo-grid">
+    {% set lastMonth = thisMonth %}
+    {% endif %}
+
+    <a class="photo-thumb"
+       href="{{ p.full }}"
+       data-gallery="largs"
+       data-glightbox="title: {{ p.title }}; description: {{ p.caption }} · © Alison Swinburne"
+       aria-label="{{ p.title }} — {{ p.caption }}">
+      <img src="{{ p.thumb }}"
+           alt="{{ p.caption }}"
+           loading="lazy"
+           decoding="async"
+           width="400" height="300">
+      <div class="photo-caption">
+        <span class="caption-title">{{ p.title }}</span>
+        <span class="caption-copy">© Alison Swinburne</span>
+      </div>
+    </a>
+  {% endfor %}
+  </div>{# close last grid #}
+
+</section>
+{% endif %}
+
+{# GLightbox — loaded only on this page, same pattern as Leaflet on
+   getting-about. Pinned version, served from cdnjs, no cookies. #}
+{% if not photos.sample %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/css/glightbox.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
+<script>
+(function () {
+  GLightbox({
+    selector: "[data-gallery]",
+    touchNavigation: true,
+    loop: true,
+    autoplayVideos: false,
+    openEffect: "fade",
+    closeEffect: "fade"
+  });
+})();
+</script>
+{% endif %}

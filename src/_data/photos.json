@@ -1,0 +1,15 @@
+{
+  "_comment": "Photos by Alison Swinburne. Newest first — keep that order when adding entries. Each entry: date (YYYY-MM-DD), title, caption, category (Harbour | Town | Coast | Seasons | Events), original (R2 key under originals/), thumb (R2 public URL for the 400px AVIF), full (R2 public URL for the 1200px AVIF). While R2 is being set up, leave thumb and full as empty strings and the template will show a coming-soon state rather than a broken image.",
+  "sample": true,
+  "photos": [
+    {
+      "date": "2026-08-01",
+      "title": "The Pencil at dusk",
+      "caption": "The Pencil monument on the Largs foreshore, light fading over Cumbrae.",
+      "category": "Coast",
+      "original": "originals/pencil-dusk-2026-08-01.jpg",
+      "thumb": "",
+      "full": ""
+    }
+  ]
+}
