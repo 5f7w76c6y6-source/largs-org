@@ -1,15 +1,221 @@
 {
-  "_comment": "Photos by Alison Swinburne. Newest first — keep that order when adding entries. Each entry: date (YYYY-MM-DD), title, caption, category (Harbour | Town | Coast | Seasons | Events), original (R2 key under originals/), thumb (R2 public URL for the 400px AVIF), full (R2 public URL for the 1200px AVIF). While R2 is being set up, leave thumb and full as empty strings and the template will show a coming-soon state rather than a broken image.",
-  "sample": true,
+  "sample": false,
   "photos": [
     {
-      "date": "2026-08-01",
-      "title": "The Pencil at dusk",
-      "caption": "The Pencil monument on the Largs foreshore, light fading over Cumbrae.",
+      "date": "2026-08-08",
+      "title": "Big Skies",
+      "caption": "The Firth opens out wide here — Cumbrae low on the left, Arran filling the horizon, and enough sky above to make you feel very small.",
       "category": "Coast",
-      "original": "originals/pencil-dusk-2026-08-01.jpg",
-      "thumb": "",
-      "full": ""
+      "original": "originals/2026-08-08-big-skies.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-big-skies-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-big-skies-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Daring Dips",
+      "caption": "Cold water swimming has found its tribe in Largs. The Firth is bracing at the best of times, and that appears to be exactly the point.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-daring-dips-jpg.jpg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-daring-dips-jpg-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-daring-dips-jpg-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Daylight Moon from the Glen Road",
+      "caption": "The full moon, still pale in a blue afternoon sky, caught above the treeline on the way up through the glen. One of those moments the phone almost catches.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-daylight-moon-from-the-glen-road.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-daylight-moon-from-the-glen-road-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-daylight-moon-from-the-glen-road-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Evening Fishing",
+      "caption": "Lines in as the light drops. The pier at this hour belongs to the anglers — patient, unhurried, entirely unbothered by the view.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-evening-fishing.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-evening-fishing-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-evening-fishing-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Foraging at Low Tide",
+      "caption": "The retreating tide lays out a larder. Whelks, mussels, small crabs in the pools — the shore as it has always been, doing what it has always done.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-foraging-at-low-tide.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-foraging-at-low-tide-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-foraging-at-low-tide-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Low Tide at the Pencil",
+      "caption": "At low water the Pencil's base comes fully clear of the sea. The monument marks where a Viking fleet met its end in 1263 — the rocks around it look unchanged.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-low-tide-at-the-pencil.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-low-tide-at-the-pencil-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-low-tide-at-the-pencil-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Mackerel Clouds over Arran",
+      "caption": "A mackerel sky above the Firth — the altocumulus ripples that fishermen have always read as a sign of change on the way. Goatfell sits clear beneath them.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-mackerel-clouds-over-arran.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-mackerel-clouds-over-arran-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-mackerel-clouds-over-arran-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Making Tracks",
+      "caption": "Footprints in the wet sand, headed somewhere with purpose. The tide has just turned and the beach is briefly nobody's.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-making-tracks-jpg.jpg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-making-tracks-jpg-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-making-tracks-jpg-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Pencil at Sunset",
+      "caption": "The Battle of Largs monument catches the last of the light. On a clear evening the Pencil casts a long shadow across the shore towards Cumbrae.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-pencil-at-sunset.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-pencil-at-sunset-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-pencil-at-sunset-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Pencil Views",
+      "caption": "Looking back towards town from the Pencil field — the promenade, the roofline, and the hills above all visible in one sweep.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-pencil-viewsjpg-jpg.jpg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-pencil-viewsjpg-jpg-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-pencil-viewsjpg-jpg-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Rock Pools overlooking Arran",
+      "caption": "The pools below the promenade wall are a world in miniature — anemones, hermit crabs, tiny fish — with Arran filling the backdrop beyond.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-rock-pools-overlooking-arran-jpg.jpg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-rock-pools-overlooking-arran-jpg-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-rock-pools-overlooking-arran-jpg-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Scallop Shell Hunting",
+      "caption": "The tide leaves scallops in the shingle below the Pencil. Children find them first; everyone ends up looking.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-scallop-shell-hunting.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-scallop-shell-hunting-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-scallop-shell-hunting-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Snow on Arran",
+      "caption": "A dusting on the lower slopes and a proper cap on Goatfell. Arran in winter carries its own weather, visible from the prom on a clear day.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-snow-on-arran.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-snow-on-arran-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-snow-on-arran-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Snow-topped Arran",
+      "caption": "The peaks fully white, the Firth perfectly still. On mornings like this the reflection of the mountains sits in the water almost undisturbed.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-snow-topped-arran-jpg.jpg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-snow-topped-arran-jpg-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-snow-topped-arran-jpg-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Sundowners at the Pencil",
+      "caption": "An old Largs ritual: bring something to drink, find a spot on the rocks by the Pencil, and watch the sun go down over Cumbrae. No special occasion required.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-sundowners-at-the-pencil.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-sundowners-at-the-pencil-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-sundowners-at-the-pencil-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Sunset and Sails",
+      "caption": "A yacht running south on the last of the evening breeze. The Firth narrows below Cumbrae and the light goes orange before it goes.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-sunset-and-sails.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-sunset-and-sails-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-sunset-and-sails-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Sunset Ferries",
+      "caption": "The Cumbrae ferry on the crossing as the sun sets behind Arran. It does this run every fifteen minutes; the light is different every time.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-sunset-ferries-jpg.jpg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-sunset-ferries-jpg-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-sunset-ferries-jpg-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Sunset Stroll",
+      "caption": "The prom in the evening light — the walk that Largs residents do without thinking about it and visitors quickly decide they could get used to.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-sunset-stroll.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-sunset-stroll-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-sunset-stroll-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Treetop Views",
+      "caption": "Looking out over the canopy towards the Firth — one of the rewards of taking the hill path rather than the road.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-treetop-views.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-treetop-views-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-treetop-views-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Viewpoint Views — South",
+      "caption": "The southern panorama from the viewpoint above town: Cumbrae close, Arran further, the Ayrshire coast curving away towards Ardrossan.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-viewpoint-views-2.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-viewpoint-views-2-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-viewpoint-views-2-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Viewpoint Views — Town",
+      "caption": "The rooftops of Largs laid out below, the Firth beyond. From up here you can see exactly why people came to build a town on this particular strip of shore.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-viewpoint-views-3.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-viewpoint-views-3-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-viewpoint-views-3-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Viewpoint Views — North",
+      "caption": "Looking north from the viewpoint: the Clyde broadens, the hills of Cowal across the water, and the outline of the Cumbraes sitting between.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-viewpoint-views.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-viewpoint-views-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-viewpoint-views-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Wheelies at Sunset",
+      "caption": "The prom at dusk belongs to the cyclists and the skaters. The light is golden, nobody is in a hurry, and the Firth is doing its thing in the background.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-wheelies-at-sunset-jpg.jpg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-wheelies-at-sunset-jpg-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-wheelies-at-sunset-jpg-1200.avif"
+    },
+    {
+      "date": "2026-08-08",
+      "title": "Wheelies on the Prom",
+      "caption": "Scooters, bikes, and the occasional skateboard — the promenade is where Largs children learn that wheels and a flat surface are a good combination.",
+      "category": "Coast",
+      "original": "originals/2026-08-08-wheelies-on-the-prom.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-wheelies-on-the-prom-400.avif",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-08-08-wheelies-on-the-prom-1200.avif"
     }
   ]
 }
