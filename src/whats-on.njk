@@ -1,0 +1,91 @@
+---
+layout: layouts/base.njk
+title: What's on
+permalink: /whats-on/
+---
+<section class="board wrap" aria-labelledby="whatson-h">
+  <div class="kicker">
+    <span id="whatson-h">What's on in Largs</span>
+    <span class="stamp">Free to list · verified before publishing</span>
+  </div>
+  <p class="page-intro">Upcoming events in and around Largs — from the seafront
+  to the stage. All listings are checked before they go up. Free to submit.</p>
+</section>
+
+<section class="wrap whatson-section" aria-label="Upcoming events">
+
+  {# Separate upcoming events into those with and without images #}
+  {% set allEvents = events.items | upcoming %}
+
+  {% if allEvents | length == 0 %}
+  <p class="no-events">No upcoming events at the moment — check back soon,
+  or <a href="mailto:largsevents@gmail.com?subject=Event%20submission%20for%20largs.org&body=Title%3A%0ADate%3A%0AVenue%3A%0ATime%3A%0ADescription%3A%0AWebsite%20or%20booking%20link%20(if%20any)%3A%0A%0AImage%20(optional)%3A%20Please%20attach%20a%20photo%20if%20you%20have%20one%20%E2%80%94%20your%20own%20photograph%20or%20one%20you%20have%20permission%20to%20use.%20By%20attaching%20an%20image%20you%20confirm%20largs.org%20may%20publish%20it%20alongside%20your%20event%20listing.">submit one</a>.</p>
+  {% endif %}
+
+  {# Featured events — those with an image get a wide card at the top #}
+  {% set hasFeatured = false %}
+  {% for e in allEvents %}{% if e.image %}{% set hasFeatured = true %}{% endif %}{% endfor %}
+
+  {% if hasFeatured %}
+  <div class="featured-events">
+  {% for e in allEvents %}
+  {% if e.image %}
+  <article class="event-featured">
+    <img class="event-featured-img" src="{{ e.image }}" alt="{{ e.title }}" loading="lazy" decoding="async">
+    <div class="event-featured-body">
+      <div class="when-inline">
+        <span class="when-dow">{% if e.farOut %}{{ e.date | monthShort }}{% else %}{{ e.date | dow }}{% endif %}</span>
+        <span class="when-dom">{{ e.date | dom }}</span>
+      </div>
+      <h2 class="event-title">{{ e.title }}</h2>
+      <div class="meta">{{ e.venue | upper }} · {{ e.time | upper }}</div>
+      <p>{{ e.blurb }}</p>
+      {% if e.url %}<a class="event-link" href="{{ e.url }}">More info →</a>{% endif %}
+    </div>
+  </article>
+  {% endif %}
+  {% endfor %}
+  </div>
+  {% endif %}
+
+  {# Standard list — events without images #}
+  {% set hasStandard = false %}
+  {% for e in allEvents %}{% if not e.image %}{% set hasStandard = true %}{% endif %}{% endfor %}
+
+  {% if hasStandard %}
+  {% if hasFeatured %}<h3 class="whatson-subhead">More events</h3>{% endif %}
+  <div class="event-list">
+  {% for e in allEvents %}
+  {% if not e.image %}
+  <article class="event">
+    <div class="when">
+      <div class="dow">{% if e.farOut %}{{ e.date | monthShort }}{% else %}{{ e.date | dow }}{% endif %}</div>
+      <div class="dom">{{ e.date | dom }}</div>
+    </div>
+    <div class="event-body">
+      <h3>{{ e.title }}</h3>
+      <div class="meta">{{ e.venue | upper }} · {{ e.time | upper }}</div>
+      <p>{{ e.blurb }}</p>
+      {% if e.url %}<a class="event-link" href="{{ e.url }}">More info →</a>{% endif %}
+    </div>
+  </article>
+  {% endif %}
+  {% endfor %}
+  </div>
+  {% endif %}
+
+</section>
+
+<section class="whatson-submit wrap" aria-labelledby="submit-h">
+  <h2 id="submit-h">Add your event</h2>
+  <div class="rule" aria-hidden="true"></div>
+  <p>Listings are free. Send the details to
+  <a href="mailto:largsevents@gmail.com?subject=Event%20submission%20for%20largs.org&body=Title%3A%0ADate%3A%0AVenue%3A%0ATime%3A%0ADescription%3A%0AWebsite%20or%20booking%20link%20(if%20any)%3A%0A%0AImage%20(optional)%3A%20Please%20attach%20a%20photo%20if%20you%20have%20one%20%E2%80%94%20your%20own%20photograph%20or%20one%20you%20have%20permission%20to%20use.%20By%20attaching%20an%20image%20you%20confirm%20largs.org%20may%20publish%20it%20alongside%20your%20event%20listing.">largsevents@gmail.com</a>
+  and we'll get it up within a day or two.</p>
+  <ul class="submit-list">
+    <li>Title, date, venue and time</li>
+    <li>A sentence or two about the event</li>
+    <li>A website or booking link if there is one</li>
+    <li>A photo if you have one you own or have permission to use</li>
+  </ul>
+</section>
