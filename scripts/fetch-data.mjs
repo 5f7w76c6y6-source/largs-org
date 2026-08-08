@@ -246,6 +246,19 @@ function tideEvents(timesSeconds, heights) {
   return clean;
 }
 
+/* Pick the slice of the hourly series to draw: from three hours behind
+ * nowMs to twenty-four ahead. Returns [start, end) indices for slice().
+ * Pure and boring on purpose — it has a unit test. */
+function curveWindow(timesSeconds, nowMs) {
+  const lo = nowMs - 3 * 3600e3;
+  const hi = nowMs + 24 * 3600e3;
+  let start = 0;
+  while (start < timesSeconds.length && timesSeconds[start] * 1000 < lo) start++;
+  let end = start;
+  while (end < timesSeconds.length && timesSeconds[end] * 1000 <= hi) end++;
+  return [start, end];
+}
+
 /* Compress the hourly sea-level series into a small SVG-ready curve.
  * Geometry is computed here, at fetch time, so the template stays
  * arithmetic-free and today.json stays compact: one decimal place per
@@ -299,14 +312,19 @@ async function loadTidesModel() {
 
   const data = await fetchJSON(url);
   const events = tideEvents(data.hourly.time, data.hourly.sea_level_height_msl);
-  // Draw the first 48 hours only — six humps at tile width read like a
-  // seismograph; four breathe, and the now-dot gets room to be seen.
-  // The events table keeps the full three-day series.
-  const CURVE_POINTS = 49; // 49 hourly samples = a clean 48-hour span
+
+  // Window the drawn curve to the story the tile actually tells: a
+  // three-hour lead-in so the "now" dot has an approach, then the next
+  // 24 hours — which by construction contains the three timings
+  // printed above it, whatever hour the build runs. Two humps, no
+  // seismograph, nothing drawn that isn't spoken for. The events table
+  // still sees the full three-day series.
+  const nowMs = Date.now();
+  const [wStart, wEnd] = curveWindow(data.hourly.time, nowMs);
   const curve = buildCurve(
-    data.hourly.time.slice(0, CURVE_POINTS),
-    data.hourly.sea_level_height_msl.slice(0, CURVE_POINTS),
-    Date.now()
+    data.hourly.time.slice(wStart, wEnd),
+    data.hourly.sea_level_height_msl.slice(wStart, wEnd),
+    nowMs
   );
 
   const cutoff = Date.now() - 10 * 60 * 1000;
