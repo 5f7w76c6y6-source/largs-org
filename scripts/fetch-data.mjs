@@ -246,6 +246,51 @@ function tideEvents(timesSeconds, heights) {
   return clean;
 }
 
+/* Compress the hourly sea-level series into a small SVG-ready curve.
+ * Geometry is computed here, at fetch time, so the template stays
+ * arithmetic-free and today.json stays compact: one decimal place per
+ * coordinate. The "now" dot is baked at fetch time too — on a 240px /
+ * 3-day scale the half-hourly rebuild moves it under 2px, well inside
+ * the model badge's honesty. UKHO Discovery has no hourly series, so
+ * that path simply carries no curve — which structurally enforces the
+ * consistent-pairs rule: a model curve can never sit beside UKHO times. */
+function buildCurve(timesSeconds, heights, nowMs) {
+  const pts = [];
+  for (let i = 0; i < timesSeconds.length; i++) {
+    if (typeof heights[i] === "number") {
+      pts.push({ t: timesSeconds[i] * 1000, v: heights[i] });
+    }
+  }
+  if (pts.length < 12) return null;
+
+  const W = 240, H = 56, PAD = 4;
+  const t0 = pts[0].t, t1 = pts[pts.length - 1].t;
+  let vMin = Infinity, vMax = -Infinity;
+  for (const p of pts) {
+    if (p.v < vMin) vMin = p.v;
+    if (p.v > vMax) vMax = p.v;
+  }
+  if (!(t1 > t0) || !(vMax > vMin)) return null;
+
+  const x = (t) => ((t - t0) / (t1 - t0)) * W;
+  const y = (v) => H - PAD - ((v - vMin) / (vMax - vMin)) * (H - 2 * PAD);
+  const r1 = (n) => Math.round(n * 10) / 10;
+
+  const line = pts.map((p) => `${r1(x(p.t))},${r1(y(p.v))}`).join(" ");
+  const area = `0,${H} ${line} ${W},${H}`;
+
+  const curve = { w: W, h: H, line, area };
+  if (nowMs > t0 && nowMs < t1) {
+    let i = 1;
+    while (i < pts.length - 1 && pts[i].t < nowMs) i++;
+    const a = pts[i - 1], b = pts[i];
+    const f = b.t > a.t ? (nowMs - a.t) / (b.t - a.t) : 0;
+    curve.nowX = r1(x(nowMs));
+    curve.nowY = r1(y(a.v + (b.v - a.v) * f));
+  }
+  return curve;
+}
+
 async function loadTidesModel() {
   const url =
     "https://marine-api.open-meteo.com/v1/marine" +
@@ -254,6 +299,11 @@ async function loadTidesModel() {
 
   const data = await fetchJSON(url);
   const events = tideEvents(data.hourly.time, data.hourly.sea_level_height_msl);
+  const curve = buildCurve(
+    data.hourly.time,
+    data.hourly.sea_level_height_msl,
+    Date.now()
+  );
 
   const cutoff = Date.now() - 10 * 60 * 1000;
   const upcoming = events
@@ -263,7 +313,7 @@ async function loadTidesModel() {
 
   if (upcoming.length < 3) throw new Error("fewer than 3 upcoming tide events in model data");
 
-  return { ok: true, source: "open-meteo", events: upcoming };
+  return { ok: true, source: "open-meteo", events: upcoming, curve };
 }
 
 /* ---------- tides: dispatcher ---------- */

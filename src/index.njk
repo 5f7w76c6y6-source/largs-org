@@ -35,6 +35,19 @@ layout: layouts/base.njk
       {% if tidesOk %}
       <div class="figure">{{ ev[0].type }} {{ ev[0].time | hhmm }}</div>
       <div class="sub">{{ ev[1].type }} <span class="mono">{{ ev[1].time | hhmm }}</span> · next {{ ev[2].type | lower }} <span class="mono">{{ ev[2].time | hhmm }}</span></div>
+      {% if today.tides.curve %}
+      <svg class="tide-curve" viewBox="0 0 {{ today.tides.curve.w }} {{ today.tides.curve.h }}"
+           preserveAspectRatio="none" role="img"
+           aria-label="Sea level over the next three days — model estimate">
+        <polygon points="{{ today.tides.curve.area }}" fill="var(--foam-tint)"/>
+        <polyline points="{{ today.tides.curve.line }}" fill="none"
+                  stroke="var(--slate)" stroke-width="1.5"
+                  vector-effect="non-scaling-stroke"/>
+        {% if today.tides.curve.nowX %}
+        <circle cx="{{ today.tides.curve.nowX }}" cy="{{ today.tides.curve.nowY }}" r="3" fill="var(--teal)"/>
+        {% endif %}
+      </svg>
+      {% endif %}
       {% else %}
       <div class="figure">—</div>
       <div class="sub">Live feed not fetched yet</div>
