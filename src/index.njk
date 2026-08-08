@@ -38,7 +38,7 @@ layout: layouts/base.njk
       {% if today.tides.curve %}
       <svg class="tide-curve" viewBox="0 0 {{ today.tides.curve.w }} {{ today.tides.curve.h }}"
            preserveAspectRatio="none" role="img"
-           aria-label="Sea level over the next three days — model estimate">
+           aria-label="Sea level over the next two days — model estimate">
         <polygon points="{{ today.tides.curve.area }}" fill="var(--foam-tint)"/>
         <polyline points="{{ today.tides.curve.line }}" fill="none"
                   stroke="var(--slate)" stroke-width="1.5"

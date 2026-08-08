@@ -1,0 +1,13 @@
+# The metronome's wrangler config. Deployed manually from the laptop
+# (`npx wrangler deploy` in this directory) — CI never touches it.
+# Cron minutes are :03 and :33, deliberately offset from the GitHub
+# schedule's 2,17,32,47 so the two clocks rarely collide; when they
+# do, the workflow's concurrency group settles it.
+
+name = "largs-metronome"
+main = "metronome.js"
+compatibility_date = "2026-08-01"
+workers_dev = false
+
+[triggers]
+crons = ["3,33 * * * *"]

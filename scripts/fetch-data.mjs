@@ -299,9 +299,13 @@ async function loadTidesModel() {
 
   const data = await fetchJSON(url);
   const events = tideEvents(data.hourly.time, data.hourly.sea_level_height_msl);
+  // Draw the first 48 hours only — six humps at tile width read like a
+  // seismograph; four breathe, and the now-dot gets room to be seen.
+  // The events table keeps the full three-day series.
+  const CURVE_POINTS = 49; // 49 hourly samples = a clean 48-hour span
   const curve = buildCurve(
-    data.hourly.time,
-    data.hourly.sea_level_height_msl,
+    data.hourly.time.slice(0, CURVE_POINTS),
+    data.hourly.sea_level_height_msl.slice(0, CURVE_POINTS),
     Date.now()
   );
 
