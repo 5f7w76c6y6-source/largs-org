@@ -106,7 +106,10 @@ layout: layouts/base.njk
         <div class="dow">{% if e.farOut %}{{ e.date | monthShort }}{% else %}{{ e.date | dow }}{% endif %}</div>
         <div class="dom">{{ e.date | dom }}</div>
       </div>
-      <div>
+      <div class="event-body">
+        {% if e.image %}
+        <img class="event-img" src="{{ e.image }}" alt="{{ e.title }}" loading="lazy" decoding="async">
+        {% endif %}
         <h3>{{ e.title }}</h3>
         <div class="meta">{{ e.venue | upper }} · {{ e.time | upper }}</div>
         <p>{{ e.blurb }}</p>
@@ -114,7 +117,7 @@ layout: layouts/base.njk
     </article>
     {% endfor %}
 
-    <a class="more" href="#">Add your event — it's free →</a>
+    <a class="more" href="mailto:largsevents@gmail.com?subject=Event%20submission%20for%20largs.org&body=Title%3A%0ADate%3A%0AVenue%3A%0ATime%3A%0ADescription%3A%0AWebsite%20or%20booking%20link%20(if%20any)%3A">Add your event — it's free →</a>
   </section>
 
   <aside class="council" aria-labelledby="council-h">
