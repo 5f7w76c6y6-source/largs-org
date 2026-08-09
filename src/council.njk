@@ -44,9 +44,14 @@ permalink: /council/
 
   <div class="mono-h">{{ council.digestMonth }} · what was decided · who's responsible · what happened to last month's actions</div>
 
+  <p class="freshness">Latest published Community Council minutes:
+  <strong>{{ council.digestMonth }}</strong>. The Community Council has continued
+  to meet since — minutes are published in batches, so the newest set available
+  is the one digested here.{% if council.minutesUrl %}
+  <a href="{{ council.minutesUrl }}">Minutes archive →</a>{% endif %}</p>
+
   {% if council.sourceNote %}
-  <p class="note">{{ council.sourceNote }}
-  {% if council.minutesUrl %}<a href="{{ council.minutesUrl }}">Minutes archive →</a>{% endif %}</p>
+  <p class="note">{{ council.sourceNote }}</p>
   {% endif %}
 
   {% set statusLabels = { "progress": "In progress", "watching": "Watching", "done": "Done" } %}

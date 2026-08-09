@@ -82,14 +82,14 @@ layout: layouts/base.njk
 
     <div class="tile">
       <div class="label"><span class="dot ok" aria-hidden="true"></span>Cumbrae ferry <span class="badge timetable">timetable</span></div>
-      <div class="figure">Every 15 min</div>
-      <div class="sub">Summer service from the Slip · <a href="{{ site.links.calmacStatus }}">live status: CalMac →</a></div>
+      <div class="figure">Normally every 15 min</div>
+      <div class="sub">Summer timetable from the Slip · <a href="{{ site.links.calmacStatus }}">check live status →</a></div>
     </div>
 
     <div class="tile">
-      <div class="label"><span class="dot ok" aria-hidden="true"></span>Trains <span class="badge timetable">timetable</span></div>
-      <div class="figure">xx:14 / xx:44</div>
-      <div class="sub">To Glasgow Central · <a href="{{ site.links.rail }}">live departures →</a></div>
+      <div class="label"><span class="dot ok" aria-hidden="true"></span>Trains to Glasgow <span class="badge timetable">timetable</span></div>
+      <div class="figure">Usually twice hourly</div>
+      <div class="sub">Largs to Glasgow Central · <a href="{{ site.links.rail }}">live departures →</a></div>
     </div>
 
     {% set rw = today.roadworks %}
@@ -149,7 +149,7 @@ layout: layouts/base.njk
   </a>
   <a class="today-link-card" href="/council/">
     <span class="today-link-label">Council corner</span>
-    <span class="today-link-sub">{{ council.digestMonth }} digest · next meeting →</span>
+    <span class="today-link-sub">Latest digest: {{ council.digestMonth }} →</span>
   </a>
   <a class="today-link-card" href="/photos/">
     <span class="today-link-label">Photos</span>
