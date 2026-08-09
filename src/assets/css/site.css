@@ -533,3 +533,32 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   .page-title{font-size:1.7rem}
   .page-subtitle{font-size:1rem}
 }
+
+/* ---------- about these updates ---------- */
+.updates-note{
+  margin-top:14px;border-top:1px solid var(--sand);padding-top:10px;
+  max-width:70ch;
+}
+.updates-note summary{
+  font-family:"Spline Sans Mono",monospace;font-size:.72rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--teal);
+  cursor:pointer;padding:4px 0;
+}
+.updates-note summary:focus-visible{
+  outline:3px solid var(--teal);outline-offset:2px;border-radius:2px;
+}
+.updates-body{padding:6px 0 4px}
+.updates-body p{font-size:.93rem;color:var(--muted);margin-bottom:10px}
+.badge-key{list-style:none;margin:0 0 4px}
+.badge-key li{
+  font-size:.92rem;padding:5px 0;border-bottom:1px dotted var(--sand);
+}
+.badge-key li:last-child{border-bottom:none}
+/* The badges are laid out by the tiles with margin-left:auto — reset that here. */
+.badge-key .badge{margin-left:0;margin-right:8px;display:inline-block}
+.updates-foot{margin-bottom:0}
+
+/* Badges wrap under long tile labels — space-between keeps them tidy
+   on both lines, where margin-left:auto stranded them mid-air. */
+.tile .label{justify-content:space-between}
+.tile .label .badge{margin-left:0}
