@@ -1,6 +1,8 @@
 ---
 layout: layouts/base.njk
 title: Council corner
+heading: Council corner
+subtitle: What the two councils decided, who is responsible, and what happens next.
 permalink: /council/
 ---
 {# Council corner. Two rules are load-bearing on this page and encoded
@@ -16,9 +18,8 @@ permalink: /council/
    Status is never carried by colour alone: every one shows a glyph and
    a word, and the key below spells all four out. #}
 
-<section class="board wrap" aria-labelledby="cc-h">
+<section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
-    <span id="cc-h">Council corner</span>
     {% if council.sample %}
     <span class="stamp">Sample layout — first real digest to follow</span>
     {% else %}

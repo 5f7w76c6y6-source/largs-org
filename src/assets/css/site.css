@@ -517,3 +517,19 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 }
 .status-key li:last-child{border-bottom:none}
 .status-key .issue-status{margin-right:8px}
+
+/* ---------- page titles ---------- */
+.page-head{padding:30px 0 0}
+.page-title{
+  font-family:"Marcellus",serif;font-weight:400;font-size:2rem;
+  line-height:1.15;color:var(--slate);
+}
+.page-subtitle{
+  font-size:1.05rem;color:var(--muted);margin-top:6px;max-width:60ch;
+}
+/* The board follows the title directly — close the gap the kicker used to fill. */
+.page-head + .board{padding-top:18px}
+@media (max-width:600px){
+  .page-title{font-size:1.7rem}
+  .page-subtitle{font-size:1rem}
+}

@@ -1,11 +1,13 @@
 ---
 layout: layouts/base.njk
 permalink: /getting-about/
+title: Roadworks and street closures
+heading: Roadworks and street closures
+subtitle: Where the works are in and around Largs, from the Scottish Road Works Register.
 ---
 {% set rw = today.roadworks %}
-<section class="board wrap" aria-labelledby="ga-h">
+<section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
-    <span id="ga-h">Getting about · road works</span>
     {% if rw.ok %}
     <span class="stamp">Register data to {{ rw.dataDate | dom }} {{ rw.dataDate | monthShort }} · refreshed overnight</span>
     {% endif %}

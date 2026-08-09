@@ -53,6 +53,15 @@
 </div>
 
 <main>
+{# Every page names itself once, in plain English, at a size the whole
+   town can read. Set `heading` and `subtitle` in a page's front matter;
+   the spaced-uppercase kicker below it is a secondary label only. #}
+{% if heading %}
+<div class="wrap page-head">
+  <h1 class="page-title" id="page-title">{{ heading }}</h1>
+  {% if subtitle %}<p class="page-subtitle">{{ subtitle }}</p>{% endif %}
+</div>
+{% endif %}
 {{ content | safe }}
 </main>
 
