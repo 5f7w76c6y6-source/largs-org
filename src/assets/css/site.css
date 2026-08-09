@@ -557,8 +557,3 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 /* The badges are laid out by the tiles with margin-left:auto — reset that here. */
 .badge-key .badge{margin-left:0;margin-right:8px;display:inline-block}
 .updates-foot{margin-bottom:0}
-
-/* Badges wrap under long tile labels — space-between keeps them tidy
-   on both lines, where margin-left:auto stranded them mid-air. */
-.tile .label{justify-content:space-between}
-.tile .label .badge{margin-left:0}
