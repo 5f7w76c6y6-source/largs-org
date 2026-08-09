@@ -6,10 +6,12 @@ subtitle: Which colour goes out this week — the same answer for the whole town
 permalink: /bins/
 ---
 {# Bin days. The load-bearing fact: the three-week grey/blue/purple rotation
-   runs in the same phase across all of Largs, so the colour needs no postcode
-   and no lookup. Only the weekday varies by street, and that question goes to
-   the council's own checker. Nothing here is fetched — it is computed from a
-   verified anchor week in src/_data/bins.cjs. #}
+   runs in the same phase across all of Largs — verified against the council's
+   own calendars 3A and 3B for a full year, in which the coloured weeks never
+   once differ. So the colour needs no postcode and no lookup. Only the weekday
+   varies by street, and the brown bin alternates between the two calendars;
+   both of those questions go to the council's own checker. Nothing here is
+   fetched — it is computed from a verified anchor week in src/_data/bins.cjs. #}
 
 <section class="wrap council-page" aria-labelledby="thisweek-h">
   <h2 id="thisweek-h" class="visually-hidden">This week</h2>
@@ -23,13 +25,16 @@ permalink: /bins/
       <div class="bin-now-label">This week in Largs</div>
       <div class="bin-now-colour">{{ bins.current.name }} bin</div>
       <div class="bin-now-sub">{{ bins.current.holds }} · week beginning Monday {{ bins.current.startLong }}</div>
+      <div class="bin-now-brown">Brown bin this week if you are on calendar
+      {{ bins.current.brownCalendar }} — calendar {{ bins.current.brownCalendarNext }}
+      has it next week.</div>
     </div>
   </div>
   {% endif %}
 
   <p class="note">Your collection day depends on your street — somewhere between
   Monday and Friday. The colour does not: every household in Largs puts out the
-  same bin in the same week.</p>
+  same coloured bin in the same week.</p>
 
   <h3 class="bin-ahead-head">The next three weeks</h3>
   <ul class="bin-ahead">
@@ -38,6 +43,7 @@ permalink: /bins/
       <span class="bin-swatch small" style="background:{{ w.swatch }}" aria-hidden="true"></span>
       <span class="bin-ahead-colour">{{ w.name }}</span>
       <span class="bin-ahead-when">week of {{ w.startShort }}</span>
+      <span class="bin-ahead-brown">brown: {{ w.brownCalendar }}</span>
       {% if w.note %}<span class="bin-ahead-note">{{ w.note }}</span>{% endif %}
     </li>
     {% endfor %}
@@ -45,18 +51,26 @@ permalink: /bins/
 </section>
 
 <section class="wrap council-page" aria-labelledby="brown-h">
-  <h2 id="brown-h">The brown bin</h2>
+  <h2 id="brown-h">The brown bin, and which calendar you are on</h2>
   <div class="rule" aria-hidden="true"></div>
 
-  <p class="page-intro">Brown is the exception, and it is worth reading once.
-  It runs fortnightly on its own round, with its own day of the week — a street
-  collected on a Monday might have its brown bin on the Wednesday, and a Friday
-  street might have it on the Tuesday. Largs is split into two halves that
-  alternate, so your brown week is not the same as your neighbour's on the next
-  road over.</p>
+  <p class="page-intro">Largs is covered by two of the council's collection
+  calendars, <strong>3A</strong> and <strong>3B</strong>. For the grey, blue and
+  purple bins the two are identical — the same colour in the same week, every
+  week of the year. The only difference between them is the brown bin, which is
+  fortnightly and falls a week apart: when 3A puts brown out, 3B does not, and
+  the week after they swap.</p>
 
-  <p class="note">Check your address once on the council's checker, note which
-  week you are in, and it stays the same from then on.</p>
+  <p class="note">So there is one thing worth checking once. Look your address up
+  on the council's checker, see which week your brown bin falls in, and match it
+  against the panel above — that tells you whether you are 3A or 3B, and it stays
+  the same from then on. Brown often lands on a different day from your coloured
+  bin: a Monday street might have brown on the Wednesday, a Friday street on the
+  Tuesday.</p>
+
+  <p class="note">Brown also stops entirely over the festive fortnight, in
+  different weeks for each calendar, while the coloured bins keep running. The
+  council announce those dates each December.</p>
 
   <a class="more" href="{{ bins.checkerUrl }}">Check your address on the council's checker →</a>
 </section>
@@ -91,10 +105,13 @@ permalink: /bins/
   <h2 id="how-h">How this page works</h2>
   <div class="rule" aria-hidden="true"></div>
 
-  <p class="note">The colour rotation was checked against eight addresses across
-  Largs — one on every collection weekday, from Routenburn Road to Bowen Craig —
-  and all eight matched. This page then counts the weeks forward from that
-  verified week. It is not a live feed from the council, so around Christmas and
-  New Year, when collections move by several days, treat the council's own page
-  as the answer. Last checked {{ bins.verified | dateLong }}.</p>
+  <p class="note">The rotation was checked against eight addresses across Largs,
+  one on every collection weekday from Routenburn Road to Bowen Craig, and then
+  against a full year of the council's own printed calendars 3A and 3B. Their
+  coloured weeks are identical throughout — no week of the year carries two
+  coloured bins, and the sequence runs unbroken through the festive weeks, when
+  only the days move. This page counts the weeks forward from that verified
+  point. It is not a live feed from the council, so around Christmas and New
+  Year treat the council's own page as the answer. Last checked
+  {{ bins.verified | dateLong }}.</p>
 </section>

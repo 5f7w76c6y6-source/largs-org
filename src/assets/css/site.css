@@ -598,3 +598,8 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
 }
+
+.bin-now-brown{font-size:.92rem;color:var(--muted);margin-top:6px;max-width:44ch}
+.bin-ahead-brown{
+  font-family:"Spline Sans Mono",monospace;font-size:.76rem;color:var(--muted);
+}

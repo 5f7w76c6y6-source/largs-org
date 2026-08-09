@@ -12,10 +12,22 @@
  * and sends them to the council's own checker for the question they don't
  * ("what day is my street?").
  *
+ * CROSS-CHECKED 9 August 2026 against North Ayrshire's own printed calendars
+ * 3A (Routenburn Road) and 3B (Moorburn Road), December 2025 to November 2026.
+ * The coloured weeks are IDENTICAL in both, every week of the year — that is
+ * what licenses the town-wide claim. No week ever carries two coloured bins.
+ * The festive weeks do not break the rotation either: both calendars show grey
+ * in the week of 22 December and blue in the week of the 29th, with the red
+ * days marking collections that move WITHIN those weeks. So an override is
+ * only ever needed for a day-level warning, never a colour correction.
+ *
  * The brown bin is a separate round with its own weekday and its own
  * fortnightly phase — Routenburn is a Monday round with brown on Wednesday,
- * Gallowgate a Friday round with brown on Tuesday. Nothing about brown is
- * derivable from the main round, so it is stated honestly and not predicted.
+ * Gallowgate a Friday round with brown on Tuesday. Largs is split between the
+ * two calendars, exactly one week apart on brown: 3A has it in the week of
+ * 10 August 2026, 3B the week after. All eight sampled addresses fit one or
+ * the other. Brown also pauses over the festive fortnight, in different weeks
+ * for each calendar.
  *
  * ---- EDITING THIS FILE ----
  * Everything you need to change lives in CONFIG below. The two jobs are:
@@ -37,10 +49,11 @@ const CONFIG = {
   // The rotation, in order. Largs runs a three-week cycle.
   cycle: ["grey", "blue", "purple"],
 
-  // Brown is fortnightly and the town runs in two halves. This is the Monday
-  // of a week in which the FIRST half has brown; the other half has it the
-  // week after. Residents learn which half they are in once and it stays.
+  // Brown is fortnightly and Largs runs in two halves, one week apart. This is
+  // the Monday of a week in which calendar 3A has brown; 3B has it the week
+  // after. Residents learn which calendar they are on once and it stays.
   brownAnchorWeek: "2026-08-10",
+  brownCalendars: { 1: "3A", 2: "3B" },
 
   // Date this cycle was last checked against the council's own checker.
   verified: "2026-08-09",
@@ -152,6 +165,8 @@ module.exports = function () {
       holds: COLOURS[key].holds,
       swatch: COLOURS[key].swatch,
       brownHalf: brownOffset === 0 ? 1 : 2,
+      brownCalendar: CONFIG.brownCalendars[brownOffset === 0 ? 1 : 2],
+      brownCalendarNext: CONFIG.brownCalendars[brownOffset === 0 ? 2 : 1],
       note: overrides.get(ymd(monday)) || "",
     };
   };
@@ -166,6 +181,7 @@ module.exports = function () {
     colours: COLOURS,
     order: CONFIG.cycle.map((k) => ({ key: k, ...COLOURS[k] })),
     brown: COLOURS.brown,
+    brownCalendars: CONFIG.brownCalendars,
     current: weeks[0],
     ahead: weeks.slice(1),
   };
