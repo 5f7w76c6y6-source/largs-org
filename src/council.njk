@@ -8,10 +8,13 @@ permalink: /council/
    1. Neutrality — the digest reports what the minutes record, same
       format for every item and every person; names appear exactly as
       the minutes give them; nothing is rated, ranked or scored. The
-      official record is always linked.
+      official record is always linked. Status describes the RECORD,
+      not the world: it says what the minutes say at the last mention.
    2. Honesty about state — while council.sample is true the digest is
       clearly labelled as layout, and unconfirmed meeting details never
-      render as fact. #}
+      render as fact.
+   Status is never carried by colour alone: every one shows a glyph and
+   a word, and the key below spells all four out. #}
 
 <section class="board wrap" aria-labelledby="cc-h">
   <div class="kicker">
@@ -42,7 +45,7 @@ permalink: /council/
   published minutes.</p>
   {% endif %}
 
-  <div class="mono-h">{{ council.digestMonth }} · what was decided · who's responsible · what happened to last month's actions</div>
+  <div class="mono-h">{{ council.digestMonth }} · what the minutes record · who is responsible · what happens next</div>
 
   <p class="freshness">Latest published Community Council minutes:
   <strong>{{ council.digestMonth }}</strong>. The Community Council has continued
@@ -54,20 +57,62 @@ permalink: /council/
   <p class="note">{{ council.sourceNote }}</p>
   {% endif %}
 
-  {% set statusLabels = { "progress": "In progress", "watching": "Watching", "done": "Done" } %}
-  {% for item in council.digest %}
-  <div class="digest-item">
-    <div class="decided">{{ item.decided }}</div>
-    <div class="who">{{ item.who }}</div>
-    <span class="chip {{ item.status }}">{{ statusLabels[item.status] }}</span>
+  {% set statusLabels = {
+    "raised": "Raised",
+    "progress": "In progress",
+    "completed": "Completed",
+    "no-update": "No recent update"
+  } %}
+  {% set statusGlyphs = {
+    "raised": "◇",
+    "progress": "◐",
+    "completed": "●",
+    "no-update": "○"
+  } %}
+
+  <div class="issues">
+    {% for item in council.digest %}
+    <article class="issue" id="issue-{{ item.id }}">
+      <div class="issue-head">
+        <h3 class="issue-title">{{ item.title }}</h3>
+        <span class="issue-status {{ item.status }}"><span aria-hidden="true">{{ statusGlyphs[item.status] }}</span> {{ statusLabels[item.status] }}</span>
+      </div>
+
+      <p class="issue-summary">{{ item.summary }}</p>
+
+      <div class="issue-meta">
+        <div><span class="issue-label">Responsible</span> · {{ item.responsible }}</div>
+        {% if item.nextStep %}
+        <div><span class="issue-label">Next step</span> · {{ item.nextStep }}</div>
+        {% endif %}
+        <div><span class="issue-label">Last recorded</span> · {{ item.lastRecorded | dateLong }}{% if council.minutesUrl %} · <a href="{{ council.minutesUrl }}">minutes</a>{% endif %}</div>
+        {% if item.alsoRecorded and item.alsoRecorded.length %}
+        <div class="issue-history">Also recorded {% for d in item.alsoRecorded %}{{ d | dateLong }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
   </div>
-  {% endfor %}
+
+  <h4 class="status-key-head">What the statuses mean</h4>
+  <ul class="status-key">
+    <li><span class="issue-status raised"><span aria-hidden="true">◇</span> Raised</span>
+      Recorded in the minutes, with no action yet assigned or taken.</li>
+    <li><span class="issue-status progress"><span aria-hidden="true">◐</span> In progress</span>
+      An action is assigned, and the minutes record it moving.</li>
+    <li><span class="issue-status completed"><span aria-hidden="true">●</span> Completed</span>
+      The minutes record the matter as done.</li>
+    <li><span class="issue-status no-update"><span aria-hidden="true">○</span> No recent update</span>
+      The item appears in two or more meetings with nothing new recorded.</li>
+  </ul>
 
   <p class="cc-note">How this digest works: it reports what the published
-  minutes record — what was decided, who took the action, and whether last
-  month's actions happened. The same format for every item and every person,
-  names exactly as the minutes give them, nothing rated and nothing ranked.
-  The minutes themselves are always the official record.</p>
+  minutes record — what was decided, who took the action, and what the minutes
+  say happens next. A status describes the record and nothing more; it says
+  what the minutes said at the last mention, not what may have happened since.
+  The same format for every item and every person, names exactly as the minutes
+  give them, nothing rated and nothing ranked. The minutes themselves are always
+  the official record.</p>
 
   {% if council.minutesUrl %}
   <a class="more" href="{{ council.minutesUrl }}">Read the full minutes →</a>

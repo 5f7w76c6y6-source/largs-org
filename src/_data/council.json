@@ -1,37 +1,68 @@
 {
+  "_comment": "Largs Community Council issue register. Each entry is an ISSUE, not a monthly note: `id` is permanent and never reused, so when later minutes are digested the item is UPDATED in place rather than added again, and its earlier appearances are listed in `alsoRecorded`. STATUS DESCRIBES THE RECORD, NOT THE WORLD — it says what the minutes record at the last mention, never what may have happened since. raised = recorded, no action yet assigned or taken. progress = an action is assigned and the minutes record it moving. completed = the minutes record it done. no-update = the item appears in two or more meetings with nothing new recorded. Nothing is rated, ranked or scored, and no status implies criticism of anyone. Every entry is read against the source minutes before it is pushed.",
   "sample": false,
   "digestMonth": "November 2025",
   "sourceNote": "From the most recent published minutes — the AGM and ordinary meeting of Thursday 20 November 2025.",
   "digest": [
     {
-      "decided": "£2,000 ringfenced for Christmas food support — dinners at Largs Naz Church and BEC, Common Ground meals, the Foodbank and the Food Hub",
-      "who": "Action: LCC Access to Food group · proposed by CCllr Stevenson, agreed by all",
-      "status": "progress"
+      "id": "christmas-food-support",
+      "title": "Christmas food support",
+      "status": "progress",
+      "summary": "£2,000 was ringfenced for Christmas food support — dinners at Largs Naz Church and BEC, Common Ground meals, the Foodbank and the Food Hub.",
+      "responsible": "LCC Access to Food group. Proposed by CCllr Stevenson, agreed by all.",
+      "nextStep": "",
+      "lastRecorded": "2025-11-20",
+      "alsoRecorded": []
     },
     {
-      "decided": "Banking hub — Kenneth Gibson MSP to meet Link at Holyrood; Cash Access UK viewed possible temporary premises in town",
-      "who": "Action: Kenneth Gibson MSP · premises visit with Cllr Hill and Cllr Collier",
-      "status": "progress"
+      "id": "banking-hub",
+      "title": "A banking hub for the town",
+      "status": "progress",
+      "summary": "Kenneth Gibson MSP is to meet Link at Holyrood, and Cash Access UK have viewed possible temporary premises in town.",
+      "responsible": "Kenneth Gibson MSP. Premises visit with Cllr Hill and Cllr Collier.",
+      "nextStep": "",
+      "lastRecorded": "2025-11-20",
+      "alsoRecorded": []
     },
     {
-      "decided": "Kerry Canning appointed to the Community Council; Alexander Hughes appointed adviser for youth",
-      "who": "New youth group formed — Alex with Tom, Robbie, Jamie and Kerry — to agree a plan",
-      "status": "done"
+      "id": "community-council-membership",
+      "title": "Community Council membership",
+      "status": "completed",
+      "summary": "Kerry Canning was appointed to the Community Council, and Alexander Hughes appointed adviser for youth.",
+      "responsible": "Largs Community Council.",
+      "nextStep": "A new youth group — Alex with Tom, Robbie, Jamie and Kerry — to agree a plan.",
+      "lastRecorded": "2025-11-20",
+      "alsoRecorded": []
     },
     {
-      "decided": "The Chair will step down in early 2026 — an interim Chair is sought until the elections",
-      "who": "CCllr Phillips · Community Council elections agreed for 2026 at September's meeting",
-      "status": "watching"
+      "id": "chair-succession",
+      "title": "The Chair is to step down in early 2026",
+      "status": "raised",
+      "summary": "The Chair will step down in early 2026, and an interim Chair is sought until the elections.",
+      "responsible": "CCllr Phillips.",
+      "nextStep": "An interim Chair to be found. Community Council elections were agreed for 2026 at September's meeting.",
+      "lastRecorded": "2025-11-20",
+      "alsoRecorded": []
     },
     {
-      "decided": "Mackerston play area — around £350,000 of play-park funding expected; LCC asking NAC for the plans",
-      "who": "Action: LCC to NAC · following Kenneth Gibson MSP's enquiry (September)",
-      "status": "watching"
+      "id": "mackerston-play-area",
+      "title": "Mackerston play area",
+      "status": "progress",
+      "summary": "Around £350,000 of play-park funding is expected, and the Community Council has asked North Ayrshire Council for the plans.",
+      "responsible": "LCC to NAC, following Kenneth Gibson MSP's enquiry.",
+      "nextStep": "",
+      "lastRecorded": "2025-11-20",
+      "alsoRecorded": ["2025-09-18"]
     },
     {
-      "decided": "Handrail for the beach steps at May Street — still being pursued with NAC after two reported injuries",
-      "who": "Action: Cllr Murdoch with NAC · LCC following progress (September)",
-      "status": "watching"
+      "id": "may-street-handrail",
+      "title": "Handrail for the beach steps at May Street",
+      "status": "no-update",
+      "summary": "A handrail for the beach steps is still being pursued with North Ayrshire Council, after two reported injuries.",
+      "responsible": "Cllr Murdoch with NAC. LCC following progress.",
+      "nextStep": "",
+      "lastRecorded": "2025-11-20",
+      "alsoRecorded": ["2025-09-18"]
     }
   ],
   "meeting": {

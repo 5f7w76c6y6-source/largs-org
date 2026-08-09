@@ -468,3 +468,52 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 @media (prefers-reduced-motion:reduce){
   .photo-thumb img,.photo-caption{transition:none}
 }
+
+/* ---------- council corner: issue records ---------- */
+.issues{margin:14px 0 4px}
+.issue{
+  background:var(--card);border:1px solid var(--sand);border-radius:12px;
+  padding:16px 18px 14px;margin-bottom:12px;
+}
+.issue-head{
+  display:flex;justify-content:space-between;gap:14px;
+  align-items:flex-start;flex-wrap:wrap;
+}
+.issue-title{
+  font-family:"Marcellus",serif;font-weight:400;font-size:1.2rem;
+  color:var(--slate);line-height:1.3;flex:1 1 320px;
+}
+/* Status never rides on colour alone: glyph + word carry it, the tint
+   is decoration. Text/background pairs are all above WCAG AA. */
+.issue-status{
+  font-family:"Spline Sans Mono",monospace;font-size:.66rem;
+  letter-spacing:.1em;text-transform:uppercase;border-radius:999px;
+  padding:3px 11px;white-space:nowrap;flex:none;
+}
+.issue-status.raised{background:var(--foam-tint);color:var(--slate)}
+.issue-status.progress{background:var(--foam);color:#1D544C}
+.issue-status.completed{background:#E7F0E7;color:#27500A}
+.issue-status.no-update{background:var(--sand);color:#454F4E}
+.issue-summary{margin-top:8px;font-size:.97rem;max-width:70ch}
+.issue-meta{
+  border-top:1px solid var(--sand);margin-top:12px;padding-top:10px;
+  font-size:.9rem;color:var(--muted);max-width:70ch;
+}
+.issue-meta div+div{margin-top:4px}
+.issue-label{
+  font-family:"Spline Sans Mono",monospace;font-size:.66rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--teal);
+}
+.issue-history{
+  font-family:"Spline Sans Mono",monospace;font-size:.76rem;margin-top:8px;
+}
+.status-key-head{
+  font-family:"Spline Sans Mono",monospace;font-size:.7rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:400;margin:22px 0 8px;
+}
+.status-key{list-style:none;max-width:70ch}
+.status-key li{
+  font-size:.93rem;padding:6px 0;border-bottom:1px dotted var(--sand);
+}
+.status-key li:last-child{border-bottom:none}
+.status-key .issue-status{margin-right:8px}
