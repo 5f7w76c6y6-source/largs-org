@@ -1,0 +1,100 @@
+---
+layout: layouts/base.njk
+title: Bin days
+heading: Bin days in Largs
+subtitle: Which colour goes out this week — the same answer for the whole town.
+permalink: /bins/
+---
+{# Bin days. The load-bearing fact: the three-week grey/blue/purple rotation
+   runs in the same phase across all of Largs, so the colour needs no postcode
+   and no lookup. Only the weekday varies by street, and that question goes to
+   the council's own checker. Nothing here is fetched — it is computed from a
+   verified anchor week in src/_data/bins.cjs. #}
+
+<section class="wrap council-page" aria-labelledby="thisweek-h">
+  <h2 id="thisweek-h" class="visually-hidden">This week</h2>
+
+  {% if bins.current.note %}
+  <p class="sample-note">{{ bins.current.note }}</p>
+  {% else %}
+  <div class="bin-now">
+    <span class="bin-swatch" style="background:{{ bins.current.swatch }}" aria-hidden="true"></span>
+    <div>
+      <div class="bin-now-label">This week in Largs</div>
+      <div class="bin-now-colour">{{ bins.current.name }} bin</div>
+      <div class="bin-now-sub">{{ bins.current.holds }} · week beginning Monday {{ bins.current.startLong }}</div>
+    </div>
+  </div>
+  {% endif %}
+
+  <p class="note">Your collection day depends on your street — somewhere between
+  Monday and Friday. The colour does not: every household in Largs puts out the
+  same bin in the same week.</p>
+
+  <h3 class="bin-ahead-head">The next three weeks</h3>
+  <ul class="bin-ahead">
+    {% for w in bins.ahead %}
+    <li>
+      <span class="bin-swatch small" style="background:{{ w.swatch }}" aria-hidden="true"></span>
+      <span class="bin-ahead-colour">{{ w.name }}</span>
+      <span class="bin-ahead-when">week of {{ w.startShort }}</span>
+      {% if w.note %}<span class="bin-ahead-note">{{ w.note }}</span>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="wrap council-page" aria-labelledby="brown-h">
+  <h2 id="brown-h">The brown bin</h2>
+  <div class="rule" aria-hidden="true"></div>
+
+  <p class="page-intro">Brown is the exception, and it is worth reading once.
+  It runs fortnightly on its own round, with its own day of the week — a street
+  collected on a Monday might have its brown bin on the Wednesday, and a Friday
+  street might have it on the Tuesday. Largs is split into two halves that
+  alternate, so your brown week is not the same as your neighbour's on the next
+  road over.</p>
+
+  <p class="note">Check your address once on the council's checker, note which
+  week you are in, and it stays the same from then on.</p>
+
+  <a class="more" href="{{ bins.checkerUrl }}">Check your address on the council's checker →</a>
+</section>
+
+<section class="wrap council-page" aria-labelledby="which-h">
+  <h2 id="which-h">Which bin takes what</h2>
+  <div class="rule" aria-hidden="true"></div>
+
+  <ul class="bin-key">
+    {% for c in bins.order %}
+    <li>
+      <span class="bin-swatch small" style="background:{{ c.swatch }}" aria-hidden="true"></span>
+      <span class="bin-key-name">{{ c.name }}</span>
+      <span class="bin-key-holds">{{ c.holds }}</span>
+    </li>
+    {% endfor %}
+    <li>
+      <span class="bin-swatch small" style="background:{{ bins.brown.swatch }}" aria-hidden="true"></span>
+      <span class="bin-key-name">{{ bins.brown.name }}</span>
+      <span class="bin-key-holds">{{ bins.brown.holds }} · fortnightly, separate round</span>
+    </li>
+  </ul>
+
+  <p class="note">Bins should be out at the kerbside by 7am on your collection
+  day. The council's pages have the detail on what belongs in each bin, missed
+  collections, caddies and bulky uplifts.</p>
+
+  <a class="more" href="{{ bins.councilUrl }}">Bins, litter and recycling at North Ayrshire Council →</a>
+</section>
+
+<section class="wrap council-page council-last" aria-labelledby="how-h">
+  <h2 id="how-h">How this page works</h2>
+  <div class="rule" aria-hidden="true"></div>
+
+  <p class="note">The colour rotation was checked against eight addresses across
+  Largs — one on every collection weekday, from Routenburn Road to Bowen Craig —
+  and all eight matched. This page then counts the weeks forward from that
+  verified week. It is not a live feed from the council, so around Christmas and
+  New Year, when collections move by several days, treat the council's own page
+  as the answer. Last checked {{ bins.verified | dateLong }}.</p>
+</section>
