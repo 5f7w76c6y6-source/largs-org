@@ -403,7 +403,7 @@ async function loadTides() {
 const SRWR_API = "https://downloads.srwr.scot/export/api/v1/";
 const SRWR_LIST_URL = SRWR_API + "files/";
 const SRWR_FILE_URL = SRWR_API + "file/"; // + "NAME.zip/"
-const SRWR_SCHEMA = 3; // bump when the distillate shape or filter changes: forces one fresh heavy pull
+const SRWR_SCHEMA = 5; // bump when the distillate shape or filter changes: forces one fresh heavy pull
 const SRWR_MONTHS_BACK = 2; // window: ~9 weeks; works untouched in the
                             // register for longer are rare — notices
                             // and inspections keep live records moving.
@@ -568,16 +568,70 @@ function geomInBbox(wkt) {
   return false;
 }
 
-function tidyLocation(text) {
-  const t = (text || "").replace(/\s+/g, " ").trim();
+/* The register writes in shorthand — O/S, Jcn, NB & SB, work-package
+   prefixes, town-and-postcode tails. This translates it into the words a
+   person would say, cuts multi-workpoint lists to their first point, and
+   strips debris BEFORE truncating so the ellipsis never spends its budget
+   on a postcode. The register's own typos are left alone: we translate
+   its shorthand, we do not correct its record. */
+function cleanRegisterText(text) {
+  let t = (text || "").replace(/\s+/g, " ").trim();
   if (!t) return "";
-  const letters = t.replace(/[^A-Za-z]/g, "");
-  const upper = letters.replace(/[^A-Z]/g, "");
-  let out = t;
-  if (letters.length > 3 && upper.length / letters.length > 0.6) {
-    out = t.toLowerCase().replace(/(^|[\s\-/(])([a-z])/g, (all, pre, ch) => pre + ch.toUpperCase());
+  t = t.split(";")[0];
+  t = t.replace(/^wp\s*\d+\s*[:\-]\s*/i, "");
+  t = t.replace(/^\(\s*largs\s*\)\s*[-\u2013:]?\s*/i, "");
+  // Shouty raws are normalised FIRST — the dictionary's lowercase output
+  // otherwise dilutes the uppercase ratio and the fix never fires.
+  const letters0 = t.replace(/[^A-Za-z]/g, "");
+  const upper0 = letters0.replace(/[^A-Z]/g, "");
+  if (letters0.length > 3 && upper0.length / letters0.length > 0.6) {
+    t = t.toLowerCase().replace(/(^|[\s\-/(])([a-z])/g, (all, pre, ch) => pre + ch.toUpperCase());
   }
-  return out.length > 44 ? out.slice(0, 43).trimEnd() + "…" : out;
+  t = t.replace(/\bjcn\s*\.?\s*of\b|\bjcnof\b/gi, "junction of");
+  t = t.replace(/\bjcns?\.?(?=\s|$)/gi, "junction");
+  t = t.replace(/\bjcts?\.?(?=\s|$)/gi, "junction");
+  t = t.replace(/\bo\/s\b/gi, "outside");
+  t = t.replace(/\bopp\.?(?=\s|$)/gi, "opposite");
+  t = t.replace(/\bnb\s*&\s*sb\b/gi, "northbound and southbound");
+  t = t.replace(/\bno\.?\s*(?=\d)/gi, "number ");
+  t = t.replace(/\s*\+\s*/g, " and ");
+  t = t.replace(/\s*&\s*/g, " and ");
+  t = t.replace(/\s*\/\s*/g, " and ");
+  t = t.replace(/,(?=\S)/g, ", ");
+  for (let i = 0; i < 6; i++) {
+    t = t.replace(/[\s,;.]+$/, "");
+    t = t.replace(/[,\s]+ka\d{1,2}(\s*\d[a-z]{0,2})?$/i, "");
+    t = t.replace(/[,\s]+largs$/i, "");
+    t = t.replace(/[,\s]+(north\s+)?ayrshire$/i, "");
+    t = t.replace(/[,\s]+(united kingdom|uk|scotland)$/i, "");
+  }
+  t = t.replace(/,\s*largs\s*(?=,)/gi, "");
+  t = t.replace(/\bLargs\b ?/g, "");
+  t = t.replace(/\s*,\s*,+\s*/g, ", ").replace(/\s+/g, " ").trim();
+  t = t.replace(/^[,\s]+/, "");
+  t = t.replace(/\b(To|Of|At|And|From|With|Past|On|The|In)\b/g,
+    (word, p1, offset) => (offset === 0 ? word : word.toLowerCase()));
+  t = t.replace(/, ([a-z])(?=[a-z]{2})/g, (m, ch) => ", " + ch.toUpperCase());
+  return t;
+}
+
+function tidyLocation(text, street) {
+  let t = cleanRegisterText(text);
+  const s = cleanRegisterText(street || "");
+  if (s) {
+    const key = s.split(/\s+/)[0].toLowerCase();
+    if (!t) t = s;
+    else if (key.length > 1 && !t.toLowerCase().includes(key)) t = t + ", " + s;
+  }
+  if (t) t = t[0].toUpperCase() + t.slice(1);
+  t = t.replace(/[\s.]+$/, "");
+  if (t.length > 44) {
+    let cut = t.slice(0, 43);
+    const sp = cut.lastIndexOf(" ");
+    if (sp > 24) cut = cut.slice(0, sp);
+    t = cut.replace(/[\s,]+$/, "") + "\u2026";
+  }
+  return t;
 }
 
 function firstDateOf(...values) {
@@ -854,7 +908,8 @@ async function loadRoadworks() {
     items.push({
       status,
       what: SRWR_TM[u.tm] || SRWR_CATEGORY[ph.cat] || "Road works",
-      where: tidyLocation(ph.loc || a.street || ""),
+      where: tidyLocation(ph.loc || "", a.street || ""),
+      street: cleanRegisterText(a.street || ""),
       until: firstDateOf(u.inProgress, u.estProposed, u.latestPossible, u.reasonable),
       from: firstDateOf(u.proposedStart, u.earliestProposed),
       promoter: orgs.get(String(a.promoter || "").replace(/\D/g, "").padStart(9, "0").slice(0, 6)) || "",
