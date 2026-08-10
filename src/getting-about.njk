@@ -28,6 +28,33 @@ subtitle: Where the works are in and around Largs, from the Scottish Road Works 
 
   <div id="works-map" role="application" aria-label="Map of road works in Largs. The same information is listed below."></div>
 
+  {# The register's work-type labels are load-bearing jargon — each names a
+     specific traffic arrangement, and plain substitutes lose the distinction.
+     So the labels stay terse and this one place explains them, same pattern
+     as the badge vocabulary on the Today board. Native <details>, no JS. #}
+  <details class="updates-note">
+    <summary>What the work types mean</summary>
+    <div class="updates-body">
+      <ul class="badge-key">
+        <li><strong>Give and take</strong> — the road is narrowed to one lane with no lights or signs; drivers give way to each other in turn.</li>
+        <li><strong>Priority working</strong> — one lane, with signs giving one direction the right of way.</li>
+        <li><strong>Stop/go boards</strong> — a worker at each end turns a board to let each direction through in turn.</li>
+        <li><strong>Temporary lights</strong> — portable traffic lights control each direction in turn.</li>
+        <li><strong>Convoy working</strong> — traffic is led through the works in a group behind a works vehicle.</li>
+        <li><strong>Contraflow</strong> — traffic runs in both directions on one side of the road.</li>
+        <li><strong>Road narrowing</strong> — the road is narrower through the works but open both ways.</li>
+        <li><strong>Lane closure</strong> — one lane is shut; the rest of the road runs as normal.</li>
+        <li><strong>Road closure</strong> — the road is shut through the works; follow the signed diversion.</li>
+        <li><strong>Slip road closed</strong> / <strong>hard shoulder closed</strong> — the main road runs; only the slip or shoulder is shut.</li>
+        <li><strong>Pavement works</strong> — the work is on the pavement; the road itself runs as normal.</li>
+        <li><strong>Road restriction</strong> — the register's catch-all, used when the exact arrangement isn't recorded.</li>
+      </ul>
+      <p class="updates-foot">Where no arrangement is registered at all, the work
+      shows under its general type — minor, major, urgent, emergency or repair
+      works — as the register records it.</p>
+    </div>
+  </details>
+
   {% for w in rw.items %}
   <article class="work-row">
     <span class="chip {{ w.status }}">{% if w.status == "active" %}Under way{% else %}Planned{% endif %}</span>
