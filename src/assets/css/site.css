@@ -609,3 +609,4 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 
 /* ---------- daylight arc ---------- */
 .daylight-arc{display:block;width:100%;height:52px;margin-top:10px}
+.work-main .work-gloss{font-size:.88rem;color:var(--muted);margin-top:2px;max-width:60ch}

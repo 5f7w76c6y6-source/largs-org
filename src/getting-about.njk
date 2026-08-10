@@ -6,6 +6,17 @@ heading: Roadworks and street closures
 subtitle: Where the works are in and around Largs, from the Scottish Road Works Register.
 ---
 {% set rw = today.roadworks %}
+{# Inline glosses for the work-type labels that are genuinely jargon — each
+   row must stand alone for a reader who never opens the disclosure. Plain
+   labels (temporary lights, road closure…) deliberately get none. #}
+{% set whatGloss = {
+  "Give and take": "One lane, no lights — drivers give way to each other in turn.",
+  "Priority working": "One lane — signs give one direction the right of way.",
+  "Stop/go boards": "A worker at each end lets each direction through in turn.",
+  "Convoy working": "Traffic is led through in a group behind a works vehicle.",
+  "Contraflow": "Both directions run on one side of the road.",
+  "Road restriction": "The register's catch-all — the exact arrangement isn't recorded."
+} %}
 <section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
     {% if rw.ok %}
@@ -66,6 +77,7 @@ subtitle: Where the works are in and around Largs, from the Scottish Road Works 
         {%- if w.status == "planned" and w.from %} · starts {{ w.from | dom }} {{ w.from | monthShort }}{% endif -%}
         {%- if w.status == "planned" and w.until %} · until {{ w.until | dom }} {{ w.until | monthShort }}{% endif -%}
       </p>
+      {% if whatGloss[w.what] %}<p class="work-gloss">{{ whatGloss[w.what] }}</p>{% endif %}
     </div>
   </article>
   {% endfor %}
