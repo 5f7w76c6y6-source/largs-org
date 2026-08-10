@@ -605,4 +605,10 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 }
 
 /* ---------- tile icons ---------- */
-.tile .label .tile-icon{width:22px;height:22px;flex:none}
+.tile .label .tile-icon{width:26px;height:26px;flex:none}
+
+/* On narrow screens, tiles size to their content — grid's equal-height
+   rows leave tall dead space when a short tile pairs with the curve. */
+@media (max-width:720px){
+  .tiles{align-items:start}
+}
