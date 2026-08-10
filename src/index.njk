@@ -3,6 +3,7 @@ layout: layouts/base.njk
 heading: Largs today
 subtitle: The day's essentials for the town — sea, sky, boats, trains and roads.
 ---
+{% import "tile-icons.njk" as icons %}
 {# ================= LARGS TODAY ================= #}
 <section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
@@ -15,7 +16,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
   <div class="tiles">
 
     <div class="tile">
-      <div class="label">Weather
+      <div class="label">{{ icons.weather() }}Weather
         {% if today.weather.ok %}<span class="badge live">live</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
       {% if today.weather.ok %}
@@ -30,7 +31,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     {% set ev = today.tides.events or [] %}
     {% set tidesOk = today.tides.ok and (ev | length) >= 3 %}
     <div class="tile">
-      <div class="label">Tides · Largs
+      <div class="label">{{ icons.tides() }}Tides · Largs
         {% if tidesOk and today.tides.source == "ukho" %}<span class="badge live">live</span>{% elif tidesOk %}<span class="badge model">model</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
       {% if tidesOk %}
@@ -56,7 +57,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     </div>
 
     <div class="tile">
-      <div class="label">Sea temperature
+      <div class="label">{{ icons.seatemp() }}Sea temperature
         {% if today.tides.seaTempC %}<span class="badge model">model</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
       {% if today.tides.seaTempC %}
@@ -69,7 +70,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     </div>
 
     <div class="tile">
-      <div class="label">Daylight
+      <div class="label">{{ icons.daylight() }}Daylight
         {% if today.weather.sunrise %}<span class="badge live">live</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
       {% if today.weather.sunrise %}
@@ -82,20 +83,20 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     </div>
 
     <div class="tile">
-      <div class="label"><span class="dot ok" aria-hidden="true"></span>Cumbrae ferry <span class="badge timetable">timetable</span></div>
+      <div class="label"><span class="dot ok" aria-hidden="true"></span>{{ icons.ferry() }}Cumbrae ferry <span class="badge timetable">timetable</span></div>
       <div class="figure">Normally every 15 min</div>
       <div class="sub">Summer timetable from the Slip · <a href="{{ site.links.calmacStatus }}">check live status →</a></div>
     </div>
 
     <div class="tile">
-      <div class="label"><span class="dot ok" aria-hidden="true"></span>Trains to Glasgow <span class="badge timetable">timetable</span></div>
+      <div class="label"><span class="dot ok" aria-hidden="true"></span>{{ icons.trains() }}Trains to Glasgow <span class="badge timetable">timetable</span></div>
       <div class="figure">Usually twice hourly</div>
       <div class="sub">Largs to Glasgow Central · <a href="{{ site.links.rail }}">live departures →</a></div>
     </div>
 
     {% set rw = today.roadworks %}
     <div class="tile">
-      <div class="label"><span class="dot {% if rw.ok and rw.count == 0 %}ok{% else %}warn{% endif %}" aria-hidden="true"></span>Roadworks
+      <div class="label"><span class="dot {% if rw.ok and rw.count == 0 %}ok{% else %}warn{% endif %}" aria-hidden="true"></span>{{ icons.roadworks() }}Roadworks
         {% if rw.ok %}<span class="badge daily">daily</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
       {% if rw.ok %}
@@ -113,7 +114,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     </div>
 
     <div class="tile">
-      <div class="label">Bins this week <span class="badge timetable">timetable</span></div>
+      <div class="label">{{ icons.bins() }}Bins this week <span class="badge timetable">timetable</span></div>
       {% if bins.current.note %}
       <div class="figure">Dates move</div>
       <div class="sub">Festive collections this week · <a href="/bins/">bin days →</a></div>
