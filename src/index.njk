@@ -76,6 +76,17 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       {% if today.weather.sunrise %}
       <div class="figure">{{ today.weather.sunrise }}</div>
       <div class="sub">Sunrise · sunset <span class="mono">{{ today.weather.sunset }}</span></div>
+      {% if sunarc.ok %}
+      <svg class="daylight-arc" viewBox="0 0 100 48" role="img"
+           aria-label="Today's daylight drawn as an arc{% if sunarc.day %}, with the sun's current position marked{% endif %}">
+        <path d="M12 40 A38 38 0 0 1 88 40 Z" fill="var(--foam-tint)"/>
+        <path d="M12 40 A38 38 0 0 1 88 40" fill="none" stroke="var(--slate)"
+              stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+        {% if sunarc.day %}
+        <circle cx="{{ sunarc.sunX }}" cy="{{ sunarc.sunY }}" r="3" fill="var(--teal)"/>
+        {% endif %}
+      </svg>
+      {% endif %}
       {% else %}
       <div class="figure">—</div>
       <div class="sub">Live feed not fetched yet</div>
