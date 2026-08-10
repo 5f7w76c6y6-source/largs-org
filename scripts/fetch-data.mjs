@@ -110,13 +110,22 @@ function compass(degrees) {
   return points[Math.round(degrees / 22.5) % 16];
 }
 
+/* Eight plain-English names for the tile — the sixteen-point rose is
+   forecast-speak; "North-westerly" is what a person says. compass()
+   stays for anything that wants the abbreviation. */
+function windName(degrees) {
+  const names = ["Northerly", "North-easterly", "Easterly", "South-easterly",
+                 "Southerly", "South-westerly", "Westerly", "North-westerly"];
+  return names[Math.round(degrees / 45) % 8];
+}
+
 /* ---------- weather ---------- */
 
 async function loadWeather() {
   const url =
     "https://api.open-meteo.com/v1/forecast" +
     `?latitude=${WEATHER_POINT.lat}&longitude=${WEATHER_POINT.lon}` +
-    "&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,is_day" +
+    "&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,is_day" +
     "&hourly=precipitation_probability" +
     "&daily=sunrise,sunset" +
     "&forecast_days=1&wind_speed_unit=mph&timezone=Europe%2FLondon";
@@ -143,6 +152,12 @@ async function loadWeather() {
     description,
     windMph: Math.round(current.wind_speed_10m),
     windDir: compass(current.wind_direction_10m),
+    windName: windName(current.wind_direction_10m),
+    feelsLine:
+      Number.isFinite(current.apparent_temperature) &&
+      Math.round(current.apparent_temperature) !== Math.round(current.temperature_2m)
+        ? "Feels like " + Math.round(current.apparent_temperature) + "\u00B0"
+        : "",
     sunrise: hhmm(data.daily?.sunrise?.[0]),
     sunset:  hhmm(data.daily?.sunset?.[0])
   };

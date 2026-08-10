@@ -21,7 +21,8 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       </div>
       {% if today.weather.ok %}
       <div class="figure">{{ today.weather.tempC }}°C</div>
-      <div class="sub">{{ today.weather.description }} · <span class="mono">{{ today.weather.windDir }} {{ today.weather.windMph }} mph</span></div>
+      <div class="sub">{{ today.weather.description }}{% if today.weather.feelsLine %} · {{ today.weather.feelsLine }}{% endif %}</div>
+      <div class="sub">{{ today.weather.windName or today.weather.windDir }}, <span class="mono">{{ today.weather.windMph }} mph</span></div>
       {% else %}
       <div class="figure">—</div>
       <div class="sub">Live feed not fetched yet</div>
