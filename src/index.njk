@@ -46,7 +46,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
                   stroke="var(--slate)" stroke-width="1.5"
                   vector-effect="non-scaling-stroke"/>
         {% if today.tides.curve.nowX %}
-        <circle cx="{{ today.tides.curve.nowX }}" cy="{{ today.tides.curve.nowY }}" r="3" fill="var(--teal)"/>
+        <circle cx="{{ today.tides.curve.nowX }}" cy="{{ today.tides.curve.nowY }}" r="4" fill="var(--teal)" stroke="var(--card)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
         {% endif %}
       </svg>
       {% endif %}
@@ -83,7 +83,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
         <path d="M12 40 A38 38 0 0 1 88 40" fill="none" stroke="var(--slate)"
               stroke-width="1.5" vector-effect="non-scaling-stroke"/>
         {% if sunarc.day %}
-        <circle cx="{{ sunarc.sunX }}" cy="{{ sunarc.sunY }}" r="3" fill="var(--teal)"/>
+        <circle cx="{{ sunarc.sunX }}" cy="{{ sunarc.sunY }}" r="4" fill="var(--teal)" stroke="var(--card)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
         {% endif %}
       </svg>
       {% endif %}
