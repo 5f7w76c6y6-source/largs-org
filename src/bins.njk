@@ -25,9 +25,9 @@ permalink: /bins/
       <div class="bin-now-label">This week in Largs</div>
       <div class="bin-now-colour">{{ bins.current.name }} bin</div>
       <div class="bin-now-sub">{{ bins.current.holds }} · week beginning Monday {{ bins.current.startLong }}</div>
-      <div class="bin-now-brown">Brown bin this week if you are on calendar
-      {{ bins.current.brownCalendar }} — calendar {{ bins.current.brownCalendarNext }}
-      has it next week.</div>
+      <div class="bin-now-brown">Brown bin this week for
+      {{ bins.current.brownCalendar }} streets — {{ bins.current.brownCalendarNext }}
+      streets have it next week.</div>
     </div>
   </div>
   {% endif %}
@@ -43,7 +43,7 @@ permalink: /bins/
       <span class="bin-swatch small" style="background:{{ w.swatch }}" aria-hidden="true"></span>
       <span class="bin-ahead-colour">{{ w.name }}</span>
       <span class="bin-ahead-when">week of {{ w.startShort }}</span>
-      <span class="bin-ahead-brown">brown: {{ w.brownCalendar }}</span>
+      <span class="bin-ahead-brown">brown: {{ w.brownCalendar }} streets</span>
       {% if w.note %}<span class="bin-ahead-note">{{ w.note }}</span>{% endif %}
     </li>
     {% endfor %}

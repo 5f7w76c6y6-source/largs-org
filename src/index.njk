@@ -112,8 +112,41 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       {% endif %}
     </div>
 
+    <div class="tile">
+      <div class="label">Bins this week <span class="badge timetable">timetable</span></div>
+      {% if bins.current.note %}
+      <div class="figure">Dates move</div>
+      <div class="sub">Festive collections this week · <a href="/bins/">bin days →</a></div>
+      {% else %}
+      <div class="figure">{{ bins.current.name }}</div>
+      <div class="sub">Brown too for {{ bins.current.brownCalendar }} streets · <a href="/bins/">bin days →</a></div>
+      {% endif %}
+    </div>
+
   </div>
-  <p class="board-legend">live = fetched at the last rebuild · daily = official register, refreshed overnight · model = ocean-model estimate, not a sensor reading · timetable = fixed pattern with a link out · sample = placeholder until the feed is wired up</p>
+  {# The honesty disclosure. Every tile carries a badge; this is the one
+     place that says what each badge means and how fresh the board is.
+     Native <details> — no JavaScript on the front page, by design. #}
+  <details class="updates-note">
+    <summary>About these updates</summary>
+    <div class="updates-body">
+      <p>This board rebuilds roughly every half hour, on its own, whether or
+      not anyone is editing the site. Each tile says where its figure came
+      from, and nothing on this page is a guess — where a feed is not wired up
+      yet, the tile says so rather than showing a plausible number.</p>
+      <ul class="badge-key">
+        <li><span class="badge live">live</span> Fetched fresh at the last rebuild.</li>
+        <li><span class="badge daily">daily</span> From an official register, refreshed overnight.</li>
+        <li><span class="badge model">model</span> A computer model's estimate, not a reading from an instrument.</li>
+        <li><span class="badge timetable">timetable</span> A fixed published pattern, with a link out to live status.</li>
+        <li><span class="badge sample">sample</span> A placeholder, shown only until the real feed is connected.</li>
+      </ul>
+      <p class="updates-foot">Tide times here are an ocean-model estimate and
+      have measured 30 to 56 minutes early against the official predictions.
+      For anything that depends on the water — a crossing, a swim, a boat —
+      use <a href="https://easytide.admiralty.co.uk/">EasyTide</a>.</p>
+    </div>
+  </details>
 </section>
 
 {# ================= ON TODAY ================= #}
