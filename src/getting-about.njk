@@ -73,9 +73,10 @@ subtitle: Where the works are in and around Largs, from the Scottish Road Works 
       <h3>{{ w.what }}{% if w.what and w.where %} — {% endif %}{{ w.where }}</h3>
       <p class="meta">
         {%- if w.promoter %}{{ w.promoter }}{% endif -%}
-        {%- if w.status == "active" and w.until %} · due to finish {{ w.until | dom }} {{ w.until | monthShort }}{% endif -%}
+        {%- if w.status == "active" and w.until %} · {% if w.until < rw.dataDate %}was due to finish{% else %}due to finish{% endif %} {{ w.until | dom }} {{ w.until | monthShort }}{% endif -%}
         {%- if w.status == "planned" and w.from %} · starts {{ w.from | dom }} {{ w.from | monthShort }}{% endif -%}
         {%- if w.status == "planned" and w.until %} · until {{ w.until | dom }} {{ w.until | monthShort }}{% endif -%}
+        {%- if w.lat and w.lng %} · <a class="map-link" href="#works-map" data-work="{{ loop.index0 }}">show on map →</a>{% endif -%}
       </p>
       {% if whatGloss[w.what] %}<p class="work-gloss">{{ whatGloss[w.what] }}</p>{% endif %}
     </div>
@@ -116,7 +117,8 @@ subtitle: Where the works are in and around Largs, from the Scottish Road Works 
   }
 
   var bounds = [];
-  WORKS.forEach(function (w) {
+  var markers = {};
+  WORKS.forEach(function (w, i) {
     if (w.lat == null || w.lng == null) return;
     var active = w.status === "active";
     var marker = L.circleMarker([w.lat, w.lng], {
@@ -132,11 +134,24 @@ subtitle: Where the works are in and around Largs, from the Scottish Road Works 
     if (active) lines.push(w.until ? "Due to finish " + shortDate(w.until) : "No end date registered");
     else lines.push(w.from ? "Starts " + shortDate(w.from) : "Start date to be confirmed");
     marker.bindPopup(lines.join("<br>"));
+    markers[i] = marker;
     bounds.push([w.lat, w.lng]);
   });
 
   if (bounds.length) map.fitBounds(bounds, { padding: [28, 28], maxZoom: 16 });
   else map.setView([55.795, -4.868], 14); // Largs, when nothing is mappable
+
+  /* List → map: each row's "show on map" centres its dot and opens its
+     popup. The href is a plain anchor, so without JavaScript the link
+     still scrolls to the map — this only adds the aim. */
+  document.querySelectorAll(".map-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+      var i = Number(link.dataset.work);
+      if (!WORKS[i] || WORKS[i].lat == null || !markers[i]) return;
+      map.setView([WORKS[i].lat, WORKS[i].lng], 17);
+      markers[i].openPopup();
+    });
+  });
 })();
 </script>
 {% endif %}
