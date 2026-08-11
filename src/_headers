@@ -1,0 +1,7 @@
+# Staging deployment. Cloudflare Pages reads this file from the build
+# output root. While the site is on *.pages.dev it should not be indexed:
+# the register carries entries not yet read against their source minutes,
+# and at handover a duplicate index under the old hostname would compete
+# with largs.org. REMOVE THIS FILE AT LAUNCH.
+/*
+  X-Robots-Tag: noindex

@@ -1,0 +1,67 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: council.statuses
+  size: 1
+  alias: view
+permalink: "/council/{{ view.slug }}/"
+eleventyComputed:
+  title: "{{ view.label }} · Council corner"
+  heading: "{{ view.label }}"
+  subtitle: "Largs Community Council issue register — {{ view.label | lower }}."
+---
+{# Build-time filter pages over the issue register.
+
+   Eleventy pagination: this one template is rendered once per entry in
+   council.statuses, and `permalink` writes each rendering to its own
+   folder. The result is five ordinary HTML pages — /council/register/,
+   /council/completed/, /council/in-progress/, /council/raised/ and
+   /council/no-update/ — each bookmarkable, indexable, back-button
+   correct, and working with JavaScript switched off. Nothing filters in
+   the browser; the filtering has already happened by the time the file
+   is written.
+
+   `eleventyComputed` exists because front matter is evaluated before
+   pagination assigns `view`; computed data is evaluated after, so the
+   per-page title and heading can depend on which status is being
+   rendered. #}
+
+{% from "register.njk" import issueCard, statusKey, registerNav, coverageNote %}
+
+{% set items = council.digest | byStatus(view.key) | newestFirst %}
+
+<section class="wrap council-page" aria-labelledby="page-title">
+  <div class="rule" aria-hidden="true"></div>
+
+  <p class="page-intro">{{ view.blurb }}</p>
+
+  {{ registerNav(council, view.slug) }}
+
+  {{ coverageNote(council) }}
+
+  <div class="mono-h">{{ items | length }}
+    {%- if items | length == 1 %} item{% else %} items{% endif %}
+    · what the minutes record · who is responsible · what happens next</div>
+
+  {% if items | length %}
+  <div class="issues">
+    {% for item in items %}
+    {{ issueCard(item, council.minutesUrl) }}
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="note">No items in the register currently carry this status.</p>
+  {% endif %}
+
+  {{ statusKey() }}
+
+  <p class="cc-note">How this register works: it reports what the published
+  minutes record — what was decided, who took the action, and what the minutes
+  say happens next. A status describes the record and nothing more; it says
+  what the minutes said at the last mention, not what may have happened since.
+  The same format for every item and every person, names exactly as the minutes
+  give them, nothing rated and nothing ranked. The minutes themselves are always
+  the official record.</p>
+
+  <a class="more" href="/council/">← Back to Council corner</a>
+</section>

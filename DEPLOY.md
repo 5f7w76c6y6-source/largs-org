@@ -195,3 +195,16 @@ gh secret list                    # secret names and dates only
 gh run list                       # recent builds and their triggers
 npx wrangler whoami               # account and (non-secret) account ID
 ```
+
+## At launch (largs.org handover)
+
+The site currently sends `X-Robots-Tag: noindex` on every page, so the
+staging hostname never competes with largs.org in search results and
+nothing publishes before its referee pass. To go indexable at launch:
+
+1. Delete `src/_headers`.
+2. Remove the matching `addPassthroughCopy` line in `eleventy.config.js`
+   (marked "Staging only").
+3. Rebuild, deploy, then confirm the header is gone:
+   `curl -sI https://largs.org/ | grep -i x-robots-tag`
+   — no output means it's gone and the site is indexable.

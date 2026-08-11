@@ -36,6 +36,11 @@ module.exports = function (eleventyConfig) {
   // Copy src/assets/** to _site/assets/** untouched.
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
 
+  // Staging only: copies src/_headers to the output root, where
+  // Cloudflare Pages reads it. Sends X-Robots-Tag: noindex for the
+  // whole site. DELETE BOTH THIS LINE AND src/_headers AT LAUNCH.
+  eleventyConfig.addPassthroughCopy({ "src/_headers": "_headers" });
+
   // Evaluated once per build — the masthead dateline and "Updated"
   // stamp come from this, so a page built at 09:17 says 09:17.
   eleventyConfig.addGlobalData("buildTime", () => new Date().toISOString());
@@ -86,6 +91,37 @@ module.exports = function (eleventyConfig) {
     const today = `${p.year}-${p.month}-${p.day}`;
     return (items || []).filter((e) => e.date <= today && (e.until || e.date) >= today);
   });
+
+  // ---- Issue register filters -------------------------------------
+  // The register spans a year, so the Council corner pages need to slice
+  // it three ways: by status (the filter pages), by meeting date (the
+  // hub shows only the newest minutes), and newest first everywhere.
+  // All three run at build time — the filter pages are real HTML files,
+  // so they are bookmarkable and work with no client JavaScript.
+
+  // byStatus(items, "completed") -> only completed items.
+  // An empty status returns everything, which is how the "All items"
+  // page is generated from the same template as the others.
+  eleventyConfig.addFilter("byStatus", (items, status) => {
+    if (!status) return items || [];
+    return (items || []).filter((i) => i.status === status);
+  });
+
+  // recordedAt(items, "2025-11-20") -> items whose last mention was at
+  // that meeting. Dates are plain ISO strings compared as strings, so
+  // no timezone is involved and none of the date filters apply.
+  eleventyConfig.addFilter("recordedAt", (items, date) =>
+    (items || []).filter((i) => i.lastRecorded === date)
+  );
+
+  // newestFirst(items) -> sorted by last recorded, most recent first.
+  // Copies before sorting: Array.prototype.sort mutates, and mutating
+  // the data cascade would leak the order into every other template.
+  eleventyConfig.addFilter("newestFirst", (items) =>
+    [...(items || [])].sort((a, b) =>
+      String(b.lastRecorded).localeCompare(String(a.lastRecorded))
+    )
+  );
 
   return {
     dir: {

@@ -16,14 +16,26 @@ permalink: /council/
       clearly labelled as layout, and unconfirmed meeting details never
       render as fact.
    Status is never carried by colour alone: every one shows a glyph and
-   a word, and the key below spells all four out. #}
+   a word, and the key spells all four out.
+
+   The issue card, the status key and the counts strip now live in
+   _includes/register.njk, shared with the generated filter pages, so
+   the card can never drift between the hub and the register.
+
+   This page shows only the items recorded at the most recent published
+   meeting. The register spans a year and would otherwise bury the rest
+   of the page; the counts strip carries the reader to the whole of it. #}
+
+{% from "register.njk" import issueCard, statusKey, registerNav, coverageNote %}
+
+{% set latest = council.digest | recordedAt(council.latestMinutes) | newestFirst %}
 
 <section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
     {% if council.sample %}
     <span class="stamp">Sample layout — first real digest to follow</span>
     {% else %}
-    <span class="stamp">{{ council.digestMonth }} digest</span>
+    <span class="stamp">{{ council.latestMinutes | monthYear }} digest</span>
     {% endif %}
   </div>
 
@@ -46,66 +58,17 @@ permalink: /council/
   published minutes.</p>
   {% endif %}
 
-  <div class="mono-h">{{ council.digestMonth }} · what the minutes record · who is responsible · what happens next</div>
+  <div class="mono-h">{{ council.latestMinutes | dateLong }} · what the minutes record · who is responsible · what happens next</div>
 
-  <p class="freshness">Latest published Community Council minutes:
-  <strong>{{ council.digestMonth }}</strong>. The Community Council has continued
-  to meet since — minutes are published in batches, so the newest set available
-  is the one digested here.{% if council.minutesUrl %}
-  <a href="{{ council.minutesUrl }}">Minutes archive →</a>{% endif %}</p>
-
-  {% if council.sourceNote %}
-  <p class="note">{{ council.sourceNote }}</p>
-  {% endif %}
-
-  {% set statusLabels = {
-    "raised": "Raised",
-    "progress": "In progress",
-    "completed": "Completed",
-    "no-update": "No recent update"
-  } %}
-  {% set statusGlyphs = {
-    "raised": "◇",
-    "progress": "◐",
-    "completed": "●",
-    "no-update": "○"
-  } %}
+  {{ coverageNote(council) }}
 
   <div class="issues">
-    {% for item in council.digest %}
-    <article class="issue" id="issue-{{ item.id }}">
-      <div class="issue-head">
-        <h3 class="issue-title">{{ item.title }}</h3>
-        <span class="issue-status {{ item.status }}"><span aria-hidden="true">{{ statusGlyphs[item.status] }}</span> {{ statusLabels[item.status] }}</span>
-      </div>
-
-      <p class="issue-summary">{{ item.summary }}</p>
-
-      <div class="issue-meta">
-        <div><span class="issue-label">Responsible</span> · {{ item.responsible }}</div>
-        {% if item.nextStep %}
-        <div><span class="issue-label">Next step</span> · {{ item.nextStep }}</div>
-        {% endif %}
-        <div><span class="issue-label">Last recorded</span> · {{ item.lastRecorded | dateLong }}{% if council.minutesUrl %} · <a href="{{ council.minutesUrl }}">minutes</a>{% endif %}</div>
-        {% if item.alsoRecorded and item.alsoRecorded.length %}
-        <div class="issue-history">Also recorded {% for d in item.alsoRecorded %}{{ d | dateLong }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
-        {% endif %}
-      </div>
-    </article>
+    {% for item in latest %}
+    {{ issueCard(item, council.minutesUrl) }}
     {% endfor %}
   </div>
 
-  <h4 class="status-key-head">What the statuses mean</h4>
-  <ul class="status-key">
-    <li><span class="issue-status raised"><span aria-hidden="true">◇</span> Raised</span>
-      Recorded in the minutes, with no action yet assigned or taken.</li>
-    <li><span class="issue-status progress"><span aria-hidden="true">◐</span> In progress</span>
-      An action is assigned, and the minutes record it moving.</li>
-    <li><span class="issue-status completed"><span aria-hidden="true">●</span> Completed</span>
-      The minutes record the matter as done.</li>
-    <li><span class="issue-status no-update"><span aria-hidden="true">○</span> No recent update</span>
-      The item appears in two or more meetings with nothing new recorded.</li>
-  </ul>
+  {{ statusKey() }}
 
   <p class="cc-note">How this digest works: it reports what the published
   minutes record — what was decided, who took the action, and what the minutes
@@ -118,6 +81,19 @@ permalink: /council/
   {% if council.minutesUrl %}
   <a class="more" href="{{ council.minutesUrl }}">Read the full minutes →</a>
   {% endif %}
+</section>
+
+{# ================= THE REGISTER ================= #}
+<section class="wrap council-page" aria-labelledby="register-h">
+  <h2 id="register-h">The issue register</h2>
+  <div class="rule" aria-hidden="true"></div>
+
+  <p class="page-intro">Above is the newest set of minutes. Below is everything
+  the register is keeping track of — items carry forward from meeting to meeting
+  under a permanent entry, so a matter raised in January can still be found in
+  November whether or not it has moved. Nothing is dropped for being slow.</p>
+
+  {{ registerNav(council, "") }}
 </section>
 
 {# ================= MEETINGS & TAKING PART ================= #}
