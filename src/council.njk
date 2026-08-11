@@ -47,6 +47,19 @@ permalink: /council/
   track of both, and routes the everyday problems to the right front door.</p>
 </section>
 
+{# ================= THE REGISTER ================= #}
+<section class="wrap council-page" aria-labelledby="register-h">
+  <h2 id="register-h">The issue register</h2>
+  <div class="rule" aria-hidden="true"></div>
+
+  <p class="page-intro">Everything the register is keeping track of, by status — the
+  newest set of minutes is digested just below. Items carry forward from meeting to meeting
+  under a permanent entry, so a matter raised in January can still be found in
+  November whether or not it has moved. Nothing is dropped for being slow.</p>
+
+  {{ registerNav(council, "") }}
+</section>
+
 {# ================= THE DIGEST ================= #}
 <section class="wrap council-page" aria-labelledby="digest-h">
   <h2 id="digest-h">The Community Council digest</h2>
@@ -81,19 +94,6 @@ permalink: /council/
   {% if council.minutesUrl %}
   <a class="more" href="{{ council.minutesUrl }}">Read the full minutes →</a>
   {% endif %}
-</section>
-
-{# ================= THE REGISTER ================= #}
-<section class="wrap council-page" aria-labelledby="register-h">
-  <h2 id="register-h">The issue register</h2>
-  <div class="rule" aria-hidden="true"></div>
-
-  <p class="page-intro">Above is the newest set of minutes. Below is everything
-  the register is keeping track of — items carry forward from meeting to meeting
-  under a permanent entry, so a matter raised in January can still be found in
-  November whether or not it has moved. Nothing is dropped for being slow.</p>
-
-  {{ registerNav(council, "") }}
 </section>
 
 {# ================= MEETINGS & TAKING PART ================= #}
