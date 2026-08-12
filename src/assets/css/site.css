@@ -625,3 +625,17 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .register-nav a.register-tab[aria-current="page"] { font-weight: 700;
   text-decoration: underline; text-underline-offset: .25em; }
 .register-count { font-variant-numeric: tabular-nums; opacity: .75; }
+
+/* ---- Public safety notice band ---------------------------------
+   Palette-independent: borders and rules use currentColor, so this
+   needs no variable and can't drift if the palette changes. The band
+   is calm by design — no red, no warning triangle. The title is sized
+   DOWN from the page h1: a notice is important, but it is not the
+   identity of the page. */
+.notice-band { border: 1px solid; border-left-width: 5px;
+  border-radius: 3px; padding: 1.1rem 1.3rem 1rem; margin: 1.25rem 0 1.5rem; }
+.notice-kicker { margin: 0 0 .35rem; font-size: .78rem;
+  letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+.notice-title { margin: 0 0 .6rem; font-size: 1.3rem; line-height: 1.25; }
+.notice-body { margin: 0 0 .7rem; }
+.notice-source { margin: 0; font-size: .92rem; }

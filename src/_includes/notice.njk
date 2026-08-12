@@ -1,23 +1,24 @@
 {# Public safety notice band for the Today board.
 
-   Renders nothing at all when no notice is live, so it is safe to leave
-   in place permanently — the whole block disappears from the HTML rather
-   than collapsing to an empty box.
+   Renders nothing at all when no notice is live, so it is safe to leave in
+   place permanently — the whole block disappears from the HTML rather than
+   collapsing to an empty box.
 
    Deliberately NOT styled as an alarm. This is a town noticeboard, not an
-   emergency broadcast: a calm band that says what to look for and what to
-   do. Red banners and warning triangles train people to ignore them, and
-   the audience here skews older and is easily alarmed by the visual
-   language of emergency.
+   emergency broadcast: a calm bordered band that says what to look for and
+   what to do. Red banners and warning triangles either frighten an older
+   readership or train everyone to ignore banners, and both are worse than
+   plain. The <h2> is sized DOWN from the page <h1>: a notice is important
+   but it is not the identity of the page, and a heading larger than the
+   page title inverts the document outline for screen reader users too.
 
    The link goes to the item in the register, so the notice is always
    traceable to the meeting where it was raised. #}
 
 {% set live = notice.notices | currentNotices %}
-{% if live | length %}
 {% for n in live %}
-<section class="wrap notice-band" aria-labelledby="notice-h">
-  <div class="notice-inner">
+<section class="wrap" aria-labelledby="notice-h">
+  <div class="notice-band">
     <p class="notice-kicker">Public safety notice</p>
     <h2 class="notice-title" id="notice-h">{{ n.title }}</h2>
     <p class="notice-body">{{ n.body }}</p>
@@ -27,4 +28,3 @@
   </div>
 </section>
 {% endfor %}
-{% endif %}
