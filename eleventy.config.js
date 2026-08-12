@@ -87,6 +87,54 @@ module.exports = function (eleventyConfig) {
     return (items || []).filter((e) => e.date <= today && (e.until || e.date) >= today);
   });
 
+  // ---- Regular events (classes, clubs, weekly markets) -------------
+  // A regular is a FIXTURE, not an event: it is never expanded into
+  // dated occurrences and never joins the `upcoming` list. These two
+  // filters read events.regulars — one groups them by day for the
+  // What's On page, the other picks out today's for the Today board.
+  //
+  // A regular is "active" only within its term: on or after `from`,
+  // on or before `until` (blank means indefinitely), and not on a date
+  // listed in `except`. That is what stops the site advertising a class
+  // that stopped running in June.
+
+  const WEEKDAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
+
+  function ukToday() {
+    const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });
+    return `${p.year}-${p.month}-${p.day}`;
+  }
+
+  function isActive(r, today) {
+    if (r.from && r.from > today) return false;
+    if (r.until && r.until < today) return false;
+    if ((r.except || []).includes(today)) return false;
+    return true;
+  }
+
+  // regularsToday(regulars) -> those running today, in Largs wall-clock time.
+  eleventyConfig.addFilter("regularsToday", (regulars) => {
+    const today = ukToday();
+    const dow = ukParts(new Date(), { weekday: "long" }).weekday.toLowerCase();
+    return (regulars || []).filter(
+      (r) => String(r.weekday || "").toLowerCase() === dow && isActive(r, today)
+    );
+  });
+
+  // regularsByDay(regulars) -> [{ day: "Monday", items: [...] }, ...]
+  // Monday first, days with nothing omitted, so the page never renders
+  // an empty heading. Only currently-active regulars are included.
+  eleventyConfig.addFilter("regularsByDay", (regulars) => {
+    const today = ukToday();
+    const live = (regulars || []).filter((r) => isActive(r, today));
+    return WEEKDAYS.map((day) => ({
+      day: day.charAt(0).toUpperCase() + day.slice(1),
+      items: live
+        .filter((r) => String(r.weekday || "").toLowerCase() === day)
+        .sort((a, b) => String(a.time || "").localeCompare(String(b.time || "")))
+    })).filter((g) => g.items.length);
+  });
+
   // ---- Issue register filters -------------------------------------
   // The register spans a year, so the Council corner pages need to slice
   // it three ways: by status (the filter pages), by meeting date (the

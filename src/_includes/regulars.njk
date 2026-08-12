@@ -1,0 +1,40 @@
+{# Regular events — classes, clubs, weekly markets — grouped by day.
+
+   Renders nothing when there are none, so it is safe to leave in place.
+
+   These are fixtures, not events: they never appear in the upcoming list,
+   because a weekly class expanded into dated occurrences would bury the
+   one-off events the page exists to show. Grouping by day is also how
+   people actually think about them ("what's on a Tuesday?").
+
+   Only currently-active regulars appear — see the from/until/except
+   fields in events.json. A class that stopped for the summer stops
+   showing on its own. #}
+
+{% set byDay = events.regulars | regularsByDay %}
+{% if byDay | length %}
+<section class="wrap" aria-labelledby="regulars-h">
+  <h2 id="regulars-h">Every week in Largs</h2>
+  <div class="rule" aria-hidden="true"></div>
+
+  <p class="page-intro">Classes, clubs and groups that meet regularly. Anything
+  open to the public in Largs can be listed here, free — see below to add one.</p>
+
+  {% for group in byDay %}
+  <div class="regular-day">
+    <h3 class="regular-dayname">{{ group.day }}</h3>
+    {% for r in group.items %}
+    <article class="regular">
+      {% if r.time %}<div class="regular-time">{{ r.time }}</div>{% endif %}
+      <div class="regular-body">
+        <h4 class="regular-title">{{ r.title }}</h4>
+        {% if r.venue %}<p class="regular-meta">{{ r.venue }}</p>{% endif %}
+        {% if r.blurb %}<p class="regular-blurb">{{ r.blurb }}</p>{% endif %}
+        {% if r.contact %}<p class="regular-contact">{{ r.contact }}</p>{% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
