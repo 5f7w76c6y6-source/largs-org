@@ -8,12 +8,16 @@
     "NO PLANNING APPLICATIONS. Per the decision of 4 August 2026, individual applications are out of scope site-wide. Applications discussed in the 2025 minutes are deliberately absent from this register.",
     "MEMBERS OF THE PUBLIC ARE NOT NAMED, and neither is the substance of their personal circumstances, even where the minutes describe them. People acting in a public capacity — councillors, MSPs, officers, named volunteers thanked in the record — are named as the minutes give them.",
     "SOURCE TYPOS ARE PRESERVED rather than silently corrected, except that official spellings of real people's names beat minute typos.",
-    "WHERE A FIGURE IS ILLEGIBLE IN THE SOURCE IT IS OMITTED, not guessed. The Memory Walk total is printed as '£100 0' in the July minutes and is therefore not stated here."
+    "WHERE A FIGURE IS ILLEGIBLE IN THE SOURCE IT IS OMITTED, not guessed. The Memory Walk total is printed as '£100 0' in the July minutes and is therefore not stated here.",
+    "POLICE REPORTS ARE NOT DIGESTED. Where the police have asked for a matter to be communicated to the public, and it concerns something residents can act on, it may be recorded as a public-safety notice — never with individuals, premises, figures or ongoing investigations.",
+    "OFFICERS ARE NAMED BY ROLE, NOT BY NAME. Elected members, MSPs and senior officers appearing in a public capacity are named as the minutes give them. Council officers below that level are identified by role: they did not stand for anything, and the register should not make one person the face of an institutional delay.",
+    "A MINUTE'S ADJECTIVES NEVER TRAVEL. The minutes contain words like 'farce', 'appalling', 'amazing' and 'lively'. None belongs in a register that rates nothing.",
+    "NOTHING IS RECORDED ABOUT A DEATH, an ongoing fatal accident enquiry, or a memorial arising from one. In a town this size the family is identifiable to every local reader."
   ],
   "sample": false,
-  "latestMinutes": "2025-11-20",
+  "latestMinutes": "2026-06-18",
   "coverage": {
-    "note": "Built from the approved minutes of nine meetings in 2025 — January, February, April, May, June, July, August, September and November — together with December 2024 where an item began there. Minutes for March, October and December 2025 are not in the published archive. The October meeting is recorded as having taken place: its minutes were approved at the November meeting.",
+    "note": "Built from the approved minutes of sixteen meetings — nine in 2025 (January, February, April, May, June, July, August, September and November) and six in 2026 (January to June) — together with December 2024 where an item began there. Minutes for March, October and December 2025 are not in the published archive; the October and December meetings are both recorded as having taken place, their minutes having been approved at the meetings that followed. Where an item's last mention is some time ago, that describes the written record and nothing more.",
     "meetings": [
       "2024-12-12",
       "2025-01-16",
@@ -24,16 +28,47 @@
       "2025-07-17",
       "2025-08-21",
       "2025-09-18",
-      "2025-11-20"
+      "2025-11-20",
+      "2026-01-15",
+      "2026-02-19",
+      "2026-03-19",
+      "2026-04-16",
+      "2026-05-21",
+      "2026-06-18"
     ],
     "missing": "March, October and December 2025"
   },
   "statuses": [
-    { "slug": "register", "key": "", "label": "All items", "blurb": "Every item in the register, newest record first." },
-    { "slug": "completed", "key": "completed", "label": "Completed", "blurb": "Items the minutes record as done. Completed describes the record — that a matter was determined, not that everyone was satisfied with the outcome." },
-    { "slug": "in-progress", "key": "progress", "label": "In progress", "blurb": "An action is assigned and the minutes record it moving." },
-    { "slug": "raised", "key": "raised", "label": "Raised", "blurb": "Recorded in the minutes, with no action yet assigned or taken." },
-    { "slug": "no-update", "key": "no-update", "label": "No recent update", "blurb": "The item appears in two or more meetings with nothing new recorded. No criticism is implied — minutes are a record of what was said, not of everything that happened." }
+    {
+      "slug": "register",
+      "key": "",
+      "label": "All items",
+      "blurb": "Every item in the register, newest record first."
+    },
+    {
+      "slug": "completed",
+      "key": "completed",
+      "label": "Completed",
+      "blurb": "Items the minutes record as done. Completed describes the record — that a matter was determined, not that everyone was satisfied with the outcome."
+    },
+    {
+      "slug": "in-progress",
+      "key": "progress",
+      "label": "In progress",
+      "blurb": "An action is assigned and the minutes record it moving."
+    },
+    {
+      "slug": "raised",
+      "key": "raised",
+      "label": "Raised",
+      "blurb": "Recorded in the minutes, with no action yet assigned or taken."
+    },
+    {
+      "slug": "no-update",
+      "key": "no-update",
+      "label": "No recent update",
+      "blurb": "The item appears in two or more meetings with nothing new recorded. No criticism is implied — minutes are a record of what was said, not of everything that happened."
+    }
   ],
   "digest": [
     {
@@ -50,11 +85,13 @@
       "id": "banking-hub",
       "title": "A banking hub for the town",
       "status": "progress",
-      "summary": "Kenneth Gibson MSP is to meet Link at Holyrood, and Cash Access UK have viewed possible temporary premises in town.",
-      "responsible": "Kenneth Gibson MSP. Premises visit with Cllr Hill and Cllr Collier.",
+      "summary": "Information drop-in sessions for the Largs Cash Hub were arranged at the Bank of Scotland on 16 June and 21 July 2026, 10am to 2pm.",
+      "responsible": "Cash Access UK, with Kenneth Gibson MSP.",
       "nextStep": "",
-      "lastRecorded": "2025-11-20",
-      "alsoRecorded": []
+      "lastRecorded": "2026-05-21",
+      "alsoRecorded": [
+        "2025-11-20"
+      ]
     },
     {
       "id": "community-council-membership",
@@ -69,12 +106,14 @@
     {
       "id": "chair-succession",
       "title": "The Chair is to step down in early 2026",
-      "status": "raised",
-      "summary": "The Chair will step down in early 2026, and an interim Chair is sought until the elections.",
-      "responsible": "CCllr Phillips.",
-      "nextStep": "An interim Chair to be found. Community Council elections were agreed for 2026 at September's meeting.",
-      "lastRecorded": "2025-11-20",
-      "alsoRecorded": []
+      "status": "completed",
+      "summary": "CCllr Stewart took over as interim Chair in January 2026, and tribute was paid to the outgoing Chair. By June 2026 CCllr Woodburn was chairing meetings.",
+      "responsible": "Largs Community Council.",
+      "nextStep": "",
+      "lastRecorded": "2026-01-15",
+      "alsoRecorded": [
+        "2025-11-20"
+      ]
     },
     {
       "id": "mackerston-play-area",
@@ -84,7 +123,9 @@
       "responsible": "LCC to NAC, following Kenneth Gibson MSP's enquiry.",
       "nextStep": "",
       "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2025-09-18"]
+      "alsoRecorded": [
+        "2025-09-18"
+      ]
     },
     {
       "id": "may-street-handrail",
@@ -94,7 +135,9 @@
       "responsible": "Cllr Murdoch with NAC. LCC following progress.",
       "nextStep": "",
       "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2025-09-18"]
+      "alsoRecorded": [
+        "2025-09-18"
+      ]
     },
     {
       "id": "school-crossing-glenacre",
@@ -104,7 +147,10 @@
       "responsible": "North Ayrshire Council, following a challenge led by CCllr Woodburn.",
       "nextStep": "",
       "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2025-04-17", "2025-05-15"]
+      "alsoRecorded": [
+        "2025-04-17",
+        "2025-05-15"
+      ]
     },
     {
       "id": "community-minibus",
@@ -114,7 +160,13 @@
       "responsible": "North Ayrshire Council Locality Partnership. Application pursued by LCC.",
       "nextStep": "",
       "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2024-12-12", "2025-02-20", "2025-04-17", "2025-05-15", "2025-08-21"]
+      "alsoRecorded": [
+        "2024-12-12",
+        "2025-02-20",
+        "2025-04-17",
+        "2025-05-15",
+        "2025-08-21"
+      ]
     },
     {
       "id": "scotrail-largs-line",
@@ -124,37 +176,66 @@
       "responsible": "ScotRail. Invitation issued by LCC.",
       "nextStep": "",
       "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2024-12-12", "2025-01-16", "2025-02-20"]
+      "alsoRecorded": [
+        "2024-12-12",
+        "2025-01-16",
+        "2025-02-20"
+      ]
     },
     {
       "id": "memory-walk",
       "title": "Memory Walk",
       "status": "completed",
-      "summary": "The Memory Walk was held on 22 June at Barrfields Stadium, raising money for Dementia Friendly Largs. It was the third consecutive year the walk has taken place, and planning for next year's walk is to begin.",
+      "summary": "The Memory Walk has taken place each year since 2023. The 2025 walk was held on 22 June at Barrfields Stadium for Dementia Friendly Largs, and the 2026 walk at Barrfields on 21 June, open to all. An application to the Common Good Fund towards it was successful.",
       "responsible": "LCC, with KA Leisure and Dementia Friendly Largs.",
       "nextStep": "",
-      "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2024-12-12", "2025-01-16", "2025-04-17", "2025-05-15", "2025-07-17"]
+      "lastRecorded": "2026-06-18",
+      "alsoRecorded": [
+        "2024-12-12",
+        "2025-01-16",
+        "2025-04-17",
+        "2025-05-15",
+        "2025-07-17",
+        "2025-11-20"
+      ]
     },
     {
       "id": "community-garden-displays",
       "title": "Community garden seasonal displays",
       "status": "completed",
-      "summary": "The community garden carried seasonal displays through the year, including VE Day in May, a summer display, a Viking Festival display in August, Hallowe'en, and Remembrance in November. The AGM recorded thanks to Fiona Stevenson for the artwork and to the members who worked in the garden.",
+      "summary": "The community garden carried seasonal displays through 2025 and into 2026 — VE Day, summer, the Viking Festival, Hallowe'en and Remembrance in 2025, then Easter and a World Cup theme in 2026. Thanks were recorded at the 2025 AGM to Fiona Stevenson for the artwork and to the members who work in the garden. The garden costs about £150 to £200 a year and LCC is considering how to raise it.",
       "responsible": "LCC environment sub-committee.",
-      "nextStep": "A Christmas display is next.",
-      "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2025-01-16", "2025-04-17", "2025-05-15", "2025-06-19", "2025-07-17", "2025-08-21", "2025-09-18"]
+      "nextStep": "",
+      "lastRecorded": "2026-06-18",
+      "alsoRecorded": [
+        "2025-01-16",
+        "2025-04-17",
+        "2025-05-15",
+        "2025-06-19",
+        "2025-07-17",
+        "2025-08-21",
+        "2025-09-18",
+        "2025-11-20"
+      ]
     },
     {
       "id": "litter-sign-academy",
       "title": "Love Largs litter signs at the school",
       "status": "completed",
-      "summary": "The Love Largs emoji litter signs were displayed at the school and around the town. A large sign for the main entrance of Largs Academy was due to go up on 29 September, and the AGM recorded the signs as displayed. Signs continue to be put up at other locations.",
-      "responsible": "LCC litter campaign, with Largs Academy and the Youth Forum.",
+      "summary": "Love Largs emoji litter signs were displayed at the school and around the town through 2025, and continued to go up during 2026 — at Bake n Bite in February and Fishworks by June. One spare sign remained.",
+      "responsible": "LCC litter campaign, with local businesses, Largs Academy and the Youth Forum.",
       "nextStep": "",
-      "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2024-12-12", "2025-01-16", "2025-04-17", "2025-06-19", "2025-07-17", "2025-08-21", "2025-09-18"]
+      "lastRecorded": "2026-06-18",
+      "alsoRecorded": [
+        "2024-12-12",
+        "2025-01-16",
+        "2025-04-17",
+        "2025-06-19",
+        "2025-07-17",
+        "2025-08-21",
+        "2025-09-18",
+        "2025-11-20"
+      ]
     },
     {
       "id": "access-food-stakis",
@@ -174,7 +255,13 @@
       "responsible": "LCC.",
       "nextStep": "",
       "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2025-02-20", "2025-04-17", "2025-06-19", "2025-07-17", "2025-08-21"]
+      "alsoRecorded": [
+        "2025-02-20",
+        "2025-04-17",
+        "2025-06-19",
+        "2025-07-17",
+        "2025-08-21"
+      ]
     },
     {
       "id": "accounts-audit",
@@ -184,47 +271,61 @@
       "responsible": "CCllr Wood as Treasurer, audited by North Ayrshire Council.",
       "nextStep": "",
       "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2025-09-18"]
+      "alsoRecorded": [
+        "2025-09-18"
+      ]
     },
     {
       "id": "railfuture-invitation",
       "title": "Railfuture invited to a meeting",
-      "status": "progress",
-      "summary": "An invitation has been sent to Railfuture to attend a meeting and discuss lobbying for faster and more frequent services on the North Coast line, including extra services in summer and for the Viking Festival.",
-      "responsible": "LCC.",
+      "status": "completed",
+      "summary": "Railfuture attended the February 2026 meeting and set out its aims for rail passengers. The advice recorded was to form a rail user group, engage with ScotRail's Strategy and Planning Director, and raise the service as a campaigning issue. Two actions followed: to identify the successor to the previous ScotRail director, and to request the cancellation rate for Largs under freedom of information.",
+      "responsible": "Railfuture. Invitation issued by LCC.",
       "nextStep": "",
-      "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2025-08-21", "2025-09-18"]
+      "lastRecorded": "2026-02-19",
+      "alsoRecorded": [
+        "2025-08-21",
+        "2025-09-18",
+        "2025-11-20"
+      ]
     },
     {
       "id": "farmfoods-closure",
       "title": "Closure of Farmfoods",
-      "status": "progress",
-      "summary": "Concern was expressed about the closure of Farmfoods and its effect on the town. LCC has written to the company; the minutes record that as a commercial decision little can be done.",
-      "responsible": "CCllr Woodburn is continuing to pursue it with Farmfoods.",
+      "status": "completed",
+      "summary": "Following the closure of Farmfoods, a licensing application was received in March 2026 for a proposed grocery store in the former premises, to which the Community Council recorded no objection. The loading bay outside is to remain, no order having been received to remove the loading restriction.",
+      "responsible": "North Ayrshire Council Licensing Board.",
       "nextStep": "",
-      "lastRecorded": "2025-11-20",
-      "alsoRecorded": []
+      "lastRecorded": "2026-05-21",
+      "alsoRecorded": [
+        "2025-11-20"
+      ]
     },
     {
       "id": "largs-campus-hours",
       "title": "Opening hours at Largs Campus",
       "status": "progress",
-      "summary": "LCC and KA Leisure are working to increase the hours the Largs Campus is open to the public. It was raised in September that the campus was available only three evenings a week.",
-      "responsible": "LCC with KA Leisure. Raised at September's meeting by CCllr Stewart.",
+      "summary": "LCC continued to press for longer public opening at the Largs Campus. KA Leisure advised in March 2026 that it was still trying to extend times but could not do so because of operating leases. The Community Council agreed to invite KA Leisure's Chief Executive to a meeting. In June it was recorded that a karate club had to take forty children to Garnock Academy for a grading because Largs Academy could not be opened.",
+      "responsible": "KA Leisure. Pursued by LCC and Cllr Murdoch.",
       "nextStep": "",
-      "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2025-09-18"]
+      "lastRecorded": "2026-06-18",
+      "alsoRecorded": [
+        "2025-09-18",
+        "2025-11-20"
+      ]
     },
     {
       "id": "youth-provision",
       "title": "Places for young people to meet",
-      "status": "raised",
-      "summary": "A lack of places for young people to meet and find support was raised, along with the question of what exists in town for them and how little of it is widely known. Mental health among young people was recorded as a particular concern.",
-      "responsible": "A new LCC group — Alex Hughes with Tom, Robbie, Jamie and Kerry.",
-      "nextStep": "The group is to agree a plan.",
-      "lastRecorded": "2025-11-20",
-      "alsoRecorded": ["2025-08-21"]
+      "status": "progress",
+      "summary": "Work on places for young people to meet moved forward through 2026. Space was secured at Vikingar for a Youth Project Safe Space, with an introductory event on 20 February and £160 agreed towards advertising. A music workshop hosted free of charge at Largs Naz Church led to a six-week block being planned, and discussions began with Largs Academy about further events.",
+      "responsible": "LCC youth group, with Vikingar, KA Leisure and Largs Academy.",
+      "nextStep": "",
+      "lastRecorded": "2026-04-16",
+      "alsoRecorded": [
+        "2025-08-21",
+        "2025-11-20"
+      ]
     },
     {
       "id": "cairneys-quay",
@@ -239,12 +340,17 @@
     {
       "id": "lcc-elections",
       "title": "Community Council elections",
-      "status": "completed",
-      "summary": "North Ayrshire Council extended the consultation period on the Scheme of Establishment, allowing community councils to hold elections in 2025 if they wished. Largs Community Council agreed to hold its elections in 2026. A motion to hold them in 2025 was not supported.",
-      "responsible": "Largs Community Council.",
-      "nextStep": "",
-      "lastRecorded": "2025-09-18",
-      "alsoRecorded": ["2025-05-15", "2025-06-19", "2025-07-17"]
+      "status": "progress",
+      "summary": "Community Council elections, postponed from 2025, were due to be held in September or October 2026. In June 2026, with the Review of the Scheme of Establishment still incomplete, it was agreed by all to postpone them again until the review concludes.",
+      "responsible": "Largs Community Council, pending North Ayrshire Council's review.",
+      "nextStep": "LCC has written to North Ayrshire Council asking for an update on the review.",
+      "lastRecorded": "2026-06-18",
+      "alsoRecorded": [
+        "2025-05-15",
+        "2025-06-19",
+        "2025-07-17",
+        "2025-09-18"
+      ]
     },
     {
       "id": "waterside-street",
@@ -254,7 +360,9 @@
       "responsible": "North Ayrshire Council.",
       "nextStep": "",
       "lastRecorded": "2025-09-18",
-      "alsoRecorded": ["2025-07-17"]
+      "alsoRecorded": [
+        "2025-07-17"
+      ]
     },
     {
       "id": "vape-shop-licensing",
@@ -264,7 +372,9 @@
       "responsible": "Kenneth Gibson MSP.",
       "nextStep": "",
       "lastRecorded": "2025-09-18",
-      "alsoRecorded": ["2025-08-21"]
+      "alsoRecorded": [
+        "2025-08-21"
+      ]
     },
     {
       "id": "access-food-terms",
@@ -284,7 +394,12 @@
       "responsible": "North Ayrshire Council. Pursued by LCC and Kenneth Gibson MSP.",
       "nextStep": "",
       "lastRecorded": "2025-09-18",
-      "alsoRecorded": ["2025-02-20", "2025-05-15", "2025-07-17", "2025-08-21"]
+      "alsoRecorded": [
+        "2025-02-20",
+        "2025-05-15",
+        "2025-07-17",
+        "2025-08-21"
+      ]
     },
     {
       "id": "gondola-proposal",
@@ -294,7 +409,14 @@
       "responsible": "Gondola Ventures with LCC. Point of contact CCllr Alexander.",
       "nextStep": "",
       "lastRecorded": "2025-09-18",
-      "alsoRecorded": ["2025-02-20", "2025-04-17", "2025-05-15", "2025-06-19", "2025-07-17", "2025-08-21"]
+      "alsoRecorded": [
+        "2025-02-20",
+        "2025-04-17",
+        "2025-05-15",
+        "2025-06-19",
+        "2025-07-17",
+        "2025-08-21"
+      ]
     },
     {
       "id": "valhalladrome-sound-loop",
@@ -304,7 +426,9 @@
       "responsible": "LCC to Vikingar management.",
       "nextStep": "",
       "lastRecorded": "2025-09-18",
-      "alsoRecorded": ["2025-08-21"]
+      "alsoRecorded": [
+        "2025-08-21"
+      ]
     },
     {
       "id": "brisbane-observatory",
@@ -314,17 +438,26 @@
       "responsible": "CCllr Woodburn and the Secretary.",
       "nextStep": "",
       "lastRecorded": "2025-09-18",
-      "alsoRecorded": ["2025-06-19", "2025-07-17", "2025-08-21"]
+      "alsoRecorded": [
+        "2025-06-19",
+        "2025-07-17",
+        "2025-08-21"
+      ]
     },
     {
       "id": "police-senior-invitation",
       "title": "Invitation to senior police officers",
-      "status": "no-update",
-      "summary": "It was agreed to invite the Chief Superintendent and her deputies to a meeting, with a list of topics including breach of bail, shoplifting, drugs and assaults. The action was carried forward at each meeting to September, with October or November suggested as dates.",
-      "responsible": "Police Scotland and LCC.",
+      "status": "completed",
+      "summary": "It was agreed in 2025 to invite senior officers to a meeting. The Ayrshire Police Divisional Commander attended in March 2026 and set out local policing priorities, the review of resourcing in North Ayrshire, and the establishment of community investigation hubs.",
+      "responsible": "Police Scotland. Invitation issued by LCC.",
       "nextStep": "",
-      "lastRecorded": "2025-09-18",
-      "alsoRecorded": ["2025-06-19", "2025-07-17", "2025-08-21"]
+      "lastRecorded": "2026-03-19",
+      "alsoRecorded": [
+        "2025-06-19",
+        "2025-07-17",
+        "2025-08-21",
+        "2025-09-18"
+      ]
     },
     {
       "id": "school-crossing-warden-holehouse",
@@ -344,7 +477,11 @@
       "responsible": "North Ayrshire Council. Concerns pursued by CCllr Alexander and CCllr Woodburn.",
       "nextStep": "",
       "lastRecorded": "2025-08-21",
-      "alsoRecorded": ["2025-04-17", "2025-06-19", "2025-07-17"]
+      "alsoRecorded": [
+        "2025-04-17",
+        "2025-06-19",
+        "2025-07-17"
+      ]
     },
     {
       "id": "helter-skelter-fund",
@@ -354,7 +491,11 @@
       "responsible": "Helter Skelter trustees.",
       "nextStep": "",
       "lastRecorded": "2025-07-17",
-      "alsoRecorded": ["2025-02-20", "2025-04-17", "2025-05-15"]
+      "alsoRecorded": [
+        "2025-02-20",
+        "2025-04-17",
+        "2025-05-15"
+      ]
     },
     {
       "id": "i3-site-open-letter",
@@ -374,17 +515,24 @@
       "responsible": "North Ayrshire Council. Request made by CCllr Woodburn.",
       "nextStep": "",
       "lastRecorded": "2025-07-17",
-      "alsoRecorded": ["2025-05-15", "2025-06-19"]
+      "alsoRecorded": [
+        "2025-05-15",
+        "2025-06-19"
+      ]
     },
     {
       "id": "participatory-budget",
       "title": "The Participatory Budget process",
-      "status": "no-update",
-      "summary": "Questions were raised about the voting system appearing to favour larger groups, the same groups succeeding each year, and unsuccessful applicants receiving no feedback. North Ayrshire Council advised the process was being evaluated and undertook to note the point about feedback. A drop-in session was held at Largs Library in August.",
+      "status": "completed",
+      "summary": "Questions were raised in 2025 about the Participatory Budget voting system appearing to favour larger groups, the same groups succeeding each year, and unsuccessful applicants receiving no feedback. North Ayrshire Council advised the process was being evaluated and undertook to note the point about feedback. A £1,000 award was paid to LCC in January 2026, with some funding still available towards boards at the community garden.",
       "responsible": "North Ayrshire Council.",
       "nextStep": "",
-      "lastRecorded": "2025-07-17",
-      "alsoRecorded": ["2025-01-16", "2025-02-20"]
+      "lastRecorded": "2026-05-21",
+      "alsoRecorded": [
+        "2025-01-16",
+        "2025-02-20",
+        "2025-07-17"
+      ]
     },
     {
       "id": "energy-buying-group",
@@ -399,12 +547,14 @@
     {
       "id": "twenty-mph-limit",
       "title": "Blanket 20mph speed limit",
-      "status": "no-update",
-      "summary": "North Ayrshire Council's Cabinet decided on a blanket 20mph limit across North Ayrshire, implemented through temporary traffic regulations, with all streets requiring new signage. The minutes record that a full debate of all councillors was refused, and that the view of those present was that a blanket limit was not required and should instead be targeted.",
-      "responsible": "North Ayrshire Council.",
+      "status": "progress",
+      "summary": "North Ayrshire Council's Cabinet decided on a blanket 20mph limit across North Ayrshire, implemented through temporary traffic regulations. The minutes record that a full debate of all councillors was refused, and that the view of those present in June 2025 was that a blanket limit was not required and should instead be targeted. The cost is borne by the Scottish Government. The police advised in March 2026 that the limit will not be routinely policed but targeted at injury and casualty reduction, and in April it was recorded as a temporary arrangement with an eighteen-month consultation period. Inconsistencies in signage around the town were acknowledged.",
+      "responsible": "North Ayrshire Council, under Scottish Government policy.",
       "nextStep": "",
-      "lastRecorded": "2025-06-19",
-      "alsoRecorded": []
+      "lastRecorded": "2026-04-16",
+      "alsoRecorded": [
+        "2025-06-19"
+      ]
     },
     {
       "id": "railfuture-membership",
@@ -424,7 +574,10 @@
       "responsible": "North Ayrshire Council. Request made by Calum Corral of the Largs & Millport Weekly News.",
       "nextStep": "",
       "lastRecorded": "2025-06-19",
-      "alsoRecorded": ["2025-04-17", "2025-05-15"]
+      "alsoRecorded": [
+        "2025-04-17",
+        "2025-05-15"
+      ]
     },
     {
       "id": "litter-sign-vikingar",
@@ -434,7 +587,9 @@
       "responsible": "LCC litter campaign.",
       "nextStep": "",
       "lastRecorded": "2025-06-19",
-      "alsoRecorded": ["2025-04-17"]
+      "alsoRecorded": [
+        "2025-04-17"
+      ]
     },
     {
       "id": "free-school-lunches-library",
@@ -454,7 +609,11 @@
       "responsible": "Helter Skelter trustees. Pursued by CCllr Alexander and Cllr Hill.",
       "nextStep": "",
       "lastRecorded": "2025-05-15",
-      "alsoRecorded": ["2024-12-12", "2025-01-16", "2025-02-20"]
+      "alsoRecorded": [
+        "2024-12-12",
+        "2025-01-16",
+        "2025-02-20"
+      ]
     },
     {
       "id": "helter-skelter-site",
@@ -464,7 +623,10 @@
       "responsible": "North Ayrshire Council, following a request from Cllr Marshall.",
       "nextStep": "",
       "lastRecorded": "2025-04-17",
-      "alsoRecorded": ["2025-01-16", "2025-02-20"]
+      "alsoRecorded": [
+        "2025-01-16",
+        "2025-02-20"
+      ]
     },
     {
       "id": "hunterston-representation",
@@ -474,7 +636,10 @@
       "responsible": "Largs Community Council.",
       "nextStep": "",
       "lastRecorded": "2025-04-17",
-      "alsoRecorded": ["2024-12-12", "2025-02-20"]
+      "alsoRecorded": [
+        "2024-12-12",
+        "2025-02-20"
+      ]
     },
     {
       "id": "local-place-plan",
@@ -484,7 +649,10 @@
       "responsible": "North Ayrshire Council. Plan produced by the LCC Local Place Plan group.",
       "nextStep": "",
       "lastRecorded": "2025-02-20",
-      "alsoRecorded": ["2024-12-12", "2025-01-16"]
+      "alsoRecorded": [
+        "2024-12-12",
+        "2025-01-16"
+      ]
     },
     {
       "id": "tea-dance",
@@ -494,7 +662,10 @@
       "responsible": "LCC Access to Food group.",
       "nextStep": "",
       "lastRecorded": "2025-02-20",
-      "alsoRecorded": ["2024-12-12", "2025-01-16"]
+      "alsoRecorded": [
+        "2024-12-12",
+        "2025-01-16"
+      ]
     },
     {
       "id": "nac-housing-meeting",
@@ -504,7 +675,10 @@
       "responsible": "CCllr Woodburn with North Ayrshire Council.",
       "nextStep": "",
       "lastRecorded": "2025-02-20",
-      "alsoRecorded": ["2024-12-12", "2025-01-16"]
+      "alsoRecorded": [
+        "2024-12-12",
+        "2025-01-16"
+      ]
     },
     {
       "id": "recycling-centre",
@@ -514,7 +688,9 @@
       "responsible": "North Ayrshire Council. Request made by CCllr Alexander.",
       "nextStep": "",
       "lastRecorded": "2025-02-20",
-      "alsoRecorded": ["2025-01-16"]
+      "alsoRecorded": [
+        "2025-01-16"
+      ]
     },
     {
       "id": "rose-garden",
@@ -524,7 +700,9 @@
       "responsible": "LCC environment sub-committee.",
       "nextStep": "",
       "lastRecorded": "2025-02-20",
-      "alsoRecorded": ["2025-01-16"]
+      "alsoRecorded": [
+        "2025-01-16"
+      ]
     },
     {
       "id": "largs-food-hub-funding",
@@ -534,7 +712,9 @@
       "responsible": "North Ayrshire Council and the Locality Partnership.",
       "nextStep": "",
       "lastRecorded": "2025-02-20",
-      "alsoRecorded": ["2025-01-16"]
+      "alsoRecorded": [
+        "2025-01-16"
+      ]
     },
     {
       "id": "pavement-parking",
@@ -544,7 +724,9 @@
       "responsible": "Scottish Government legislation, administered by North Ayrshire Council.",
       "nextStep": "",
       "lastRecorded": "2025-01-16",
-      "alsoRecorded": ["2024-12-12"]
+      "alsoRecorded": [
+        "2024-12-12"
+      ]
     },
     {
       "id": "yuletide-evening",
@@ -554,6 +736,130 @@
       "responsible": "Largs Events Committee.",
       "nextStep": "",
       "lastRecorded": "2025-01-16",
+      "alsoRecorded": []
+    },
+    {
+      "id": "amey-a78",
+      "title": "AMEY and the management of the A78",
+      "status": "progress",
+      "summary": "The Community Council recorded dissatisfaction with several aspects of AMEY's management of the A78 and agreed to seek to engage with the company, either privately or at a public meeting. The matters listed were the Fort Road traffic junction, the M&S crossing being out of action, flooding at Geraldo's, road closures with unsuitable diversions, the resurfacing of the A78 and damaged manholes, and a lack of community engagement.",
+      "responsible": "AMEY. The Chair to take forward on behalf of LCC.",
+      "nextStep": "",
+      "lastRecorded": "2026-01-15",
+      "alsoRecorded": []
+    },
+    {
+      "id": "douglas-park-allotments",
+      "title": "Allotments at Douglas Park",
+      "status": "progress",
+      "summary": "A proposal for allotments at Douglas Park was raised by a member of the public, who has drawn up a plan. North Ayrshire Council has advised that a change of use is required, but little progress has been recorded and the matter appears to be stuck. LCC agreed to request an update from the Council, and has carried the request forward at every meeting since January 2026.",
+      "responsible": "North Ayrshire Council. LCC requesting updates.",
+      "nextStep": "",
+      "lastRecorded": "2026-06-18",
+      "alsoRecorded": [
+        "2026-01-15",
+        "2026-02-19",
+        "2026-03-19",
+        "2026-04-16",
+        "2026-05-21"
+      ]
+    },
+    {
+      "id": "st-columbas-church",
+      "title": "The future of St Columba's Church",
+      "status": "progress",
+      "summary": "The church was given a closing date for its sale at short notice. The Friends of St Columba's made a competitive offer, conditional on the Church of Scotland retaining the building while surveys are carried out and funding is explored. The trustees were due to decide between bidders. No outcome is recorded in later minutes.",
+      "responsible": "Church of Scotland trustees. Friends of St Columba's.",
+      "nextStep": "",
+      "lastRecorded": "2026-02-19",
+      "alsoRecorded": [
+        "2026-01-15"
+      ]
+    },
+    {
+      "id": "wetherspoons-licence",
+      "title": "Off-licence application for Wetherspoons",
+      "status": "progress",
+      "summary": "An application by Wetherspoons to become an off-licence was considered. The Community Council agreed that it does not support the application, and the question of overprovision within the town was raised. The application was postponed to a hearing on 7 September 2026.",
+      "responsible": "North Ayrshire Licensing Board.",
+      "nextStep": "",
+      "lastRecorded": "2026-06-18",
+      "alsoRecorded": [
+        "2026-05-21"
+      ]
+    },
+    {
+      "id": "nac-underspend-2026",
+      "title": "North Ayrshire Council underspend and the school crossing patrols",
+      "status": "progress",
+      "summary": "North Ayrshire Council identified an underspend of £1.47 million and put three options for its use out for consideration. The Community Council proposed a fourth — using the money to protect the school crossing patrols and to acquire care capacity within the Health and Social Care Partnership — and agreed this unanimously. It was noted that a one-off underspend cannot fund continuing employment, though one-off grants could help various projects. The options return to full Council for a decision.",
+      "responsible": "North Ayrshire Council. LCC to write with its view.",
+      "nextStep": "",
+      "lastRecorded": "2026-06-18",
+      "alsoRecorded": []
+    },
+    {
+      "id": "car-park-fund",
+      "title": "The seafront car park fund",
+      "status": "progress",
+      "summary": "Takings from the seafront car park rose by £100,000 after pay and display was installed. The Community Council recorded the view that residents should be able to suggest how the money is spent, with repairs to toilet facilities among the suggestions, and proposed discussing it with members of the public at a meeting. Councillors were due to meet on 22 June 2026 to consider the fund. In January the Council declined to approve money from the fund towards Christmas lights.",
+      "responsible": "North Ayrshire Council.",
+      "nextStep": "",
+      "lastRecorded": "2026-06-18",
+      "alsoRecorded": [
+        "2026-01-15"
+      ]
+    },
+    {
+      "id": "christmas-lights-funding",
+      "title": "Funding for the Christmas lights",
+      "status": "no-update",
+      "summary": "Largs Events recorded difficulty securing a budget for the Christmas lights, and that North Ayrshire Council declined to approve money from the car park fund because of previous budget decisions. Council electricians were no longer certified to install on AMEY street furniture, and completing the installation through AMEY's appointed contractor cost Largs Events approximately £3,000. AMEY has put the cost forward to its community fund.",
+      "responsible": "Largs Events, with North Ayrshire Council and AMEY.",
+      "nextStep": "",
+      "lastRecorded": "2026-01-15",
+      "alsoRecorded": []
+    },
+    {
+      "id": "largs-colts-bowen-craig",
+      "title": "Largs Colts and the Bowen Craig asset transfer",
+      "status": "raised",
+      "summary": "Largs Colts set out its position following North Ayrshire Council's agreement to the community asset transfer of Bowen Craig. The club has around 100 volunteers, 250 children playing across ten age groups from 5 to 17, and marked fifty years in 2025. Grass pitches can be used for about six months of the year, and other facilities in town cost approximately £25,000 to £30,000 a year. The stated aims are a financially sustainable year-round facility, a sports facility needs assessment, community consultation and a site feasibility study.",
+      "responsible": "Largs Colts.",
+      "nextStep": "",
+      "lastRecorded": "2026-03-19",
+      "alsoRecorded": []
+    },
+    {
+      "id": "hunterston-ev-hub",
+      "title": "Electric vehicle charging hub at Hunterston",
+      "status": "raised",
+      "summary": "A proposal was presented for an electric vehicle charging hub at Hunterston, powered by renewable energy. It would work like a petrol forecourt but with charging points including ultra-rapid chargers, generating power on site by solar with additional supply from the national grid, and would include retail and coffee facilities. A planning application was expected within six to eight weeks.",
+      "responsible": "Greenwheel Electric Ltd.",
+      "nextStep": "",
+      "lastRecorded": "2026-06-18",
+      "alsoRecorded": []
+    },
+    {
+      "id": "hunterston-power-storage",
+      "title": "Power storage proposal at Hunterston",
+      "status": "raised",
+      "summary": "Highview Power presented proposals for a long duration energy storage facility and a stability island at Hunterston. The company's presentation indicated the development could create around 1,000 jobs.",
+      "responsible": "Highview Power.",
+      "nextStep": "",
+      "lastRecorded": "2026-02-19",
+      "alsoRecorded": [
+        "2025-11-20"
+      ]
+    },
+    {
+      "id": "counterfeit-notes",
+      "title": "Counterfeit notes in circulation",
+      "status": "completed",
+      "summary": "Reports were raised of counterfeit notes circulating locally, including notes passed to the Food Hub and other businesses. The notes feel slightly different and the silver hologram strip can be peeled off. It was agreed the problem should be communicated to residents to increase awareness. The Bank of England publishes guidance on checking notes.",
+      "responsible": "Police Scotland.",
+      "nextStep": "",
+      "lastRecorded": "2026-04-16",
       "alsoRecorded": []
     }
   ],

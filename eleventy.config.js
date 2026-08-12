@@ -36,11 +36,6 @@ module.exports = function (eleventyConfig) {
   // Copy src/assets/** to _site/assets/** untouched.
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
 
-  // Staging only: copies src/_headers to the output root, where
-  // Cloudflare Pages reads it. Sends X-Robots-Tag: noindex for the
-  // whole site. DELETE BOTH THIS LINE AND src/_headers AT LAUNCH.
-  eleventyConfig.addPassthroughCopy({ "src/_headers": "_headers" });
-
   // Evaluated once per build — the masthead dateline and "Updated"
   // stamp come from this, so a page built at 09:17 says 09:17.
   eleventyConfig.addGlobalData("buildTime", () => new Date().toISOString());
@@ -113,6 +108,33 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("recordedAt", (items, date) =>
     (items || []).filter((i) => i.lastRecorded === date)
   );
+
+  // currentNotices(items) -> public safety notices live today, in Largs
+  // wall-clock time. Same build-time expiry discipline as `upcoming` for
+  // events: the half-hourly rebuild drops a notice the day after it
+  // expires with no client JavaScript and nothing to remember to remove.
+  // Returns at most one — a stack of banners is wallpaper.
+  eleventyConfig.addFilter("currentNotices", (items) => {
+    const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });
+    const today = `${p.year}-${p.month}-${p.day}`;
+    return (items || [])
+      .filter((n) => (n.starts || today) <= today && (n.expires || today) >= today)
+      .slice(0, 1);
+  });
+
+  // monthsBetween("2025-11-20", "2026-06-18") -> 6
+  // Whole months between two ISO dates, used to decide whether an item's
+  // last mention is far enough behind the newest minutes to warrant the
+  // staleness line on its card. Computed at build time from the data that
+  // is already there, so it can never itself go stale: an item that was
+  // current last month becomes stale on its own as later minutes arrive,
+  // with nothing to remember and nothing to maintain.
+  eleventyConfig.addFilter("monthsBetween", (from, to) => {
+    if (!from || !to) return 0;
+    const [fy, fm] = String(from).split("-").map(Number);
+    const [ty, tm] = String(to).split("-").map(Number);
+    return (ty - fy) * 12 + (tm - fm);
+  });
 
   // newestFirst(items) -> sorted by last recorded, most recent first.
   // Copies before sorting: Array.prototype.sort mutates, and mutating

@@ -46,7 +46,7 @@ eleventyComputed:
   {% if items | length %}
   <div class="issues">
     {% for item in items %}
-    {{ issueCard(item, council.minutesUrl) }}
+    {{ issueCard(item, council.minutesUrl, council.latestMinutes) }}
     {% endfor %}
   </div>
   {% else %}

@@ -1,0 +1,30 @@
+{# Public safety notice band for the Today board.
+
+   Renders nothing at all when no notice is live, so it is safe to leave
+   in place permanently — the whole block disappears from the HTML rather
+   than collapsing to an empty box.
+
+   Deliberately NOT styled as an alarm. This is a town noticeboard, not an
+   emergency broadcast: a calm band that says what to look for and what to
+   do. Red banners and warning triangles train people to ignore them, and
+   the audience here skews older and is easily alarmed by the visual
+   language of emergency.
+
+   The link goes to the item in the register, so the notice is always
+   traceable to the meeting where it was raised. #}
+
+{% set live = notice.notices | currentNotices %}
+{% if live | length %}
+{% for n in live %}
+<section class="wrap notice-band" aria-labelledby="notice-h">
+  <div class="notice-inner">
+    <p class="notice-kicker">Public safety notice</p>
+    <h2 class="notice-title" id="notice-h">{{ n.title }}</h2>
+    <p class="notice-body">{{ n.body }}</p>
+    {% if n.sourceUrl %}
+    <p class="notice-source"><a href="{{ n.sourceUrl }}">Where this came from →</a></p>
+    {% endif %}
+  </div>
+</section>
+{% endfor %}
+{% endif %}

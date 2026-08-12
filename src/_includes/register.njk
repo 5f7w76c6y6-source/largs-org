@@ -18,7 +18,10 @@
 
 {# One issue. `minutesUrl` is passed rather than read from the global so
    the macro has no hidden dependency on the data cascade. #}
-{% macro issueCard(item, minutesUrl) %}
+{# `latestMinutes` is passed so the card can say when its own record has
+   gone quiet. Optional: called without it, the staleness line simply never
+   renders, so nothing breaks if a future template forgets it. #}
+{% macro issueCard(item, minutesUrl, latestMinutes) %}
 {% set labels = { "raised": "Raised", "progress": "In progress", "completed": "Completed", "no-update": "No recent update" } %}
 {% set glyphs = { "raised": "◇", "progress": "◐", "completed": "●", "no-update": "○" } %}
 <article class="issue" id="issue-{{ item.id }}">
@@ -35,6 +38,10 @@
     <div><span class="issue-label">Next step</span> · {{ item.nextStep }}</div>
     {% endif %}
     <div><span class="issue-label">Last recorded</span> · {{ item.lastRecorded | dateLong }}{% if minutesUrl %} · <a href="{{ minutesUrl }}">minutes</a>{% endif %}</div>
+    {% if latestMinutes and (item.lastRecorded | monthsBetween(latestMinutes)) >= 6 %}
+    <p class="issue-stale">No later minutes mention this item. That describes the
+    written record, not necessarily what has happened since.</p>
+    {% endif %}
     {% if item.alsoRecorded and item.alsoRecorded.length %}
     <div class="issue-history">Also recorded {% for d in item.alsoRecorded %}{{ d | dateLong }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
     {% endif %}
