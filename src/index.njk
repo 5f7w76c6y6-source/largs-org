@@ -168,7 +168,8 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
 
 {# ================= ON TODAY ================= #}
 {% set todayEvents = events.items | todayOnly %}
-{% if todayEvents | length > 0 %}
+{% set todayRegulars = events.regulars | regularsToday %}
+{% if (todayEvents | length) + (todayRegulars | length) > 0 %}
 <section class="board wrap" aria-labelledby="today-events-h">
   <div class="kicker">
     <span id="today-events-h">On today</span>
@@ -186,6 +187,23 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       <h3>{{ e.title }}</h3>
       <div class="meta">{{ e.venue | upper }} · {{ e.time | upper }}</div>
       <p>{{ e.blurb }}</p>
+    </div>
+  </article>
+  {% endfor %}
+
+  {# Regular classes and clubs meeting today. Same .event markup as
+     above so they read as one list — the time takes the place of the
+     date block, since a weekly class has no date to show. #}
+  {% for r in todayRegulars %}
+  <article class="event">
+    <div class="when">
+      <div class="dow">Every</div>
+      <div class="dom">{% set dayShort = {"monday":"Mon","tuesday":"Tue","wednesday":"Wed","thursday":"Thu","friday":"Fri","saturday":"Sat","sunday":"Sun"} %}{{ dayShort[r.weekday] }}</div>
+    </div>
+    <div class="event-body">
+      <h3>{{ r.title }}</h3>
+      <div class="meta">{% if r.venue %}{{ r.venue | upper }}{% endif %}{% if r.venue and r.time %} · {% endif %}{% if r.time %}{{ r.time | upper }}{% endif %}</div>
+      {% if r.blurb %}<p>{{ r.blurb }}</p>{% endif %}
     </div>
   </article>
   {% endfor %}
