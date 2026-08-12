@@ -673,3 +673,13 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 }
 .regular-blurb{font-size:.95rem;color:var(--ink);margin:0 0 4px}
 .regular-contact{font-size:.9rem;color:var(--muted);margin:0}
+
+/* Masthead tagline. Completes the wordmark as a phrase — "Largs" …
+   "…for you" — so it is set lowercase: an ellipsis implies speech
+   carrying on, while the small-caps mono used elsewhere on the site
+   (SAMPLE, TIMETABLE, TRAINS TO GLASGOW) is the vocabulary of category
+   labels, and the two read against each other. Tracking is tightened
+   from the .28em used for those labels so the ellipsis sits close to
+   the word it leads into. */
+.tagline{text-transform:none;letter-spacing:.06em;
+  margin-top:-2px;padding-left:.05em;word-spacing:-.12em}
