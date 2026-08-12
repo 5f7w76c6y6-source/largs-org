@@ -1,0 +1,7 @@
+{
+  "_comment": "PS Waverley link-out tile. Identity verified from her VesselFinder page on 12 Aug 2026: MMSI 232001540, IMO 5386954, callsign GRPM, UK flag. The tile is PERMANENT and claims no location — the link answers 'where is she right now?' wherever she is, and her winters on the Thames and south coast are part of the story, not a reason to hide her. If the tracker URL ever dies, VesselFinder pages also resolve by IMO.",
+  "mmsi": "232001540",
+  "imo": "5386954",
+  "callsign": "GRPM",
+  "trackerUrl": "https://www.vesselfinder.com/?mmsi=232001540"
+}

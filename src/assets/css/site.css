@@ -683,3 +683,11 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
    the word it leads into. */
 .tagline{text-transform:none;letter-spacing:.06em;
   margin-top:-2px;padding-left:.05em;word-spacing:-.12em}
+
+/* ---- PS Waverley tile -------------------------------------------
+   The one tile whose icon is the picture: her silhouette spans the
+   full card width between the label and the link line. width/height
+   attributes on the img prevent layout shift while it loads; the
+   PNG has a transparent background with edges cut to the ink colour,
+   so it sits clean on the card. */
+.tile-hero{display:block;width:100%;height:auto;margin:10px 0 8px}

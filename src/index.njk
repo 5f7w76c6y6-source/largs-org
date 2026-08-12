@@ -104,6 +104,19 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       <div class="sub">Summer timetable from the Slip · <a href="{{ site.links.calmacStatus }}">check live status →</a></div>
     </div>
 
+    {# PS Waverley — the last seagoing paddle steamer, a Clyde icon.
+       Permanent tile: the link answers "where is she right now?"
+       wherever she is — Firth, Thames or south coast — so no location
+       is claimed and no season gate is needed. Identity verified from
+       her VesselFinder page, 12 Aug 2026: MMSI 232001540. #}
+    <div class="tile">
+      <div class="label"><span class="dot ok" aria-hidden="true"></span>PS Waverley <span class="badge timetable">1946</span></div>
+      <img class="tile-hero" src="/assets/img/waverley.png"
+           alt="Silhouette of the paddle steamer Waverley"
+           width="720" height="238" loading="lazy" decoding="async">
+      <div class="sub">The last seagoing paddle steamer, still sailing · <a href="{{ waverley.trackerUrl }}">where is she right now? →</a></div>
+    </div>
+
     <div class="tile">
       <div class="label"><span class="dot ok" aria-hidden="true"></span>{{ icons.trains() }}Trains to Glasgow <span class="badge timetable">timetable</span></div>
       <div class="figure">Usually twice hourly</div>
