@@ -278,7 +278,7 @@
       "id": "railfuture-invitation",
       "title": "Railfuture invited to a meeting",
       "status": "completed",
-      "summary": "Railfuture was invited in August 2025 to discuss strategies for lobbying for improvements to the North Coast line, including faster and more frequent services and enhanced services in summer and for events such as the Viking Festival. Railfuture attended the February 2026 meeting and set out its aims for rail passengers. The advice recorded was to form a rail user group, engage with ScotRail's Strategy and Planning Director, and raise the service as a campaigning issue. Two actions followed: to identify the successor to the previous ScotRail director, and to request the cancellation rate for Largs under freedom of information.",
+      "summary": "Railfuture was invited in August 2025 to discuss strategies for lobbying for improvements to the North Coast line, including faster and more frequent services and enhanced services in summer and for events such as the Viking Festival. Railfuture attended the February 2026 meeting and set out its aims for rail passengers. The improvements sought for Largs were shorter journeys, more capacity, fewer stops, twice-hourly trains and better punctuality, and it was suggested that the clash between the Viking Festival weekend and the Ayr air show be raised with the MSP for a question to the Minister for Transport. The advice recorded was to form a rail user group, engage with ScotRail's Strategy and Planning Director, and raise the service as a campaigning issue. Two actions followed: to identify the successor to the previous ScotRail director, and to request the cancellation rate for Largs under freedom of information.",
       "responsible": "Railfuture. Invitation issued by LCC.",
       "nextStep": "",
       "lastRecorded": "2026-02-19",
@@ -317,7 +317,7 @@
       "id": "youth-provision",
       "title": "Places for young people to meet",
       "status": "progress",
-      "summary": "A member of the public asked in August 2025 what was being done for young people, noting a lack of awareness of what already exists; an open football pitch and IT upskilling were suggested, and the young person was invited to work with LCC. In November Alexander Hughes was appointed an Appointed Adviser on youth in the community, having raised the lack of places for young people to meet and get support and an interest in mental health among them, and a group was set up to agree a plan. Space was secured at Vikingar for a Youth Project Safe Space, with an introductory event in February 2026 and £160 agreed towards advertising. In April a taster musical workshop was hosted free of charge at Largs Naz Church as part of a youth mental health initiative, leading to a six-week block being planned, with further events discussed at Largs Academy.",
+      "summary": "A member of the public asked in August 2025 what was being done for young people, noting a lack of awareness of what already exists; an open football pitch and IT upskilling were suggested, and the young person was invited to work with LCC. In November Alexander Hughes was appointed an Appointed Adviser on youth in the community, having raised the lack of places for young people to meet and get support and an interest in mental health among them, and a group was set up to agree a plan. Space was secured at Vikingar for a Youth Project Safe Space, with an introductory event in February 2026 and £160 agreed towards advertising flyers, proposed by CCllr Macintosh and seconded by CCllr Stevenson. In April a taster musical workshop was hosted free of charge at Largs Naz Church as part of a youth mental health initiative, leading to a six-week block being planned, with further events discussed at Largs Academy.",
       "responsible": "LCC youth group, with Vikingar, KA Leisure and Largs Academy.",
       "nextStep": "",
       "lastRecorded": "2026-04-16",
@@ -501,11 +501,13 @@
       "id": "i3-site-open-letter",
       "title": "Open letter on the i3 site money",
       "status": "no-update",
-      "summary": "LCC agreed to write an open letter to the five elected members proposing that £1.25m allocated to the i3 site in Irvine be repurposed and shared between communities, with Largs's share going towards a community minibus, flower beds on the promenade and, subject to funds remaining, works to reopen the Aubery toilets. Other community councils were to be asked to support the approach.",
+      "summary": "LCC agreed to write an open letter to the five elected members proposing that £1.25m allocated to the i3 site in Irvine be repurposed and shared between communities, with Largs's share going towards a community minibus, flower beds on the promenade and, subject to funds remaining, works to reopen the Aubery toilets. Other community councils were to be asked to support the approach. In February 2026 CCllr Woodburn recorded that he had asked about redistributing the money to local communities in August 2025 and had received no reply.",
       "responsible": "CCllr Woodburn. Proposed by CCllr Woodburn, seconded by CCllr Low Thomson, agreed by all.",
       "nextStep": "",
-      "lastRecorded": "2025-07-17",
-      "alsoRecorded": []
+      "lastRecorded": "2026-02-19",
+      "alsoRecorded": [
+        "2025-07-17"
+      ]
     },
     {
       "id": "i3-site-foi",
@@ -962,13 +964,34 @@
       "id": "olympic-torch",
       "title": "Bringing the Olympic torch to Largs",
       "status": "raised",
-      "summary": "A suggestion was made in April 2025 to engage with the Olympic committee about bringing the torch to Largs, drawing on the town's connection with Brisbane, which hosts the 2032 Games. In January 2026 Cllr Murdoch reported on activities to take the idea forward, crediting its origin to the Community Council.",
+      "summary": "A suggestion was made in April 2025 to engage with the Olympic committee about bringing the torch to Largs, drawing on the town's connection with Brisbane, which hosts the 2032 Games. In January 2026 Cllr Murdoch reported on activities to take the idea forward, crediting its origin to the Community Council. In February he told the meeting he had put to North Ayrshire Council his concern that without action from them the torch would not come to Largs, and LCC recorded that it was keen to support the effort and to be involved.",
       "responsible": "Cllr Murdoch, with North Ayrshire Council.",
       "nextStep": "",
-      "lastRecorded": "2026-01-15",
+      "lastRecorded": "2026-02-19",
       "alsoRecorded": [
-        "2025-04-17"
+        "2025-04-17",
+        "2026-01-15"
       ]
+    },
+    {
+      "id": "brisbane-glen-road-works",
+      "title": "Pavement extension and island on Brisbane Glen Road",
+      "status": "raised",
+      "summary": "Complaints were recorded in February 2026 about the lack of consultation before the pavement was extended and a new island installed on Brisbane Glen Road. The work was requested by traffic police, who raised concerns about the junction after a serious accident there the previous year, and was funded by the Scottish Government. Cllr Murdoch raised the absence of consultation with North Ayrshire Council.",
+      "responsible": "North Ayrshire Council, funded by the Scottish Government.",
+      "nextStep": "",
+      "lastRecorded": "2026-02-19",
+      "alsoRecorded": []
+    },
+    {
+      "id": "town-centre-funding-2026",
+      "title": "UK funding for town centres and public places",
+      "status": "raised",
+      "summary": "New UK government funding for councils to improve town centres and public places was reported in February 2026, with half a million pounds available for North Ayrshire. It was described as at an early stage, and expected to be available to communities.",
+      "responsible": "North Ayrshire Council.",
+      "nextStep": "",
+      "lastRecorded": "2026-02-19",
+      "alsoRecorded": []
     }
   ],
   "meeting": {
