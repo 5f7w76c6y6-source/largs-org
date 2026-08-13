@@ -36,6 +36,15 @@ module.exports = function (eleventyConfig) {
   // Copy src/assets/** to _site/assets/** untouched.
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
 
+  // Cloudflare Pages reads _headers from the build output root, but
+  // Eleventy will not copy it on its own — it is not a template. Without
+  // this line the file sits in src/ looking correct while every deploy
+  // goes out without it. That is exactly what happened between 11 and
+  // 13 August 2026: noindex in the repo, absent on the live site.
+  // Check it, do not assume it:
+  //   curl -sI https://largs-org.pages.dev/ | grep -i x-robots-tag
+  eleventyConfig.addPassthroughCopy({ "src/_headers": "_headers" });
+
   // Evaluated once per build — the masthead dateline and "Updated"
   // stamp come from this, so a page built at 09:17 says 09:17.
   eleventyConfig.addGlobalData("buildTime", () => new Date().toISOString());
