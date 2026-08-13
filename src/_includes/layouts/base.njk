@@ -12,6 +12,16 @@
 <body>
 
 <header class="masthead">
+  {# Magnus — the Viking statue on the seafront, rendered as cream
+     linework so the banner shows through him, the same treatment as
+     the horizon silhouette below. Decorative (alt empty) so screen
+     readers are not told about him on every page. Generated from a
+     photograph of the statue; sculpture permanently sited in a public
+     place (CDPA s62). TODO: confirm the sculptor's name and credit
+     them in the colophon. #}
+  <img class="masthead-magnus" src="/assets/img/magnus.png"
+       alt="" aria-hidden="true" width="320" height="640"
+       loading="eager" decoding="async">
   <div class="wrap">
     <div class="masthead-inner">
       <div>
@@ -45,7 +55,10 @@
       <rect x="712" y="31" width="30" height="7" rx="1.5"/>
       <rect x="723" y="24" width="7" height="7" rx="1"/>
     </g>
-    <g fill="#17333A">
+    {# The Pencil, moved left of its original position so it no longer
+       stands directly beneath Magnus — the two were competing for the
+       same vertical. Shapes unchanged; only the group is offset. #}
+    <g fill="#17333A" transform="translate(-145,0)">
       <rect x="1074" y="14" width="10" height="32"/>
       <path d="M1072 14 L1079 2 L1086 14 Z"/>
       <rect x="1066" y="42" width="26" height="4"/>
