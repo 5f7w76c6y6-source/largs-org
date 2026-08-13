@@ -143,11 +143,12 @@
       "id": "school-crossing-glenacre",
       "title": "School crossing patrol at Glenacre Avenue",
       "status": "completed",
-      "summary": "North Ayrshire Council's budget of 26 February 2025 approved removing the school crossing patrol at the junction of Glenacre Avenue and Alexander Avenue, beside the primary school. A Freedom of Information request by CCllr Woodburn found the assessment had been carried out between 4pm and 4.30pm, well after the school comes out, and referred to markings for a mini roundabout that does not exist there. LCC challenged the assessment as invalid and wrote to the Head of Service and the five elected members. In May the Council acknowledged the flawed assessment and reversed the decision. The minutes record that reversal for other areas which lost their patrols was not supported.",
+      "summary": "The possible loss of a school crossing patrol was raised at the February 2025 meeting as one of the budget proposals, to be decided at the Council's budget meeting later that month. That budget, on 26 February 2025, approved removing the patrol at the junction of Glenacre Avenue and Alexander Avenue, beside the primary school. A Freedom of Information request by CCllr Woodburn found the assessment had been carried out between 4pm and 4.30pm, well after the school comes out, and referred to markings for a mini roundabout that does not exist there. LCC challenged the assessment as invalid and wrote to the Head of Service and the five elected members. In May the Council acknowledged the flawed assessment and reversed the decision. The minutes record that reversal for other areas which lost their patrols was not supported.",
       "responsible": "North Ayrshire Council, following a challenge led by CCllr Woodburn.",
       "nextStep": "",
       "lastRecorded": "2025-11-20",
       "alsoRecorded": [
+        "2025-02-20",
         "2025-04-17",
         "2025-05-15"
       ]
@@ -878,6 +879,16 @@
         "2025-09-18",
         "2026-05-21"
       ]
+    },
+    {
+      "id": "town-centre-parking-hour",
+      "title": "One-hour parking in the town centre",
+      "status": "raised",
+      "summary": "A request was made in February 2025 to increase the one-hour parking limit in the town centre to two hours, with parents taking children to toddler groups finding one hour too limited. The blue badge procedure was also discussed. Cllr Marshall's recorded view was that one hour works well, because it is possible to park for longer elsewhere in town.",
+      "responsible": "North Ayrshire Council.",
+      "nextStep": "",
+      "lastRecorded": "2025-02-20",
+      "alsoRecorded": []
     }
   ],
   "meeting": {
