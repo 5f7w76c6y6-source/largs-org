@@ -258,7 +258,6 @@
       "lastRecorded": "2025-11-20",
       "alsoRecorded": [
         "2025-02-20",
-        "2025-04-17",
         "2025-06-19",
         "2025-07-17",
         "2025-08-21"
@@ -435,11 +434,12 @@
       "id": "brisbane-observatory",
       "title": "Support for the Brisbane Observatory Trust",
       "status": "no-update",
-      "summary": "After a presentation by the Observatory Trust in June, LCC agreed to host a meeting of community groups later in the year in support of restoring the Observatory, for which £158,000 is required. The action was carried forward at each meeting to September.",
+      "summary": "An invitation to the Observatory Trust to speak to the Community Council was agreed in April 2025. After its presentation in June, LCC agreed to host a meeting of community groups later in the year in support of restoring the Observatory, for which £158,000 is required. The action was carried forward at each meeting to September.",
       "responsible": "CCllr Woodburn and the Secretary.",
       "nextStep": "",
       "lastRecorded": "2025-09-18",
       "alsoRecorded": [
+        "2025-04-17",
         "2025-06-19",
         "2025-07-17",
         "2025-08-21"
@@ -574,7 +574,7 @@
       "title": "Freedom of Information request on council employees resident in England",
       "status": "completed",
       "summary": "North Ayrshire Council responded to a Freedom of Information request about the number of its employees resident in England, stating there are three. No further information was given, and further detail was being sought.",
-      "responsible": "North Ayrshire Council. Request made by Calum Corral of the Largs & Millport Weekly News.",
+      "responsible": "North Ayrshire Council. Request made by a local newspaper reporter.",
       "nextStep": "",
       "lastRecorded": "2025-06-19",
       "alsoRecorded": [
@@ -888,6 +888,26 @@
       "responsible": "North Ayrshire Council.",
       "nextStep": "",
       "lastRecorded": "2025-02-20",
+      "alsoRecorded": []
+    },
+    {
+      "id": "cycling-without-age",
+      "title": "Cycling Without Age trishaw rides",
+      "status": "raised",
+      "summary": "Cycling Without Age, which has around ninety branches in Scotland, presented to the April 2025 meeting. The Largs chapter has ten volunteer pilots and one trishaw, which anyone can ride, including children, for outings of roughly twenty minutes to an hour. Rides are booked by telephone. The chapter works with a local care home, taking residents out accompanied by a carer, and was raising funds towards a second trishaw at a cost of £10,000.",
+      "responsible": "Cycling Without Age, Largs chapter.",
+      "nextStep": "",
+      "lastRecorded": "2025-04-17",
+      "alsoRecorded": []
+    },
+    {
+      "id": "hunterston-parc-development",
+      "title": "Development at Hunterston PARC",
+      "status": "raised",
+      "summary": "The Hunterston PARC liaison committee reported to the April 2025 meeting. The site remained quiet, with remediation work under way and visits from Navy vessels, and a planning application was in process to begin work on tower foundations. XLCC was planning and modelling the site, a new construction company was being sought after the previous one ceased trading, and work was expected to begin in March 2026. Seventeen apprentices were training in Irvine with further places available. Filling the hole to allow construction of the marine yard, which would make turbine gravity bases, was estimated at £150 million, with Dutch companies bidding to supply suitable dredgings. A bond requires all above-ground structure to be removed if the business fails.",
+      "responsible": "Hunterston PARC Liaison Committee.",
+      "nextStep": "",
+      "lastRecorded": "2025-04-17",
       "alsoRecorded": []
     }
   ],
