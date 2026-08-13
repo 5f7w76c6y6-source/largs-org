@@ -707,4 +707,28 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   position:absolute;right:3.5%;bottom:7px;height:calc(100% - 14px);width:auto;
   opacity:.9;pointer-events:none;
 }
-@media (max-width:900px){.masthead-magnus{display:none}}
+/* On a phone the dateline drops to its own line, leaving the space to
+   the right of the wordmark empty. Magnus moves into it: top-aligned,
+   sized to the wordmark block rather than the whole band, and lightened
+   so he reads as part of the banner rather than competing with the nav
+   below him. To remove him from phones again, replace this whole block
+   with:  @media (max-width:900px){.masthead-magnus{display:none}}  */
+@media (max-width:900px){
+  .masthead-magnus{display:none}
+}
+
+/* Below 600px the dateline drops to its own line and the space beside
+   the wordmark is free, so Magnus comes back there — small, top-aligned
+   and lightened. Between 600 and 900px, which includes a phone held
+   landscape, the dateline still shares a row with the wordmark and he
+   would sit on top of it, so he stays hidden. */
+@media (max-width:600px){
+  .masthead-magnus{
+    display:block;
+    right:5%;
+    bottom:auto;
+    top:10px;
+    height:56px;
+    opacity:.55;
+  }
+}
