@@ -1,5 +1,5 @@
 {
-  "_comment": "Largs Community Council issue register. Each entry is an ISSUE, not a monthly note: `id` is permanent and never reused, so when later minutes are digested the item is UPDATED in place rather than added again, and its earlier appearances are listed in `alsoRecorded`. STATUS DESCRIBES THE RECORD, NOT THE WORLD — it says what the minutes record at the last mention, never what may have happened since. raised = recorded, no action yet assigned or taken. progress = an action is assigned and the minutes record it moving. completed = the minutes record it done. no-update = the item appears in two or more meetings with nothing new recorded. Nothing is rated, ranked or scored, and no status implies criticism of anyone. Every entry is read against the source minutes before it is pushed.",
+  "_comment": "Largs Community Council issue register. Each entry is an ISSUE, not a monthly note: `id` is permanent and never reused, so when later minutes are digested the item is UPDATED in place rather than added again, and its earlier appearances are listed in `alsoRecorded`. STATUS DESCRIBES THE RECORD, NOT THE WORLD — it says what the minutes record at the last mention, never what may have happened since. raised = recorded, no action yet assigned or taken. progress = an action is assigned and the minutes record it moving. completed = the minutes record it done. no-update = the item was recorded and nothing new has appeared since. Nothing is rated, ranked or scored, and no status implies criticism of anyone. Every entry is read against the source minutes before it is pushed.",
   "_rules": [
     "A SCHEDULE IS NOT A COMPLETION. 'Will take place on 25/02/25' is a plan; unless a later meeting records it happening, the status is not completed.",
     "A QUALIFICATION TRAVELS WITH ITS COMPLETION. Where the minutes record a caveat alongside a result — no oversight of a fund, a decision LCC disagreed with — the caveat is part of the entry, not an omission.",
@@ -67,7 +67,7 @@
       "slug": "no-update",
       "key": "no-update",
       "label": "No recent update",
-      "blurb": "The item appears in two or more meetings with nothing new recorded. No criticism is implied — minutes are a record of what was said, not of everything that happened."
+      "blurb": "The item was recorded and nothing new has appeared since. No criticism is implied — minutes are a record of what was said, not of everything that happened."
     }
   ],
   "digest": [
@@ -540,7 +540,7 @@
     {
       "id": "participatory-budget",
       "title": "The Participatory Budget process",
-      "status": "no-update",
+      "status": "progress",
       "summary": "Questions were raised in January 2025 about the Participatory Budget: a voting system that appeared to favour larger groups, the same groups succeeding each year, no feedback given to unsuccessful applicants, and whether a biannual system would be fairer. It was the first year the budget had been oversubscribed. In February the Council advised the process was being evaluated, recommended that groups encourage people to vote for them, and undertook to note that unsuccessful groups are not told their vote numbers. No later minutes record the outcome of that evaluation. A drop-in session for interested groups was held at Largs Library in August 2025, £1,000 was paid to LCC in January 2026, and funding remained available in May 2026 towards boards at the community garden.",
       "responsible": "North Ayrshire Council.",
       "nextStep": "",
@@ -739,7 +739,7 @@
     {
       "id": "pavement-parking",
       "title": "Pavement parking rules",
-      "status": "no-update",
+      "status": "raised",
       "summary": "East Castle Avenue is the only street in Largs with a partial exemption from the pavement parking ban; other streets did not meet the Scottish Government's criteria on road and pavement width. Parking on a privately owned pavement is still liable to a fine. Concern was recorded about emergency vehicle access and about a general lack of communication. A letter to Transport Scotland and to the relevant Scottish Government committee was agreed in December, and clarification on road widths was sought from Kenneth Gibson MSP in January. In May 2026 it was stated that parking on the promenade is classed as pavement parking, with some exceptions, and in June that an exemption would have to be applied for.",
       "responsible": "Scottish Government legislation, administered by North Ayrshire Council.",
       "nextStep": "",
