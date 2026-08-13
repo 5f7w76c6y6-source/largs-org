@@ -193,6 +193,24 @@ module.exports = function (eleventyConfig) {
     )
   );
 
+  // ---- External links open a new tab --------------------------------
+  // Site rule, applied at build time so no link can ever be missed:
+  // external links (href starting http/https) open in a new tab with
+  // rel="noopener"; internal links, anchors and mailtos never do. The
+  // reason is the audience: a reader who follows a timetable link and
+  // then fights an unfamiliar site's back button loses their place —
+  // VesselFinder taught us this, eating two or three taps to return.
+  // A new tab keeps Largs exactly where they left it. Links that
+  // already carry a target= are left untouched.
+  eleventyConfig.addTransform("externalLinks", function (content) {
+    if (!(this.page.outputPath || "").endsWith(".html")) return content;
+    return content.replace(/<a\s[^>]*>/g, (tag) => {
+      if (!/href="https?:\/\//.test(tag)) return tag;
+      if (/target=/.test(tag)) return tag;
+      return tag.replace(/>$/, ' target="_blank" rel="noopener">');
+    });
+  });
+
   return {
     dir: {
       input: "src",
