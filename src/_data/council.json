@@ -341,15 +341,13 @@
       "id": "lcc-elections",
       "title": "Community Council elections",
       "status": "progress",
-      "summary": "Community Council elections, postponed from 2025, were due to be held in September or October 2026. In June 2026, with the Review of the Scheme of Establishment still incomplete, it was agreed by all to postpone them again until the review concludes.",
+      "summary": "Community Council elections were postponed from 2025: the Chair recommended waiting because of the timescales of the Scheme of Establishment review, and a motion to hold them in 2025 was not supported. They were then expected in September or October 2026. In June 2026, with the review still incomplete, it was agreed by all to postpone again until it concludes — proposed by CCllr Phillips, seconded by CCllr Stevenson.",
       "responsible": "Largs Community Council, pending North Ayrshire Council's review.",
-      "nextStep": "LCC has written to North Ayrshire Council asking for an update on the review.",
+      "nextStep": "",
       "lastRecorded": "2026-06-18",
       "alsoRecorded": [
-        "2025-05-15",
-        "2025-06-19",
-        "2025-07-17",
-        "2025-09-18"
+        "2025-09-18",
+        "2026-05-21"
       ]
     },
     {
@@ -861,6 +859,21 @@
       "nextStep": "",
       "lastRecorded": "2026-04-16",
       "alsoRecorded": []
+    },
+    {
+      "id": "scheme-of-establishment-review",
+      "title": "Review of the Scheme of Establishment",
+      "status": "progress",
+      "summary": "North Ayrshire Council is reviewing the Scheme of Establishment that governs community councils. LCC was encouraged in May 2025 to participate fully, with details of the process to be sent, and agreed in July to arrange a meeting to formulate a response. In September the consultation period was extended to allow further consultation. By May 2026 the review had still not been published and CCllr Woodburn agreed to email North Ayrshire Council for an update; in June it was recorded as likely later in the year. Community Council elections remain postponed until it concludes.",
+      "responsible": "North Ayrshire Council. LCC responding.",
+      "nextStep": "",
+      "lastRecorded": "2026-06-18",
+      "alsoRecorded": [
+        "2025-05-15",
+        "2025-07-17",
+        "2025-09-18",
+        "2026-05-21"
+      ]
     }
   ],
   "meeting": {
