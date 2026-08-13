@@ -691,3 +691,20 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
    PNG has a transparent background with edges cut to the ink colour,
    so it sits clean on the card. */
 .tile-hero{display:block;width:100%;height:auto;margin:10px 0 8px}
+
+/* ---- Magnus in the masthead -------------------------------------
+   Cream line-art of the seafront Viking statue, standing at the right
+   of the banner. Absolutely positioned so he costs the header no
+   height; bottom-aligned to the masthead's lower edge so he stands on
+   the horizon strip. pointer-events none so he never intercepts a tap
+   meant for the nav. Hidden below 900px — on a phone the header has
+   no spare width and he would crowd the dateline. */
+.masthead{position:relative;overflow:hidden}
+.masthead-magnus{
+  /* height tracks the band itself: spear tip near the top edge, feet
+     at the horizon, and he grows or shrinks with the masthead rather
+     than living at a magic number. */
+  position:absolute;right:3.5%;bottom:7px;height:calc(100% - 14px);width:auto;
+  opacity:.9;pointer-events:none;
+}
+@media (max-width:900px){.masthead-magnus{display:none}}
