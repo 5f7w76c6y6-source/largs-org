@@ -59,3 +59,15 @@ Delete a line when it is genuinely done, not when it is planned.
   Highest retention per hour of work on the list.
 - **School term dates**, **event categories** (reuse the register's pagination
   pattern), **the directory** (~180 listings from the original site).
+
+## Preview deployment (temporary)
+
+- [ ] **Delete the `largs-preview` Cloudflare Pages project** once the
+      Community Council conversation is had. It is a second live copy of
+      the site on a neutral hostname, created 13 Aug 2026 so the Secretary
+      could see it without the largs-org name giving away the domain
+      intention. Noindexed, but a forgotten second copy is exactly the
+      sort of thing that surfaces later.
+- [ ] It is a **snapshot**, not a mirror — it does not rebuild. Redeploy
+      with `npm run fetch && npm run build && npx wrangler pages deploy
+      _site --project-name=largs-preview` if it needs to look current.
