@@ -36,6 +36,27 @@ module.exports = function (eleventyConfig) {
   // Copy src/assets/** to _site/assets/** untouched.
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
 
+  // Roadworks filters. The date arithmetic lives here rather than in the
+  // template because Nunjucks has no clean way to add days to a date, and
+  // the workarounds go wrong at month ends. "soon" means: planned, with a
+  // registered start date falling within a fortnight of the register's own
+  // data date — not of today, because the data is only as fresh as the
+  // overnight pull. Works with no registered start date can only ever
+  // appear under "all", and the page says so.
+  eleventyConfig.addFilter("filterWorks", function (items, view, dataDate) {
+    const list = Array.isArray(items) ? items : [];
+    if (view === "active") return list.filter((w) => w.status === "active");
+    if (view === "nostart") return list.filter((w) => w.status === "planned" && !w.from);
+    if (view === "soon") {
+      const d = new Date(dataDate + "T12:00:00Z");
+      if (isNaN(d)) return [];
+      d.setUTCDate(d.getUTCDate() + 14);
+      const cutoff = d.toISOString().slice(0, 10);
+      return list.filter((w) => w.status === "planned" && w.from && w.from <= cutoff);
+    }
+    return list;
+  });
+
   // Cloudflare Pages reads _headers from the build output root, but
   // Eleventy will not copy it on its own — it is not a template. Without
   // this line the file sits in src/ looking correct while every deploy

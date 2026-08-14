@@ -1,11 +1,39 @@
 ---
 layout: layouts/base.njk
-permalink: /getting-about/
-title: Roadworks and street closures
-heading: Roadworks and street closures
-subtitle: Where the works are in and around Largs, from the Scottish Road Works Register.
+pagination:
+  data: views
+  size: 1
+  alias: view
+views:
+  - key: all
+    label: All works
+    path: /roadworks/
+  - key: active
+    label: Under way
+    path: /roadworks/under-way/
+  - key: soon
+    label: Starting soon
+    path: /roadworks/starting-soon/
+permalink: "{{ view.path }}"
+eleventyComputed:
+  title: "{{ view.label }} · Roadworks and street closures"
+  heading: Roadworks and street closures
+  subtitle: Where the works are in and around Largs, from the Scottish Road Works Register.
 ---
+{# Build-time filter pages, the same mechanism as Council corner: this one
+   template is rendered once per entry in `views`, and each rendering is
+   written to its own folder. The chips are therefore plain links —
+   bookmarkable, indexable, back-button correct, and working with
+   JavaScript switched off. Nothing filters in the browser.
+
+   `shown` is used for BOTH the list and the map's WORKS array, so the
+   dots always match the rows, and the data-work indices stay in step. #}
 {% set rw = today.roadworks %}
+{% set shown = rw.items | filterWorks(view.key, rw.dataDate) %}
+{% set countAll = rw.items | length %}
+{% set countActive = rw.items | filterWorks("active", rw.dataDate) | length %}
+{% set countSoon = rw.items | filterWorks("soon", rw.dataDate) | length %}
+{% set countNoStart = rw.items | filterWorks("nostart", rw.dataDate) | length %}
 {# Inline glosses for the work-type labels that are genuinely jargon — each
    row must stand alone for a reader who never opens the disclosure. Plain
    labels (temporary lights, road closure…) deliberately get none. #}
@@ -31,11 +59,28 @@ subtitle: Where the works are in and around Largs, from the Scottish Road Works 
   arrives. The map shows where; the list below has the detail.</p>
 
   {% if rw.ok %}
+  {# The legend counts the whole register, so it belongs only on the
+     unfiltered page — on a filter it would contradict the chips and the
+     map below it. The chips carry the counts everywhere else. #}
+  {% if view.key == "all" %}
   <p class="works-legend">
     <span><span class="swatch active"></span>{{ rw.activeCount }} under way</span>
     <span><span class="swatch planned"></span>{{ rw.plannedCount }} planned</span>
     <span>tap a dot for details</span>
   </p>
+  {% else %}
+  <p class="works-legend"><span>tap a dot for details</span></p>
+  {% endif %}
+
+  <nav class="works-filter" aria-label="Filter the works">
+    <a href="/roadworks/"{% if view.key == "all" %} aria-current="page"{% endif %}>All works <span class="n">{{ countAll }}</span></a>
+    <a href="/roadworks/under-way/"{% if view.key == "active" %} aria-current="page"{% endif %}>Under way <span class="n">{{ countActive }}</span></a>
+    <a href="/roadworks/starting-soon/"{% if view.key == "soon" %} aria-current="page"{% endif %}>Starting soon <span class="n">{{ countSoon }}</span></a>
+  </nav>
+
+  {% if view.key == "soon" %}
+  <p class="note">Works registered as starting within a fortnight of {{ rw.dataDate | dom }} {{ rw.dataDate | monthShort }}.{% if countNoStart %} {{ countNoStart }} planned {% if countNoStart == 1 %}work has{% else %}works have{% endif %} no start date registered and {% if countNoStart == 1 %}is{% else %}are{% endif %} only shown under all works.{% endif %}</p>
+  {% endif %}
 
   <div id="works-map" role="application" aria-label="Map of road works in Largs. The same information is listed below."></div>
 
@@ -66,7 +111,11 @@ subtitle: Where the works are in and around Largs, from the Scottish Road Works 
     </div>
   </details>
 
-  {% for w in rw.items %}
+  {% if shown | length == 0 %}
+  <p class="note">Nothing registered under this filter. <a href="/roadworks/">See all works →</a></p>
+  {% endif %}
+
+  {% for w in shown %}
   <article class="work-row">
     <span class="chip {{ w.status }}">{% if w.status == "active" %}Under way{% else %}Planned{% endif %}</span>
     <div class="work-main">
@@ -102,7 +151,7 @@ subtitle: Where the works are in and around Largs, from the Scottish Road Works 
    the homepage stays pure HTML. Works data is baked in at build time. */
 (function () {
   "use strict";
-  var WORKS = {{ rw.items | dump | safe }};
+  var WORKS = {{ shown | dump | safe }};
   if (!window.L) return; // CDN unreachable: the list above stands alone.
 
   var map = L.map("works-map", { scrollWheelZoom: false });

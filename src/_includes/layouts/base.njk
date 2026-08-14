@@ -36,7 +36,7 @@
         <li><a href="/whats-on/"{% if page.url == "/whats-on/" %} aria-current="page"{% endif %}>What's on</a></li>
         <li><a href="/bins/"{% if page.url == "/bins/" %} aria-current="page"{% endif %}>Bin days</a></li>
         <li><a href="/council/"{% if page.url == "/council/" %} aria-current="page"{% endif %}>Council corner</a></li>
-        <li><a href="/getting-about/"{% if page.url == "/getting-about/" %} aria-current="page"{% endif %}>Getting about</a></li>
+        <li><a href="/roadworks/"{% if page.url and "/roadworks/" in page.url %} aria-current="page"{% endif %}>Roadworks</a></li>
         <li><a href="/photos/"{% if page.url == "/photos/" %} aria-current="page"{% endif %}>Photos</a></li>
       </ul>
     </nav>
@@ -93,7 +93,7 @@
       <div class="foot-meta">
         <h4>About this site</h4>
         <p>Community-run, for the town, at no cost to anyone.<br>
-        <a href="/council/">Council corner</a> · <a href="/getting-about/">Getting about</a></p>
+        <a href="/council/">Council corner</a> · <a href="/roadworks/">Roadworks</a></p>
       </div>
     </div>
     <div class="colophon">
