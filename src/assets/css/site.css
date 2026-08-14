@@ -732,3 +732,11 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
     opacity:.55;
   }
 }
+
+
+/* ---- The week's bin, on the Today board --------------------------
+   Same silhouette as the small tile icon, at figure size, with the body
+   in the collection colour from bins.cjs. Sits beside the colour's name,
+   never instead of it. */
+.bin-row{display:flex;align-items:center;gap:12px}
+.bin-glyph{width:46px;height:46px;flex:none}

@@ -145,10 +145,10 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     <div class="tile">
       <div class="label">{{ icons.bins() }}Bins this week <span class="badge timetable">timetable</span></div>
       {% if bins.current.note %}
-      <div class="figure">Dates move</div>
+      <div class="bin-row">{{ icons.bin(bins.current.swatch) }}<div class="figure">Dates move</div></div>
       <div class="sub">Festive collections this week · <a href="/bins/">bin days →</a></div>
       {% else %}
-      <div class="figure">{{ bins.current.name }}</div>
+      <div class="bin-row">{{ icons.bin(bins.current.swatch) }}<div class="figure">{{ bins.current.name }}</div></div>
       <div class="sub">Brown too for {{ bins.current.brownCalendar }} streets · <a href="/bins/">bin days →</a></div>
       {% endif %}
     </div>
