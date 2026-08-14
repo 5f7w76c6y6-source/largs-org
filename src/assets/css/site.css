@@ -740,3 +740,15 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
    never instead of it. */
 .bin-row{display:flex;align-items:center;gap:12px}
 .bin-glyph{width:46px;height:46px;flex:none}
+
+
+/* Two sizes of the shared bin silhouette on the bins page: the headline
+   answer, and the legend that teaches what each colour holds. The three-
+   week list keeps plain swatches — three bins in a row reads as
+   decoration rather than as information. */
+.bin-glyph-lg{width:64px;height:64px}
+.bin-glyph-sm{width:38px;height:38px}
+
+/* 38px, not the 26px the tile icons use. Those label a card whose text is
+   beside them; these are scanned down a column by someone looking for
+   their colour, so they carry the meaning rather than decorate it. */

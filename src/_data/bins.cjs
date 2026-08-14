@@ -69,10 +69,24 @@ const CONFIG = {
   councilUrl: "https://www.north-ayrshire.gov.uk/bins-litter-and-recycling/bin-collection-days",
 };
 
+/* The four descriptions below were checked on 14 August 2026 against
+ * north-ayrshire.gov.uk/bins-litter-and-recycling/what-goes-in-each-bin,
+ * which also confirms the rotation this file computes: grey, blue and
+ * purple every three weeks, brown every two.
+ *
+ * Purple was wrong before that check — it read "plastics, cans and
+ * cartons" and the council list it as four groups, glass among them.
+ * "Metals" rather than "cans" is deliberate: aerosols, foil and foil
+ * trays go there too, and someone reading "cans" would bin them grey.
+ *
+ * Two traps worth knowing if this text is ever expanded: glass bottles
+ * and jars are purple, but drinking glasses, ceramics, vases and mirrors
+ * are grey; and brown takes cooked food and bones, not just garden waste.
+ */
 const COLOURS = {
   grey: { name: "Grey", holds: "General household waste", swatch: "#6E6E6E" },
   blue: { name: "Blue", holds: "Paper, card and cardboard", swatch: "#3A5BC7" },
-  purple: { name: "Purple", holds: "Plastics, cans and cartons", swatch: "#6B3FA0" },
+  purple: { name: "Purple", holds: "Plastics, cans, cartons and glass bottles", swatch: "#6B3FA0" },
   brown: { name: "Brown", holds: "Food and garden waste", swatch: "#7A4A21" },
 };
 

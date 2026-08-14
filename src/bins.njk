@@ -16,11 +16,12 @@ permalink: /bins/
 <section class="wrap council-page" aria-labelledby="thisweek-h">
   <h2 id="thisweek-h" class="visually-hidden">This week</h2>
 
+  {% import "tile-icons.njk" as icons %}
   {% if bins.current.note %}
   <p class="sample-note">{{ bins.current.note }}</p>
   {% else %}
   <div class="bin-now">
-    <span class="bin-swatch" style="background:{{ bins.current.swatch }}" aria-hidden="true"></span>
+    {{ icons.bin(bins.current.swatch, "bin-glyph bin-glyph-lg") }}
     <div>
       <div class="bin-now-label">This week in Largs</div>
       <div class="bin-now-colour">{{ bins.current.name }} bin</div>
@@ -40,7 +41,7 @@ permalink: /bins/
   <ul class="bin-ahead">
     {% for w in bins.ahead %}
     <li>
-      <span class="bin-swatch small" style="background:{{ w.swatch }}" aria-hidden="true"></span>
+      {{ icons.bin(w.swatch, "bin-glyph bin-glyph-sm") }}
       <span class="bin-ahead-colour">{{ w.name }}</span>
       <span class="bin-ahead-when">week of {{ w.startShort }}</span>
       <span class="bin-ahead-brown">brown: {{ w.brownCalendar }} streets</span>
@@ -82,13 +83,13 @@ permalink: /bins/
   <ul class="bin-key">
     {% for c in bins.order %}
     <li>
-      <span class="bin-swatch small" style="background:{{ c.swatch }}" aria-hidden="true"></span>
+      {{ icons.bin(c.swatch, "bin-glyph bin-glyph-sm") }}
       <span class="bin-key-name">{{ c.name }}</span>
       <span class="bin-key-holds">{{ c.holds }}</span>
     </li>
     {% endfor %}
     <li>
-      <span class="bin-swatch small" style="background:{{ bins.brown.swatch }}" aria-hidden="true"></span>
+      {{ icons.bin(bins.brown.swatch, "bin-glyph bin-glyph-sm") }}
       <span class="bin-key-name">{{ bins.brown.name }}</span>
       <span class="bin-key-holds">{{ bins.brown.holds }} · fortnightly, separate round</span>
     </li>
