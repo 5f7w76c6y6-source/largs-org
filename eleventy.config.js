@@ -52,7 +52,14 @@ module.exports = function (eleventyConfig) {
       if (isNaN(d)) return [];
       d.setUTCDate(d.getUTCDate() + 14);
       const cutoff = d.toISOString().slice(0, 10);
-      return list.filter((w) => w.status === "planned" && w.from && w.from <= cutoff);
+      // A floor as well as a ceiling. The register's status is the promoter's
+      // own phase code, not a date calculation, so a work stays "proposed"
+      // until someone moves it — and plenty never get moved. Without the
+      // floor, a work that was due to start a fortnight ago still counts as
+      // starting soon, which it plainly is not.
+      return list.filter(
+        (w) => w.status === "planned" && w.from && w.from >= dataDate && w.from <= cutoff
+      );
     }
     return list;
   });

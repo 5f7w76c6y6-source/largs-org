@@ -123,7 +123,7 @@ eleventyComputed:
       <p class="meta">
         {%- if w.promoter %}{{ w.promoter }}{% endif -%}
         {%- if w.status == "active" and w.until %} · {% if w.until < rw.dataDate %}was due to finish{% else %}due to finish{% endif %} {{ w.until | dom }} {{ w.until | monthShort }}{% endif -%}
-        {%- if w.status == "planned" and w.from %} · starts {{ w.from | dom }} {{ w.from | monthShort }}{% endif -%}
+        {%- if w.status == "planned" and w.from %} · {% if w.from < rw.dataDate %}was due to start{% else %}starts{% endif %} {{ w.from | dom }} {{ w.from | monthShort }}{% endif -%}
         {%- if w.status == "planned" and w.until %} · until {{ w.until | dom }} {{ w.until | monthShort }}{% endif -%}
         {%- if w.lat and w.lng %} · <a class="map-link" href="#works-map" data-work="{{ loop.index0 }}">show on map →</a>{% endif -%}
       </p>
