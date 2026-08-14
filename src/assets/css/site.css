@@ -9,6 +9,8 @@
   --card:#FFFFFF;
   --foam:#BFDED2;
   --foam-tint:#E6F0EA;
+  --water-tint:#DCE8F4;
+  --sky-tint:#F3E9C9;
   --teal:#25655C;
   --red:#C03B2B;
   --ink:#22383C;
@@ -752,3 +754,21 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 /* 38px, not the 26px the tile icons use. Those label a card whose text is
    beside them; these are scanned down a column by someone looking for
    their colour, so they carry the meaning rather than decorate it. */
+
+/* ---- Depictive fills: the water and the sky ----------------------
+   The tide curve's area is water; the daylight arc's area is sky. They
+   are filled accordingly, rather than in --foam-tint, which previously
+   made the two graphics read as the same substance.
+
+   THE RULE THIS SETS, and its limit: colour is used here because the
+   shape DEPICTS a physical thing. It is not a licence to tint the other
+   tiles. A green ferry or an amber roadworks fill would each seem as
+   reasonable as this did, and together they would break the one thing
+   that makes the board legible — that colour on this page means
+   something. Elsewhere colour is reserved for status (the dots), for
+   "now" (the teal dot), and for the bin, whose colour IS the answer.
+
+   Both tints are matched to --foam-tint for lightness, so neither
+   graphic pulls the eye harder than the seven plain tiles around it. */
+.tide-curve polygon{fill:var(--water-tint)}
+.daylight-arc path[fill]{fill:var(--sky-tint)}
