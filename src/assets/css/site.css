@@ -824,3 +824,33 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .outlook li{display:flex;flex-direction:column;align-items:center;gap:2px}
 .outlook-glyph{width:26px;height:26px}
 .outlook .mono{font-size:.68rem;color:var(--muted);letter-spacing:.02em}
+
+/* ---------- Report a problem ----------
+   A signpost page: each block is one authority's route. The emergency
+   box is the page's only use of --red, and it earns it — everything
+   else here is a link, but that one is a phone number for a hole in
+   the road. Tips are indented under their route rather than bulleted:
+   they qualify the link above them, they are not a list of equals. */
+.report-emergency{
+  background:var(--sand);border-left:4px solid var(--red);
+  padding:16px 20px;margin:0 0 28px;border-radius:0;
+}
+.report-emergency p{margin:0 0 8px}
+.report-emergency p:last-child{margin:0}
+.report-item{margin:0 0 30px}
+.report-item>p{margin:0 0 10px}
+.report-tip{
+  font-size:.94rem;color:var(--muted);
+  border-left:3px solid var(--foam);padding-left:14px;margin-top:12px;
+}
+.report-lcc-head{margin-top:38px}
+.report-lcc{
+  background:var(--foam-tint);border-left:3px solid var(--foam);
+  padding:18px 22px;margin:0 0 28px;
+}
+.report-lcc p{margin:0 0 12px}
+.report-lcc p:last-child{margin:0}
+.report-note{
+  font-size:.9rem;color:var(--muted);
+  border-top:1px solid var(--sand);padding-top:16px;margin-top:32px;
+}
