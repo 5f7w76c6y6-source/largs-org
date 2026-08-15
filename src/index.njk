@@ -18,11 +18,11 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
   <div class="tiles">
 
     <div class="tile">
-      <div class="label">{{ icons.weather() }}Weather
+      <div class="label">Weather
         {% if today.weather.ok %}<span class="badge live">live</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
       {% if today.weather.ok %}
-      <div class="figure">{{ today.weather.tempC }}°C</div>
+      <div class="weather-row">{% if today.weather.code is defined %}{{ icons.weatherGlyph(today.weather.code, today.weather.isDay) }}{% endif %}<div class="figure">{{ today.weather.tempC }}°C</div></div>
       <div class="sub">{{ today.weather.description }}{% if today.weather.feelsLine %} · {{ today.weather.feelsLine }}{% endif %}</div>
       <div class="sub">{{ today.weather.windName or today.weather.windDir }}, <span class="mono">{{ today.weather.windMph }} mph</span></div>
       {% else %}
@@ -34,7 +34,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     {% set ev = today.tides.events or [] %}
     {% set tidesOk = today.tides.ok and (ev | length) >= 3 %}
     <div class="tile">
-      <div class="label">{{ icons.tides() }}Tides · Largs
+      <div class="label">Tides · Largs
         {% if tidesOk and today.tides.source == "ukho" %}<span class="badge live">live</span>{% elif tidesOk %}<span class="badge model">model</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
       {% if tidesOk %}
@@ -74,22 +74,27 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     </div>
 
     <div class="tile">
-      <div class="label">{{ icons.daylight() }}Daylight
+      <div class="label">Daylight
         {% if today.weather.sunrise %}<span class="badge live">live</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
       {% if today.weather.sunrise %}
       <div class="figure">{{ today.weather.sunrise }}</div>
       <div class="sub">Sunrise · sunset <span class="mono">{{ today.weather.sunset }}</span></div>
       {% if sunarc.ok %}
-      <svg class="daylight-arc" viewBox="0 0 100 48" role="img"
-           aria-label="Today's daylight drawn as an arc{% if sunarc.day %}, with the sun's current position marked{% endif %}">
-        <path d="M12 40 A38 38 0 0 1 88 40 Z" fill="var(--foam-tint)"/>
-        <path d="M12 40 A38 38 0 0 1 88 40" fill="none" stroke="var(--slate)"
-              stroke-width="1.5" vector-effect="non-scaling-stroke"/>
-        {% if sunarc.day %}
-        <path d="M {{ sunarc.sunX }} {{ sunarc.sunY }} l 0.01 0" stroke="var(--card)" stroke-width="13" stroke-linecap="round" vector-effect="non-scaling-stroke" fill="none"/>
-        <path d="M {{ sunarc.sunX }} {{ sunarc.sunY }} l 0.01 0" stroke="var(--teal)" stroke-width="9" stroke-linecap="round" vector-effect="non-scaling-stroke" fill="none"/>
-        {% endif %}
+      {# The whole day as a clock face: noon at the top, midnight at the
+         bottom, the sky-coloured share running sunrise to sunset — fat in
+         June, a sliver at Christmas. The portion boundaries ARE sunrise
+         and sunset. The sun rides the rim at the current time; after
+         dark it crosses the night portion as a pale dot, because a
+         yellow sun at midnight would be a lie. #}
+      <svg class="daylight-arc" viewBox="0 0 100 100" role="img"
+           aria-label="The day drawn as a circle, its daylight share coloured as sky{% if sunarc.day %}, with the sun at the current time{% endif %}">
+        <path d="{{ sunarc.dayPath }}" fill="var(--sky-tint)"/>
+        <path d="{{ sunarc.nightPath }}" fill="var(--slate-deep)" opacity=".82"/>
+        <circle cx="50" cy="50" r="38" fill="none" stroke="var(--slate)"
+                stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+        <path d="M {{ sunarc.sunX }} {{ sunarc.sunY }} l 0.01 0" stroke="var(--card)" stroke-width="14" stroke-linecap="round" vector-effect="non-scaling-stroke" fill="none"/>
+        <path d="M {{ sunarc.sunX }} {{ sunarc.sunY }} l 0.01 0" stroke="{% if sunarc.day %}#D9A72E{% else %}#C9D2CF{% endif %}" stroke-width="10" stroke-linecap="round" vector-effect="non-scaling-stroke" fill="none"/>
       </svg>
       {% endif %}
       {% else %}

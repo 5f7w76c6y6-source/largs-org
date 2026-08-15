@@ -150,6 +150,12 @@ async function loadWeather() {
     ok: true,
     tempC: Math.round(current.temperature_2m),
     description,
+    // The WMO code and day flag drive the condition glyph on the tile.
+    // The glyph depicts the sky RIGHT NOW; `description` may carry a
+    // forecast clause ("...shower later") that the glyph deliberately
+    // does not show. Words forecast, the picture depicts.
+    code: current.weather_code,
+    isDay: current.is_day === 1,
     windMph: Math.round(current.wind_speed_10m),
     windDir: compass(current.wind_direction_10m),
     windName: windName(current.wind_direction_10m),

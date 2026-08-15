@@ -11,6 +11,11 @@
   --foam-tint:#E6F0EA;
   --water-tint:#DCE8F4;
   --sky-tint:#F3E9C9;
+  /* Deeper cousins of the two tints, for the weather glyph: the pastel
+     fills read as background washes, but a glyph at 46px needs enough
+     saturation to say "sun" and "rain" at a glance. Same hues, turned up. */
+  --sun:#E3B93E;
+  --rain:#5B87BC;
   --teal:#25655C;
   --red:#C03B2B;
   --ink:#22383C;
@@ -610,7 +615,9 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .tile .label .tile-icon{width:26px;height:26px;flex:none}
 
 /* ---------- daylight arc ---------- */
-.daylight-arc{display:block;width:100%;height:52px;margin-top:10px}
+/* A square drawing: the circle renders at a fixed size, centred.
+   (The old 52px height belonged to the semicircular dome.) */
+.daylight-arc{display:block;width:104px;height:104px;margin:10px auto 0}
 .work-main .work-gloss{font-size:.88rem;color:var(--muted);margin-top:2px;max-width:60ch}
 
 /* ---- Council corner: the issue register strip -------------------
@@ -771,7 +778,9 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
    Both tints are matched to --foam-tint for lightness, so neither
    graphic pulls the eye harder than the seven plain tiles around it. */
 .tide-curve polygon{fill:var(--water-tint)}
-.daylight-arc path[fill]{fill:var(--sky-tint)}
+/* The daylight circle names its own fills in the SVG (--sky-tint for
+   day, --slate-deep for night, --sun for the dot); the old override
+   here was repainting the night wedge as sky. */
 
 
 /* ---- Roadworks filter chips -------------------------------------
@@ -787,3 +796,12 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .works-filter a[aria-current="page"]{background:var(--teal);border-color:var(--teal);color:var(--paper)}
 .works-filter .n{font-family:ui-monospace,monospace;font-size:.85rem;opacity:.75}
 .works-filter a[aria-current="page"] .n{opacity:.9}
+
+
+/* ---- The sky on the weather tile ----------------------------------
+   Current conditions as a picture, beside the temperature. Depictive
+   colour, same licence as the tide/daylight fills and the bin: sun in
+   the board's yellow, rain in its blue. The written condition always
+   stands beside it. */
+.weather-row{display:flex;align-items:center;gap:12px}
+.weather-glyph{width:46px;height:46px;flex:none}
