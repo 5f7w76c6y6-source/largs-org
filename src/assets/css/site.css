@@ -805,3 +805,17 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
    stands beside it. */
 .weather-row{display:flex;align-items:center;gap:12px}
 .weather-glyph{width:46px;height:46px;flex:none}
+
+
+/* ---- The next eight hours, on the weather tile --------------------
+   Four two-hour blocks, each drawn with the same condition glyph the
+   tile's main sky uses — the vocabulary is already established, so a
+   small cloud-with-rain needs no explaining. Times are printed under
+   each because a span must say when it starts. */
+.outlook{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:4px;
+  list-style:none;margin:12px 0 0;padding:0;
+}
+.outlook li{display:flex;flex-direction:column;align-items:center;gap:2px}
+.outlook-glyph{width:26px;height:26px}
+.outlook .mono{font-size:.68rem;color:var(--muted);letter-spacing:.02em}

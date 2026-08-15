@@ -25,6 +25,17 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       <div class="weather-row">{% if today.weather.code is defined %}{{ icons.weatherGlyph(today.weather.code, today.weather.isDay) }}{% endif %}<div class="figure">{{ today.weather.tempC }}°C</div></div>
       <div class="sub">{{ today.weather.description }}{% if today.weather.feelsLine %} · {{ today.weather.feelsLine }}{% endif %}</div>
       <div class="sub">{{ today.weather.windName or today.weather.windDir }}, <span class="mono">{{ today.weather.windMph }} mph</span></div>
+      {# The next eight hours, in two-hour blocks. The times are printed
+         rather than described: "next 8 hours" would be a rolling window
+         whose meaning slides through the day, and four glyphs under such
+         a heading read as four snapshots rather than four spans. #}
+      {% if today.weather.outlook and today.weather.outlook | length %}
+      <ol class="outlook" aria-label="The next eight hours">
+        {% for b in today.weather.outlook %}
+        <li>{{ icons.weatherGlyph(b.code, b.isDay, "outlook-glyph") }}<span class="mono">{{ b.hour }}</span></li>
+        {% endfor %}
+      </ol>
+      {% endif %}
       {% else %}
       <div class="figure">—</div>
       <div class="sub">Live feed not fetched yet</div>

@@ -126,7 +126,7 @@ async function loadWeather() {
     "https://api.open-meteo.com/v1/forecast" +
     `?latitude=${WEATHER_POINT.lat}&longitude=${WEATHER_POINT.lon}` +
     "&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,is_day" +
-    "&hourly=precipitation_probability" +
+    "&hourly=precipitation_probability,weather_code" +
     "&daily=sunrise,sunset" +
     "&forecast_days=1&wind_speed_unit=mph&timezone=Europe%2FLondon";
 
@@ -165,8 +165,61 @@ async function loadWeather() {
         ? "Feels like " + Math.round(current.apparent_temperature) + "\u00B0"
         : "",
     sunrise: hhmm(data.daily?.sunrise?.[0]),
-    sunset:  hhmm(data.daily?.sunset?.[0])
+    sunset:  hhmm(data.daily?.sunset?.[0]),
+    outlook: buildOutlook(data, current)
   };
+}
+
+/* The next eight hours as four two-hour blocks, anchored to even hours
+ * so the first block contains the hour you are standing in: at 14:20
+ * the row reads 14:00, 16:00, 18:00, 20:00.
+ *
+ * Each block takes the HIGHEST WMO code of its two hours. The code table
+ * is roughly ordered by severity — clear(0) < cloud(3) < drizzle(51) <
+ * rain(61) < snow(71) < showers(80) < thunder(95) — so the max is a
+ * one-line way of saying "if there is rain in this block, show rain".
+ * A shower at 15:40 must not be hidden by sunshine at 15:00.
+ *
+ * Day or night is decided per block against today's sunrise and sunset,
+ * not against the current moment, so the 20:00 block gets a moon on an
+ * evening when the sun sets at 20:56 and it has not set yet.
+ */
+function hhmmToMin(iso) {
+  if (typeof iso !== "string" || iso.length < 16) return null;
+  return Number(iso.slice(11, 13)) * 60 + Number(iso.slice(14, 16));
+}
+
+function buildOutlook(data, current) {
+  const codes = data.hourly?.weather_code;
+  const times = data.hourly?.time;
+  if (!Array.isArray(codes) || !Array.isArray(times)) return [];
+
+  const hourNow = currentLondonHour();
+  const start = hourNow - (hourNow % 2);           // anchor to an even hour
+
+  // Compare in MINUTES, not hours. Comparing hours throws away the
+  // minutes of sunrise and sunset, so any block starting in the same
+  // hour as either is mislabelled: with sunset at 20:56, the 20:00
+  // block failed the test `20 < 20` and was drawn as night.
+  const riseM = hhmmToMin(data.daily?.sunrise?.[0]);
+  const setM  = hhmmToMin(data.daily?.sunset?.[0]);
+
+  const blocks = [];
+  for (let b = 0; b < 4; b++) {
+    const h = start + b * 2;
+    const i = times.findIndex((t) => Number(t.slice(11, 13)) === (h % 24));
+    if (i === -1) break;
+    const pair = [codes[i], codes[i + 1]].filter((c) => c != null);
+    if (!pair.length) break;
+    blocks.push({
+      hour: String(h % 24).padStart(2, "0") + ":00",
+      code: Math.max(...pair),
+      isDay: riseM != null && setM != null
+        ? (h % 24) * 60 >= riseM && (h % 24) * 60 < setM
+        : true
+    });
+  }
+  return blocks;
 }
 
 /* ---------- tides: UKHO Admiralty (authoritative) ---------- */
