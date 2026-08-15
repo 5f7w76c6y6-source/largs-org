@@ -56,8 +56,12 @@
     <path d="M24 4v6M24 38v6M4 24h6M38 24h6M9.9 9.9l4.2 4.2M33.9 33.9l4.2 4.2M38.1 9.9l-4.2 4.2M14.1 33.9l-4.2 4.2"/>
   </g>
 {%- elif code <= 1 -%}
-  {# moon #}
-  <path d="M31 6a17 17 0 1 0 11 30A19 19 0 0 1 31 6Z" fill="var(--slate)"/>
+  {# moon. --cloud, not --slate: slate is the masthead and the horizon,
+     the site's structural ink. Everything the board DEPICTS has its own
+     colour — sun in --sun, rain in --rain, cloud and moon in --cloud —
+     and a dark moon beside the pale one in moon-behind-cloud read as two
+     different objects rather than one at two sizes. #}
+  <path d="M31 6a17 17 0 1 0 11 30A19 19 0 0 1 31 6Z" fill="var(--cloud)"/>
 {%- elif code == 2 and isDay -%}
   {# sun behind cloud #}
   <circle cx="18" cy="17" r="8" fill="var(--sun)"/>
@@ -66,9 +70,14 @@
   </g>
   <path d="M14 40h20a7 7 0 0 0 1.2-13.9A10.5 10.5 0 0 0 14.9 23a8.75 8.75 0 0 0-.9 17Z" fill="var(--cloud)"/>
 {%- elif code == 2 -%}
-  {# moon behind cloud #}
-  <path d="M28 4a11 11 0 1 0 8 19A13 13 0 0 1 28 4Z" fill="var(--slate)" opacity=".55"/>
-  <path d="M14 40h20a7 7 0 0 0 1.2-13.9A10.5 10.5 0 0 0 14.9 23a8.75 8.75 0 0 0-.9 17Z" fill="var(--cloud)"/>
+  {# moon behind cloud. The crescent sits CLEAR of the cloud at top right,
+     not tucked inside it: overlapped, the two shapes merged into one lump
+     at 26px and read as neither. It is the clear-night moon's own path,
+     scaled to about half and moved, so the vocabulary stays consistent.
+     Both shapes take --cloud at full strength — the moon was --slate at
+     .55, which made the thing BEHIND darker than the thing in front. #}
+  <path d="M33.9 0.9a8.2 8.2 0 1 0 5.3 14.4A9.1 9.1 0 0 1 33.9 0.9Z" fill="var(--cloud)"/>
+  <path d="M14 42h20a7 7 0 0 0 1.2-13.9A10.5 10.5 0 0 0 14.9 25a8.75 8.75 0 0 0-.9 17Z" fill="var(--cloud)"/>
 {%- elif code == 45 or code == 48 -%}
   {# fog: the ONE hollow glyph in the set, and deliberately so. Fog is
      the only condition you can see through, so an outlined cloud
