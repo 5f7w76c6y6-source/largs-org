@@ -194,8 +194,12 @@ function buildOutlook(data, current) {
   const times = data.hourly?.time;
   if (!Array.isArray(codes) || !Array.isArray(times)) return [];
 
+  // Anchor to the NEXT even hour, not the current one. The tile's main
+  // glyph already shows the sky right now; a block labelled 14:00 at
+  // 14:23 would repeat it and spend a slot saying nothing new. Starting
+  // at the next boundary makes the row purely "what is coming".
   const hourNow = currentLondonHour();
-  const start = hourNow - (hourNow % 2);           // anchor to an even hour
+  const start = hourNow + (2 - (hourNow % 2));
 
   // Compare in MINUTES, not hours. Comparing hours throws away the
   // minutes of sunrise and sunset, so any block starting in the same
