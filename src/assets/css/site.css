@@ -16,6 +16,11 @@
      saturation to say "sun" and "rain" at a glance. Same hues, turned up. */
   --sun:#E3B93E;
   --rain:#5B87BC;
+  /* Cloud grey. Measured, not eyeballed: 3.0:1 on paper, 3.2:1 on a
+     tile card - the WCAG floor for non-text contrast. Do not lighten.
+     Separate from --slate because a cloud is a thing the board depicts,
+     not chrome: slate at 11:1 read as a storm on a bright day. */
+  --cloud:#849295;
   --teal:#25655C;
   --red:#C03B2B;
   --ink:#22383C;
