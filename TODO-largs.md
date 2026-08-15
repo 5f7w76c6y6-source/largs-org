@@ -94,6 +94,96 @@ historical: anything added below is a correction to something already visible.
       entirely and must never be added to that entry. Rule 12 bars anything
       about a death, a fatal accident enquiry, or a memorial arising from one.
 
+## Parked, waiting on someone else
+
+- [ ] **Planning applications page — parked pending permission, not
+      abandoned.** Fully specified on 15 August: ArcGIS REST at
+      `Planning_Information/MapServer/0`, fetch by date and filter to KA30 in
+      our own code (the service 502s on address filtering — `ADDRESS` is on a
+      joined table). No consultation-expiry field exists anywhere in the
+      service's 24 layers, so a comment window would have to be estimated from
+      `DATEAPVAL` and labelled as approximate.
+      **Blocked because the service carries no licence statement.**
+      `Open_Data_Portal` states OGL v3; `Planning_Information` states nothing
+      and calls itself "LVIntranet Service for use in LocalView Intranet".
+      An email to `opendata@north-ayrshire.gov.uk` is drafted and unsent —
+      decide by Monday whether to send it. It also asks whether the weekly
+      list of validated applications is available in re-usable form, which
+      would supply the missing comment deadline.
+      **Same finding applies to the works-chart project**, more strongly:
+      commercial re-use is exactly what NAC's guidance walls off.
+- [ ] **`report-it.njk` — built, builds, deliberately not in the nav.** Roads
+      and street lights verified live, with the A78 trunk-road carve-out
+      (Amey for Transport Scotland) and the 01294 310000 emergency number.
+      CSS is already appended to `site.css`. The `base.njk` nav and footer
+      patch is **written but unrun**.
+      Held because the "When to bring it to the Community Council" section
+      describes LCC's role in public — signposting the council's own forms
+      needs nobody's permission, but characterising what a body does is
+      speaking for it. Show Linda the direct URL first; it becomes an offer
+      rather than a fact.
+      Partly discharges the corrections-route promise above, but only once it
+      is reachable.
+
+## The council-papers watcher
+
+Scoped and proved on live documents, 15 August. Not built.
+
+- [ ] **First step: make the CMIS search scriptable.** Establish whether
+      `north-ayrshire.cmis.uk.com/north-ayrshire/Search.aspx` is a GET with
+      query parameters or a form post, and whether results can be filtered by
+      date. Searching "largs" returns **469 documents**, newest first, with
+      per-document hit counts — the council has already built the detection
+      layer, so nothing needs crawling.
+- [ ] **Detection is a string match, never a model.** The model's only job is
+      materiality judgement on a passage that provably contains the word, and
+      a human gates everything before publishing. It locates and links; it
+      never characterises. Every published item carries document, item and
+      link so the claim is checkable in one click.
+- [ ] **Must run daily.** Agendas publish at least three days before a
+      meeting; that notice period is the entire value. A monthly run reads
+      papers after the decision.
+- [ ] **First live test: Cabinet, 1 September 2026.** Papers publish around
+      27 August.
+
+Structure notes: meeting pages are
+`.../ViewMeetingPublic/mid/397/Meeting/{id}/Committee/{id}/` with sequential
+integer IDs; **agenda item titles and summaries are in the meeting page HTML**,
+so a cheap first pass never opens a PDF; **every agenda item has its own
+permalink** under `.../ViewCMIS_DecisionDetails/.../Id/{guid}/`, which is the
+right link target. `Document.ashx` URLs are ~700 characters with encrypted
+tokens, cannot be constructed, and must be harvested — but appear durable
+(search engines have indexed them). The search results' magnifier icon is
+**broken**, throwing an ASP.NET exception, so the in-context snippet view
+cannot be relied on. CMIS meeting pages carry `noindex,nofollow`.
+
+Committees that matter: North Ayrshire Council, Cabinet, Audit and Scrutiny,
+Licensing Committee, Licensing Board, Local Development Plan, the three
+Planning variants, Integration Joint Board. There is no North Coast Locality
+Partnership.
+
+**The proof:** the 12 August Licensing Board pack carries the Paddle Steamer,
+1 The Promenade — a Wetherspoon variation LCC objected to, continued to
+**7 September 2026**. The register already has it (`IN PROGRESS`, last
+recorded 18 June), so the two sources agree. But the Board sat on 8 June and
+the register records it on the 18th, and the hearing falls between LCC's
+August and September meetings. **The claim is timing, not discovery.**
+
+- [ ] **A second source for the register.** A watcher could tell Council corner
+      when the outside world moves an item on — a hearing happens, a decision
+      lands — so entries stop being frozen at the last date LCC mentioned them.
+
+## Ask Committee Services
+
+- [ ] **`committeeservices@north-ayrshire.gov.uk` handles committees, community
+      councils and outside bodies** — very likely the team that receives LCC's
+      minutes under the Scheme's three-week rule, and therefore able to answer
+      the missing March, October and December 2025 question independently of
+      Linda.
+      Supporting fact from the Community Council Scheme: the community council
+      must supply one copy of the minutes to the Council **within three weeks**
+      of each meeting. So if Linda has been sending them, NAC has them.
+
 ## Commercial questions, undecided
 
 - [ ] **Reconcile the domain pitch pack with actual intentions.** It commits in
