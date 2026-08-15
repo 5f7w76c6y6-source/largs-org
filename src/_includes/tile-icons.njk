@@ -36,13 +36,13 @@
 {# The sky, as a picture. SECOND EXCEPTION to identity-only, same
    licence as bin(): the sky's appearance IS the information, so the
    glyph is coloured by what it depicts — sun in the board's yellow,
-   rain in its blue, cloud in its own grey.
+   rain in its blue, cloud in its own grey. The condition is always
+   printed beside it, so nothing is lost in greyscale or to anyone who
+   cannot tell the shapes apart.
 
    Fog and snow carry NO opacity: both were --slate softened to .65 and
    .8, which worked only because slate had contrast to spare. The same
-   fade on --cloud lands near 2:1 and fails. Full strength or nothing. The condition is always printed
-   beside it, so nothing is lost in greyscale or to anyone who cannot
-   tell the shapes apart.
+   fade on --cloud lands near 2:1 and fails. Full strength or nothing.
 
    The glyph shows the CURRENT sky (weather_code + is_day). The word
    next to it may add a forecast clause ("Sunny, shower later") — that
@@ -70,9 +70,17 @@
   <path d="M28 4a11 11 0 1 0 8 19A13 13 0 0 1 28 4Z" fill="var(--slate)" opacity=".55"/>
   <path d="M14 40h20a7 7 0 0 0 1.2-13.9A10.5 10.5 0 0 0 14.9 23a8.75 8.75 0 0 0-.9 17Z" fill="var(--cloud)"/>
 {%- elif code == 45 or code == 48 -%}
-  {# fog #}
+  {# fog: the ONE hollow glyph in the set, and deliberately so. Fog is
+     the only condition you can see through, so an outlined cloud
+     depicts transparency where every other glyph depicts something
+     opaque. Three lobes rather than the generic two-bump body, and
+     mist as broken segments rather than ruled lines — staggered so no
+     two align, which is what reads as drift. Two segments cross the
+     cloud's lower third only: higher would cut the silhouette in half
+     and it would stop being a cloud. #}
+  <path d="M10 32a5.5 5.5 0 0 1 4.6-9.6a10.5 10.5 0 0 1 18.8-3.2a7.5 7.5 0 0 1 6.6 12.8Z" fill="none" stroke="var(--cloud)" stroke-width="3.4" stroke-linejoin="round"/>
   <g stroke="var(--cloud)" stroke-width="3.4" stroke-linecap="round">
-    <path d="M8 16h32M6 24h36M10 32h28M14 40h20"/>
+    <path d="M24 26h12M5 29.5h12M41 29.5h4M6 38h12M23 38h15M20 43.5h20"/>
   </g>
 {%- elif code >= 95 -%}
   {# thunder #}
