@@ -232,6 +232,19 @@ August and September meetings. **The claim is timing, not discovery.**
       30 September 2026 (`PREVIEW_UNTIL`) and says so in the Actions log, but
       the project still wants deleting.
 
+## Considered and binned
+
+- **Food hygiene page — built, considered, binned 16 August.** A working
+  fetcher, view module and page existed for about an hour. Binned because
+  the site gained nothing by re-listing the FSA's own register — no
+  reading, no discovery, just a reformat — and the only distinctive rows
+  would have chip-labelled local businesses over records as old as 2023
+  that may long since be fixed. All downside, no story. The lesson worth
+  keeping: the weekend's real wins surface what is published but UNREAD;
+  a page must earn its place by reading at a scale a person cannot, not
+  by mirroring a list that already has a search box. The fetcher lives on
+  in ~/Developer/family-watch, which is private and never feeds this site.
+
 ## Known and accepted
 
 - **Scheduled builds are best-effort.** On 14 August only one of six hourly
