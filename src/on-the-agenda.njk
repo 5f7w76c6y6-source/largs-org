@@ -1,0 +1,135 @@
+---
+layout: layouts/base.njk
+title: On the council's agenda
+heading: On the council's agenda
+subtitle: North Ayrshire Council papers that mention Largs, and when they are being discussed.
+permalink: /on-the-agenda/
+---
+{# On the council's agenda.
+
+   SEPARATE FROM COUNCIL CORNER, DELIBERATELY. Council corner is the
+   Community Council's own record, drawn only from their approved minutes,
+   and nothing writes into it from anywhere else. This page is drawn only
+   from North Ayrshire's committee papers and meeting calendar. Different
+   source, different tense, no cross-reference between them. If a reader
+   notices the same subject in both, that is their inference to draw, not
+   this site's claim to make.
+
+   WHAT THIS PAGE KNOWS, AND WHAT IT DOES NOT. It knows a meeting is
+   happening, whether papers have been lodged, and whether the word Largs
+   appears in them. It has not read a single document. So every row says
+   "mentions" and links out — it never characterises, summarises or ranks.
+   A page that guessed at substance would be worth less than nothing here.
+
+   Links go to the MEETING PAGE, not the file. The meeting page lists the
+   agenda items and survives; document links are 600-character encrypted
+   tokens that may not.
+
+   No JavaScript. The folds are <details>, which is markup, not script. #}
+
+<div class="wrap">
+{% if not agenda.ok %}
+  <p class="agenda-empty">The agenda list has not been collected yet, so there is
+  nothing to show. This page will fill in once it has run.</p>
+{% else %}
+
+<p class="agenda-intro">North Ayrshire Council publishes the papers for its
+committees at least three days before each meeting. This page lists the ones
+that mention Largs, so you can see what is coming before it is decided rather
+than after. Some mentions are decisions about the town; others are just the name
+in a list. Follow the link to see which.</p>
+
+<h2>Coming up</h2>
+{% if agenda.upcoming | length %}
+  <ul class="agenda-list">
+  {% for m in agenda.upcoming %}
+    <li class="agenda-row agenda-ahead">
+      <p class="agenda-when">{{ m.display }}</p>
+      <p class="agenda-what">
+        {% if m.url %}<a href="{{ m.url }}">{{ m.committee }}</a>
+        {% else %}{{ m.committee }}{% endif %}
+      </p>
+      <p class="agenda-detail">{{ m.hits }} mention{% if m.hits != 1 %}s{% endif %}
+      of Largs in the papers.</p>
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p class="agenda-none">No meeting with published papers mentions Largs at the
+  moment. Papers appear about three days before a meeting, so this is the normal
+  state between sittings.</p>
+{% endif %}
+
+{% if agenda.counts.scheduled %}
+<p class="agenda-forward"><a href="/on-the-agenda/scheduled/">{{ agenda.counts.scheduled }}
+more meetings are in the council's diary{% if agenda.scheduledTo %}, up to
+{{ agenda.scheduledTo }}{% endif %} →</a><br>
+<span class="agenda-sub">Their papers are not published yet, so there is no way
+to know yet whether Largs is in them.</span></p>
+{% endif %}
+
+<h2>Recently</h2>
+{% if agenda.recent | length %}
+  <ul class="agenda-list">
+  {% for m in agenda.recent %}
+    <li class="agenda-row">
+      <p class="agenda-when">{{ m.display }}</p>
+      <p class="agenda-what">
+        {% if m.url %}<a href="{{ m.url }}">{{ m.committee }}</a>
+        {% else %}{{ m.committee }}{% endif %}
+      </p>
+      <p class="agenda-detail">{{ m.hits }} mention{% if m.hits != 1 %}s{% endif %}
+      in the papers</p>
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p class="agenda-none">Nothing in the last {{ agenda.recentDays }} days.</p>
+{% endif %}
+
+{% if agenda.earlier | length %}
+<details class="agenda-earlier">
+  <summary>Earlier meetings ({{ agenda.earlier | length }})</summary>
+  <ul class="agenda-list">
+  {% for m in agenda.earlier %}
+    <li class="agenda-row">
+      <p class="agenda-when">{{ m.display }}</p>
+      <p class="agenda-what">
+        {% if m.url %}<a href="{{ m.url }}">{{ m.committee }}</a>
+        {% else %}{{ m.committee }}{% endif %}
+      </p>
+      <p class="agenda-detail">{{ m.hits }} mention{% if m.hits != 1 %}s{% endif %}
+      in the papers</p>
+    </li>
+  {% endfor %}
+  </ul>
+</details>
+{% endif %}
+
+<details class="agenda-how">
+  <summary>How this page is made</summary>
+  <p>Two lists are put together. North Ayrshire publishes a calendar of its
+  committee meetings months in advance, which is where the dates come from. It
+  also runs a search across its own committee documents, which is where the
+  mention counts come from. Nothing here is written by hand, and nothing is
+  interpreted.</p>
+  <p>A mention can be substantial or trivial. A town name in a list of
+  settlements counts the same as a decision about the town, and there is no way
+  to tell which is which without opening the paper. That is why this page points
+  rather than summarises.</p>
+  <p>Papers are normally published at least three days before a meeting, so a
+  meeting listed without papers is not being ignored — the documents simply do
+  not exist yet. Minutes follow afterwards.</p>
+  {% if agenda.counts %}
+  <p class="agenda-meta">{{ agenda.counts.meetings }} meetings known,
+  {{ agenda.counts.mentioned }} with papers mentioning Largs{% if agenda.cutoff %},
+  back to {{ agenda.cutoff }}{% endif %}.</p>
+  {% endif %}
+</details>
+
+<p class="agenda-note">This is not the Community Council's record. What Largs
+Community Council itself discussed, and what it is still pursuing, is in
+<a href="/council/">Council corner</a>.</p>
+
+{% endif %}
+</div>

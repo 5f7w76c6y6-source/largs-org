@@ -854,3 +854,63 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   font-size:.9rem;color:var(--muted);
   border-top:1px solid var(--sand);padding-top:16px;margin-top:32px;
 }
+
+/* ---------- On the council's agenda ----------
+   A dated list, so the date leads and everything else hangs off it —
+   the same 64px anchor block as the roadworks and register rows, which
+   is why the metrics match rather than being chosen afresh. Forthcoming
+   meetings get a foam left edge: the one piece of colour on the page,
+   and it means "not yet decided", which is the whole point of it. */
+.agenda-intro{margin:0 0 28px}
+.agenda-list{list-style:none;margin:0 0 28px;padding:0}
+.agenda-row{
+  display:grid;grid-template-columns:104px 1fr;gap:2px 18px;
+  padding:14px 0;border-top:1px solid var(--sand);
+}
+.agenda-row:last-child{border-bottom:1px solid var(--sand)}
+.agenda-when{
+  grid-row:1 / span 2;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.9rem;color:var(--muted);margin:0;padding-top:2px;
+}
+.agenda-what{margin:0;font-size:1.05rem}
+.agenda-detail{margin:0;font-size:.94rem;color:var(--muted)}
+.agenda-ahead{
+  border-left:3px solid var(--foam);padding-left:14px;
+  background:var(--foam-tint);
+}
+.agenda-none,.agenda-empty{
+  color:var(--muted);background:var(--sand);
+  padding:14px 18px;margin:0 0 28px;
+}
+.agenda-earlier,.agenda-how{margin:0 0 24px}
+.agenda-earlier summary,.agenda-how summary{
+  cursor:pointer;font-size:.95rem;color:var(--teal);padding:8px 0;
+}
+.agenda-how p{font-size:.94rem;color:var(--muted);margin:0 0 10px}
+.agenda-meta{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85rem}
+.agenda-note{
+  font-size:.94rem;border-top:1px solid var(--sand);
+  padding-top:16px;margin-top:32px;
+}
+@media (max-width:600px){
+  .agenda-row{grid-template-columns:1fr;gap:2px}
+  .agenda-when{grid-row:auto}
+}
+
+/* Month headings on the scheduled page sit lighter than page headings —
+   they divide a diary, they do not announce sections. The "papers out"
+   tag is the only thing on that page carrying information, so it is the
+   only thing allowed to stand out. */
+.agenda-month{
+  font-size:1.1rem;margin:28px 0 4px;padding-bottom:6px;
+  border-bottom:2px solid var(--foam);
+}
+.agenda-tag{
+  font-size:.85rem;color:var(--teal);background:var(--foam-tint);
+  padding:2px 8px;border-radius:3px;white-space:nowrap;
+}
+.agenda-forward{
+  background:var(--foam-tint);border-left:3px solid var(--foam);
+  padding:14px 18px;margin:0 0 28px;
+}
+.agenda-forward a{font-size:1.05rem}

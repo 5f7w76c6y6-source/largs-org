@@ -1,0 +1,61 @@
+---
+layout: layouts/base.njk
+title: Meetings scheduled · On the council's agenda
+heading: Meetings scheduled
+subtitle: Every North Ayrshire Council meeting currently in the diary, month by month.
+permalink: /on-the-agenda/scheduled/
+---
+{# The calendar, on its own page.
+
+   WHY IT IS NOT ON THE MAIN PAGE. Twenty-eight rows each reading "papers
+   not published yet" made half that page carry no information, and a
+   phrase repeated that often teaches the eye to skip — which would hide
+   the one row that mattered. Here the repetition is the point: this is a
+   diary, and a diary is meant to be scanned.
+
+   A REAL PAGE, NOT A TAB. Same build-time pattern as the register's
+   filters and the roadworks views: its own URL, a plain link to reach it,
+   bookmarkable, indexable, working with JavaScript switched off. LCC can
+   keep this one open before a meeting.
+
+   THE HORIZON IS THE COUNCIL'S, NOT OURS. Each committee page shows
+   whatever window it chooses, so this reaches as far as they publish and
+   no further. In January it will show a different set. The page says so
+   rather than implying it sees the whole year. #}
+
+<div class="wrap">
+{% if not agenda.ok or not agenda.scheduledByMonth | length %}
+  <p class="agenda-none">No meetings are currently listed. The council publishes
+  its committee dates some months in advance, so this is unusual — it more
+  likely means the calendar has not been collected recently.</p>
+{% else %}
+
+<p class="agenda-intro">These are the meetings North Ayrshire Council has in its
+diary. <strong>Most will have no papers yet</strong> — they are normally
+published about three days beforehand, and until then there is no way to know
+whether Largs is in them. Where papers have appeared, the row says so.</p>
+
+<p class="agenda-sub">{{ agenda.counts.scheduled }} meetings listed{% if
+agenda.scheduledTo %}, up to {{ agenda.scheduledTo }}{% endif %}. That is as far
+as the council has published; more will appear as they set the dates.</p>
+
+{% for month in agenda.scheduledByMonth %}
+<h2 class="agenda-month">{{ month.label }}</h2>
+<ul class="agenda-list agenda-quiet">
+{% for m in month.meetings %}
+  <li class="agenda-row{% if m.state == 'nothing' %} agenda-checked{% endif %}">
+    <p class="agenda-when">{{ m.display }}</p>
+    <p class="agenda-what">
+      {% if m.url %}<a href="{{ m.url }}">{{ m.committee }}</a>
+      {% else %}{{ m.committee }}{% endif %}
+      {%- if m.state == "nothing" %} <span class="agenda-tag">papers out · no mention of Largs</span>{% endif %}
+    </p>
+  </li>
+{% endfor %}
+</ul>
+{% endfor %}
+
+<p class="agenda-note"><a href="/on-the-agenda/">← Back to what mentions Largs</a></p>
+
+{% endif %}
+</div>
