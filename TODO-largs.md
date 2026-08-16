@@ -127,9 +127,28 @@ historical: anything added below is a correction to something already visible.
 
 ## The council-papers watcher
 
-Scoped and proved on live documents, 15 August. Not built.
+Built 16 August. The page exists at `/on-the-agenda/`, with the calendar at
+`/on-the-agenda/scheduled/`. Both are committed and **not in the nav**.
+Collection tools live in a separate project, `~/Developer/agenda-watch`:
+`collect.py` (search), `calendar.py` (committee pages), `snippets.py`
+(reads packs, a private reading tool), `reconcile.py`, `terms.py`, `counts.py`.
 
-- [ ] **First step: make the CMIS search scriptable.** Establish whether
+- [x] ~~Make the CMIS search scriptable.~~ Done — an ASP.NET postback with
+      `Simple`, lowercase `documents`, multipart, pager `grdDocuments` /
+      `Page$N`. **But the search is not the collection mechanism**: it caps
+      or relevance-cuts at about 500, so "North Coast" reports 519 and plain
+      "North" only 424. Meeting dates now come from the committee pages
+      instead, which need no form at all.
+- [ ] **Add the locality terms.** "North Coast" appears on 109 pages where
+      "Largs" does not, across 11 of 21 packs — the largest single gap, and
+      invisible to the town-name search. Needs local grepping, since
+      searching it at CMIS returns the whole authority. Until it is in, the
+      page's claim stays "mentions Largs" and must not become "concerns
+      Largs".
+- [ ] **Noise filtering before the wording changes.** Common Good tables and
+      settlement lists mean a mention is often furniture. "Concerns" is a
+      false claim on those rows until they are demoted.
+- [ ] **How the search was made scriptable, kept for the record:** Establish whether
       `north-ayrshire.cmis.uk.com/north-ayrshire/Search.aspx` is a GET with
       query parameters or a form post, and whether results can be filtered by
       date. Searching "largs" returns **469 documents**, newest first, with
