@@ -232,6 +232,64 @@ August and September meetings. **The claim is timing, not discovery.**
       30 September 2026 (`PREVIEW_UNTIL`) and says so in the Actions log, but
       the project still wants deleting.
 
+## Hardware projects, for when back north
+
+Two ideas from 16 August, both real, both waiting on being in Largs. The
+reasoning is recorded so it does not have to be rediscovered.
+
+- [ ] **Who's out on the water — an AIS receiver.** Every commercial vessel
+      and most yachts broadcast name, position, course and speed on marine
+      VHF (162 MHz) as a public safety system: the ferries, the Waverley,
+      Hunterston traffic, a good share of the Yacht Haven's berth-holders.
+      **Broadcast into the air, deliberately, for anyone to receive** — no
+      gatekeeper, unlike the buses, where the data sits inside operators
+      until law extracts it. Commercial aggregators (MarineTraffic etc.)
+      are paid or embed-only with third-party scripts: out under the
+      site's rules. Data received off the air yourself is yours.
+      **The build:** RTL-SDR dongle (~£30) + AIS-catcher (the standard
+      open-source decoder) on a Raspberry Pi, pushing a small JSON of
+      currently-heard vessels to Cloudflare; a map page in the JavaScript
+      family (with Leaflet, where exceptions already live) fetching it
+      client-side. Honestly LIVE, per-vessel "last heard N min ago",
+      fail-safe wording when the receiver is down.
+      **First step, £30, no roof work:** dongle + whip aerial at an
+      upstairs window facing the gaps to the water, AIS-catcher for an
+      evening. If the window hears the ferry, the roof hears the firth.
+      VHF is line-of-sight-plus: gaps between houses act as apertures,
+      Class A transmitters (ferries, tankers) are 12.5 W and forgiving,
+      Class B yachts are 2 W and the first lost to a poor view. Height
+      beats gaps.
+      **AISHub** is the endgame: a data-sharing cooperative — feed your
+      receiver in, get free API access to everyone's, including existing
+      Clyde coverage for the arcs the aerial cannot see. Contribution is
+      the currency; no receiver, no membership, which is why this waits.
+      **The page claims "vessels heard", never "who's out"** — dinghies
+      and many day boats carry no AIS. First running hardware the site
+      would have: a Pi, always on.
+
+- [ ] **A real sea-temperature sensor.** The tile currently shows
+      Open-Meteo's marine model, badged MODEL, honestly. A thermometer in
+      the actual water would earn MEASURED and genuinely differ — shallow
+      coastal water runs warmer than the model's grid cell in summer,
+      which is the number the swimmers and dookers want.
+      **Do not moor anything in open water.** Seabed and foreshore are
+      Crown Estate Scotland's; a moored device needs their consent and
+      potentially a marine licence, must not hazard the ferry or the
+      marina, and becomes a liability the day it breaks loose. The
+      planning-licence lesson in physical form: the gate is permission,
+      not technology.
+      **The route: attach to something that already legally exists** —
+      the Yacht Haven's pontoons, the pier, or the sailing club slipway,
+      with the owner's blessing. No seabed consent, serviced from a
+      walkway, solar-topped, possibly on the marina's Wi-Fi rather than
+      cellular. Turns the Yacht Haven ask from "may we show your wind
+      data" into "may we clamp a small sensor to your pontoon" — and
+      gives them a live sea temperature too.
+      Off-the-shelf telemetry buoys are £2,000–5,000: fails zero-cost
+      twice over. A DIY probe + microcontroller + LTE-M build is
+      £150–300 and a fine project, but only on someone's structure.
+      **First step is the pontoon conversation, not the soldering.**
+
 ## Considered and binned
 
 - **Food hygiene page — built, considered, binned 16 August.** A working
