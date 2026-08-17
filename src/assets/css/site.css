@@ -914,3 +914,11 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   padding:14px 18px;margin:0 0 28px;
 }
 .agenda-forward a{font-size:1.05rem}
+
+/* Bus services passing a works. Quieter than the row it hangs off:
+   useful when it applies, never competing with the street name. */
+.work-buses {
+  margin: .3rem 0 0;
+  font-size: .95rem;
+  color: #3B565C;
+}

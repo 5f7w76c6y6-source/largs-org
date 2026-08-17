@@ -43,7 +43,8 @@ eleventyComputed:
   "Stop/go boards": "A worker at each end lets each direction through in turn.",
   "Convoy working": "Traffic is led through in a group behind a works vehicle.",
   "Contraflow": "Both directions run on one side of the road.",
-  "Road restriction": "The register's catch-all — the exact arrangement isn't recorded."
+  "Road restriction": "The register's catch-all — the exact arrangement isn't recorded.",
+  "Street occupation": "Part of the street is in use for something other than road works."
 } %}
 <section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
@@ -66,6 +67,7 @@ eleventyComputed:
   <p class="works-legend">
     <span><span class="swatch active"></span>{{ rw.activeCount }} under way</span>
     <span><span class="swatch planned"></span>{{ rw.plannedCount }} planned</span>
+    {% if rw.permitCount %}<span>{{ rw.permitCount }} of them permits — skips, scaffolding and the like</span>{% endif %}
     <span>tap a dot for details</span>
   </p>
   {% else %}
@@ -104,7 +106,12 @@ eleventyComputed:
         <li><strong>Slip road closed</strong> / <strong>hard shoulder closed</strong> — the main road runs; only the slip or shoulder is shut.</li>
         <li><strong>Pavement works</strong> — the work is on the pavement; the road itself runs as normal.</li>
         <li><strong>Road restriction</strong> — the register's catch-all, used when the exact arrangement isn't recorded.</li>
+        <li><strong>Skip</strong>, <strong>scaffolding</strong>, <strong>street café</strong>, <strong>hoarding</strong> and the like — a permit to occupy part of the street, not road works. Any traffic arrangement it causes is shown on the same line.</li>
       </ul>
+      <p class="updates-foot"><strong>High, medium and low impact</strong> are the
+      register's own rating of how much a work disrupts traffic. <strong>May affect
+      buses</strong> means a service passes within ten metres of the works — a
+      measure of proximity, not a report of delay.</p>
       <p class="updates-foot">Where no arrangement is registered at all, the work
       shows under its general type — minor, major, urgent, emergency or repair
       works — as the register records it.</p>
@@ -122,12 +129,28 @@ eleventyComputed:
       <h3>{{ w.what }}{% if w.what and w.where %} — {% endif %}{{ w.where }}</h3>
       <p class="meta">
         {%- if w.promoter %}{{ w.promoter }}{% endif -%}
-        {%- if w.status == "active" and w.until %} · {% if w.until < rw.dataDate %}was due to finish{% else %}due to finish{% endif %} {{ w.until | dom }} {{ w.until | monthShort }}{% endif -%}
-        {%- if w.status == "planned" and w.from %} · {% if w.from < rw.dataDate %}was due to start{% else %}starts{% endif %} {{ w.from | dom }} {{ w.from | monthShort }}{% endif -%}
-        {%- if w.status == "planned" and w.until %} · until {{ w.until | dom }} {{ w.until | monthShort }}{% endif -%}
+        {%- if w.status == "active" and w.until %} · {% if w.until < rw.dataDate %}was due to finish{% else %}due to finish{% endif %} {{ w.until | dom }} {{ w.until | monthShort }}{% if w.untilYear %} {{ w.untilYear }}{% endif %}{% endif -%}
+        {# A works registered to start and finish on one day reads badly as
+           "starts 25 Aug · until 25 Aug". Say it once. #}
+        {%- if w.status == "planned" and w.from and w.from == w.until %} · on {{ w.from | dom }} {{ w.from | monthShort }}{% if w.fromYear %} {{ w.fromYear }}{% endif %}
+        {%- else -%}
+        {%- if w.status == "planned" and w.from %} · {% if w.from < rw.dataDate %}was due to start{% else %}starts{% endif %} {{ w.from | dom }} {{ w.from | monthShort }}{% if w.fromYear %} {{ w.fromYear }}{% endif %}{% endif -%}
+        {%- if w.status == "planned" and w.until %} · until {{ w.until | dom }} {{ w.until | monthShort }}{% if w.untilYear %} {{ w.untilYear }}{% endif %}{% endif -%}
+        {%- endif -%}
+        {# Impact is only worth printing for high, medium and low: where
+            the register says "Road Closure" the work type above already
+            says it, and the row would be telling you twice. #}
+        {%- if w.impact and w.impact != "Road Closure" and w.impact != "None" %} · {{ w.impact | lower }} impact{% endif -%}
+        {# For a permit the title is the object — a skip, scaffolding — so the
+           traffic arrangement it causes belongs here instead. #}
+        {%- if w.arrangement %} · {{ w.arrangement }}{% endif -%}
         {%- if w.lat and w.lng %} · <a class="map-link" href="#works-map" data-work="{{ loop.index0 }}">show on map →</a>{% endif -%}
       </p>
       {% if whatGloss[w.what] %}<p class="work-gloss">{{ whatGloss[w.what] }}</p>{% endif %}
+      {# "May affect" is deliberate. The register records that a service
+          passes within ten metres of the works, not that anything was ever
+          delayed — anything firmer would claim more than the source does. #}
+      {% if w.busText %}<p class="work-buses">May affect buses: {{ w.busText }}</p>{% endif %}
     </div>
   </article>
   {% endfor %}
@@ -135,7 +158,7 @@ eleventyComputed:
   <p class="note">Source: Scottish Road Works Register open data (OGL v3),
   updated each night. Positions are as registered by the works promoter and
   can be approximate. Full national map:
-  <a href="https://roadworksscotland.org">Scottish Road Works Online</a>.</p>
+  <a href="https://www.roadworksscotland.org">Scottish Road Works Online</a>.</p>
 
   {% else %}
   <p class="note">Road works data hasn't been fetched yet — the register feed
@@ -160,9 +183,14 @@ eleventyComputed:
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
-  function shortDate(iso) {
+  /* The year is passed in rather than read off the date: the list rows
+     only show it when the date falls outside the register's own year, and
+     a popup that disagreed with its row would be worse than either. */
+  function shortDate(iso, year) {
     var d = new Date(iso + "T12:00:00Z");
-    return isNaN(d) ? "" : d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+    if (isNaN(d)) return "";
+    var s = d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+    return year ? s + " " + year : s;
   }
 
   var bounds = [];
@@ -180,8 +208,8 @@ eleventyComputed:
     var lines = ["<strong>" + (w.what || "Road works") + "</strong>"];
     if (w.where) lines.push(w.where);
     if (w.promoter) lines.push(w.promoter);
-    if (active) lines.push(w.until ? "Due to finish " + shortDate(w.until) : "No end date registered");
-    else lines.push(w.from ? "Starts " + shortDate(w.from) : "Start date to be confirmed");
+    if (active) lines.push(w.until ? "Due to finish " + shortDate(w.until, w.untilYear) : "No end date registered");
+    else lines.push(w.from ? "Starts " + shortDate(w.from, w.fromYear) : "Start date to be confirmed");
     marker.bindPopup(lines.join("<br>"));
     markers[i] = marker;
     bounds.push([w.lat, w.lng]);

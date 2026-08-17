@@ -654,6 +654,13 @@ function cleanRegisterText(text) {
   t = t.replace(/\bjcns?\.?(?=\s|$)/gi, "junction");
   t = t.replace(/\bjcts?\.?(?=\s|$)/gi, "junction");
   t = t.replace(/\bo\/s\b/gi, "outside");
+  // These must run BEFORE the "/" → " and " rule below, or the register's
+  // f/path becomes "f and path", which is how it reached the page.
+  t = t.replace(/\bf\s*\/\s*path\b/gi, "footpath");
+  t = t.replace(/\bf\s*\/\s*w\b/gi, "footway");
+  t = t.replace(/\bc\s*\/\s*w\b/gi, "carriageway");
+  t = t.replace(/\blhs\b/gi, "left-hand side");
+  t = t.replace(/\brhs\b/gi, "right-hand side");
   t = t.replace(/\bopp\.?(?=\s|$)/gi, "opposite");
   t = t.replace(/\bnb\s*&\s*sb\b/gi, "northbound and southbound");
   t = t.replace(/\bno\.?\s*(?=\d)/gi, "number ");
@@ -835,8 +842,8 @@ function geomCentroidWgs84(wkt) {
  * envelope for the first https:// string rather than assuming a field
  * name. If the endpoint ever returns a redirect or raw bytes instead,
  * both still work. */
-async function srwrDownload(name) {
-  const res = await fetch(SRWR_FILE_URL + name + "/", { signal: AbortSignal.timeout(180000) });
+async function srwrDownload(name, base = SRWR_FILE_URL) {
+  const res = await fetch(base + name + "/", { signal: AbortSignal.timeout(180000) });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const type = res.headers.get("content-type") || "";
   if (/json/i.test(type)) {
@@ -1004,6 +1011,344 @@ async function loadRoadworks() {
   return { ok: true, source: "srwr", dataDate: state.dataDate, count: state.count, activeCount, plannedCount, items: state.items };
 }
 
+/* ---------------------------------------------------------------------
+ * SRWR Disruptions Export — a second roadworks source.
+ *
+ * Same daily register, a different published extract: one complete
+ * snapshot per day (~7 MB) rather than the monthly archive, carrying
+ * traffic impact and affected bus services, which the main extract does
+ * not hold. Selection is deliberately geometric only — verified against
+ * a full national file as selecting exactly the same works as
+ * loadRoadworks(), with no text fallback required.
+ * ------------------------------------------------------------------ */
+
+const SRWR_DISRUPT_LIST_URL = "https://downloads.srwr.scot/disruptions-export/api/v1/files";
+const SRWR_DISRUPT_FILE_URL = "https://downloads.srwr.scot/disruptions-export/api/v1/file/";
+const SRWR_DISRUPT_CACHE_FILE = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+  ".cache",
+  "srwr-disruptions-state.json"
+);
+const SRWR_DISRUPT_SCHEMA = 5;
+
+/* The disruptions export gives TrafficManagement as text, not a code, so
+ * this maps its vocabulary onto the same phrases SRWR_TM already produces.
+ * Keys are lowercased and matched on inclusion — the register is not
+ * consistent about its parenthetical suffixes. */
+const SRWR_DISRUPT_TM = [
+  ["road closure", "Road closure"],
+  ["contraflow", "Contraflow"],
+  ["lane closure", "Lane closure"],
+  ["portable traffic lights", "Temporary lights"],
+  ["multi-way signals", "Temporary lights"],
+  ["two-way signals", "Temporary lights"],
+  ["traffic signal", "Temporary lights"],
+  ["stop/go", "Stop/go boards"],
+  ["give and take", "Give and take"],
+  ["priority working", "Priority working"],
+  ["convoy", "Convoy working"],
+  ["road narrowing", "Road narrowing"],
+  ["hard shoulder", "Hard shoulder closed"],
+  ["slip road", "Slip road closed"],
+  ["footway", "Footway works"],
+  ["no obstruction", "No obstruction"],
+];
+
+/* A skip is not roadworks. Where the register classes an activity as a
+ * Permission it also names what is occupying the street, in LicenceType —
+ * so the page can say "Skip" rather than describing the skip's effect on
+ * traffic as though someone were digging a hole. Keys are the register's
+ * own strings, lowercased; the values are what a resident would call it. */
+const SRWR_PERMIT_LABEL = {
+  "skip": "Skip",
+  "scaffolding": "Scaffolding",
+  "street café": "Street café",
+  "street cafe": "Street café",
+  "hoarding": "Hoarding",
+  "containers/cabins/storage": "Container or cabin",
+  "crane/hoist/tower/cherry picker": "Crane or hoist",
+  "street furniture": "Street furniture",
+  "markets/stalls": "Market stalls",
+  "materials": "Building materials",
+  "tree/shrub consent": "Tree or shrub work",
+  "bridge/beam/rail": "Bridge or beam lift",
+  "general road occupation": "Street occupation",
+};
+
+/* ActivityStatus in this feed is words, not the 04/05 phase codes, and the
+ * vocabulary is wider than the specification claims. Observed across a full
+ * national file: Proposed, Advance Planning, In Progress, Recorded,
+ * Commenced, Potential.
+ *
+ * "Potential" is speculative forward planning and must not reach the page —
+ * the spec says it is excluded from this export and it demonstrably is not.
+ * "Recorded" is retrospective (events, traffic orders logged after the
+ * fact); it is carried as planned only when it has not yet started. */
+const SRWR_DISRUPT_STATUS = {
+  "in progress": "active",
+  "commenced": "active",
+  "proposed": "planned",
+  "advance planning": "planned",
+  "recorded": "planned",
+  "potential": null,
+};
+
+/* Road Closure sits in the same column as High/Medium/Low but is a
+ * different axis. Rank it above High so severity sorts sensibly. */
+const SRWR_IMPACT_RANK = { "road closure": 4, high: 3, medium: 2, low: 1, none: 0 };
+
+/* Bus services arrive as "MCGL 576.I", "STWS 585A KK", "SHUT 40.O" —
+ * operator prefix, service, optional depot code, optional direction
+ * suffix. Left raw, one Main Street row claims 23 services for what a
+ * resident would call about ten. Reduce to the number on the front of
+ * the bus, dedupe, and sort so 40 precedes 585 precedes X585. */
+function tidyBusServices(raw) {
+  const seen = new Set();
+  for (const part of (raw || "").split(",")) {
+    const tokens = part.trim().split(/\s+/);
+    if (tokens.length < 2) continue;
+    const service = tokens[1].replace(/\.(I|O)$/i, "").trim();
+    if (service) seen.add(service);
+  }
+  return [...seen].sort((a, b) => {
+    const na = parseInt(a.replace(/\D/g, ""), 10);
+    const nb = parseInt(b.replace(/\D/g, ""), 10);
+    if (na !== nb) return na - nb;
+    return a.localeCompare(b);
+  });
+}
+
+async function loadRoadworksDisruptions() {
+  let cached = null;
+  try { cached = JSON.parse(await readFile(SRWR_DISRUPT_CACHE_FILE, "utf8")); } catch { /* no cache yet */ }
+  if (cached && cached.schema !== SRWR_DISRUPT_SCHEMA) {
+    console.log("roadworks(disruptions): cached state uses an older schema — refreshing");
+    cached = null;
+  }
+
+  const fromCache = (state, note) => {
+    if (note) console.log(`roadworks(disruptions): ${note}`);
+    return {
+      ok: true, source: "srwr-disruptions", dataDate: state.dataDate,
+      count: state.count, activeCount: state.activeCount, plannedCount: state.plannedCount,
+      permitCount: state.permitCount || 0,
+      items: state.items
+    };
+  };
+
+  /* Record that a pull was attempted, so a failing register does not mean
+     a download every fifteen minutes. Best-effort: if the write fails the
+     next build simply tries again. */
+  const noteAttempt = async (state) => {
+    try {
+      await mkdir(path.dirname(SRWR_DISRUPT_CACHE_FILE), { recursive: true });
+      await writeFile(
+        SRWR_DISRUPT_CACHE_FILE,
+        JSON.stringify({ ...state, attemptedAt: new Date().toISOString() }, null, 2) + "\n"
+      );
+    } catch { /* cache write is best-effort */ }
+  };
+
+  // ---- what is on offer. Seven dailies, newest first by name.
+  let listing;
+  try {
+    const res = await fetch(SRWR_DISRUPT_LIST_URL, { signal: AbortSignal.timeout(20000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    listing = (await res.json()).files || [];
+  } catch (error) {
+    if (cached) { await noteAttempt(cached); return fromCache(cached, `list unreachable (${error.message}) — reusing state to ${cached.dataDate}`); }
+    throw new Error(`SRWR disruptions list unreachable and no cached state (${error.message})`);
+  }
+
+  const files = listing
+    .filter((f) => /^SRWRDisruptionsExport\d{8}\.zip$/i.test(f.name || ""))
+    .sort((a, b) => (a.name < b.name ? 1 : -1));
+  if (!files.length) {
+    if (cached) return fromCache(cached, "list held no usable files — reusing state");
+    throw new Error("SRWR disruptions list held no usable files");
+  }
+
+  const newest = files[0];
+  const covers = (newest.name.match(/(\d{4})(\d{2})(\d{2})/) || []).slice(1).join("-");
+
+  // Only seven days are retained, so there is no backfill: if the cache is
+  // older than the oldest file on offer we simply take the newest and move
+  // on. Nothing is reconstructed from a gap.
+  if (cached && cached.dataDate >= covers) {
+    return fromCache(cached, `cached state matches newest publication (${cached.dataDate})`);
+  }
+
+  // Newer data is listed, but a recent attempt failed. The workflow runs
+  // every fifteen minutes; without this a register outage would mean 96
+  // failed downloads a day. Same guard loadRoadworks() already applies.
+  if (cached && cached.attemptedAt && Date.now() - Date.parse(cached.attemptedAt) < 3600000) {
+    return fromCache(cached, `newer data listed but the last attempt was under an hour ago — reusing state to ${cached.dataDate}`);
+  }
+
+  // ---- pull
+  let rows = [];
+  try {
+    const buf = await srwrDownload(newest.name, SRWR_DISRUPT_FILE_URL);
+    const entries = unzipEntries(buf);
+    const entry = entries.find((e) => /CurrentActivities\.csv$/i.test(e.name));
+    if (!entry) throw new Error("no CurrentActivities.csv inside archive");
+
+    let header = null;
+    const parser = new CSVParser((r) => {
+      if (!header) { header = r.map((h) => h.trim()); return; }
+      if (r.length < 2) return;
+      const o = {};
+      for (let i = 0; i < header.length; i++) o[header[i]] = r[i] ?? "";
+      rows.push(o);
+    });
+    feedBuffer(entry.read(), parser);
+    console.log(`roadworks(disruptions): ingested ${newest.name} (${(buf.length / 1048576).toFixed(1)} MB zipped, ${rows.length} activities, data to ${covers})`);
+  } catch (error) {
+    if (cached) { await noteAttempt(cached); return fromCache(cached, `pull failed (${error.message}) — reusing state to ${cached.dataDate}`); }
+    throw new Error(`SRWR disruptions pull failed and no cached state (${error.message})`);
+  }
+
+  // ---- filter to Largs on the promoter's own registered geometry.
+  //
+  // Proven against a full national file: this selects exactly the same 63
+  // rows as loadRoadworks()'s rule, with no text fallback needed — every
+  // row in this feed carries geometry. Town is deliberately NOT used: it is
+  // the gazetteer's attribution of the USRN, so works at Wemyss Bay come
+  // through on a street called "Greenock Road Largs To Shore Road
+  // Skelmorlie".
+  let noGeometry = 0;
+  const local = rows.filter((r) => {
+    const wkt = r.GeometryFull || r.GeometryCentroid;
+    if (!wkt) { noGeometry++; return false; }
+    return geomInBbox(wkt);
+  });
+  if (noGeometry) {
+    console.warn(`roadworks(disruptions): ${noGeometry} rows carried no geometry and were skipped`);
+  }
+
+  // ---- one row per activity: latest phase wins, mirroring loadRoadworks().
+  // Without this the page shows the A78 sea-wall scheme twice.
+  const latest = new Map();
+  for (const r of local) {
+    const ref = (r.ActivityReference || r.LocalReference || "").trim();
+    if (!ref) continue;
+    const prev = latest.get(ref);
+    if (!prev || Number(r.PhaseNumber || 0) > Number(prev.PhaseNumber || 0)) latest.set(ref, r);
+  }
+
+  const items = [];
+  let activeCount = 0;
+  let plannedCount = 0;
+  let permitCount = 0;
+  // Dates are shown without a year. That is only safe while every date
+  // falls in the register's own year, which a six-month horizon breaks.
+  const registerYear = String(covers || "").slice(0, 4);
+
+  for (const r of latest.values()) {
+    const status = SRWR_DISRUPT_STATUS[(r.ActivityStatus || "").trim().toLowerCase()] ?? null;
+    if (!status) continue;
+
+    const tmText = (r.TrafficManagement || "").toLowerCase();
+    const tmLabel = (SRWR_DISRUPT_TM.find(([needle]) => tmText.includes(needle)) || [])[1] || "";
+
+    // Permissions are titled by the thing occupying the street, not by its
+    // effect on traffic. An unrecognised licence type falls back to the
+    // register's own catch-all rather than silently reading as roadworks.
+    const licence = (r.LicenceType || "").trim().toLowerCase();
+    const permit = /^permission$/i.test((r.Category || "").trim())
+      ? (SRWR_PERMIT_LABEL[licence] || "Street occupation")
+      : "";
+
+    const what = permit || tmLabel || cleanRegisterText(r.Category || "") || "Road works";
+
+    const impact = (r.TrafficImpact || "").trim();
+    const buses = tidyBusServices(r.PotentialBusServicesAffected);
+    // Phrased here rather than in the template, the same way `what` is.
+    // Every service is listed, however many. A truncated list — "and 2
+    // others" — leaves a reader wondering whether theirs is one of the two,
+    // which is worse than saying nothing at all.
+    const busText = buses.join(", ");
+
+    const from = firstDateOf(r.StartDateTimeUTC, r.EarliestStartDateTimeUTC);
+    const until = firstDateOf(r.EndDateTimeUTC, r.LatestPossibleEndDateTimeUTC);
+
+    if (status === "active") activeCount++; else plannedCount++;
+    if (permit) permitCount++;
+
+    items.push({
+      status,
+      what,
+      permit: Boolean(permit),
+      // The title now names the object, so the traffic arrangement moves to
+      // the meta line rather than being dropped. "No obstruction" is the
+      // register saying the permit does not block the road — true, but
+      // backwards as a phrase, so say it the way a reader would.
+      arrangement: !permit ? ""
+        : tmLabel === "No obstruction" ? "not blocking the road"
+        : tmLabel.toLowerCase(),
+      where: tidyLocation(r.Location || "", r.Street || ""),
+      street: cleanRegisterText(r.Street || ""),
+      from,
+      until,
+      // Set only when the date is in another year, so ordinary rows read
+      // exactly as before and nothing gains a redundant "2026".
+      fromYear: from && from.slice(0, 4) !== registerYear ? from.slice(0, 4) : "",
+      untilYear: until && until.slice(0, 4) !== registerYear ? until.slice(0, 4) : "",
+      // "Transport Scotland - SW Unit Op Company" is an internal operating
+      // district. The part after the dash tells a resident nothing.
+      promoter: (r.WorksPromoterName || "").trim()
+        .replace(/\s*[-\u2013]\s*\S.*\bUnit\s+Op(?:erating)?\s+Company\s*$/i, "")
+        .trim(),
+      lat: Number(r.Latitude) || null,
+      lng: Number(r.Longitude) || null,
+
+      // new, and the reason for doing any of this
+      impact,
+      impactRank: SRWR_IMPACT_RANK[impact.toLowerCase()] ?? 0,
+      buses,
+      busText,
+      busDepartures: Number(r.PotentialBusDeparturesAffectedCount) || 0,
+    });
+  }
+
+  const todayIso = new Intl.DateTimeFormat("en-CA", {
+    timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit"
+  }).format(new Date());
+
+  // Same ordering contract as loadRoadworks — active first, overruns
+  // sinking, then planned by start date — so items[0] is still the most
+  // relevant live work and the tile needs no change.
+  const sortKey = (w) => w.status === "active"
+    ? (w.until && w.until >= todayIso ? "A1" + w.until : w.until ? "A2" + w.until : "A3")
+    : (w.from ? "B1" + w.from : "B3");
+  items.sort((x, y) => (sortKey(x) < sortKey(y) ? -1 : 1));
+
+  const now = new Date().toISOString();
+  const state = {
+    schema: SRWR_DISRUPT_SCHEMA,
+    dataDate: covers,
+    fetchedAt: now,
+    attemptedAt: now,
+    count: activeCount,
+    activeCount,
+    plannedCount,
+    permitCount,
+    items: items.slice(0, 120),
+  };
+  try {
+    await mkdir(path.dirname(SRWR_DISRUPT_CACHE_FILE), { recursive: true });
+    await writeFile(SRWR_DISRUPT_CACHE_FILE, JSON.stringify(state, null, 2) + "\n");
+  } catch { /* cache write is best-effort */ }
+
+  return {
+    ok: true, source: "srwr-disruptions", dataDate: covers,
+    count: activeCount, activeCount, plannedCount, permitCount, items: state.items
+  };
+}
+
+
+
 /* ---------- main ---------- */
 
 // Start from the previous build's data so a failed source degrades to
@@ -1035,7 +1380,7 @@ try {
 }
 
 try {
-  out.roadworks = await loadRoadworks();
+  out.roadworks = await loadRoadworksDisruptions();
   anySuccess = true;
   console.log(`roadworks: ${out.roadworks.count} active, ${out.roadworks.plannedCount ?? 0} planned in Largs (register data to ${out.roadworks.dataDate})`);
 } catch (error) {
