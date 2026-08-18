@@ -117,7 +117,7 @@ jobs:
       - name: Preview mirror window
         id: preview_window
         env:
-          PREVIEW_UNTIL: "20260930"   # ← the only line to change
+          PREVIEW_UNTIL: "20270331"   # ← the only line to change (extended 18 Aug 2026 — review under way)
         run: |
           today="$(date -u +%Y%m%d)"
           if [ "$today" -le "$PREVIEW_UNTIL" ]; then
