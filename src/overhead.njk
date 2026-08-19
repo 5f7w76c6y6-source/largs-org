@@ -1,0 +1,302 @@
+---
+layout: layouts/base.njk
+permalink: /overhead/
+title: Overhead · live aircraft near Largs
+heading: Overhead
+subtitle: What's flying near Largs right now — every aircraft broadcasting its position within twenty nautical miles (about 23 miles) of the town.
+---
+{# Live aircraft identifier. The list is the feature: you hear a jet over
+   the Firth, this page names it. The map is the garnish.
+
+   Data path: this page polls /api/overhead (a Pages Function in
+   functions/api/overhead.js) every 8 seconds while visible. The function
+   holds one shared 8-second snapshot from the community ADS-B
+   aggregators, so visitor count never multiplies upstream load.
+
+   Honesty rules, same as everywhere: positions carry their own
+   timestamp; stale data is labelled, then removed; when the feed is
+   down the page says so instead of pretending. Not every aircraft
+   broadcasts — the intro says that too.
+
+   JS is required and this is a maps-family page, where JS is allowed —
+   same footing as /roadworks/. Styles are page-scoped below for now;
+   candidates for site.css if the page earns a nav place. #}
+
+<section class="board wrap" aria-labelledby="page-title">
+  <div class="kicker">
+    <span class="stamp" id="ac-stamp">Live positions — loading…</span>
+  </div>
+
+  <p class="page-intro">Aircraft broadcast their own position, height and
+  callsign every second (a system called ADS&#8209;B); volunteer receivers
+  across the country collect it, and this page shows everything heard
+  within twenty nautical miles of Largs — Glasgow and Prestwick traffic,
+  the Coastguard helicopter, transatlantic flights crossing high overhead.
+  <strong>Closest first.</strong> Not everything flying appears: some
+  military and light aircraft don't broadcast, so this is what's
+  transmitting, not a complete picture of the sky.</p>
+
+  <noscript><p class="page-intro"><strong>This page needs JavaScript</strong> —
+  the positions update live, several times a minute, which a static page
+  can't do. Everything else on the site works without it.</p></noscript>
+
+  <ol class="ac-list" id="ac-list" aria-live="polite" aria-label="Aircraft currently overhead, closest first"></ol>
+  <p class="ac-empty" id="ac-empty" hidden>Nothing broadcasting within twenty
+  nautical miles just now — the quiet sky is also an answer.</p>
+  <p class="ac-down" id="ac-down" hidden>Live aircraft data is unavailable at
+  the moment. It comes from community-run receivers and will return when
+  their feed does.</p>
+
+  <div id="ac-map" aria-hidden="true"></div>
+
+  <p class="ac-credit">Aircraft data via
+  <a href="https://adsb.lol">adsb.lol</a> and
+  <a href="https://adsb.fi">adsb.fi</a> — community-run receivers, open
+  data (ODbL). Positions are as broadcast by the aircraft themselves.
+  Map © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
+  contributors.</p>
+</section>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<style>
+  .ac-list{list-style:none;margin:18px 0 22px;display:grid;gap:10px}
+  .ac-row{background:var(--card);border:1px solid var(--sand);border-radius:10px;
+    padding:12px 16px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+  .ac-who{font-weight:700;font-size:1.05rem}
+  .ac-type{color:var(--teal);font-weight:500}
+  .ac-where{width:100%;color:var(--ink)}
+  .ac-meta{color:var(--muted);font-size:.92rem}
+  .ac-tag{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--warn);border:1px solid var(--warn);border-radius:6px;padding:0 6px}
+  .ac-tag-ground{color:var(--muted);border-color:var(--muted)}
+  .ac-stale .ac-who,.ac-stale .ac-type{color:var(--muted)}
+  .ac-empty,.ac-down{margin:18px 0;color:var(--muted);font-style:italic}
+  #ac-map{height:380px;border-radius:12px;border:1px solid var(--sand);margin:6px 0 14px}
+  .ac-credit{color:var(--muted);font-size:.88rem;margin:10px 0 26px}
+  .ac-plane{color:var(--slate)}
+</style>
+
+<script>
+(function () {
+  "use strict";
+
+  var HOME = [55.795, -4.87];
+  var POLL_MS = 8000;
+
+  // Friendly names for the type codes Largs actually sees. Anything not
+  // listed shows its raw ICAO code — honest, and the table grows on request.
+  var TYPES = {
+    A319:"Airbus A319", A320:"Airbus A320", A321:"Airbus A321",
+    A19N:"Airbus A319neo", A20N:"Airbus A320neo", A21N:"Airbus A321neo",
+    A332:"Airbus A330-200", A333:"Airbus A330-300", A339:"Airbus A330-900neo",
+    A343:"Airbus A340-300", A359:"Airbus A350-900", A35K:"Airbus A350-1000",
+    A388:"Airbus A380", A400:"Airbus A400M Atlas",
+    B737:"Boeing 737-700", B738:"Boeing 737-800", B38M:"Boeing 737 MAX 8",
+    B39M:"Boeing 737 MAX 9", B744:"Boeing 747-400", B748:"Boeing 747-8",
+    B752:"Boeing 757-200", B763:"Boeing 767-300", B772:"Boeing 777-200",
+    B77L:"Boeing 777-200LR", B77W:"Boeing 777-300ER",
+    B788:"Boeing 787-8", B789:"Boeing 787-9", B78X:"Boeing 787-10",
+    E145:"Embraer 145", E170:"Embraer 170", E75L:"Embraer 175",
+    E190:"Embraer 190", E195:"Embraer 195",
+    AT46:"ATR 42-600", AT76:"ATR 72-600", DH8D:"Dash 8 Q400",
+    JS41:"Jetstream 41", SB20:"Saab 2000",
+    C130:"C-130 Hercules", C30J:"C-130J Super Hercules", P8:"P-8 Poseidon",
+    EUFI:"Typhoon", F35:"F-35 Lightning", HAWK:"Hawk",
+    EC35:"EC135 helicopter", EC45:"EC145 helicopter", A139:"AW139 helicopter",
+    A109:"AW109 helicopter", S92:"Sikorsky S-92 helicopter", R44:"Robinson R44 helicopter",
+    C152:"Cessna 152", C172:"Cessna 172", C182:"Cessna 182",
+    P28A:"Piper PA-28", PA28:"Piper PA-28", SR22:"Cirrus SR22",
+    DA40:"Diamond DA40", DA42:"Diamond DA42",
+    BE20:"King Air 200", PC12:"Pilatus PC-12", TBM9:"TBM 900"
+  };
+
+  // Callsign prefixes → operators, for the ones that pass over the Clyde.
+  var OPERATORS = {
+    BAW:"British Airways", SHT:"British Airways", EZY:"easyJet",
+    RYR:"Ryanair", RUK:"Ryanair UK", LOG:"Loganair", EXS:"Jet2",
+    TOM:"TUI", VIR:"Virgin Atlantic", EIN:"Aer Lingus", KLM:"KLM",
+    AFR:"Air France", DLH:"Lufthansa", SAS:"SAS", ICE:"Icelandair",
+    AAL:"American Airlines", UAL:"United", DAL:"Delta", ACA:"Air Canada",
+    WJA:"WestJet", UPS:"UPS", FDX:"FedEx", GTI:"Atlas Air", CLX:"Cargolux",
+    RRR:"Royal Air Force", ASY:"Royal Australian Air Force",
+    CFC:"Canadian Forces", CNV:"US Navy", RCH:"US Air Force",
+    NPT:"West Atlantic", HLE:"Helimed", CG:"Coastguard"
+  };
+
+  var COMPASS = ["north","north-north-east","north-east","east-north-east",
+    "east","east-south-east","south-east","south-south-east","south",
+    "south-south-west","south-west","west-south-west","west",
+    "west-north-west","north-west","north-north-west"];
+
+  var listEl = document.getElementById("ac-list");
+  var stampEl = document.getElementById("ac-stamp");
+  var emptyEl = document.getElementById("ac-empty");
+  var downEl = document.getElementById("ac-down");
+
+  var map = L.map("ac-map", { scrollWheelZoom: false }).setView(HOME, 9);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 12,
+    attribution: "&copy; OpenStreetMap contributors"
+  }).addTo(map);
+  L.circleMarker(HOME, { radius: 5, color: "#25655C", fillOpacity: 0.9 })
+    .addTo(map).bindPopup("Largs");
+
+  var markers = {}; // hex -> Leaflet marker
+
+  function planeIcon(track) {
+    var deg = (typeof track === "number") ? track : 0;
+    return L.divIcon({
+      className: "ac-plane",
+      iconSize: [26, 26],
+      iconAnchor: [13, 13],
+      html: '<svg viewBox="0 0 24 24" width="26" height="26" ' +
+        'style="transform:rotate(' + deg + 'deg)">' +
+        '<path fill="#17333A" d="M12 1.5 14 9l8 4v2l-8-1.5V19l2.5 2V22.5L12 21l-4.5 1.5V21L10 19v-5.5L2 15v-2l8-4z"/></svg>'
+    });
+  }
+
+  function operatorFor(callsign) {
+    var m = callsign.match(/^[A-Z]{2,3}/);
+    return (m && OPERATORS[m[0]]) || null;
+  }
+
+  function feet(n) { return n.toLocaleString("en-GB") + " ft"; }
+  function mph(kn) { return Math.round(kn * 1.151).toLocaleString("en-GB") + " mph"; }
+  function milesOf(nm) { return (nm * 1.1508).toFixed(nm < 4.5 ? 1 : 0); }
+
+  function rowFor(a) {
+    var callsign = (a.flight || "").trim();
+    var who = callsign || a.r || a.hex.toUpperCase();
+    var op = callsign ? operatorFor(callsign) : null;
+    var type = a.t ? (TYPES[a.t] || a.t) : "type unknown";
+    var onGround = a.alt_baro === "ground";
+    var military = (a.dbFlags || 0) & 1;
+
+    var li = document.createElement("li");
+    li.className = "ac-row" + ((a.seen_pos || 0) > 30 ? " ac-stale" : "");
+
+    var whoEl = document.createElement("span");
+    whoEl.className = "ac-who";
+    whoEl.textContent = op ? op + " " + who : who;
+    li.appendChild(whoEl);
+
+    var typeEl = document.createElement("span");
+    typeEl.className = "ac-type";
+    typeEl.textContent = type;
+    li.appendChild(typeEl);
+
+    if (military) {
+      var tag = document.createElement("span");
+      tag.className = "ac-tag";
+      tag.textContent = "military";
+      li.appendChild(tag);
+    }
+    if (onGround) {
+      var g = document.createElement("span");
+      g.className = "ac-tag ac-tag-ground";
+      g.textContent = "on the ground";
+      li.appendChild(g);
+    }
+
+    var where = document.createElement("span");
+    where.className = "ac-where";
+    var dir = COMPASS[Math.round(((a.dir || 0) % 360) / 22.5) % 16];
+    where.textContent = onGround
+      ? milesOf(a.dst || 0) + " miles " + dir + " of Largs"
+      : milesOf(a.dst || 0) + " miles " + dir + " of Largs · " + feet(a.alt_baro) +
+        ((a.baro_rate || 0) > 300 ? ", climbing" : (a.baro_rate || 0) < -300 ? ", descending" : "");
+    li.appendChild(where);
+
+    var meta = document.createElement("span");
+    meta.className = "ac-meta";
+    var bits = [];
+    if (typeof a.gs === "number" && !onGround) bits.push(mph(a.gs));
+    if (a.r && callsign) bits.push(a.r);
+    if ((a.seen_pos || 0) > 30) bits.push("position " + Math.round(a.seen_pos) + "s old");
+    meta.textContent = bits.join(" · ");
+    li.appendChild(meta);
+
+    return li;
+  }
+
+  function render(data, staleHeader) {
+    var ac = (data.ac || []).filter(function (a) {
+      return typeof a.lat === "number" && typeof a.lon === "number";
+    });
+    ac.sort(function (x, y) {
+      var gx = x.alt_baro === "ground" ? 1 : 0;
+      var gy = y.alt_baro === "ground" ? 1 : 0;
+      return gx - gy || (x.dst || 99) - (y.dst || 99);
+    });
+
+    listEl.textContent = "";
+    ac.forEach(function (a) { listEl.appendChild(rowFor(a)); });
+    emptyEl.hidden = ac.length !== 0;
+    downEl.hidden = true;
+
+    var seen = {};
+    ac.forEach(function (a) {
+      seen[a.hex] = true;
+      var pos = [a.lat, a.lon];
+      var label = ((a.flight || "").trim() || a.r || a.hex.toUpperCase()) +
+        (a.t ? " · " + (TYPES[a.t] || a.t) : "");
+      if (markers[a.hex]) {
+        markers[a.hex].setLatLng(pos).setIcon(planeIcon(a.track));
+      } else {
+        markers[a.hex] = L.marker(pos, { icon: planeIcon(a.track) })
+          .addTo(map).bindPopup(label);
+      }
+      markers[a.hex].getPopup().setContent(label);
+    });
+    Object.keys(markers).forEach(function (hex) {
+      if (!seen[hex]) { map.removeLayer(markers[hex]); delete markers[hex]; }
+    });
+
+    var when = data.now ? new Date(data.now) : new Date();
+    var hhmmss = when.toLocaleTimeString("en-GB");
+    var age = data.now ? Math.round((Date.now() - data.now) / 1000) : 0;
+    stampEl.textContent = "Positions as of " + hhmmss +
+      (staleHeader || age > 30 ? " — feed interrupted, showing last received" : "") +
+      " · updates every 8 seconds while this page is open";
+  }
+
+  function showDown() {
+    listEl.textContent = "";
+    Object.keys(markers).forEach(function (hex) {
+      map.removeLayer(markers[hex]); delete markers[hex];
+    });
+    emptyEl.hidden = true;
+    downEl.hidden = false;
+    stampEl.textContent = "Live positions unavailable";
+  }
+
+  var failures = 0;
+  function poll() {
+    fetch("/api/overhead")
+      .then(function (r) {
+        if (r.status === 503) throw new Error("unavailable");
+        var stale = r.headers.get("x-overhead-stale") === "1";
+        return r.json().then(function (d) {
+          if (d.unavailable) throw new Error("unavailable");
+          failures = 0;
+          render(d, stale);
+        });
+      })
+      .catch(function () {
+        failures += 1;
+        if (failures >= 3) showDown();
+      });
+  }
+
+  var timer = null;
+  function start() { if (!timer) { poll(); timer = setInterval(poll, POLL_MS); } }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) { stop(); } else { start(); }
+  });
+  start();
+})();
+</script>
