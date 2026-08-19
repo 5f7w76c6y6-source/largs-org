@@ -19,12 +19,7 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
    `route: { iata: "LHR-GLA", from: "London Heathrow", to: "Glasgow" }`
    from a cached adsbdb.com lookup of the callsign — airline flights
    only, and only when the lookup answers. Cards render the names, map
-   popups the codes. Contract in functions/api/overhead.js.
-
-   ROTORCRAFT (v1.3): category A7 — the aircraft's own declaration — or a
-   known helicopter type code swaps the map glyph for a rotor disc.
-   Neither signal present: plane glyph, card text still only what's
-   known. #}
+   popups the codes. Contract in functions/api/overhead.js. #}
 
 <section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
@@ -57,11 +52,13 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   the moment. It comes from community-run receivers and will return when
   their feed does.</p>
 
-  <p class="ac-credit">Aircraft data via
-  <a href="https://adsb.lol">adsb.lol</a> and
-  <a href="https://adsb.fi">adsb.fi</a> — community-run receivers, open
-  data (ODbL). Positions are as broadcast by the aircraft themselves;
-  route lookups via <a href="https://www.adsbdb.com">adsbdb</a>.
+  <p class="ac-credit">Aircraft data via a rota of community-run
+  receivers — <a href="https://adsb.lol">adsb.lol</a>,
+  <a href="https://adsb.fi">adsb.fi</a>,
+  <a href="https://airplanes.live">airplanes.live</a> and
+  <a href="https://adsb.one">adsb.one</a> — open data (ODbL). Positions
+  are as broadcast by the aircraft themselves; route lookups via
+  <a href="https://www.adsbdb.com">adsbdb</a>.
   Map © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
   contributors.</p>
 </section>
@@ -122,12 +119,8 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     JS41:"Jetstream 41", SB20:"Saab 2000",
     C130:"C-130 Hercules", C30J:"C-130J Super Hercules", P8:"P-8 Poseidon",
     EUFI:"Typhoon", F35:"F-35 Lightning", HAWK:"Hawk",
-    EC35:"EC135 helicopter", EC45:"EC145 helicopter", EC55:"EC155 helicopter",
-    A109:"AW109 helicopter", A139:"AW139 helicopter", A169:"AW169 helicopter",
-    A101:"Merlin helicopter", S76:"Sikorsky S-76 helicopter",
-    S92:"Sikorsky S-92 helicopter", B06:"Bell 206 helicopter",
-    B429:"Bell 429 helicopter", H47:"Chinook", H60:"Black Hawk",
-    R44:"Robinson R44 helicopter", R66:"Robinson R66 helicopter",
+    EC35:"EC135 helicopter", EC45:"EC145 helicopter", A139:"AW139 helicopter",
+    A109:"AW109 helicopter", S92:"Sikorsky S-92 helicopter", R44:"Robinson R44 helicopter",
     C152:"Cessna 152", C172:"Cessna 172", C182:"Cessna 182",
     P28A:"Piper PA-28", PA28:"Piper PA-28", SR22:"Cirrus SR22",
     DA40:"Diamond DA40", DA42:"Diamond DA42",
@@ -145,17 +138,6 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     ASY:"Royal Australian Air Force", CFC:"Canadian Forces", CNV:"US Navy",
     RCH:"US Air Force", NPT:"West Atlantic", HLE:"Helimed", CG:"Coastguard"
   };
-
-  // Rotorcraft: ADS-B category A7 is the aircraft declaring itself a
-  // rotorcraft; the type set catches transponders that omit category.
-  var HELI_TYPES = { EC35:1, EC45:1, EC55:1, EC30:1, A109:1, A119:1,
-    A139:1, A149:1, A169:1, A189:1, A101:1, S61:1, S76:1, S92:1,
-    R22:1, R44:1, R66:1, B06:1, B212:1, B412:1, B429:1, B505:1,
-    AS32:1, AS50:1, AS55:1, AS65:1, H47:1, H60:1, LYNX:1 };
-
-  function isHeli(a) {
-    return a.category === "A7" || (a.t && HELI_TYPES[a.t] === 1);
-  }
 
   var COMPASS = ["north","north-north-east","north-east","east-north-east",
     "east","east-south-east","south-east","south-south-east","south",
@@ -186,23 +168,6 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
       html: '<svg viewBox="0 0 24 24" width="26" height="26" ' +
         'style="transform:rotate(' + deg + 'deg)">' +
         '<path fill="#17333A" d="M12 1.5 14 9l8 4v2l-8-1.5V19l2.5 2V22.5L12 21l-4.5 1.5V21L10 19v-5.5L2 15v-2l8-4z"/></svg>'
-    });
-  }
-
-  function heliIcon(track) {
-    var deg = (typeof track === "number") ? track : 0;
-    return L.divIcon({
-      className: "ac-plane",
-      iconSize: [26, 26],
-      iconAnchor: [13, 13],
-      html: '<svg viewBox="0 0 24 24" width="26" height="26" ' +
-        'style="transform:rotate(' + deg + 'deg)">' +
-        '<circle cx="12" cy="10" r="7.6" fill="none" stroke="#17333A" stroke-width="1.4"/>' +
-        '<line x1="6.9" y1="4.9" x2="17.1" y2="15.1" stroke="#17333A" stroke-width="1.4"/>' +
-        '<line x1="17.1" y1="4.9" x2="6.9" y2="15.1" stroke="#17333A" stroke-width="1.4"/>' +
-        '<ellipse cx="12" cy="10" rx="2.4" ry="3.6" fill="#17333A"/>' +
-        '<rect x="11.35" y="13" width="1.3" height="7.2" rx="0.6" fill="#17333A"/>' +
-        '<rect x="9.6" y="19.6" width="4.8" height="1.5" rx="0.7" fill="#17333A"/></svg>'
     });
   }
 
@@ -341,11 +306,10 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     ac.forEach(function (a) {
       seen[a.hex] = true;
       var pos = [a.lat, a.lon];
-      var icon = (isHeli(a) ? heliIcon : planeIcon)(a.track);
       if (markers[a.hex]) {
-        markers[a.hex].setLatLng(pos).setIcon(icon);
+        markers[a.hex].setLatLng(pos).setIcon(planeIcon(a.track));
       } else {
-        markers[a.hex] = L.marker(pos, { icon: icon }).addTo(map);
+        markers[a.hex] = L.marker(pos, { icon: planeIcon(a.track) }).addTo(map);
         markers[a.hex].bindPopup("");
       }
       markers[a.hex].getPopup().setContent(popupFor(a));

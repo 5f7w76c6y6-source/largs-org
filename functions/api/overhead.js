@@ -1,5 +1,5 @@
 // /api/overhead — live aircraft near Largs, same-origin proxy + route
-// enrichment. v1.4, 19 August 2026.
+// enrichment. v1.5, 19 August 2026.
 //
 // AIRCRAFT: browsers can't call the community ADS-B aggregators directly
 // (no CORS headers — verified 18 Aug 2026), so this function fetches on
@@ -27,10 +27,25 @@
 // Largs detours 63 nm (passes); the stale Kahului–Newark route detoured
 // 4,499 nm (dies). Generous for weather routing, fatal for ghosts.
 // Silence over guesses, always.
+//
+// DIAGNOSTICS (v1.4.1): every response carries x-overhead-diag naming
+// what each provider just did (resting / net / httpNNN / badjson / ok),
+// and the 503 body includes the same — the function no longer suffers
+// in silence. Cache writes hardened: a failing cache op can never crash
+// a response.
 
+// Four schema-identical community providers (ADSBExchange v2 dialect).
+// 19 Aug evening: adsb.lol and adsb.fi began refusing Worker egress
+// persistently while answering residential — both sit behind Cloudflare
+// bot protection. airplanes.live and adsb.one joined the rotation as a
+// live experiment; per-provider diagnostics name who tolerates Workers.
+// (adsb.one path follows the family convention, unverified — a 404 in
+// the diag is the verdict, harmless either way.)
 const UPSTREAMS = [
   "https://api.adsb.lol/v2/lat/55.795/lon/-4.87/dist/20",
   "https://opendata.adsb.fi/api/v2/lat/55.795/lon/-4.87/dist/20",
+  "https://api.airplanes.live/v2/point/55.795/-4.87/20",
+  "https://api.adsb.one/v2/lat/55.795/lon/-4.87/dist/20",
 ];
 
 const ROUTE_API = "https://api.adsbdb.com/v0/callsign/";
@@ -38,20 +53,23 @@ const ROUTE_TIME_CAP_MS = 1500;
 const DETOUR_ALLOW_NM = 400;
 
 const UA =
-  "largs-community-site/1.4 (volunteer town site; contact largsevents@gmail.com)";
+  "largs-community-site/1.5 (volunteer town site; contact largsevents@gmail.com)";
 
 const FRESH_KEY = new Request("https://overhead-cache.largs.internal/fresh");
 const LASTGOOD_KEY = new Request("https://overhead-cache.largs.internal/last-good");
 
-function clientResponse(body, stale) {
-  return new Response(body, {
-    status: 200,
-    headers: {
-      "content-type": "application/json; charset=utf-8",
-      "cache-control": "no-store",
-      "x-overhead-stale": stale ? "1" : "0",
-    },
-  });
+function clientResponse(body, stale, diag) {
+  const h = {
+    "content-type": "application/json; charset=utf-8",
+    "cache-control": "no-store",
+    "x-overhead-stale": stale ? "1" : "0",
+  };
+  if (diag && diag.length) h["x-overhead-diag"] = diag.join(" ");
+  return new Response(body, { status: 200, headers: h });
+}
+
+function shortHost(url) {
+  return new URL(url).host.replace("opendata.", "").replace("api.", "");
 }
 
 function cacheable(body, maxAge) {
@@ -86,11 +104,19 @@ function cooldownKey(url) {
   );
 }
 async function onCooldown(cache, url) {
-  return !!(await cache.match(cooldownKey(url)));
+  try {
+    return !!(await cache.match(cooldownKey(url)));
+  } catch {
+    return false;
+  }
 }
 async function rest(cache, url, seconds) {
-  const s = Math.max(5, Math.min(300, Math.round(seconds)));
-  await cache.put(cooldownKey(url), cacheable('{"resting":true}', s));
+  try {
+    const s = Math.max(5, Math.min(300, Math.round(seconds)));
+    await cache.put(cooldownKey(url), cacheable('{"resting":true}', s));
+  } catch {
+    // a failing cache op must never cost a response
+  }
 }
 
 // ---- route lookups (cache namespace v2: entries carry coordinates) ----
@@ -207,26 +233,40 @@ async function enrichRoutes(context, cache, parsed) {
 export async function onRequestGet(context) {
   const cache = caches.default;
 
-  const fresh = await cache.match(FRESH_KEY);
+  const diag = [];
+
+  let fresh = null;
+  try {
+    fresh = await cache.match(FRESH_KEY);
+  } catch {}
   if (fresh) {
-    return clientResponse(await fresh.text(), false);
+    return clientResponse(await fresh.text(), false, ["fresh:hit"]);
   }
 
-  // rotate provider order so both share the load and neither is always
+  // shuffle the rotation so all four share the load and none is always
   // first into a limiter's teeth
-  const order =
-    Math.random() < 0.5 ? UPSTREAMS : [UPSTREAMS[1], UPSTREAMS[0]];
+  const order = UPSTREAMS.slice();
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = (Math.random() * (i + 1)) | 0;
+    const t = order[i]; order[i] = order[j]; order[j] = t;
+  }
 
   for (const url of order) {
-    if (await onCooldown(cache, url)) continue;
+    const who = shortHost(url);
+    if (await onCooldown(cache, url)) {
+      diag.push(who + ":resting");
+      continue;
+    }
     let r;
     try {
       r = await fetch(url, { headers: { "user-agent": UA } });
     } catch {
+      diag.push(who + ":net");
       await rest(cache, url, 20);
       continue;
     }
     if (!r.ok) {
+      diag.push(who + ":http" + r.status);
       if (r.status === 429 || r.status === 420) {
         const ra = parseInt(r.headers.get("retry-after") || "", 10);
         await rest(cache, url, isNaN(ra) ? 60 : ra);
@@ -240,30 +280,41 @@ export async function onRequestGet(context) {
     try {
       parsed = JSON.parse(raw);
     } catch {
+      diag.push(who + ":badjson");
       await rest(cache, url, 20);
       continue;
     }
     if (!parsed || !Array.isArray(parsed.ac)) {
+      diag.push(who + ":noac");
       await rest(cache, url, 20);
       continue;
     }
 
+    diag.push(who + ":ok");
     await enrichRoutes(context, cache, parsed);
     const body = JSON.stringify(parsed);
 
-    await cache.put(FRESH_KEY, cacheable(body, 8));
-    await cache.put(LASTGOOD_KEY, cacheable(body, 600));
-    return clientResponse(body, false);
+    try {
+      await cache.put(FRESH_KEY, cacheable(body, 8));
+      await cache.put(LASTGOOD_KEY, cacheable(body, 600));
+    } catch {
+      // serve the snapshot even if the edge cache refuses it
+    }
+    return clientResponse(body, false, diag);
   }
 
   // upstream weather: serve the last good snapshot for up to ten
   // minutes, marked stale — the page labels its age from the payload
-  const lastGood = await cache.match(LASTGOOD_KEY);
+  let lastGood = null;
+  try {
+    lastGood = await cache.match(LASTGOOD_KEY);
+  } catch {}
   if (lastGood) {
-    return clientResponse(await lastGood.text(), true);
+    diag.push("served:lastgood");
+    return clientResponse(await lastGood.text(), true, diag);
   }
 
-  return new Response(JSON.stringify({ unavailable: true }), {
+  return new Response(JSON.stringify({ unavailable: true, diag: diag, at: Date.now() }), {
     status: 503,
     headers: {
       "content-type": "application/json; charset=utf-8",
