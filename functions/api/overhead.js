@@ -1,32 +1,32 @@
 // /api/overhead — live aircraft near Largs, same-origin proxy + route
-// enrichment. v1.2.1, 19 August 2026.
+// enrichment. v1.4, 19 August 2026.
 //
 // AIRCRAFT: browsers can't call the community ADS-B aggregators directly
 // (no CORS headers — verified 18 Aug 2026), so this function fetches on
 // the site's behalf, politely: one shared snapshot cached at the edge for
-// 8 seconds serves every visitor (whole town ≤ ~7 upstream req/min);
-// last-good served up to 120 s on failure, marked stale; honest 503
-// beyond. adsb.lol threw a 420 in testing — the cache is the manners.
+// 8 seconds serves every visitor (whole town ≤ ~7 upstream req/min).
 //
-// ROUTES: contract verified 19 Aug 2026 against adsbdb.com —
-//   GET https://api.adsbdb.com/v0/callsign/{CS}
-//   200 → {response:{flightroute:{origin:{name,municipality,iata_code,…},
-//                                 destination:{…}, airline:{…}}}}
-//   unknown callsign → HTTP 404 {response:"unknown callsign"}  (verified
-//   live 19 Aug — a definitive answer, cached; transient non-200s are
-//   NOT cached and retry on the next snapshot)
-// (adsb.lol's own routeset answered 201-empty and its spec 404s — dead
-// end; hexdb.io answers ICAO pairs and is held in reserve, unwired.)
-// Each airline-shaped callsign is looked up once and cached 24 h
-// (negatives 6 h); lookups run in parallel with a hard time cap and any
-// failure simply means that aircraft carries no route. Enrichment happens
-// BEFORE the snapshot is cached, so all visitors share the answers.
+// RESILIENCE (v1.4): the aggregators rate-limit Cloudflare's shared
+// egress IPs — upstream verified healthy from residential and other
+// vantages while failing via the Worker, 19 Aug. So: provider order is
+// rotated per attempt; a provider that fails is rested on a cooldown
+// (Retry-After honoured when sent, capped 300 s; 60 s default on
+// 429/420; 20 s on other failures); and the last good snapshot now
+// serves for up to TEN MINUTES, marked stale — the page already stamps
+// "feed interrupted, showing last received" with the payload's own
+// timestamp, so staleness is labelled, never disguised. Honest 503
+// beyond that.
 //
-// Attached per aircraft:  route: { iata: "LHR-GLA",
-//                                  from: "London Heathrow",
-//                                  to:   "Glasgow" }
-// Names are adsbdb's with " Airport" / " International" suffixes shed —
-// plain English for the cards; the IATA pair feeds the map popups.
+// ROUTES: adsbdb.com contract verified 19 Aug (GET /v0/callsign/{CS};
+// 404 = definitive unknown, cached 6 h; transient non-200s uncached).
+// Positive answers cached 24 h WITH airport coordinates, because v1.4
+// adds the PLAUSIBILITY TEST the Kahului incident demanded: a route is
+// attached only if the aircraft's detour — dist(plane,origin) +
+// dist(plane,destination) − dist(origin,destination) — is under 400 nm.
+// Calibrated against ground truth 19 Aug: UAL959 London–Chicago over
+// Largs detours 63 nm (passes); the stale Kahului–Newark route detoured
+// 4,499 nm (dies). Generous for weather routing, fatal for ghosts.
+// Silence over guesses, always.
 
 const UPSTREAMS = [
   "https://api.adsb.lol/v2/lat/55.795/lon/-4.87/dist/20",
@@ -35,9 +35,10 @@ const UPSTREAMS = [
 
 const ROUTE_API = "https://api.adsbdb.com/v0/callsign/";
 const ROUTE_TIME_CAP_MS = 1500;
+const DETOUR_ALLOW_NM = 400;
 
 const UA =
-  "largs-community-site/1.2.1 (volunteer town site; contact largsevents@gmail.com)";
+  "largs-community-site/1.4 (volunteer town site; contact largsevents@gmail.com)";
 
 const FRESH_KEY = new Request("https://overhead-cache.largs.internal/fresh");
 const LASTGOOD_KEY = new Request("https://overhead-cache.largs.internal/last-good");
@@ -62,21 +63,50 @@ function cacheable(body, maxAge) {
   });
 }
 
+// ---- geometry (nautical miles, spherical) ----
+function toRad(d) { return (d * Math.PI) / 180; }
+function distNm(la1, lo1, la2, lo2) {
+  const f1 = toRad(la1), f2 = toRad(la2);
+  const df = toRad(la2 - la1), dl = toRad(lo2 - lo1);
+  const a =
+    Math.sin(df / 2) * Math.sin(df / 2) +
+    Math.cos(f1) * Math.cos(f2) * Math.sin(dl / 2) * Math.sin(dl / 2);
+  return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 3440.065;
+}
+function routePlausible(alat, alon, r) {
+  const via = distNm(alat, alon, r.olat, r.olon) + distNm(alat, alon, r.dlat, r.dlon);
+  const direct = distNm(r.olat, r.olon, r.dlat, r.dlon);
+  return via - direct <= DETOUR_ALLOW_NM;
+}
+
+// ---- provider cooldowns ----
+function cooldownKey(url) {
+  return new Request(
+    "https://overhead-cache.largs.internal/cooldown/" + new URL(url).host
+  );
+}
+async function onCooldown(cache, url) {
+  return !!(await cache.match(cooldownKey(url)));
+}
+async function rest(cache, url, seconds) {
+  const s = Math.max(5, Math.min(300, Math.round(seconds)));
+  await cache.put(cooldownKey(url), cacheable('{"resting":true}', s));
+}
+
+// ---- route lookups (cache namespace v2: entries carry coordinates) ----
 function shedSuffixes(name) {
   return String(name || "")
     .replace(/\s+Airport$/i, "")
     .replace(/\s+International$/i, "")
     .trim();
 }
-
 function routeCacheKey(cs) {
   return new Request(
-    "https://overhead-cache.largs.internal/route/" + encodeURIComponent(cs)
+    "https://overhead-cache.largs.internal/route2/" + encodeURIComponent(cs)
   );
 }
 
 async function lookupRoute(cache, cs) {
-  // cache first — positive and negative answers both live here
   const hit = await cache.match(routeCacheKey(cs));
   if (hit) {
     try {
@@ -105,11 +135,17 @@ async function lookupRoute(cache, cs) {
       const fr = j && j.response && j.response.flightroute;
       const o = fr && fr.origin;
       const d = fr && fr.destination;
-      if (o && d && o.iata_code && d.iata_code) {
+      if (
+        o && d && o.iata_code && d.iata_code &&
+        typeof o.latitude === "number" && typeof o.longitude === "number" &&
+        typeof d.latitude === "number" && typeof d.longitude === "number"
+      ) {
         entry = {
           iata: o.iata_code + "-" + d.iata_code,
           from: shedSuffixes(o.name) || o.iata_code,
           to: shedSuffixes(d.name) || d.iata_code,
+          olat: o.latitude, olon: o.longitude,
+          dlat: d.latitude, dlon: d.longitude,
         };
       }
     } catch {
@@ -128,7 +164,6 @@ async function enrichRoutes(context, cache, parsed) {
     const seen = {};
     for (const a of parsed.ac) {
       const cs = (a.flight || "").trim();
-      // airline-shaped callsigns only: 2–3 letters then digits
       if (/^[A-Z]{2,3}\d/.test(cs) && !seen[cs]) {
         seen[cs] = true;
         wanted.push(cs);
@@ -156,7 +191,13 @@ async function enrichRoutes(context, cache, parsed) {
     for (const [cs, r] of done) if (r) routes[cs] = r;
     for (const a of parsed.ac) {
       const cs = (a.flight || "").trim();
-      if (routes[cs]) a.route = routes[cs];
+      const r = routes[cs];
+      if (!r) continue;
+      // the plausibility gate: route memory is cached, geometry is live
+      if (typeof a.lat === "number" && typeof a.lon === "number" &&
+          routePlausible(a.lat, a.lon, r)) {
+        a.route = { iata: r.iata, from: r.from, to: r.to };
+      }
     }
   } catch {
     // enrichment must never cost the snapshot
@@ -171,30 +212,52 @@ export async function onRequestGet(context) {
     return clientResponse(await fresh.text(), false);
   }
 
-  for (const url of UPSTREAMS) {
+  // rotate provider order so both share the load and neither is always
+  // first into a limiter's teeth
+  const order =
+    Math.random() < 0.5 ? UPSTREAMS : [UPSTREAMS[1], UPSTREAMS[0]];
+
+  for (const url of order) {
+    if (await onCooldown(cache, url)) continue;
+    let r;
     try {
-      const r = await fetch(url, { headers: { "user-agent": UA } });
-      if (!r.ok) continue;
-      const raw = await r.text();
-      let parsed;
-      try {
-        parsed = JSON.parse(raw);
-      } catch {
-        continue;
-      }
-      if (!parsed || !Array.isArray(parsed.ac)) continue;
-
-      await enrichRoutes(context, cache, parsed);
-      const body = JSON.stringify(parsed);
-
-      await cache.put(FRESH_KEY, cacheable(body, 8));
-      await cache.put(LASTGOOD_KEY, cacheable(body, 120));
-      return clientResponse(body, false);
+      r = await fetch(url, { headers: { "user-agent": UA } });
     } catch {
-      // network failure — try the next provider
+      await rest(cache, url, 20);
+      continue;
     }
+    if (!r.ok) {
+      if (r.status === 429 || r.status === 420) {
+        const ra = parseInt(r.headers.get("retry-after") || "", 10);
+        await rest(cache, url, isNaN(ra) ? 60 : ra);
+      } else {
+        await rest(cache, url, 20);
+      }
+      continue;
+    }
+    const raw = await r.text();
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      await rest(cache, url, 20);
+      continue;
+    }
+    if (!parsed || !Array.isArray(parsed.ac)) {
+      await rest(cache, url, 20);
+      continue;
+    }
+
+    await enrichRoutes(context, cache, parsed);
+    const body = JSON.stringify(parsed);
+
+    await cache.put(FRESH_KEY, cacheable(body, 8));
+    await cache.put(LASTGOOD_KEY, cacheable(body, 600));
+    return clientResponse(body, false);
   }
 
+  // upstream weather: serve the last good snapshot for up to ten
+  // minutes, marked stale — the page labels its age from the payload
   const lastGood = await cache.match(LASTGOOD_KEY);
   if (lastGood) {
     return clientResponse(await lastGood.text(), true);
