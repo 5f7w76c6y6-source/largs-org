@@ -1,5 +1,5 @@
 // /api/overhead — live aircraft near Largs, same-origin proxy + route
-// enrichment. v1.2, 19 August 2026.
+// enrichment. v1.2.1, 19 August 2026.
 //
 // AIRCRAFT: browsers can't call the community ADS-B aggregators directly
 // (no CORS headers — verified 18 Aug 2026), so this function fetches on
@@ -12,7 +12,9 @@
 //   GET https://api.adsbdb.com/v0/callsign/{CS}
 //   200 → {response:{flightroute:{origin:{name,municipality,iata_code,…},
 //                                 destination:{…}, airline:{…}}}}
-//   unknown callsign → {response:"unknown callsign"}
+//   unknown callsign → HTTP 404 {response:"unknown callsign"}  (verified
+//   live 19 Aug — a definitive answer, cached; transient non-200s are
+//   NOT cached and retry on the next snapshot)
 // (adsb.lol's own routeset answered 201-empty and its spec 404s — dead
 // end; hexdb.io answers ICAO pairs and is held in reserve, unwired.)
 // Each airline-shaped callsign is looked up once and cached 24 h
@@ -35,7 +37,7 @@ const ROUTE_API = "https://api.adsbdb.com/v0/callsign/";
 const ROUTE_TIME_CAP_MS = 1500;
 
 const UA =
-  "largs-community-site/1.2 (volunteer town site; contact largsevents@gmail.com)";
+  "largs-community-site/1.2.1 (volunteer town site; contact largsevents@gmail.com)";
 
 const FRESH_KEY = new Request("https://overhead-cache.largs.internal/fresh");
 const LASTGOOD_KEY = new Request("https://overhead-cache.largs.internal/last-good");
@@ -85,12 +87,20 @@ async function lookupRoute(cache, cs) {
     }
   }
 
-  let entry = { none: true };
+  let r;
   try {
-    const r = await fetch(ROUTE_API + encodeURIComponent(cs), {
+    r = await fetch(ROUTE_API + encodeURIComponent(cs), {
       headers: { "user-agent": UA },
     });
-    if (r.ok) {
+  } catch {
+    return null; // network trouble: cache nothing, retry next snapshot
+  }
+  if (!r.ok && r.status !== 404) {
+    return null; // transient (rate limit, 5xx): cache nothing, retry
+  }
+  let entry = { none: true }; // 404 lands here: a definitive "unknown"
+  if (r.ok) {
+    try {
       const j = await r.json();
       const fr = j && j.response && j.response.flightroute;
       const o = fr && fr.origin;
@@ -102,10 +112,9 @@ async function lookupRoute(cache, cs) {
           to: shedSuffixes(d.name) || d.iata_code,
         };
       }
+    } catch {
+      return null; // malformed body: treat as transient
     }
-  } catch {
-    // network trouble: cache nothing, try again next snapshot
-    return null;
   }
 
   const ttl = entry.none ? 21600 : 86400;
@@ -113,7 +122,7 @@ async function lookupRoute(cache, cs) {
   return entry.none ? null : entry;
 }
 
-async function enrichRoutes(cache, parsed) {
+async function enrichRoutes(context, cache, parsed) {
   try {
     const wanted = [];
     const seen = {};
@@ -136,7 +145,12 @@ async function enrichRoutes(cache, parsed) {
       )
     );
     const done = await Promise.race([lookups, cap]);
-    if (done === "cap") return; // cold lookups overran — next snapshot wins
+    if (done === "cap") {
+      // cold lookups overran the cap: let them finish and cache in the
+      // background so the NEXT snapshot inherits their answers
+      context.waitUntil(lookups.then(function () {}).catch(function () {}));
+      return;
+    }
 
     const routes = {};
     for (const [cs, r] of done) if (r) routes[cs] = r;
@@ -170,7 +184,7 @@ export async function onRequestGet(context) {
       }
       if (!parsed || !Array.isArray(parsed.ac)) continue;
 
-      await enrichRoutes(cache, parsed);
+      await enrichRoutes(context, cache, parsed);
       const body = JSON.stringify(parsed);
 
       await cache.put(FRESH_KEY, cacheable(body, 8));
