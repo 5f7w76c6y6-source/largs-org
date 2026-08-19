@@ -15,11 +15,11 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
    while visible; one shared edge snapshot keeps the whole town at ≤ ~7
    upstream requests a minute.
 
-   ROUTES (dormant until the function supplies them): when an aircraft
-   object carries `route: "LHR-JFK"` (IATA pair, only sent when the
-   community lookup marks the match plausible), the card shows it in
-   plain English via AIRPORTS and the popup shows the codes. Contract
-   documented in functions/api/overhead.js when it lands. #}
+   ROUTES (live from v1.2): the function attaches
+   `route: { iata: "LHR-GLA", from: "London Heathrow", to: "Glasgow" }`
+   from a cached adsbdb.com lookup of the callsign — airline flights
+   only, and only when the lookup answers. Cards render the names, map
+   popups the codes. Contract in functions/api/overhead.js. #}
 
 <section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
@@ -55,7 +55,8 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   <p class="ac-credit">Aircraft data via
   <a href="https://adsb.lol">adsb.lol</a> and
   <a href="https://adsb.fi">adsb.fi</a> — community-run receivers, open
-  data (ODbL). Positions are as broadcast by the aircraft themselves.
+  data (ODbL). Positions are as broadcast by the aircraft themselves;
+  route lookups via <a href="https://www.adsbdb.com">adsbdb</a>.
   Map © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
   contributors.</p>
 </section>
@@ -136,30 +137,6 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     RCH:"US Air Force", NPT:"West Atlantic", HLE:"Helimed", CG:"Coastguard"
   };
 
-  // Plain-English airport names for route pairs, IATA-keyed; raw code
-  // shown for anything unlisted. Grows one sighting at a time.
-  var AIRPORTS = {
-    GLA:"Glasgow", PIK:"Prestwick", EDI:"Edinburgh", ABZ:"Aberdeen",
-    INV:"Inverness", LHR:"London Heathrow", LGW:"London Gatwick",
-    STN:"London Stansted", LTN:"London Luton", LCY:"London City",
-    MAN:"Manchester", BHX:"Birmingham", NCL:"Newcastle", LBA:"Leeds",
-    LPL:"Liverpool", BRS:"Bristol", BFS:"Belfast", BHD:"Belfast City",
-    DUB:"Dublin", SNN:"Shannon", ORK:"Cork", IOM:"Isle of Man",
-    AMS:"Amsterdam", CDG:"Paris CDG", ORY:"Paris Orly", FRA:"Frankfurt",
-    MUC:"Munich", ZRH:"Zurich", GVA:"Geneva", BRU:"Brussels",
-    MAD:"Madrid", BCN:"Barcelona", LIS:"Lisbon", FCO:"Rome",
-    MXP:"Milan", CPH:"Copenhagen", OSL:"Oslo", ARN:"Stockholm",
-    HEL:"Helsinki", KEF:"Reykjavik", WAW:"Warsaw", KRK:"Krakow",
-    PMI:"Palma", IBZ:"Ibiza", AGP:"Malaga", ALC:"Alicante", FAO:"Faro",
-    TFS:"Tenerife", ACE:"Lanzarote", LPA:"Gran Canaria", FUE:"Fuerteventura",
-    DXB:"Dubai", DOH:"Doha", AUH:"Abu Dhabi", IST:"Istanbul", AYT:"Antalya",
-    JFK:"New York JFK", EWR:"Newark", BOS:"Boston", PHL:"Philadelphia",
-    IAD:"Washington", ORD:"Chicago", ATL:"Atlanta", MIA:"Miami",
-    MCO:"Orlando", LAX:"Los Angeles", SFO:"San Francisco", DEN:"Denver",
-    SEA:"Seattle", LAS:"Las Vegas", YYZ:"Toronto", YUL:"Montreal",
-    YHZ:"Halifax", YYT:"St John's", HKG:"Hong Kong", SIN:"Singapore"
-  };
-
   var COMPASS = ["north","north-north-east","north-east","east-north-east",
     "east","east-south-east","south-east","south-south-east","south",
     "south-south-west","south-west","west-south-west","west",
@@ -197,7 +174,6 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     return (m && OPERATORS[m[0]]) || null;
   }
 
-  function airportName(code) { return AIRPORTS[code] || code; }
   function feet(n) { return n.toLocaleString("en-GB") + " ft"; }
   function mph(kn) { return Math.round(kn * 1.151).toLocaleString("en-GB") + " mph"; }
   function milesOf(nm) { return (nm * 1.1508).toFixed(nm < 4.5 ? 1 : 0); }
@@ -210,9 +186,7 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   }
 
   function routeParts(a) {
-    if (!a.route || a.route.indexOf("-") < 0) return null;
-    var p = a.route.split("-");
-    return { from: p[0], to: p[p.length - 1] };
+    return (a.route && a.route.from && a.route.to) ? a.route : null;
   }
 
   function rowFor(a) {
@@ -256,7 +230,7 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     if (rp) {
       var routeEl = document.createElement("span");
       routeEl.className = "ac-route";
-      routeEl.textContent = airportName(rp.from) + " → " + airportName(rp.to);
+      routeEl.textContent = rp.from + " → " + rp.to;
       where.appendChild(routeEl);
       where.appendChild(document.createTextNode(" · "));
     }
@@ -293,7 +267,7 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     var lines = [];
     lines.push(a.t ? (TYPES[a.t] || a.t) : "type unknown");
     var rp = routeParts(a);
-    if (rp) lines.push(rp.from + " → " + rp.to);
+    if (rp) lines.push((rp.iata || "").replace("-", " → "));
     if (!onGround) {
       lines.push(feet(a.alt_baro) + (typeof a.gs === "number" ? " · " + mph(a.gs) : ""));
     } else {
