@@ -5,22 +5,21 @@ title: Overhead · live aircraft near Largs
 heading: Overhead
 subtitle: What's flying near Largs right now — every aircraft broadcasting its position within twenty nautical miles (about 23 miles) of the town.
 ---
-{# Live aircraft identifier. The list is the feature: you hear a jet over
-   the Firth, this page names it. The map is the garnish.
+{# Live aircraft identifier, v1.1 (map first, per Ian's ruling 19 Aug).
+   Order: stamp and intro (the honesty framing precedes the picture),
+   then the map, then the cards. Clicking a plane opens a popup with the
+   short version and a "full details" anchor down to its card, which
+   flashes via :target.
 
-   Data path: this page polls /api/overhead (a Pages Function in
-   functions/api/overhead.js) every 8 seconds while visible. The function
-   holds one shared 8-second snapshot from the community ADS-B
-   aggregators, so visitor count never multiplies upstream load.
+   Data path: polls /api/overhead (functions/api/overhead.js) every 8 s
+   while visible; one shared edge snapshot keeps the whole town at ≤ ~7
+   upstream requests a minute.
 
-   Honesty rules, same as everywhere: positions carry their own
-   timestamp; stale data is labelled, then removed; when the feed is
-   down the page says so instead of pretending. Not every aircraft
-   broadcasts — the intro says that too.
-
-   JS is required and this is a maps-family page, where JS is allowed —
-   same footing as /roadworks/. Styles are page-scoped below for now;
-   candidates for site.css if the page earns a nav place. #}
+   ROUTES (dormant until the function supplies them): when an aircraft
+   object carries `route: "LHR-JFK"` (IATA pair, only sent when the
+   community lookup marks the match plausible), the card shows it in
+   plain English via AIRPORTS and the popup shows the codes. Contract
+   documented in functions/api/overhead.js when it lands. #}
 
 <section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
@@ -32,13 +31,19 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   across the country collect it, and this page shows everything heard
   within twenty nautical miles of Largs — Glasgow and Prestwick traffic,
   the Coastguard helicopter, transatlantic flights crossing high overhead.
-  <strong>Closest first.</strong> Not everything flying appears: some
-  military and light aircraft don't broadcast, so this is what's
-  transmitting, not a complete picture of the sky.</p>
+  Tap a plane on the map for the short version; the cards below have the
+  detail, <strong>closest first</strong>. Where a flight's usual route is
+  known it's shown too — that comes from a community lookup of the
+  callsign, not the aircraft itself, so it appears only when it checks
+  out. Not everything flying appears: some military and light aircraft
+  don't broadcast, so this is what's transmitting, not a complete picture
+  of the sky.</p>
 
   <noscript><p class="page-intro"><strong>This page needs JavaScript</strong> —
   the positions update live, several times a minute, which a static page
   can't do. Everything else on the site works without it.</p></noscript>
+
+  <div id="ac-map" aria-hidden="true"></div>
 
   <ol class="ac-list" id="ac-list" aria-live="polite" aria-label="Aircraft currently overhead, closest first"></ol>
   <p class="ac-empty" id="ac-empty" hidden>Nothing broadcasting within twenty
@@ -46,8 +51,6 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   <p class="ac-down" id="ac-down" hidden>Live aircraft data is unavailable at
   the moment. It comes from community-run receivers and will return when
   their feed does.</p>
-
-  <div id="ac-map" aria-hidden="true"></div>
 
   <p class="ac-credit">Aircraft data via
   <a href="https://adsb.lol">adsb.lol</a> and
@@ -61,21 +64,30 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
 <style>
-  .ac-list{list-style:none;margin:18px 0 22px;display:grid;gap:10px}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+  }
+  .ac-list{list-style:none;margin:16px 0 22px;display:grid;gap:10px}
   .ac-row{background:var(--card);border:1px solid var(--sand);border-radius:10px;
-    padding:12px 16px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+    padding:11px 16px;display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline}
+  .ac-row:target{outline:3px solid var(--teal);outline-offset:2px}
   .ac-who{font-weight:700;font-size:1.05rem}
   .ac-type{color:var(--teal);font-weight:500}
+  .ac-type-unknown{color:var(--muted);font-weight:400;font-style:italic}
   .ac-where{width:100%;color:var(--ink)}
-  .ac-meta{color:var(--muted);font-size:.92rem}
+  .ac-where .ac-meta{color:var(--muted);font-size:.92rem}
+  .ac-route{color:var(--slate);font-weight:500}
   .ac-tag{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
     color:var(--warn);border:1px solid var(--warn);border-radius:6px;padding:0 6px}
   .ac-tag-ground{color:var(--muted);border-color:var(--muted)}
   .ac-stale .ac-who,.ac-stale .ac-type{color:var(--muted)}
   .ac-empty,.ac-down{margin:18px 0;color:var(--muted);font-style:italic}
-  #ac-map{height:380px;border-radius:12px;border:1px solid var(--sand);margin:6px 0 14px}
+  #ac-map{height:400px;border-radius:12px;border:1px solid var(--sand);margin:8px 0 4px}
   .ac-credit{color:var(--muted);font-size:.88rem;margin:10px 0 26px}
   .ac-plane{color:var(--slate)}
+  .ac-pop strong{font-size:1rem}
+  .ac-pop a{color:var(--teal)}
 </style>
 
 <script>
@@ -112,17 +124,40 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     BE20:"King Air 200", PC12:"Pilatus PC-12", TBM9:"TBM 900"
   };
 
-  // Callsign prefixes → operators, for the ones that pass over the Clyde.
   var OPERATORS = {
     BAW:"British Airways", SHT:"British Airways", EZY:"easyJet",
     RYR:"Ryanair", RUK:"Ryanair UK", LOG:"Loganair", EXS:"Jet2",
     TOM:"TUI", VIR:"Virgin Atlantic", EIN:"Aer Lingus", KLM:"KLM",
     AFR:"Air France", DLH:"Lufthansa", SAS:"SAS", ICE:"Icelandair",
-    AAL:"American Airlines", UAL:"United", DAL:"Delta", ACA:"Air Canada",
-    WJA:"WestJet", UPS:"UPS", FDX:"FedEx", GTI:"Atlas Air", CLX:"Cargolux",
-    RRR:"Royal Air Force", ASY:"Royal Australian Air Force",
-    CFC:"Canadian Forces", CNV:"US Navy", RCH:"US Air Force",
-    NPT:"West Atlantic", HLE:"Helimed", CG:"Coastguard"
+    NOS:"Norwegian", AAL:"American Airlines", UAL:"United", DAL:"Delta",
+    ACA:"Air Canada", WJA:"WestJet", UPS:"UPS", FDX:"FedEx",
+    GTI:"Atlas Air", CLX:"Cargolux", RRR:"Royal Air Force",
+    ASY:"Royal Australian Air Force", CFC:"Canadian Forces", CNV:"US Navy",
+    RCH:"US Air Force", NPT:"West Atlantic", HLE:"Helimed", CG:"Coastguard"
+  };
+
+  // Plain-English airport names for route pairs, IATA-keyed; raw code
+  // shown for anything unlisted. Grows one sighting at a time.
+  var AIRPORTS = {
+    GLA:"Glasgow", PIK:"Prestwick", EDI:"Edinburgh", ABZ:"Aberdeen",
+    INV:"Inverness", LHR:"London Heathrow", LGW:"London Gatwick",
+    STN:"London Stansted", LTN:"London Luton", LCY:"London City",
+    MAN:"Manchester", BHX:"Birmingham", NCL:"Newcastle", LBA:"Leeds",
+    LPL:"Liverpool", BRS:"Bristol", BFS:"Belfast", BHD:"Belfast City",
+    DUB:"Dublin", SNN:"Shannon", ORK:"Cork", IOM:"Isle of Man",
+    AMS:"Amsterdam", CDG:"Paris CDG", ORY:"Paris Orly", FRA:"Frankfurt",
+    MUC:"Munich", ZRH:"Zurich", GVA:"Geneva", BRU:"Brussels",
+    MAD:"Madrid", BCN:"Barcelona", LIS:"Lisbon", FCO:"Rome",
+    MXP:"Milan", CPH:"Copenhagen", OSL:"Oslo", ARN:"Stockholm",
+    HEL:"Helsinki", KEF:"Reykjavik", WAW:"Warsaw", KRK:"Krakow",
+    PMI:"Palma", IBZ:"Ibiza", AGP:"Malaga", ALC:"Alicante", FAO:"Faro",
+    TFS:"Tenerife", ACE:"Lanzarote", LPA:"Gran Canaria", FUE:"Fuerteventura",
+    DXB:"Dubai", DOH:"Doha", AUH:"Abu Dhabi", IST:"Istanbul", AYT:"Antalya",
+    JFK:"New York JFK", EWR:"Newark", BOS:"Boston", PHL:"Philadelphia",
+    IAD:"Washington", ORD:"Chicago", ATL:"Atlanta", MIA:"Miami",
+    MCO:"Orlando", LAX:"Los Angeles", SFO:"San Francisco", DEN:"Denver",
+    SEA:"Seattle", LAS:"Las Vegas", YYZ:"Toronto", YUL:"Montreal",
+    YHZ:"Halifax", YYT:"St John's", HKG:"Hong Kong", SIN:"Singapore"
   };
 
   var COMPASS = ["north","north-north-east","north-east","east-north-east",
@@ -162,29 +197,41 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     return (m && OPERATORS[m[0]]) || null;
   }
 
+  function airportName(code) { return AIRPORTS[code] || code; }
   function feet(n) { return n.toLocaleString("en-GB") + " ft"; }
   function mph(kn) { return Math.round(kn * 1.151).toLocaleString("en-GB") + " mph"; }
   function milesOf(nm) { return (nm * 1.1508).toFixed(nm < 4.5 ? 1 : 0); }
 
-  function rowFor(a) {
+  function whoOf(a) {
     var callsign = (a.flight || "").trim();
     var who = callsign || a.r || a.hex.toUpperCase();
     var op = callsign ? operatorFor(callsign) : null;
-    var type = a.t ? (TYPES[a.t] || a.t) : "type unknown";
+    return op ? op + " " + who : who;
+  }
+
+  function routeParts(a) {
+    if (!a.route || a.route.indexOf("-") < 0) return null;
+    var p = a.route.split("-");
+    return { from: p[0], to: p[p.length - 1] };
+  }
+
+  function rowFor(a) {
+    var callsign = (a.flight || "").trim();
     var onGround = a.alt_baro === "ground";
     var military = (a.dbFlags || 0) & 1;
 
     var li = document.createElement("li");
+    li.id = "ac-" + a.hex;
     li.className = "ac-row" + ((a.seen_pos || 0) > 30 ? " ac-stale" : "");
 
     var whoEl = document.createElement("span");
     whoEl.className = "ac-who";
-    whoEl.textContent = op ? op + " " + who : who;
+    whoEl.textContent = whoOf(a);
     li.appendChild(whoEl);
 
     var typeEl = document.createElement("span");
-    typeEl.className = "ac-type";
-    typeEl.textContent = type;
+    typeEl.className = a.t ? "ac-type" : "ac-type ac-type-unknown";
+    typeEl.textContent = a.t ? (TYPES[a.t] || a.t) : "type unknown";
     li.appendChild(typeEl);
 
     if (military) {
@@ -200,25 +247,68 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
       li.appendChild(g);
     }
 
+    // one line carries the story: route (when known) · position · height
+    // · speed · registration · staleness
     var where = document.createElement("span");
     where.className = "ac-where";
+
+    var rp = routeParts(a);
+    if (rp) {
+      var routeEl = document.createElement("span");
+      routeEl.className = "ac-route";
+      routeEl.textContent = airportName(rp.from) + " → " + airportName(rp.to);
+      where.appendChild(routeEl);
+      where.appendChild(document.createTextNode(" · "));
+    }
+
     var dir = COMPASS[Math.round(((a.dir || 0) % 360) / 22.5) % 16];
-    where.textContent = onGround
+    var main = onGround
       ? milesOf(a.dst || 0) + " miles " + dir + " of Largs"
       : milesOf(a.dst || 0) + " miles " + dir + " of Largs · " + feet(a.alt_baro) +
         ((a.baro_rate || 0) > 300 ? ", climbing" : (a.baro_rate || 0) < -300 ? ", descending" : "");
-    li.appendChild(where);
+    where.appendChild(document.createTextNode(main));
 
-    var meta = document.createElement("span");
-    meta.className = "ac-meta";
     var bits = [];
     if (typeof a.gs === "number" && !onGround) bits.push(mph(a.gs));
     if (a.r && callsign) bits.push(a.r);
     if ((a.seen_pos || 0) > 30) bits.push("position " + Math.round(a.seen_pos) + "s old");
-    meta.textContent = bits.join(" · ");
-    li.appendChild(meta);
+    if (bits.length) {
+      var meta = document.createElement("span");
+      meta.className = "ac-meta";
+      meta.textContent = " · " + bits.join(" · ");
+      where.appendChild(meta);
+    }
+    li.appendChild(where);
 
     return li;
+  }
+
+  function popupFor(a) {
+    var onGround = a.alt_baro === "ground";
+    var div = document.createElement("div");
+    div.className = "ac-pop";
+    var s = document.createElement("strong");
+    s.textContent = whoOf(a);
+    div.appendChild(s);
+    var lines = [];
+    lines.push(a.t ? (TYPES[a.t] || a.t) : "type unknown");
+    var rp = routeParts(a);
+    if (rp) lines.push(rp.from + " → " + rp.to);
+    if (!onGround) {
+      lines.push(feet(a.alt_baro) + (typeof a.gs === "number" ? " · " + mph(a.gs) : ""));
+    } else {
+      lines.push("on the ground");
+    }
+    lines.forEach(function (t) {
+      div.appendChild(document.createElement("br"));
+      div.appendChild(document.createTextNode(t));
+    });
+    div.appendChild(document.createElement("br"));
+    var link = document.createElement("a");
+    link.href = "#ac-" + a.hex;
+    link.textContent = "full details ↓";
+    div.appendChild(link);
+    return div;
   }
 
   function render(data, staleHeader) {
@@ -240,15 +330,13 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     ac.forEach(function (a) {
       seen[a.hex] = true;
       var pos = [a.lat, a.lon];
-      var label = ((a.flight || "").trim() || a.r || a.hex.toUpperCase()) +
-        (a.t ? " · " + (TYPES[a.t] || a.t) : "");
       if (markers[a.hex]) {
         markers[a.hex].setLatLng(pos).setIcon(planeIcon(a.track));
       } else {
-        markers[a.hex] = L.marker(pos, { icon: planeIcon(a.track) })
-          .addTo(map).bindPopup(label);
+        markers[a.hex] = L.marker(pos, { icon: planeIcon(a.track) }).addTo(map);
+        markers[a.hex].bindPopup("");
       }
-      markers[a.hex].getPopup().setContent(label);
+      markers[a.hex].getPopup().setContent(popupFor(a));
     });
     Object.keys(markers).forEach(function (hex) {
       if (!seen[hex]) { map.removeLayer(markers[hex]); delete markers[hex]; }
