@@ -3,7 +3,7 @@ layout: layouts/base.njk
 permalink: /overhead/
 title: Overhead · live aircraft near Largs
 heading: Overhead
-subtitle: What's flying near Largs right now — every aircraft broadcasting its position within thirty nautical miles (about 35 miles) of the town.
+subtitle: Live aircraft within thirty nautical miles of the town, closest first.
 ---
 {# Live aircraft identifier, v1.1 (map first, per Ian's ruling 19 Aug).
    Order: stamp and intro (the honesty framing precedes the picture),
@@ -31,19 +31,6 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     <span class="stamp" id="ac-stamp">Live positions — loading…</span>
   </div>
 
-  <p class="page-intro">Aircraft broadcast their own position, height and
-  callsign every second (a system called ADS&#8209;B); volunteer receivers
-  across the country collect it, and this page shows everything heard
-  within thirty nautical miles of Largs — the whole of Arran, Glasgow and
-  Prestwick traffic,
-  the Coastguard helicopter, transatlantic flights crossing high overhead.
-  Tap a plane on the map for the short version; the cards below have the
-  detail, <strong>closest first</strong>. Where a flight's usual route is
-  known it's shown too — that comes from a community lookup of the
-  callsign, not the aircraft itself, so it appears only when it checks
-  out. Not everything flying appears: some military and light aircraft
-  don't broadcast, so this is what's transmitting, not a complete picture
-  of the sky.</p>
 
   <noscript><p class="page-intro"><strong>This page needs JavaScript</strong> —
   the positions update live, several times a minute, which a static page
@@ -57,6 +44,20 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   <p class="ac-down" id="ac-down" hidden>Live aircraft data is unavailable at
   the moment. It comes from community-run receivers and will return when
   their feed does.</p>
+
+  <p class="page-intro ac-about">Aircraft broadcast their own position, height and
+  callsign every second (a system called ADS&#8209;B); volunteer receivers
+  across the country collect it, and this page shows everything heard
+  within thirty nautical miles of Largs — the whole of Arran, Glasgow and
+  Prestwick traffic,
+  the Coastguard helicopter, transatlantic flights crossing high overhead.
+  Tap a plane on the map for the short version; the cards below have the
+  detail, <strong>closest first</strong>. Where a flight's usual route is
+  known it's shown too — that comes from a community lookup of the
+  callsign, not the aircraft itself, so it appears only when it checks
+  out. Not everything flying appears: some military and light aircraft
+  don't broadcast, so this is what's transmitting, not a complete picture
+  of the sky.</p>
 
   <p class="ac-credit">Aircraft data from
   <a href="https://adsb.lol">adsb.lol</a> — a community network of
@@ -93,7 +94,8 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   .ac-tag-service{color:var(--teal);border-color:var(--teal)}
   .ac-stale .ac-who,.ac-stale .ac-type{color:var(--muted)}
   .ac-empty,.ac-down{margin:18px 0;color:var(--muted);font-style:italic}
-  #ac-map{height:400px;border-radius:12px;border:1px solid var(--sand);margin:8px 0 4px}
+  #ac-map{height:400px;border-radius:12px;border:1px solid var(--sand);margin:12px 0 4px}
+  .ac-about{margin-top:24px}
   .ac-credit{color:var(--muted);font-size:.88rem;margin:10px 0 26px}
   .ac-plane{color:var(--slate)}
   @keyframes ac-spin{
