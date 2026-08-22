@@ -3,7 +3,7 @@ layout: layouts/base.njk
 permalink: /overhead/
 title: Overhead · live aircraft near Largs
 heading: Overhead
-subtitle: What's flying near Largs right now — every aircraft broadcasting its position within twenty nautical miles (about 23 miles) of the town.
+subtitle: What's flying near Largs right now — every aircraft broadcasting its position within thirty nautical miles (about 35 miles) of the town.
 ---
 {# Live aircraft identifier, v1.1 (map first, per Ian's ruling 19 Aug).
    Order: stamp and intro (the honesty framing precedes the picture),
@@ -34,7 +34,8 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   <p class="page-intro">Aircraft broadcast their own position, height and
   callsign every second (a system called ADS&#8209;B); volunteer receivers
   across the country collect it, and this page shows everything heard
-  within twenty nautical miles of Largs — Glasgow and Prestwick traffic,
+  within thirty nautical miles of Largs — the whole of Arran, Glasgow and
+  Prestwick traffic,
   the Coastguard helicopter, transatlantic flights crossing high overhead.
   Tap a plane on the map for the short version; the cards below have the
   detail, <strong>closest first</strong>. Where a flight's usual route is
@@ -51,7 +52,7 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   <div id="ac-map" aria-hidden="true"></div>
 
   <ol class="ac-list" id="ac-list" aria-live="polite" aria-label="Aircraft currently overhead, closest first"></ol>
-  <p class="ac-empty" id="ac-empty" hidden>Nothing broadcasting within twenty
+  <p class="ac-empty" id="ac-empty" hidden>Nothing broadcasting within thirty
   nautical miles just now — the quiet sky is also an answer.</p>
   <p class="ac-down" id="ac-down" hidden>Live aircraft data is unavailable at
   the moment. It comes from community-run receivers and will return when
@@ -193,7 +194,9 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
 
   var markers = {}; // hex -> Leaflet marker
   var trails = {};  // hex -> { line: Leaflet polyline, pts: [[lat,lon], …] }
-  var TRAIL_MAX = 72; // ~6 minutes of history at a 5 s cadence
+  // A jet crosses the 30 nm circle in roughly nine minutes, so the trail
+  // is sized to hold a full crossing.
+  var TRAIL_MAX = 120;
 
   // Trails are built here, in the browser, from the positions this page
   // has already seen — no stored history, no extra requests, nothing to

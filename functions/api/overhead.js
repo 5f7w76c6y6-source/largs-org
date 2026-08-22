@@ -37,7 +37,7 @@ const MAX_AGE_MS = 15 * 60 * 1000; // beyond this, honestly unavailable
 const EDGE_TTL_S = 5; // one shared read serves every visitor
 const HOME_LAT = 55.795;
 const HOME_LON = -4.87;
-const RADIUS_NM = 20;
+const RADIUS_NM = 30; // whole of Arran (farthest point 24 nm) with margin
 
 const ROUTE_API = "https://api.adsbdb.com/v0/callsign/";
 const ROUTE_TIME_CAP_MS = 1500;
