@@ -1,5 +1,5 @@
 // /api/overhead — live aircraft near Largs, same-origin proxy + route
-// enrichment. v1.6, 22 August 2026.
+// enrichment. v1.6.1, 22 August 2026.
 //
 // AIRCRAFT: browsers can't call the community ADS-B aggregators directly
 // (no CORS headers — verified 18 Aug 2026), so this function fetches on
@@ -41,6 +41,13 @@
 // live experiment; per-provider diagnostics name who tolerates Workers.
 // (adsb.one path follows the family convention, unverified — a 404 in
 // the diag is the verdict, harmless either way.)
+// Box ~20 nm around Largs (lat ±0.333°, lon ±0.593° at this latitude).
+// A box is slightly wider than a circle, so results are filtered to
+// 20 nm after distances are computed. MUST be declared before UPSTREAMS:
+// a const referenced before its declaration throws at module load.
+const RE_API = "https://re-api.adsb.lol/?box=55.462,56.128,-5.463,-4.277";
+const RADIUS_NM = 20;
+
 const UPSTREAMS = [
   "https://api.adsb.lol/v2/lat/55.795/lon/-4.87/dist/20",
   "https://opendata.adsb.fi/api/v2/lat/55.795/lon/-4.87/dist/20",
@@ -55,18 +62,12 @@ const UPSTREAMS = [
   RE_API,
 ];
 
-// Box ~20 nm around Largs (lat ±0.333°, lon ±0.593° at this latitude).
-// A box is slightly wider than a circle, so results are filtered to
-// 20 nm after distances are computed.
-const RE_API = "https://re-api.adsb.lol/?box=55.462,56.128,-5.463,-4.277";
-const RADIUS_NM = 20;
-
 const ROUTE_API = "https://api.adsbdb.com/v0/callsign/";
 const ROUTE_TIME_CAP_MS = 1500;
 const DETOUR_ALLOW_NM = 400;
 
 const UA =
-  "largs-community-site/1.6 (volunteer town site; contact largsevents@gmail.com)";
+  "largs-community-site/1.6.1 (volunteer town site; contact largsevents@gmail.com)";
 
 const FRESH_KEY = new Request("https://overhead-cache.largs.internal/fresh");
 const LASTGOOD_KEY = new Request("https://overhead-cache.largs.internal/last-good");
