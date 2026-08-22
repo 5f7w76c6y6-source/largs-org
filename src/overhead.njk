@@ -121,6 +121,7 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   }
   .ac-more dt{color:var(--muted)}
   .ac-more dd{color:var(--ink)}
+  .ac-photo{display:inline-block;margin-top:6px;font-size:.9rem;color:var(--teal)}
   .ac-pop strong{font-size:1rem}
   .ac-pop a{color:var(--teal)}
 </style>
@@ -254,9 +255,9 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   // broadcasts no category gets the airliner shape.
   var GLYPH_PATHS = {
     prop:
-      "M12 2.6 12.9 4.6 12.9 10.8 21.8 10.8 21.8 12.9 12.9 12.9 12.9 19.1 " +
-      "16.1 20.6 16.1 21.9 12 21 7.9 21.9 7.9 20.6 11.1 19.1 11.1 12.9 " +
-      "2.2 12.9 2.2 10.8 11.1 10.8 11.1 4.6Z",
+      "M12 2 12.8 4.5 12.8 9.4 21.8 11 21.8 12.6 12.8 12.6 12.8 18.4 " +
+      "16.4 19.2 16.4 20.6 12.6 20.6 12 22 11.4 20.6 7.6 20.6 7.6 19.2 " +
+      "11.2 18.4 11.2 12.6 2.2 12.6 2.2 11 11.2 9.4 11.2 4.5Z",
     airliner:
       "M12 1.5 14 9l8 4v2l-8-1.5V19l2.5 2V22.5L12 21l-4.5 1.5V21L10 19v-5.5" +
       "L2 15v-2l8-4z",
@@ -477,13 +478,25 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
       tags: span("ac-tags"),
       where: span("ac-where"),
       det: document.createElement("details"),
-      dl: document.createElement("dl")
+      dl: document.createElement("dl"),
+      photo: null
     };
     c.det.className = "ac-more";
     var sum = document.createElement("summary");
     sum.textContent = "More detail";
     c.det.appendChild(sum);
     c.det.appendChild(c.dl);
+
+    // A link, not a copy. Photographs of aircraft belong to the people
+    // who took them, so this page shows none: it points at the
+    // photographers' own venue, where the work sits with its credit and
+    // the visit counts for them.
+    c.photo = document.createElement("a");
+    c.photo.className = "ac-photo";
+    c.photo.target = "_blank";
+    c.photo.rel = "noopener";
+    c.photo.textContent = "Photos of this aircraft \u2197";
+    c.det.appendChild(c.photo);
 
     li.appendChild(c.who);
     li.appendChild(c.type);
@@ -548,6 +561,16 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
       var meta = span("ac-meta");
       meta.textContent = " · " + bits.join(" · ");
       c.where.appendChild(meta);
+    }
+
+    var reg0 = (a.r || (a.ident || {}).reg || "").trim();
+    if (reg0) {
+      c.photo.href = "https://www.planespotters.net/photos/reg/" +
+        encodeURIComponent(reg0);
+      c.photo.hidden = false;
+    } else {
+      c.photo.removeAttribute("href");
+      c.photo.hidden = true;
     }
 
     // the <details> element itself is never replaced, so `open` persists
