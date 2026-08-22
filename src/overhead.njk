@@ -202,8 +202,10 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     if (!t) {
       t = trails[a.hex] = {
         pts: [],
+        // --rain (#5B87BC): the palette's saturated blue, chosen over
+        // slate so the track reads over both land and water.
         line: L.polyline([], {
-          color: "#17333A", weight: 2, opacity: 0.45, interactive: false
+          color: "#5B87BC", weight: 3, opacity: 0.85, interactive: false
         }).addTo(map)
       };
     }
