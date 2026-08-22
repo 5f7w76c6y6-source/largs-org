@@ -1,5 +1,5 @@
 // /api/overhead — live aircraft near Largs, same-origin proxy + route
-// enrichment. v1.5, 19 August 2026.
+// enrichment. v1.6, 22 August 2026.
 //
 // AIRCRAFT: browsers can't call the community ADS-B aggregators directly
 // (no CORS headers — verified 18 Aug 2026), so this function fetches on
@@ -46,14 +46,27 @@ const UPSTREAMS = [
   "https://opendata.adsb.fi/api/v2/lat/55.795/lon/-4.87/dist/20",
   "https://api.airplanes.live/v2/point/55.795/-4.87/20",
   "https://api.adsb.one/v2/lat/55.795/lon/-4.87/dist/20",
+  // adsb.lol's RE-API — the endpoint their feeders use. Verified 22 Aug
+  // from a residential line: 200 + JSON when binCraft/zstd are omitted.
+  // Different dialect (see normalise below): `aircraft` not `ac`, `now`
+  // in seconds, and a box query carries no dst/dir, so we compute those
+  // ourselves. Whether it answers a Cloudflare Worker is exactly what
+  // the diagnostics will tell us.
+  RE_API,
 ];
+
+// Box ~20 nm around Largs (lat ±0.333°, lon ±0.593° at this latitude).
+// A box is slightly wider than a circle, so results are filtered to
+// 20 nm after distances are computed.
+const RE_API = "https://re-api.adsb.lol/?box=55.462,56.128,-5.463,-4.277";
+const RADIUS_NM = 20;
 
 const ROUTE_API = "https://api.adsbdb.com/v0/callsign/";
 const ROUTE_TIME_CAP_MS = 1500;
 const DETOUR_ALLOW_NM = 400;
 
 const UA =
-  "largs-community-site/1.5 (volunteer town site; contact largsevents@gmail.com)";
+  "largs-community-site/1.6 (volunteer town site; contact largsevents@gmail.com)";
 
 const FRESH_KEY = new Request("https://overhead-cache.largs.internal/fresh");
 const LASTGOOD_KEY = new Request("https://overhead-cache.largs.internal/last-good");
@@ -69,7 +82,7 @@ function clientResponse(body, stale, diag) {
 }
 
 function shortHost(url) {
-  return new URL(url).host.replace("opendata.", "").replace("api.", "");
+  return new URL(url).host.replace(/^(api|opendata)\./, "");
 }
 
 function cacheable(body, maxAge) {
@@ -82,6 +95,8 @@ function cacheable(body, maxAge) {
 }
 
 // ---- geometry (nautical miles, spherical) ----
+const HOME_LAT = 55.795;
+const HOME_LON = -4.87;
 function toRad(d) { return (d * Math.PI) / 180; }
 function distNm(la1, lo1, la2, lo2) {
   const f1 = toRad(la1), f2 = toRad(la2);
@@ -91,6 +106,38 @@ function distNm(la1, lo1, la2, lo2) {
     Math.cos(f1) * Math.cos(f2) * Math.sin(dl / 2) * Math.sin(dl / 2);
   return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 3440.065;
 }
+function bearingDeg(la1, lo1, la2, lo2) {
+  const f1 = toRad(la1), f2 = toRad(la2), dl = toRad(lo2 - lo1);
+  const y = Math.sin(dl) * Math.cos(f2);
+  const x = Math.cos(f1) * Math.sin(f2) - Math.sin(f1) * Math.cos(f2) * Math.cos(dl);
+  return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+}
+
+// Normalise a provider response into the v2 dialect the page expects:
+// `ac` array, `now` in milliseconds, and every aircraft carrying `dst`
+// (nautical miles from Largs) and `dir` (bearing from Largs). Harmless
+// for providers that already comply — it only fills what's missing.
+function normalise(parsed) {
+  if (!Array.isArray(parsed.ac) && Array.isArray(parsed.aircraft)) {
+    parsed.ac = parsed.aircraft;
+  }
+  if (typeof parsed.now === "number" && parsed.now < 1e12) {
+    parsed.now = Math.round(parsed.now * 1000);
+  }
+  if (!Array.isArray(parsed.ac)) return parsed;
+  parsed.ac = parsed.ac.filter((a) => {
+    if (typeof a.lat !== "number" || typeof a.lon !== "number") return true;
+    if (typeof a.dst !== "number") {
+      a.dst = distNm(HOME_LAT, HOME_LON, a.lat, a.lon);
+    }
+    if (typeof a.dir !== "number") {
+      a.dir = bearingDeg(HOME_LAT, HOME_LON, a.lat, a.lon);
+    }
+    return a.dst <= RADIUS_NM;
+  });
+  return parsed;
+}
+
 function routePlausible(alat, alon, r) {
   const via = distNm(alat, alon, r.olat, r.olon) + distNm(alat, alon, r.dlat, r.dlon);
   const direct = distNm(r.olat, r.olon, r.dlat, r.dlon);
@@ -284,9 +331,19 @@ export async function onRequestGet(context) {
       await rest(cache, url, 20);
       continue;
     }
+    if (parsed) normalise(parsed);
     if (!parsed || !Array.isArray(parsed.ac)) {
       diag.push(who + ":noac");
       await rest(cache, url, 20);
+      continue;
+    }
+    // The RE-API's box parameter order is inferred, not documented. If it
+    // were wrong we'd get a valid-but-elsewhere box — always empty. So an
+    // empty result from this provider is treated as a miss and the next
+    // provider is tried: costs one extra call on a genuinely empty sky,
+    // and makes a silent mis-box impossible.
+    if (url === RE_API && parsed.ac.length === 0) {
+      diag.push(who + ":empty");
       continue;
     }
 
