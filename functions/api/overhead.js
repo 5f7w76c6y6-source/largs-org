@@ -1,4 +1,4 @@
-// /api/overhead — live aircraft near Largs. v2.1, 22 August 2026.
+// /api/overhead — live aircraft near Largs. v2.3, 22 August 2026.
 //
 // ARCHITECTURE CHANGE. v1.x fetched the community aggregators directly
 // and, from 20 August, was refused: adsb.fi, adsb.one, airplanes.live
@@ -40,11 +40,20 @@ const HOME_LON = -4.87;
 const RADIUS_NM = 30; // whole of Arran (farthest point 24 nm) with margin
 
 const ROUTE_API = "https://api.adsbdb.com/v0/callsign/";
-const ROUTE_TIME_CAP_MS = 1500;
+// Aircraft identity, keyed on the Mode S hex — which every aircraft
+// broadcasts, unlike callsign or type code. Contract verified 22 Aug:
+// GET /v0/aircraft/{hex} -> {response:{aircraft:{registered_owner,
+// manufacturer, type, icao_type, …}}}, 404 = definitive unknown.
+// Ownership rarely changes, so this is cached far longer than routes.
+// (The response also carries url_photo / url_photo_thumbnail from
+// airport-data.com. Deliberately unused: those are someone else's
+// photographs under their own terms, and that is a separate decision.)
+const AIRCRAFT_API = "https://api.adsbdb.com/v0/aircraft/";
+const LOOKUP_TIME_CAP_MS = 2000;
 const DETOUR_ALLOW_NM = 400;
 
 const UA =
-  "largs-community-site/2.0 (volunteer town site; contact largsevents@gmail.com)";
+  "largs-community-site/2.3 (volunteer town site; contact largsevents@gmail.com)";
 
 const FRESH_KEY = new Request("https://overhead-cache.largs.internal/fresh2");
 
@@ -193,6 +202,65 @@ async function lookupRoute(cache, cs) {
   return entry.none ? null : entry;
 }
 
+function aircraftCacheKey(hex) {
+  return new Request(
+    "https://overhead-cache.largs.internal/aircraft1/" + encodeURIComponent(hex)
+  );
+}
+
+async function lookupAircraft(cache, hex) {
+  let hit = null;
+  try {
+    hit = await cache.match(aircraftCacheKey(hex));
+  } catch {}
+  if (hit) {
+    try {
+      const j = await hit.json();
+      return j && j.owner ? j : null;
+    } catch {
+      return null;
+    }
+  }
+
+  let r;
+  try {
+    r = await fetch(AIRCRAFT_API + encodeURIComponent(hex), {
+      headers: { "user-agent": UA },
+    });
+  } catch {
+    return null;
+  }
+  if (!r.ok && r.status !== 404) return null; // transient: do not cache
+
+  let entry = { none: true };
+  if (r.ok) {
+    try {
+      const j = await r.json();
+      const ac = j && j.response && j.response.aircraft;
+      if (ac && (ac.registered_owner || ac.type)) {
+        const model = [ac.manufacturer, ac.type].filter(Boolean).join(" ").trim();
+        entry = {
+          owner: ac.registered_owner || "",
+          model: model,
+          reg: ac.registration || ""
+        };
+        if (!entry.owner) delete entry.owner;
+      }
+    } catch {
+      return null;
+    }
+  }
+
+  try {
+    await cache.put(
+      aircraftCacheKey(hex),
+      // 7 days for a known aircraft, 24 h for an unknown one
+      cacheable(JSON.stringify(entry), entry.none ? 86400 : 604800)
+    );
+  } catch {}
+  return entry.none ? null : entry;
+}
+
 async function enrichRoutes(context, cache, parsed) {
   try {
     const wanted = [];
@@ -204,16 +272,33 @@ async function enrichRoutes(context, cache, parsed) {
         wanted.push(cs);
       }
     }
-    if (!wanted.length) return;
+
+
+    // aircraft identities, keyed on hex — every aircraft has one
+    const hexes = [];
+    const seenHex = {};
+    for (const a of parsed.ac) {
+      if (a.hex && !seenHex[a.hex]) {
+        seenHex[a.hex] = true;
+        hexes.push(a.hex);
+      }
+    }
 
     const cap = new Promise((resolve) =>
-      setTimeout(() => resolve("cap"), ROUTE_TIME_CAP_MS)
+      setTimeout(() => resolve("cap"), LOOKUP_TIME_CAP_MS)
     );
-    const lookups = Promise.all(
-      wanted.map((cs) =>
-        lookupRoute(cache, cs).then((r) => [cs, r]).catch(() => [cs, null])
+    const lookups = Promise.all([
+      Promise.all(
+        wanted.map((cs) =>
+          lookupRoute(cache, cs).then((r) => [cs, r]).catch(() => [cs, null])
+        )
+      ),
+      Promise.all(
+        hexes.map((h) =>
+          lookupAircraft(cache, h).then((r) => [h, r]).catch(() => [h, null])
+        )
       )
-    );
+    ]);
     const done = await Promise.race([lookups, cap]);
     if (done === "cap") {
       context.waitUntil(lookups.then(function () {}).catch(function () {}));
@@ -221,8 +306,12 @@ async function enrichRoutes(context, cache, parsed) {
     }
 
     const routes = {};
-    for (const [cs, r] of done) if (r) routes[cs] = r;
+    for (const [cs, r] of done[0]) if (r) routes[cs] = r;
+    const idents = {};
+    for (const [h, r] of done[1]) if (r) idents[h] = r;
+
     for (const a of parsed.ac) {
+      if (idents[a.hex]) a.ident = idents[a.hex];
       const cs = (a.flight || "").trim();
       const r = routes[cs];
       if (!r) continue;
