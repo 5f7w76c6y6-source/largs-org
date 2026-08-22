@@ -96,6 +96,17 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   #ac-map{height:400px;border-radius:12px;border:1px solid var(--sand);margin:8px 0 4px}
   .ac-credit{color:var(--muted);font-size:.88rem;margin:10px 0 26px}
   .ac-plane{color:var(--slate)}
+  @keyframes ac-spin{
+    from{transform:rotate(0deg)}
+    to{transform:rotate(360deg)}
+  }
+  .ac-rotor{
+    animation:ac-spin .85s linear infinite;
+    transform-box:view-box;transform-origin:12px 10px;
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ac-rotor{animation:none}
+  }
   .ac-more{width:100%;margin-top:6px}
   .ac-more summary{
     font-size:.86rem;color:var(--teal);cursor:pointer;
@@ -193,7 +204,8 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   L.circleMarker(HOME, { radius: 5, color: "#25655C", fillOpacity: 0.9 })
     .addTo(map).bindPopup("Largs");
 
-  var markers = {}; // hex -> Leaflet marker
+  var markers = {};    // hex -> Leaflet marker
+  var markerKey = {};  // hex -> "kind|colour", so the icon is only rebuilt when it changes
   var trails = {};  // hex -> { line: Leaflet polyline, pts: [[lat,lon], …] }
   // A jet crosses the 30 nm circle in roughly nine minutes, so the trail
   // is sized to hold a full crossing.
@@ -204,18 +216,23 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
   // keep. They start empty when the page opens and grow as you watch.
   function updateTrail(a) {
     var t = trails[a.hex];
+    var wanted = glyphColour(a) || DEFAULT_TRAIL;
     if (!t) {
       t = trails[a.hex] = {
         pts: [],
-        // Apple system blue (#007AFF) — deliberately outside the site
+        // Apple system blue by default — deliberately outside the site
         // palette, on the same principle as the roadworks map's red and
         // the council bin colours: a functional overlay on someone
-        // else's map, where legibility beats house harmony. The palette
-        // blues (--rain, --water-tint) both lose against OSM's water.
+        // else's map, where legibility beats house harmony. A service
+        // aircraft draws its track in its own colour instead.
         line: L.polyline([], {
-          color: "#007AFF", weight: 3, opacity: 0.9, interactive: false
+          color: DEFAULT_TRAIL, weight: 3, opacity: 0.9, interactive: false
         }).addTo(map)
       };
+    }
+    if (t.colour !== wanted) {
+      t.colour = wanted;
+      t.line.setStyle({ color: wanted });
     }
     var last = t.pts[t.pts.length - 1];
     if (!last || last[0] !== a.lat || last[1] !== a.lon) {
@@ -230,33 +247,93 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     delete trails[hex];
   }
 
-  function planeIcon(track) {
+  // Shape follows the aircraft's own broadcast emitter category — the
+  // same field that already identifies rotorcraft. Wing plan does the
+  // work: straight thin wings for propeller aircraft, swept for jets,
+  // widest for the heavies. Nothing is inferred; anything that
+  // broadcasts no category gets the airliner shape.
+  var GLYPH_PATHS = {
+    prop:
+      "M12 2.6 12.9 4.6 12.9 10.8 21.8 10.8 21.8 12.9 12.9 12.9 12.9 19.1 " +
+      "16.1 20.6 16.1 21.9 12 21 7.9 21.9 7.9 20.6 11.1 19.1 11.1 12.9 " +
+      "2.2 12.9 2.2 10.8 11.1 10.8 11.1 4.6Z",
+    airliner:
+      "M12 1.5 14 9l8 4v2l-8-1.5V19l2.5 2V22.5L12 21l-4.5 1.5V21L10 19v-5.5" +
+      "L2 15v-2l8-4z",
+    heavy:
+      "M12 1.2 14.4 8.6 23 13.4 23 15.4 14.4 13.8 14.4 19.2 17.4 21.4 " +
+      "17.4 22.8 12 21.2 6.6 22.8 6.6 21.4 9.6 19.2 9.6 13.8 1 15.4 " +
+      "1 13.4 9.6 8.6Z"
+  };
+
+  var PROP_TYPES = { C152:1, C172:1, C182:1, C208:1, P28A:1, PA28:1, PA18:1,
+    SR22:1, DA40:1, DA42:1, BE20:1, PC12:1, TBM9:1, AT46:1, AT76:1, AT72:1,
+    DH8D:1, JS41:1, SB20:1, C130:1, C30J:1, SF34:1, E110:1 };
+
+  function glyphKind(a) {
+    if (isHeli(a)) return "heli";
+    if (a.t && PROP_TYPES[a.t]) return "prop";
+    var cat = a.category;
+    if (cat === "A1" || cat === "A2") return "prop";
+    if (cat === "A5") return "heavy";
+    return "airliner";
+  }
+
+  // Service aircraft take their service's own colour — Coastguard red,
+  // ambulance green, police blue — on the same principle as the bin
+  // swatches: the colour is a label for a real thing, and the card
+  // always names the service in words, so colour never carries the
+  // meaning by itself.
+  var SERVICE_COLOUR = {
+    coastguard: "#C03B2B",
+    "air ambulance": "#2F7D4F",
+    police: "#1D4ED8"
+  };
+  var DEFAULT_COLOUR = "#17333A";
+  var MILITARY_COLOUR = "#B07A1F";
+  var DEFAULT_TRAIL = "#007AFF";
+
+  function glyphColour(a) {
+    var tag = serviceTag(a);
+    if (tag && SERVICE_COLOUR[tag]) return SERVICE_COLOUR[tag];
+    if ((a.dbFlags || 0) & 1) return MILITARY_COLOUR;
+    return null; // ordinary aircraft
+  }
+
+  function acIcon(kind, colour, track) {
     var deg = (typeof track === "number") ? track : 0;
+    var fill = colour || DEFAULT_COLOUR;
+    var inner;
+    if (kind === "heli") {
+      inner =
+        '<g class="ac-rotor" stroke="' + fill + '" stroke-width="1.5" ' +
+        'stroke-linecap="round">' +
+        '<line x1="12" y1="3.2" x2="12" y2="16.8"/>' +
+        '<line x1="5.2" y1="10" x2="18.8" y2="10"/></g>' +
+        '<g fill="' + fill + '"><ellipse cx="12" cy="10" rx="2.2" ry="3.4"/>' +
+        '<rect x="11.4" y="13" width="1.2" height="6.8" rx="0.6"/>' +
+        '<rect x="9.6" y="18.8" width="4.8" height="1.4" rx="0.7"/></g>';
+    } else {
+      inner = '<path fill="' + fill + '" d="' + GLYPH_PATHS[kind] + '"/>';
+    }
     return L.divIcon({
       className: "ac-plane",
       iconSize: [26, 26],
       iconAnchor: [13, 13],
-      html: '<svg viewBox="0 0 24 24" width="26" height="26" ' +
-        'style="transform:rotate(' + deg + 'deg)">' +
-        '<path fill="#17333A" d="M12 1.5 14 9l8 4v2l-8-1.5V19l2.5 2V22.5L12 21l-4.5 1.5V21L10 19v-5.5L2 15v-2l8-4z"/></svg>'
+      html: '<svg class="ac-glyph" viewBox="0 0 24 24" width="26" height="26" ' +
+        'style="transform:rotate(' + deg + 'deg)">' + inner + "</svg>"
     });
   }
 
-  function heliIcon(track) {
-    var deg = (typeof track === "number") ? track : 0;
-    return L.divIcon({
-      className: "ac-plane",
-      iconSize: [26, 26],
-      iconAnchor: [13, 13],
-      html: '<svg viewBox="0 0 24 24" width="26" height="26" ' +
-        'style="transform:rotate(' + deg + 'deg)">' +
-        '<circle cx="12" cy="10" r="7.6" fill="none" stroke="#17333A" stroke-width="1.4"/>' +
-        '<line x1="6.9" y1="4.9" x2="17.1" y2="15.1" stroke="#17333A" stroke-width="1.4"/>' +
-        '<line x1="17.1" y1="4.9" x2="6.9" y2="15.1" stroke="#17333A" stroke-width="1.4"/>' +
-        '<ellipse cx="12" cy="10" rx="2.4" ry="3.6" fill="#17333A"/>' +
-        '<rect x="11.35" y="13" width="1.3" height="7.2" rx="0.6" fill="#17333A"/>' +
-        '<rect x="9.6" y="19.6" width="4.8" height="1.5" rx="0.7" fill="#17333A"/></svg>'
-    });
+  // Replacing the icon element restarts the rotor animation, so when only
+  // the heading has changed the existing element is rotated in place.
+  function rotateInPlace(marker, track) {
+    var el = marker._icon && marker._icon.querySelector
+      ? marker._icon.querySelector(".ac-glyph")
+      : null;
+    if (!el) return false;
+    el.style.transform = "rotate(" + ((typeof track === "number") ? track : 0) + "deg)";
+    return true;
   }
 
   function operatorFor(callsign) {
@@ -549,17 +626,28 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     ac.forEach(function (a) {
       var pos = [a.lat, a.lon];
       updateTrail(a);
-      var icon = (isHeli(a) ? heliIcon : planeIcon)(a.track);
+      var kind = glyphKind(a);
+      var colour = glyphColour(a);
+      var key = kind + "|" + (colour || "-");
       if (markers[a.hex]) {
-        markers[a.hex].setLatLng(pos).setIcon(icon);
+        markers[a.hex].setLatLng(pos);
+        if (markerKey[a.hex] !== key || !rotateInPlace(markers[a.hex], a.track)) {
+          markers[a.hex].setIcon(acIcon(kind, colour, a.track));
+          markerKey[a.hex] = key;
+        }
       } else {
-        markers[a.hex] = L.marker(pos, { icon: icon }).addTo(map);
+        markers[a.hex] = L.marker(pos, { icon: acIcon(kind, colour, a.track) }).addTo(map);
         markers[a.hex].bindPopup("");
+        markerKey[a.hex] = key;
       }
       markers[a.hex].getPopup().setContent(popupFor(a));
     });
     Object.keys(markers).forEach(function (hex) {
-      if (!seen[hex]) { map.removeLayer(markers[hex]); delete markers[hex]; }
+      if (!seen[hex]) {
+        map.removeLayer(markers[hex]);
+        delete markers[hex];
+        delete markerKey[hex];
+      }
     });
     Object.keys(trails).forEach(function (hex) {
       if (!seen[hex]) dropTrail(hex);
@@ -577,7 +665,7 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     listEl.textContent = "";
     cards = {};
     Object.keys(markers).forEach(function (hex) {
-      map.removeLayer(markers[hex]); delete markers[hex];
+      map.removeLayer(markers[hex]); delete markers[hex]; delete markerKey[hex];
     });
     Object.keys(trails).forEach(dropTrail);
     emptyEl.hidden = true;
