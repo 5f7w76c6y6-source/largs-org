@@ -315,21 +315,53 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     // the callsign prefix names the airline; failing that the registered
     // owner names whoever it actually belongs to — which for police, air
     // ambulance, Coastguard and private aircraft is the better answer
-    var op = (callsign ? operatorFor(callsign) : null) || ident.owner || null;
+    // a documented public service outranks the register's contractor
+    var svc = serviceOf(a);
+    var op = (svc && svc.name) ||
+             (callsign ? operatorFor(callsign) : null) ||
+             ident.owner || null;
     return op && op !== who ? op + " " + who : who;
   }
 
-  // A quiet tag, and only where the owner's own words justify it: no
-  // inference, no guesswork. An air ambulance overhead usually means
-  // someone is having a bad day; the page reports it plainly and does
-  // not dramatise it.
-  function serviceTag(a) {
-    var owner = ((a.ident || {}).owner || "").toLowerCase();
-    if (!owner) return null;
-    if (owner.indexOf("coastguard") >= 0) return "coastguard";
-    if (owner.indexOf("ambulance") >= 0) return "air ambulance";
-    if (owner.indexOf("police") >= 0) return "police";
+  // Some aircraft fly a public service under contract, so the register
+  // names the contractor rather than the service: every UK SAR S-92A is
+  // registered to Bristow Helicopters while flying HM Coastguard's
+  // service. Translating "Bristow" to "Coastguard" would be a guess —
+  // Bristow also flies offshore oil and gas. But the REGISTRATION is a
+  // fact: the G-MCG block is the UK SAR fleet (G-MCGG and G-MCGL are
+  // based at Prestwick, 20 nm from Largs and inside this circle).
+  //
+  // So identification runs off registration blocks and the operator's
+  // own callsign, never off inference. Add an entry here only when the
+  // block is documented as belonging to that service; where nothing
+  // matches, the registered owner is shown as-is and no tag appears.
+  var SERVICE_BY_REG = [
+    { prefix: "G-MCG", name: "HM Coastguard", tag: "coastguard" }
+  ];
+
+  function serviceOf(a) {
+    var ident = a.ident || {};
+    var reg = (a.r || ident.reg || "").toUpperCase().replace(/\s/g, "");
+    for (var i = 0; i < SERVICE_BY_REG.length; i++) {
+      if (reg.indexOf(SERVICE_BY_REG[i].prefix) === 0) return SERVICE_BY_REG[i];
+    }
+    var cs = (a.flight || "").trim().toUpperCase();
+    if (cs.indexOf("RESCU") === 0 || cs.indexOf("COASTGUARD") === 0) {
+      return { name: "HM Coastguard", tag: "coastguard" };
+    }
+    var owner = (ident.owner || "").toLowerCase();
+    if (owner.indexOf("coastguard") >= 0) return { name: null, tag: "coastguard" };
+    if (owner.indexOf("ambulance") >= 0) return { name: null, tag: "air ambulance" };
+    if (owner.indexOf("police") >= 0) return { name: null, tag: "police" };
     return null;
+  }
+
+  // A quiet tag. An air ambulance or Coastguard helicopter overhead
+  // usually means someone is having a bad day; the page reports it
+  // plainly and does not dramatise it.
+  function serviceTag(a) {
+    var svc = serviceOf(a);
+    return svc ? svc.tag : null;
   }
 
   function typeOf(a) {
