@@ -447,7 +447,15 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
     { regs: ["G-XSAS", "G-GSAS", "G-ISAS", "G-SASC"],
       name: "Scottish Ambulance Service", tag: "air ambulance" },
     { regs: ["G-SCAA", "G-PSCA", "G-NSCA"],
-      name: "Scotland's Charity Air Ambulance", tag: "air ambulance" }
+      name: "Scotland's Charity Air Ambulance", tag: "air ambulance" },
+    // Police Scotland operates one helicopter for the whole country —
+    // G-POLS, with G-PSHU as backup during maintenance — supplied under
+    // contract by Babcock, who therefore appear as the registered owner.
+    // Verified 22 Aug 2026. NOT to be confused with G-SPHU, one letter
+    // apart, an air ambulance airframe whose role has moved between
+    // operators: it is deliberately absent.
+    { regs: ["G-POLS", "G-PSHU"],
+      name: "Police Scotland", tag: "police" }
   ];
 
   function serviceOf(a) {
