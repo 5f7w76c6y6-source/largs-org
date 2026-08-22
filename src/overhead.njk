@@ -490,14 +490,22 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
     c.det.appendChild(c.dl);
 
     // A link, not a copy. Photographs of aircraft belong to the people
-    // who took them, so this page shows none: it points at the
-    // photographers' own venue, where the work sits with its credit and
-    // the visit counts for them.
+    // who took them, so this page shows none — it points at a search
+    // instead. An image search rather than one photo site because it
+    // gathers every venue at once (Planespotters, JetPhotos and the
+    // rest), each result still credited and linked back to its source,
+    // and because a single site's consent wall was swallowing the
+    // registration on first visit and dumping people on its homepage.
+    //
+    // The query carries the aircraft type as well as the registration,
+    // so an airframe nobody has photographed still returns others of the
+    // same type. That is why the link says "search for photos" and not
+    // "photos of this aircraft": it promises exactly what it does.
     c.photo = document.createElement("a");
     c.photo.className = "ac-photo";
     c.photo.target = "_blank";
     c.photo.rel = "noopener";
-    c.photo.textContent = "Photos of this aircraft \u2197";
+    c.photo.textContent = "Search for photos \u2197";
     c.det.appendChild(c.photo);
 
     li.appendChild(c.who);
@@ -567,8 +575,9 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
 
     var reg0 = (a.r || (a.ident || {}).reg || "").trim();
     if (reg0) {
-      c.photo.href = "https://www.planespotters.net/photos/reg/" +
-        encodeURIComponent(reg0);
+      var q = reg0 + " " + (typeOf(a) || "aircraft");
+      c.photo.href = "https://www.google.com/search?tbm=isch&q=" +
+        encodeURIComponent(q);
       c.photo.hidden = false;
     } else {
       c.photo.removeAttribute("href");
