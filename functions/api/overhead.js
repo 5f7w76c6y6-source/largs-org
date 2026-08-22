@@ -1,4 +1,4 @@
-// /api/overhead — live aircraft near Largs. v2.0, 22 August 2026.
+// /api/overhead — live aircraft near Largs. v2.1, 22 August 2026.
 //
 // ARCHITECTURE CHANGE. v1.x fetched the community aggregators directly
 // and, from 20 August, was refused: adsb.fi, adsb.one, airplanes.live
@@ -34,7 +34,7 @@
 
 const OBJECT_KEY = "overhead.json";
 const MAX_AGE_MS = 15 * 60 * 1000; // beyond this, honestly unavailable
-const EDGE_TTL_S = 8; // one shared read serves every visitor
+const EDGE_TTL_S = 5; // one shared read serves every visitor
 const HOME_LAT = 55.795;
 const HOME_LON = -4.87;
 const RADIUS_NM = 20;
