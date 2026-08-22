@@ -124,6 +124,7 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
   .ac-more dt{color:var(--muted)}
   .ac-more dd{color:var(--ink)}
   .ac-photo{display:inline-block;margin-top:6px;font-size:.9rem;color:var(--teal)}
+  .ac-photo[hidden]{display:none}
   .ac-pop strong{font-size:1rem}
   .ac-pop a{color:var(--teal)}
 </style>
@@ -339,6 +340,18 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
     return true;
   }
 
+  // An aircraft with no airline callsign broadcasts its registration in
+  // the callsign field instead, without the hyphen — "GXSAS" is G-XSAS.
+  // Restoring the hyphen is a formatting convention, not a guess, and it
+  // gives these aircraft a registration to search, show and match on.
+  function regOf(a) {
+    var explicit = (a.r || (a.ident || {}).reg || "").trim();
+    if (explicit) return explicit;
+    var cs = (a.flight || "").trim().toUpperCase();
+    if (/^G[A-Z]{4}$/.test(cs)) return "G-" + cs.slice(1);
+    return "";
+  }
+
   function operatorFor(callsign) {
     var m = callsign.match(/^[A-Z]{2,3}/);
     return (m && OPERATORS[m[0]]) || null;
@@ -381,7 +394,7 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
     var ident = a.ident || {};
     if (ident.owner) rows.push(["Registered owner", ident.owner]);
     if (ident.model && ident.model !== typeOf(a)) rows.push(["Aircraft", ident.model]);
-    var reg = a.r || ident.reg;
+    var reg = regOf(a);
     if (reg) rows.push(["Registration", reg]);
     return rows;
   }
@@ -391,7 +404,7 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
   function whoOf(a) {
     var callsign = (a.flight || "").trim();
     var ident = a.ident || {};
-    var who = callsign || ident.reg || a.r || a.hex.toUpperCase();
+    var who = regOf(a) || callsign || a.hex.toUpperCase();
     // the callsign prefix names the airline; failing that the registered
     // owner names whoever it actually belongs to — which for police, air
     // ambulance, Coastguard and private aircraft is the better answer
@@ -415,15 +428,27 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
   // own callsign, never off inference. Add an entry here only when the
   // block is documented as belonging to that service; where nothing
   // matches, the registered owner is shown as-is and no tag appears.
+  // Blocks and individual airframes documented as belonging to a
+  // service. Verified 22 Aug 2026: the G-MCG block is the UK SAR fleet;
+  // the Scottish Ambulance Service aircraft are operated on its behalf
+  // by Gama Aviation, so the register names the contractor and only the
+  // registration identifies the service. Named airframes will go stale
+  // as fleets change — check before adding, and remove what retires.
   var SERVICE_BY_REG = [
-    { prefix: "G-MCG", name: "HM Coastguard", tag: "coastguard" }
+    { prefix: "G-MCG", name: "HM Coastguard", tag: "coastguard" },
+    { regs: ["G-XSAS", "G-GSAS", "G-ISAS", "G-SASC"],
+      name: "Scottish Ambulance Service", tag: "air ambulance" },
+    { regs: ["G-SCAA", "G-PSCA", "G-NSCA"],
+      name: "Scotland's Charity Air Ambulance", tag: "air ambulance" }
   ];
 
   function serviceOf(a) {
     var ident = a.ident || {};
-    var reg = (a.r || ident.reg || "").toUpperCase().replace(/\s/g, "");
+    var reg = regOf(a).toUpperCase().replace(/\s/g, "");
     for (var i = 0; i < SERVICE_BY_REG.length; i++) {
-      if (reg.indexOf(SERVICE_BY_REG[i].prefix) === 0) return SERVICE_BY_REG[i];
+      var e = SERVICE_BY_REG[i];
+      if (e.prefix && reg && reg.indexOf(e.prefix) === 0) return e;
+      if (e.regs && reg && e.regs.indexOf(reg) >= 0) return e;
     }
     var cs = (a.flight || "").trim().toUpperCase();
     if (cs.indexOf("RESCU") === 0 || cs.indexOf("COASTGUARD") === 0) {
@@ -573,7 +598,7 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
       c.where.appendChild(meta);
     }
 
-    var reg0 = (a.r || (a.ident || {}).reg || "").trim();
+    var reg0 = regOf(a);
     if (reg0) {
       var q = reg0 + " " + (typeOf(a) || "aircraft");
       c.photo.href = "https://www.google.com/search?tbm=isch&q=" +
