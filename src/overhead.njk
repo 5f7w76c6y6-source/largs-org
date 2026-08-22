@@ -368,26 +368,34 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
   // records what is transmitted and does not dramatise it.
   function detailRows(a) {
     var rows = [];
+    // An aircraft's air-data probes measure the air flowing past them.
+    // Parked, there is no flow: the temperature sensor heat-soaks and
+    // reports its own housing (50°C on a sunny apron in Glasgow), the
+    // vertical rate drifts, and Mach is meaningless. Those readings are
+    // withheld on the ground rather than printed as though they meant
+    // something.
+    var onGround = a.alt_baro === "ground";
+
     if (typeof a.track === "number") {
       rows.push(["Heading", compass(a.track) + " (" + degStr(a.track) + ")"]);
     }
-    if (typeof a.baro_rate === "number" && Math.abs(a.baro_rate) >= 100) {
+    if (!onGround && typeof a.baro_rate === "number" && Math.abs(a.baro_rate) >= 100) {
       rows.push(["Vertical rate",
         Math.abs(a.baro_rate).toLocaleString("en-GB") + " ft/min " +
         (a.baro_rate > 0 ? "climb" : "descent")]);
     }
-    if (typeof a.nav_altitude_mcp === "number") {
+    if (!onGround && typeof a.nav_altitude_mcp === "number") {
       rows.push(["Selected altitude", feet(a.nav_altitude_mcp)]);
     }
     var sp = [];
     if (typeof a.gs === "number") sp.push(mph(a.gs) + " over the ground");
-    if (typeof a.mach === "number") sp.push("Mach " + a.mach.toFixed(2));
+    if (!onGround && typeof a.mach === "number") sp.push("Mach " + a.mach.toFixed(2));
     if (sp.length) rows.push(["Speed", sp.join(" \u00B7 ")]);
-    if (typeof a.ws === "number" && typeof a.wd === "number") {
+    if (!onGround && typeof a.ws === "number" && typeof a.wd === "number") {
       rows.push(["Wind aloft",
         Math.round(a.ws) + " kt from " + compass(a.wd) + " (" + degStr(a.wd) + ")"]);
     }
-    if (typeof a.oat === "number") {
+    if (!onGround && typeof a.oat === "number") {
       rows.push(["Air temperature", Math.round(a.oat) + "\u00B0C"]);
     }
     if (a.squawk) rows.push(["Squawk", String(a.squawk)]);
