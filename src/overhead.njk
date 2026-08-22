@@ -202,10 +202,13 @@ subtitle: What's flying near Largs right now — every aircraft broadcasting its
     if (!t) {
       t = trails[a.hex] = {
         pts: [],
-        // --rain (#5B87BC): the palette's saturated blue, chosen over
-        // slate so the track reads over both land and water.
+        // Apple system blue (#007AFF) — deliberately outside the site
+        // palette, on the same principle as the roadworks map's red and
+        // the council bin colours: a functional overlay on someone
+        // else's map, where legibility beats house harmony. The palette
+        // blues (--rain, --water-tint) both lose against OSM's water.
         line: L.polyline([], {
-          color: "#5B87BC", weight: 3, opacity: 0.85, interactive: false
+          color: "#007AFF", weight: 3, opacity: 0.9, interactive: false
         }).addTo(map)
       };
     }
