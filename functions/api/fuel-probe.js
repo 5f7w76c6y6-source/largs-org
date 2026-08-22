@@ -17,14 +17,15 @@
 // Guarded by ?key= so it is not publicly callable; returns 404 without it,
 // which does not advertise that the path exists.
 
-const HOST = "https://api.fuelfinder.service.gov.uk";
+// The REST overview page gives api.fuelfinder.service.gov.uk (one word).
+// That hostname does not exist in public DNS — proven 22 Aug: no A record
+// from 1.1.1.1, and a Worker subrequest to it returns Cloudflare error
+// 1016 (origin DNS error), which looks like a block but is not one.
+// The real service host is the one the portal runs on, and it answers
+// POST /api/v1/oauth/generate_secret_token with 400 on an empty body.
+const HOST = "https://www.fuel-finder.service.gov.uk";
 
-// The REST overview page shows /v1/... ; the OAuth spec shows /api/v1/... .
-// They contradict each other, so try both.
-const TOKEN_URLS = [
-  `${HOST}/api/v1/oauth/generate_secret_token`,
-  `${HOST}/v1/oauth/generate_secret_token`,
-];
+const TOKEN_URLS = [`${HOST}/api/v1/oauth/generate_secret_token`];
 
 // Guesses, in order of likelihood. Authentication docs demonstrate
 // GET /v1/prices?fuel_type=unleaded, so /prices is real; everything else
@@ -36,7 +37,6 @@ const PROBES = [
   `${HOST}/api/v1/prices?latitude=55.7952&longitude=-4.8612&radius=25`,
   `${HOST}/api/v1/forecourts`,
   `${HOST}/api/v1/stations`,
-  `${HOST}/v1/prices`,
 ];
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
