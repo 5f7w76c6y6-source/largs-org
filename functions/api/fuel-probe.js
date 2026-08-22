@@ -39,6 +39,13 @@ const PROBES = [
   `${HOST}/api/v1/stations`,
 ];
 
+// Cloudflare Workers send no User-Agent unless one is set, and Fuel
+// Finder sits behind AWS WAF, which blocks UA-less requests with a 403
+// HTML page. Proven 22 Aug: identical curl, 403 with -H 'User-Agent:',
+// 400 without. This is NOT the datacenter-IP block that killed the ADS-B
+// aggregators — every request from here must carry a UA.
+const UA = "largs-community-site/0.1 (+https://largs-org.pages.dev)";
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 function timingSafeEqual(a, b) {
@@ -137,7 +144,11 @@ export async function onRequest({ request, env }) {
   for (const t of TOKEN_URLS) {
     const r = await probe(t, {
       method: "POST",
-      headers: { "content-type": "application/json", accept: "application/json" },
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json",
+        "user-agent": UA,
+      },
       body: JSON.stringify({
         client_id: env.FUEL_CLIENT_ID,
         client_secret: env.FUEL_CLIENT_SECRET,
@@ -167,7 +178,11 @@ export async function onRequest({ request, env }) {
   for (const p of list) {
     out.data.push(
       await probe(p, {
-        headers: { authorization: `Bearer ${accessToken}`, accept: "application/json" },
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+          accept: "application/json",
+          "user-agent": UA,
+        },
       })
     );
     await sleep(400);
@@ -181,7 +196,11 @@ export async function onRequest({ request, env }) {
 async function refetchToken(tokenUrl, env) {
   const res = await fetch(tokenUrl, {
     method: "POST",
-    headers: { "content-type": "application/json", accept: "application/json" },
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      "user-agent": UA,
+    },
     body: JSON.stringify({
       client_id: env.FUEL_CLIENT_ID,
       client_secret: env.FUEL_CLIENT_SECRET,
