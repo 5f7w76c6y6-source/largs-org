@@ -442,9 +442,13 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
   // by Gama Aviation, so the register names the contractor and only the
   // registration identifies the service. Named airframes will go stale
   // as fleets change — check before adding, and remove what retires.
+  // G-WSAS added 23 Aug 2026: seen over Bonhill at 1,675 ft with adsbdb
+  // returning "type unknown", so the registration was the only route to
+  // identifying it. Confirmed an H145 of the Scottish Ambulance Service,
+  // serial 21461, photographed at Glasgow International on 21 Aug 2026.
   var SERVICE_BY_REG = [
     { prefix: "G-MCG", name: "HM Coastguard", tag: "coastguard" },
-    { regs: ["G-XSAS", "G-GSAS", "G-ISAS", "G-SASC"],
+    { regs: ["G-WSAS", "G-XSAS", "G-GSAS", "G-ISAS", "G-SASC"],
       name: "Scottish Ambulance Service", tag: "air ambulance" },
     { regs: ["G-SCAA", "G-PSCA", "G-NSCA"],
       name: "Scotland's Charity Air Ambulance", tag: "air ambulance" },
