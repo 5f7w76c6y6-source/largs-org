@@ -152,21 +152,22 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
 
     {% set rw = today.roadworks %}
     <div class="tile">
-      <div class="label"><span class="dot {% if rw.ok and rw.count == 0 %}ok{% else %}warn{% endif %}" aria-hidden="true"></span>{{ icons.roadworks() }}Roadworks
+      <div class="label"><span class="dot {% if rw.ok and rw.count == 0 %}ok{% else %}warn{% endif %}" aria-hidden="true"></span>Roadworks
         {% if rw.ok %}<span class="badge daily">daily</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
+      <img class="tile-hero" src="/assets/img/roadworks.png"
+           alt="Men-at-work road sign" width="720" height="420"
+           loading="lazy" decoding="async">
+      {# No example works here any more. With twenty active, naming one is
+         arbitrary -- it was only ever the first in the list -- and it read
+         as THE roadworks rather than one of twenty. The sign says what the
+         tile is, the figure says how many, the page has the detail. #}
       {% if rw.ok %}
       <div class="figure">{% if rw.count == 0 %}None{% else %}{{ rw.count }} active{% endif %}</div>
-      {% if rw.count > 0 %}
-      {% set w = rw.items[0] %}
-      <div class="sub">{{ w.what }}{% if w.what and w.where %}, {% endif %}{{ w.where }}{% if w.until %} until <span class="mono">{{ w.until | dom }} {{ w.until | monthShort }}</span>{% endif %} · <a href="/roadworks/">map →</a></div>
-      {% else %}
-      <div class="sub">Nothing registered on Largs streets · <a href="/roadworks/">map →</a></div>
-      {% endif %}
       {% else %}
       <div class="figure">1 active</div>
-      <div class="sub">Temporary lights, Brisbane Rd until <span class="mono">14 Aug</span></div>
       {% endif %}
+      <div class="sub"><a href="/roadworks/">see on map →</a></div>
     </div>
 
     {# Fuel. A door, not a gauge.
