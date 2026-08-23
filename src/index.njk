@@ -45,7 +45,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     {% set ev = today.tides.events or [] %}
     {% set tidesOk = today.tides.ok and (ev | length) >= 3 %}
     <div class="tile">
-      <div class="label">Tides · Largs
+      <div class="label">Largs tides
         {% if tidesOk and today.tides.source == "ukho" %}<span class="badge live">live</span>{% elif tidesOk %}<span class="badge model">model</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
       {% if tidesOk %}
@@ -72,9 +72,12 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     </div>
 
     <div class="tile">
-      <div class="label">{{ icons.seatemp() }}Sea temperature
+      <div class="label">Sea temp.
         {% if today.tides.seaTempC %}<span class="badge model">model</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
+      <img class="tile-hero" src="/assets/img/dookers.png"
+           alt="Silhouette of a group of sea swimmers in woolly hats"
+           width="720" height="420" loading="lazy" decoding="async">
       {% if today.tides.seaTempC %}
       <div class="figure">{{ today.tides.seaTempC }}°C</div>
       <div class="sub">Firth of Clyde · Fairlie channel</div>
@@ -115,8 +118,11 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     </div>
 
     <div class="tile">
-      <div class="label"><span class="dot ok" aria-hidden="true"></span>{{ icons.ferry() }}Cumbrae ferry <span class="badge timetable">timetable</span></div>
-      <div class="figure">Normally every 15 min</div>
+      <div class="label">Cumbrae ferry</div>
+      <img class="tile-hero" src="/assets/img/ferry.png"
+           alt="Silhouette of a Clyde ferry under way" width="720" height="420"
+           loading="lazy" decoding="async">
+      <div class="figure compact">Normally every 15 min</div>
       <div class="sub">Summer timetable from the Slip · <a href="{{ site.links.calmacStatus }}">check live status →</a></div>
     </div>
 
@@ -126,7 +132,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
        is claimed and no season gate is needed. Identity verified from
        her VesselFinder page, 12 Aug 2026: MMSI 232001540. #}
     <div class="tile">
-      <div class="label"><span class="dot ok" aria-hidden="true"></span>PS Waverley <span class="badge timetable">1946</span></div>
+      <div class="label">PS Waverley <span class="badge timetable">1946</span></div>
       <img class="tile-hero" src="/assets/img/waverley.png"
            alt="Silhouette of the paddle steamer Waverley"
            width="720" height="238" loading="lazy" decoding="async">
@@ -137,7 +143,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
        tile: her 1946 silhouette and a DC-3-era propliner, the aircraft
        that shared her sky. Page and data notes in src/overhead.njk. #}
     <div class="tile">
-      <div class="label"><span class="dot ok" aria-hidden="true"></span>Overhead <span class="badge live">live</span></div>
+      <div class="label">Overhead <span class="badge live">live</span></div>
       <img class="tile-hero" src="/assets/img/overhead.png"
            alt="Silhouette of a vintage propeller airliner"
            width="720" height="238" loading="lazy" decoding="async">
@@ -145,14 +151,17 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     </div>
 
     <div class="tile">
-      <div class="label"><span class="dot ok" aria-hidden="true"></span>{{ icons.trains() }}Trains to Glasgow <span class="badge timetable">timetable</span></div>
-      <div class="figure">Usually twice hourly</div>
+      <div class="label">Trains to Glasgow</div>
+      <img class="tile-hero" src="/assets/img/train.png"
+           alt="Silhouette of a steam express locomotive" width="720" height="420"
+           loading="lazy" decoding="async">
+      <div class="figure compact">Usually twice hourly</div>
       <div class="sub">Largs to Glasgow Central · <a href="{{ site.links.rail }}">live departures →</a></div>
     </div>
 
     {% set rw = today.roadworks %}
     <div class="tile">
-      <div class="label"><span class="dot {% if rw.ok and rw.count == 0 %}ok{% else %}warn{% endif %}" aria-hidden="true"></span>Roadworks
+      <div class="label">Roadworks
         {% if rw.ok %}<span class="badge daily">daily</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
       <img class="tile-hero" src="/assets/img/roadworks.png"
@@ -200,7 +209,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     {% endif %}
 
     <div class="tile">
-      <div class="label">Bins this week <span class="badge timetable">timetable</span></div>
+      <div class="label">Bins this week</div>
       {% if bins.current.note %}
       <div class="bin-row">{{ icons.bin(bins.current.swatch) }}<div class="figure">Dates move</div></div>
       <div class="sub">Festive collections this week · <a href="/bins/">bin days →</a></div>
