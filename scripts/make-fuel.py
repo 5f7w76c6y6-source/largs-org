@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
-"""Build src/_data/fuel.json from the Fuel Finder recon fixture.
+"""Build src/_data/fuel.json — the forecourt DIRECTORY, without prices.
 
-FIXTURE STAGE. This reads the frozen 23 August pull in
-~/Developer/fuel-recon/fuel-corridor.json and writes a distillate the
-page can render. Nothing here talks to the API. When the live wiring
-lands, only the input changes -- the output shape below is the contract
-and should not move without a schema bump.
+Reads the snapshot the cron Worker keeps in R2 (pulled by the deploy
+workflow) and writes the durable half of the page: who the forecourts
+are, where they are, and which grades each one sells. All of that
+changes perhaps twice a year.
+
+PRICES ARE DELIBERATELY NOT HERE. The site rebuilds every fifteen
+minutes, so a price baked at :02 is served until :17, and Fuel Finder's
+fair use policy asks that what is shown to the public not differ
+materially from the register. Fifteen minutes differs. So the page ships
+with empty price slots and fetches /api/fuel while someone is looking.
+
+The cost is real and worth stating: with JavaScript off a reader gets 26
+forecourts and no prices. That is the honest failure -- better a stated
+gap than a stale number presented as current.
 
 Usage:
     python3 scripts/make-fuel.py                 # default paths
@@ -31,7 +40,7 @@ OUT = sys.argv[2] if len(sys.argv) > 2 else "src/_data/fuel.json"
 
 # Bump when the shape below changes, so a stale file can never be served
 # as though it were current. Same discipline as SRWR_DISRUPT_SCHEMA.
-SCHEMA = 1
+SCHEMA = 2   # 1 baked prices; 2 is directory-only
 
 # ---------------------------------------------------------------------
 # Grades.
@@ -168,19 +177,6 @@ def locality(postcode):
     return DISTRICTS.get(outward)
 
 
-MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-
-
-def short_date(iso):
-    """'2026-08-18T06:02:00.000Z' -> '18 Aug'. Empty if unparseable."""
-    try:
-        y, m, d = iso[:10].split("-")
-        return f"{int(d)} {MONTHS[int(m) - 1]}"
-    except Exception:
-        return ""
-
-
 def open_all_hours(times):
     """True only if every day of the week is flagged 24 hours.
 
@@ -198,8 +194,11 @@ def open_all_hours(times):
 
 def main():
     if not os.path.exists(IN):
-        sys.exit(f"STOP: no fixture at {IN}\n"
-                 f"Rescue it from /tmp, or re-run ff-pull.py with a fresh token.")
+        sys.exit(f"STOP: no snapshot at {IN}\n"
+                 "The deploy workflow pulls it from R2 with wrangler. To run "
+                 "this by hand:\n"
+                 "  npx wrangler r2 object get largs-fuel/corridor.json "
+                 "--file .cache/corridor.json --remote")
 
     raw = json.load(open(IN))
     # Two shapes, one reader. The recon pull wrote a bare array; the Worker
@@ -266,11 +265,6 @@ def main():
         })
 
     # ---- build one ready-made view per grade -------------------------
-    # Frozen while the page runs on the 23 August pull. When the live loader
-    # lands this becomes the moment the snapshot was taken, and `fixture`
-    # below flips to False -- which is what removes the red banner.
-    captured = "2026-08-23T08:40:00Z"
-
     views = []
     for g in GRADES:
         sold, not_sold = [], []
@@ -279,26 +273,13 @@ def main():
             # rendered -- both would only bloat the array this page dumps
             # into its map script.
             row = {k: v for k, v in s.items() if k not in ("prices", "trading")}
-            hit = s["prices"].get(g["key"])
-            if hit:
-                row["price"] = hit["p"]
-                # The display string is built HERE, not in the template.
-                # Nunjucks' round(1) returns a number, so 158.0 renders as
-                # "158" -- one row reading 158p in a column of 157.9p looks
-                # rounded, and the whole point of the page is that the
-                # tenths are real money. Always one decimal, always a string.
-                row["priceText"] = f"{hit['p']:.1f}"
-                row["priceAt"] = hit["at"]
-                # A price is shown with a date ONLY when it was not reported
-                # on the day this data was taken. An old timestamp does not
-                # mean the figure is stale -- retailers must report a change
-                # within 30 minutes, so no news is genuinely no change -- but
-                # a price nobody has touched for a fortnight is worth seeing,
-                # and it is the one signal that a retailer has stopped
-                # reporting altogether. "Unchanged since" says that without
-                # implying the site distrusts the number.
-                row["setOn"] = ("" if (hit["at"] or "")[:10] == captured[:10]
-                                else short_date(hit["at"] or ""))
+            # The presence of a price in the snapshot is the only evidence
+            # available for "does this forecourt sell this grade". The
+            # register's own fuel_types field exists but is retailer-entered
+            # and demonstrably unreliable (is_supermarket_service_station is
+            # true for two forecourts that are nothing of the kind). A price
+            # reported against a grade is a fact.
+            if s["prices"].get(g["key"]):
                 sold.append(row)
             else:
                 # Kept, never dropped. A forecourt that does not sell this
@@ -308,26 +289,21 @@ def main():
                 # into thinking the town had fewer options than it has.
                 not_sold.append(row)
 
-        # Cheapest first; ties broken north to south so the order is
-        # stable between builds rather than arbitrary.
-        sold.sort(key=lambda x: (x["price"], -x["lat"]))
+        # North to south. With no prices there is nothing to rank by, and
+        # geography is the one order that still means something: a reader
+        # heading for Greenock reads the top, Irvine the bottom. The page's
+        # JavaScript re-sorts to cheapest-first once the prices land, so
+        # this is also what a reader without JavaScript is left with.
+        sold.sort(key=lambda x: -x["lat"])
         not_sold.sort(key=lambda x: -x["lat"])
 
-        views.append({**g, "sold": sold, "notSold": not_sold,
-                      "cheapest": sold[0]["price"] if sold else None,
-                      "cheapestText": sold[0]["priceText"] if sold else "",
-                      "dearest": sold[-1]["price"] if sold else None})
+        views.append({**g, "sold": sold, "notSold": not_sold})
 
     out = {
         "ok": True,
         "schema": SCHEMA,
-        # True while the page runs on the frozen pull. The template keys
-        # its "not live" banner off this, so wiring the API and forgetting
-        # to remove the banner is impossible -- flip the flag, banner goes.
-        "fixture": True,
-        "capturedAt": captured,
-        # Rendered by the template as-is; the page does no date arithmetic.
-        "capturedText": short_date(captured),
+        # When the DIRECTORY was built. Not when the prices were read --
+        # those arrive in the browser and carry their own timestamp.
         "builtAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "count": len(stations),
         "views": views,
@@ -340,10 +316,8 @@ def main():
     print(f"  {len(stations)} forecourts"
           + (f", {no_coords} skipped for missing coordinates" if no_coords else ""))
     for v in views:
-        span = (f"{v['cheapest']:.1f}–{v['dearest']:.1f}p"
-                if v["cheapest"] is not None else "none")
         print(f"  {v['label']:<15} {len(v['sold']):>2} selling, "
-              f"{len(v['notSold']):>2} not  ({span})")
+              f"{len(v['notSold']):>2} not")
 
     if unknown:
         print("\n  POSTCODE DISTRICTS NOT IN THE TABLE: " + ", ".join(sorted(unknown)))

@@ -1,0 +1,330 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: fuel.views
+  size: 1
+  alias: view
+permalink: "{{ view.path }}"
+eleventyComputed:
+  title: "{{ view.label }} · Fuel prices around Largs"
+  heading: Filling up around Largs
+  subtitle: Every forecourt within driving distance of Largs, with the price each one last reported.
+---
+{# Build-time filter pages, the same mechanism as Roadworks and Council
+   corner: this one template renders once per entry in `fuel.views`, and each
+   rendering is written to its own folder. The chips are plain links --
+   bookmarkable, indexable, back-button correct.
+
+   THE DIRECTORY IS STATIC, THE PRICES ARE NOT.
+
+   Who the forecourts are, where they are and which grades each sells is
+   baked at build time: it changes perhaps twice a year. The numbers are
+   fetched from /api/fuel in the browser, because this site rebuilds every
+   fifteen minutes and Fuel Finder's fair use policy asks that what is shown
+   to the public not differ materially from the register. A price baked at
+   :02 and served at :16 differs.
+
+   The cost, plainly: with JavaScript off a reader gets 26 forecourts and no
+   prices, and the noscript line below says so. That is the honest failure --
+   better a stated gap than a stale number presented as current. #}
+{% set f = fuel %}
+<section class="board wrap" aria-labelledby="page-title">
+
+  {% if f.ok %}
+
+  {# Filled in by script once the prices land, and it never claims more than
+     it knows: "Checking prices…" until the fetch returns, then the time they
+     were read, or plainly that they could not be. #}
+  <div class="kicker">
+    <span class="stamp" id="fuel-stamp">Checking prices…</span>
+  </div>
+
+  <p class="page-intro">Prices come from <strong>Fuel Finder</strong>, the
+  government's statutory register: every filling station in the country must
+  report a price change within thirty minutes of making it. Largs has one
+  forecourt of its own, so this covers everywhere within driving distance —
+  Greenock and Port Glasgow to the north, Irvine to the south, and inland to
+  Kilbirnie and Beith. <strong>The map shows where; the list below is cheapest
+  first.</strong></p>
+
+  <nav class="fuel-filter" aria-label="Choose a fuel">
+    {% for g in f.views %}
+    <a href="{{ g.path }}"{% if g.key == view.key %} aria-current="page"{% endif %}>{{ g.label }}</a>
+    {% endfor %}
+  </nav>
+
+  <p class="fuel-legend">
+    <span><span class="swatch sells"></span>{{ view.sold | length }} selling {{ view.label | lower }}</span>
+    {% if view.notSold | length %}<span>{{ view.notSold | length }} don't stock it — listed below</span>{% endif %}
+    <span>tap a pin for details</span>
+  </p>
+
+  <noscript>
+    <p class="fuel-notice"><strong>Prices need JavaScript.</strong> They are
+    read live from the register each time the page is opened, rather than
+    printed into it — a figure baked in when the page was built could be
+    fifteen minutes out of date by the time you read it. Every forecourt is
+    still listed below, north to south, with its address and opening hours.</p>
+  </noscript>
+
+  <div id="fuel-map" role="application"
+       aria-label="Map of the filling stations selling {{ view.label | lower }} within driving distance of Largs. Every forecourt in the area, including those that don't stock it, is listed below."></div>
+
+  {# Rendered north to south. Script re-sorts to cheapest first once the
+     prices arrive; without script this order stands, and it is the one that
+     still means something — Greenock at the top, Irvine at the bottom. #}
+  <div id="fuel-list">
+  {% for s in view.sold %}
+    <article class="fuel-row" id="pfs-{{ s.id }}" data-id="{{ s.id }}"
+             data-lat="{{ s.lat }}" data-lng="{{ s.lng }}"
+             data-name="{{ s.name }}" data-locality="{{ s.locality }}"
+             data-postcode="{{ s.postcode }}">
+      <span class="fuel-price"><span class="pval">·&nbsp;·&nbsp;·</span><span class="pence"></span></span>
+      <div class="fuel-main">
+        <h3>{{ s.name }}{% if s.locality %} <span class="fuel-where">{{ s.locality }}</span>{% endif %}</h3>
+        <p class="meta">{% if s.address %}{{ s.address }} · {% endif %}{{ s.postcode }}{% if s.open24 %} · open 24 hours{% endif %}{% if s.closedTemp %} · <strong>temporarily closed</strong>{% endif %}<span class="pset"></span> · <a class="map-link" href="#fuel-map">show on map →</a></p>
+      </div>
+    </article>
+  {% endfor %}
+  </div>
+
+  {% if view.notSold | length %}
+  {# Never dropped, only marked. Omitting a forecourt that doesn't stock the
+     selected grade would be selective display -- forbidden in terms by the
+     Fuel Finder fair use policy -- and would also tell a reader the area has
+     fewer options than it has. #}
+  <h2 class="fuel-sub">Doesn't stock {{ view.label | lower }}</h2>
+  {% for s in view.notSold %}
+    <article class="fuel-row nosell">
+      <span class="fuel-price none">—</span>
+      <div class="fuel-main">
+        <h3>{{ s.name }}{% if s.locality %} <span class="fuel-where">{{ s.locality }}</span>{% endif %}</h3>
+        <p class="meta">{% if s.address %}{{ s.address }} · {% endif %}{{ s.postcode }}{% if s.closedTemp %} · <strong>temporarily closed</strong>{% endif %}</p>
+      </div>
+    </article>
+  {% endfor %}
+  {% endif %}
+
+  <details class="updates-note">
+    <summary>What the fuel names mean</summary>
+    <div class="updates-body">
+      <ul class="badge-key">
+        <li><strong>Unleaded</strong> — ordinary petrol. The register calls it <strong>E10</strong>, after the 10% bioethanol in it. This is what most petrol cars take.</li>
+        <li><strong>Super unleaded</strong> — <strong>E5</strong>, 5% bioethanol, higher octane. Dearer, and only some cars need it.</li>
+        <li><strong>Diesel</strong> — <strong>B7</strong>, up to 7% biodiesel. Ordinary diesel.</li>
+        <li><strong>Premium diesel</strong> — the same fuel with an additive package, sold under brand names.</li>
+      </ul>
+      <p class="updates-foot">Prices are in <strong>pence per litre</strong>, the
+      figure on the sign at the roadside. A price ending in 9 — 157.9p — is nine
+      tenths of a penny, not nine pence.</p>
+      <p class="updates-foot"><strong>How current is this?</strong> Retailers
+      have to report a price change to the register within thirty minutes of
+      making it at the pump. This page reads the register directly and checks
+      again every few minutes while you have it open — the time at the top is
+      when it last looked. Where a price says <strong>unchanged since</strong> a
+      date, that is not a stale figure: it means nobody has altered it since
+      then.</p>
+      <p class="updates-foot">Every forecourt in the area is listed, whichever
+      fuel you pick. Nothing is hidden and nothing is left out.</p>
+    </div>
+  </details>
+
+  <p class="note">This covers the forecourts you can drive to from Largs:
+  Greenock and Port Glasgow in the north, down to Irvine in the south, and
+  inland as far as Kilbirnie and Beith. Millport and the Arran forecourts are
+  left out because reaching them means a ferry.</p>
+
+  <p class="note">Source: Fuel Finder, the UK government's statutory open data
+  scheme for road fuel prices, operated under the Motor Fuel Price (Open Data)
+  Regulations 2025. Contains public sector information licensed under the
+  <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence v3.0</a>.
+  Prices are as reported by each retailer and are not validated by anyone —
+  always check the price on the forecourt before you buy. Spotted one that's
+  wrong? <a href="https://www.fuel-finder.service.gov.uk/motorist/price-report">Report a discrepancy</a>.</p>
+
+  {% else %}
+  <p class="note">The forecourt directory hasn't been built yet — the deploy
+  pulls it from R2 and runs <code>scripts/make-fuel.py</code>.</p>
+  {% endif %}
+</section>
+
+{% if f.ok %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var GRADE = {{ view.key | dump | safe }};
+  var LABEL = {{ view.label | dump | safe }};
+
+  var listEl  = document.getElementById("fuel-list");
+  var stampEl = document.getElementById("fuel-stamp");
+  var rows = Array.prototype.slice.call(listEl.querySelectorAll(".fuel-row"));
+
+  var map = null, markers = {}, raised = null;
+
+  function hhmm(iso) {
+    var d = new Date(iso);
+    return isNaN(d) ? "" : d.toLocaleTimeString("en-GB",
+      { hour: "2-digit", minute: "2-digit", timeZone: "Europe/London" });
+  }
+  function shortDate(iso) {
+    var d = new Date(iso);
+    return isNaN(d) ? "" : d.toLocaleDateString("en-GB",
+      { day: "numeric", month: "short", timeZone: "Europe/London" });
+  }
+  /* Largs wall-clock date, not the browser's UTC. A reader in Largs at
+     00:30 BST is on a different calendar day from the machine's UTC clock
+     for half the year, and "unchanged since" would fire on prices set an
+     hour ago. */
+  function ukDay(iso) {
+    var d = new Date(iso);
+    return isNaN(d) ? "" : d.toLocaleDateString("en-CA",
+      { timeZone: "Europe/London" });
+  }
+
+  function paint(data) {
+    var prices = (data && data.prices) || {};
+    var checked = data && data.checkedAt;
+    var today = ukDay(checked || new Date().toISOString());
+    var withPrice = [], without = [];
+
+    rows.forEach(function (row) {
+      var hit = prices[row.dataset.id] && prices[row.dataset.id][GRADE];
+      var val = row.querySelector(".pval");
+      var set = row.querySelector(".pset");
+      var cell = row.querySelector(".fuel-price");
+      if (hit && typeof hit.p === "number") {
+        // Always one decimal. JSON hands back 158 for 158.0, and a column
+        // where one row reads 158p among fifteen reading 157.9p looks
+        // rounded -- and the tenths are real money.
+        val.textContent = hit.p.toFixed(1);
+        row.querySelector(".pence").textContent = "p";
+        cell.classList.add("has-price");
+        row.dataset.price = hit.p;
+        /* A date only when the price was not reported today. An old
+           timestamp does not mean a stale figure -- a change must be
+           reported within thirty minutes, so no news is genuinely no
+           change -- but a price nobody has touched in a fortnight is worth
+           seeing, and it is the only signal that a retailer has stopped
+           reporting at all. */
+        set.textContent = (hit.at && ukDay(hit.at) !== today)
+          ? " · unchanged since " + shortDate(hit.at) : "";
+        withPrice.push(row);
+      } else {
+        val.textContent = "—";
+        row.querySelector(".pence").textContent = "";
+        cell.classList.remove("has-price");
+        set.textContent = "";
+        delete row.dataset.price;
+        without.push(row);
+      }
+    });
+
+    // Cheapest first. Anything the register has no price for sinks to the
+    // bottom of this list rather than being removed: it is still a forecourt
+    // that sells this grade, we just have no figure for it today.
+    withPrice.sort(function (a, b) { return a.dataset.price - b.dataset.price; });
+    withPrice.concat(without).forEach(function (r) { listEl.appendChild(r); });
+
+    if (!data || !data.ok) {
+      stampEl.textContent = "Prices unavailable just now";
+    } else if (data.stale) {
+      stampEl.textContent = "Prices last read " + hhmm(checked) + " — not refreshing";
+    } else {
+      stampEl.textContent = "Prices as at " + hhmm(checked);
+    }
+
+    drawMap(withPrice);
+  }
+
+  function pill(text) {
+    return L.divIcon({ className: "",
+      html: '<span class="fuel-pin">' + text + "</span>",
+      iconSize: [48, 21], iconAnchor: [24, 10] });
+  }
+  function lift(m) {
+    if (raised && raised !== m) raised.setZIndexOffset(0);
+    raised = m; m.setZIndexOffset(1000);
+  }
+
+  /* The map is drawn only once prices exist, because every pin carries one.
+     Drawing pins first and relabelling them afterwards flashes wrong-looking
+     numbers; a blank beat under "Checking prices…" is the honest wait. */
+  function drawMap(priced) {
+    if (!window.L) return;   // CDN unreachable: the list stands alone.
+    if (!map) {
+      map = L.map("fuel-map", { scrollWheelZoom: false });
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+    }
+    Object.keys(markers).forEach(function (k) { map.removeLayer(markers[k]); });
+    markers = {}; raised = null;
+
+    var bounds = [];
+    rows.forEach(function (r) {
+      bounds.push([Number(r.dataset.lat), Number(r.dataset.lng)]);
+    });
+
+    /* Every pin looks the same. The cheapest is not coloured, flagged or
+       enlarged: the number is the fact and the reader does the ranking. A
+       "best price" marker would be the site taking a view on a named local
+       business, which this project does not do. */
+    priced.forEach(function (r) {
+      var m = L.marker([Number(r.dataset.lat), Number(r.dataset.lng)], {
+        icon: pill(Number(r.dataset.price).toFixed(1) + "p")
+      }).addTo(map);
+      m.bindPopup("<strong>" + r.dataset.name + "</strong><br>" +
+        (r.dataset.locality ? r.dataset.locality + " · " : "") + r.dataset.postcode +
+        "<br>" + LABEL + " " + Number(r.dataset.price).toFixed(1) + "p" +
+        '<br><a href="#' + r.id + '">full details ↓</a>');
+      m.on("click", function () { lift(m); });
+      markers[r.dataset.id] = m;
+    });
+
+    /* Bounds take EVERY forecourt, including the ones with no pin, so the
+       map frames the same stretch of coast on all four fuel pages.
+       Switching from unleaded to premium diesel then changes which prices
+       are showing, not where you are looking. */
+    if (bounds.length) map.fitBounds(bounds, { padding: [22, 22], maxZoom: 13 });
+    else map.setView([55.795, -4.861], 10);
+  }
+
+  document.querySelectorAll(".map-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+      var row = link.closest(".fuel-row");
+      var m = row && markers[row.dataset.id];
+      if (!map || !m) return;
+      map.setView([Number(row.dataset.lat), Number(row.dataset.lng)], 15);
+      lift(m); m.openPopup();
+    });
+  });
+
+  var timer = null;
+  function load() {
+    fetch("/api/fuel", { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(paint)
+      .catch(function () { paint(null); });
+  }
+
+  /* Refetched every five minutes, but ONLY while the tab is visible. The
+     fair use policy's five-minute standard applies to what is being shown to
+     a reader; a backgrounded tab is showing nobody anything, and polling it
+     would be load with no purpose. Coming back to the tab fetches at once,
+     because whatever is on screen may be minutes old. */
+  function start() {
+    stop(); load();
+    timer = setInterval(load, 5 * 60 * 1000);
+  }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") start(); else stop();
+  });
+  start();
+})();
+</script>
+{% endif %}

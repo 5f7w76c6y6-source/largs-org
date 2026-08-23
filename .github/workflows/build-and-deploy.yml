@@ -84,6 +84,40 @@ jobs:
         env:
           ADMIRALTY_KEY: ${{ secrets.ADMIRALTY_KEY }}
 
+      # Fuel: the cron Worker (worker/fuel) keeps a snapshot of the 26
+      # forecourts in R2, refreshed every five minutes. Pull it here so the
+      # page's DIRECTORY -- names, places, which grades each forecourt sells
+      # -- is rebuilt from the live register rather than a frozen file.
+      #
+      # The PRICES are deliberately not baked. This workflow runs every
+      # fifteen minutes, and Fuel Finder's fair use policy asks that what is
+      # shown to the public not differ materially from the register. A price
+      # baked at :02 and served at :16 does differ. So the page ships without
+      # prices and fetches them from /api/fuel while someone is looking.
+      #
+      # Pulled from R2 with a credential rather than over HTTP on purpose:
+      # a public endpoint serving the register's own records would be
+      # redistributing raw API data, which the developer guidelines ask
+      # integrators not to do. /api/fuel emits prices only, in our shape.
+      #
+      # continue-on-error: a token without R2 read, or an R2 outage, must
+      # never fail the deploy. The committed src/_data/fuel.json stands in
+      # and the page says honestly how old it is. That also means this fails
+      # QUIETLY -- check the run log after the first run rather than assuming.
+      - name: Fetch fuel snapshot from R2
+        id: fuel_snapshot
+        continue-on-error: true
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          preCommands: mkdir -p .cache
+          command: r2 object get largs-fuel/corridor.json --file .cache/corridor.json --remote
+
+      - name: Distil fuel directory
+        if: steps.fuel_snapshot.outcome == 'success'
+        run: python3 scripts/make-fuel.py .cache/corridor.json src/_data/fuel.json
+
       - name: Build site
         run: npm run build
 
