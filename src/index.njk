@@ -169,6 +169,35 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       {% endif %}
     </div>
 
+    {# Fuel. A door, not a gauge.
+
+       Deliberately NO price here. One number cannot answer its own
+       question -- "157.9p" prompts "is that good?" and does not say, so
+       the reader has to tap anyway and the number bought nothing. Two
+       numbers would answer it, but a range on the most-visited page,
+       every day, is the homepage passing daily comment on the only
+       forecourt in the town.
+
+       No label icon, because the tile body DRAWS its subject -- the same
+       rule that retired the weather cloud, the tide wave and the grey
+       bin. fuel() stays in tile-icons.njk for any other surface.
+
+       No status dot either: the dot answers "is this running normally",
+       and fuel has no such state, same as sea temperature and bins. The
+       badge is `sample` while the page runs on the frozen 23 August
+       pull, and flips on its own when `fixture` goes false. #}
+    {% if fuel and fuel.ok %}
+    <div class="tile">
+      <div class="label">Fuel
+        {% if fuel.fixture %}<span class="badge sample">sample</span>{% else %}<span class="badge daily">daily</span>{% endif %}
+      </div>
+      <img class="tile-hero" src="/assets/img/fuel.png"
+           alt="Silhouette of a forecourt fuel pump"
+           width="560" height="420" loading="lazy" decoding="async">
+      <div class="sub"><a href="/fuel/">local fuel prices →</a></div>
+    </div>
+    {% endif %}
+
     <div class="tile">
       <div class="label">Bins this week <span class="badge timetable">timetable</span></div>
       {% if bins.current.note %}
