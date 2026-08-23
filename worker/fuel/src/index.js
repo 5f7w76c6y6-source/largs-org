@@ -174,6 +174,7 @@ const emptyState = () => ({
   schema: 1,
   day: null,
   lastFull: 0,
+  changedAt: null,
   sync: null,        // { phase: "info"|"prices", batch: n }
   stations: {},      // node_id -> the register's forecourt record
   prices: {},        // node_id -> its fuel_prices array
@@ -199,7 +200,17 @@ function buildSnapshot(state) {
   return {
     ok: true,
     schema: 1,
-    fetchedAt: new Date().toISOString(),
+    // TWO clocks, and they answer different questions.
+    //   checkedAt — when the Worker last asked the register. Written every
+    //     tick, changed or not. This is what "is the site still working"
+    //     depends on.
+    //   changedAt — when a price at one of OUR forecourts last moved. On a
+    //     quiet Sunday this can be hours old and nothing is wrong.
+    // Conflating them (an earlier version wrote only fetchedAt, and only
+    // when something changed) makes a working site look broken the moment
+    // the town goes quiet.
+    checkedAt: new Date().toISOString(),
+    changedAt: state.changedAt || null,
     day: state.day,
     lastFull: state.lastFull ? new Date(state.lastFull).toISOString() : null,
     syncing: Boolean(state.sync),
@@ -301,12 +312,14 @@ async function tick(env) {
   }
 
   state.checkedAt = new Date().toISOString();
+  if (changed) state.changedAt = state.checkedAt;
   await env.FUEL.put(K_STATE, JSON.stringify(state));
-  if (changed || !(await env.FUEL.head(K_SNAP))) {
-    await env.FUEL.put(K_SNAP, JSON.stringify(buildSnapshot(state)), {
-      httpMetadata: { contentType: "application/json" },
-    });
-  }
+  // Written EVERY tick, not only when a price moved, so checkedAt stays
+  // honest. 288 small objects a day is nothing against the free tier, and
+  // the alternative is a staleness warning that fires on quiet days.
+  await env.FUEL.put(K_SNAP, JSON.stringify(buildSnapshot(state)), {
+    httpMetadata: { contentType: "application/json" },
+  });
 
   return {
     at: state.checkedAt,

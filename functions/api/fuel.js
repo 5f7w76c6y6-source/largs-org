@@ -41,7 +41,10 @@ export async function onRequestGet({ request, env, waitUntil }) {
     if (!obj) throw new Error("no snapshot yet");
 
     const snap = await obj.json();
-    const at = Date.parse(snap.fetchedAt || "") || 0;
+    // Staleness is measured from checkedAt -- when the Worker last ASKED --
+    // not from when a price last moved. On a quiet day nothing changes for
+    // hours, and that is not a fault.
+    const at = Date.parse(snap.checkedAt || snap.fetchedAt || "") || 0;
     const ageMs = at ? Date.now() - at : null;
 
     const prices = {};
@@ -62,7 +65,10 @@ export async function onRequestGet({ request, env, waitUntil }) {
 
     out = {
       ok: true,
-      fetchedAt: snap.fetchedAt || null,
+      checkedAt: snap.checkedAt || snap.fetchedAt || null,
+      // When a price at one of these forecourts last moved. The page can say
+      // "prices last changed at 09:14" without implying it stopped looking.
+      changedAt: snap.changedAt || null,
       ageSeconds: ageMs == null ? null : Math.round(ageMs / 1000),
       // Honest staleness rather than silence: the page shows the numbers it
       // has and says plainly that they have stopped being refreshed.
