@@ -111,6 +111,11 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Pinned. wrangler-action installs 3.90.0 by default, which has
+          # no --remote flag -- that arrived in wrangler 4, and without it
+          # this step fails and the build silently falls back to the
+          # committed fuel.json. Caught 23 Aug on the first run.
+          wranglerVersion: "4.125.0"
           preCommands: mkdir -p .cache
           command: r2 object get largs-fuel/corridor.json --file .cache/corridor.json --remote
 
