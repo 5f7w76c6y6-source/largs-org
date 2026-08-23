@@ -224,7 +224,6 @@ function buildSnapshot(state) {
 /* ------------------------------------------------------------------ */
 
 async function tick(env) {
-  const token = await getToken(env);
   const state = await load(env, K_STATE, emptyState());
   const today = ukToday();
   const log = [];
@@ -233,6 +232,30 @@ async function tick(env) {
   // be showing in status. It is set again below if this tick also fails.
   state.lastError = null;
   let changed = false;
+
+  /* State is loaded BEFORE the token, and a token failure is recorded rather
+   * than thrown. It used to throw straight out of tick() -- before any state
+   * was loaded or written -- so nothing was recorded at all: the status
+   * endpoint kept showing the previous tick's error against a frozen
+   * checkedAt, which is indistinguishable from a cron that has stopped
+   * firing. That cost nine hours of silent failure on 23 August, after the
+   * WAF rate-limited us for a burst of manual ticks.
+   *
+   * The SNAPSHOT is deliberately not written here. Its checkedAt means "when
+   * we last successfully read the register", and moving it on a failed
+   * attempt would make the page say "Prices as at 20:52" over figures from
+   * lunchtime. Leaving it stale is what makes the page say "not refreshing"
+   * -- which is the only reason this was noticed at all. */
+  let token;
+  try {
+    token = await getToken(env);
+  } catch (e) {
+    state.lastError = `token: ${(e && e.message) || e}`;
+    state.checkedAt = new Date().toISOString();
+    await env.FUEL.put(K_STATE, JSON.stringify(state));
+    return { at: state.checkedAt, fetches: 0, lastError: state.lastError,
+             note: "no token — snapshot left alone so the page stays honest" };
+  }
 
   const needFull =
     !state.sync &&
