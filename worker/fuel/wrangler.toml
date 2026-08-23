@@ -1,0 +1,35 @@
+# Cloudflare Worker: Fuel Finder poller for largs.org
+#
+# Deployed separately from the Pages project. Pages Functions only run on a
+# request; cron triggers are a Workers feature, and this job has to run
+# whether or not anyone has the page open -- a price refresh is a serial walk
+# of the register, far too slow to make a reader wait for.
+#
+# Deploy from this directory:
+#   npx wrangler deploy
+#
+# Secrets (set once, never in this file):
+#   npx wrangler secret put FUEL_CLIENT_ID
+#   npx wrangler secret put FUEL_CLIENT_SECRET
+#   npx wrangler secret put FUEL_STATUS_KEY
+
+name = "largs-fuel"
+main = "src/index.js"
+compatibility_date = "2026-08-03"
+
+# Matches the Pages project, so both halves of the site are on the same
+# runtime behaviour.
+
+[[r2_buckets]]
+binding = "FUEL"
+bucket_name = "largs-fuel"
+
+[triggers]
+# Every five minutes. The fair use policy requires that what is shown to the
+# public does not differ materially from the register, and names five minutes
+# as the standard for anything promoting fuel retail opportunities. Each tick
+# is small: today's increment is normally one batch of a few dozen records.
+crons = ["*/5 * * * *"]
+
+[observability]
+enabled = true
