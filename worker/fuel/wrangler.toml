@@ -24,12 +24,16 @@ compatibility_date = "2026-08-03"
 binding = "FUEL"
 bucket_name = "largs-fuel"
 
-[triggers]
+# Cron retired 24 August. The poller moved to Qubixer-1090 after four 403
+# outages in twenty-six hours, all on the token mint, all from scheduled
+# Cloudflare egress. The code stays as a fallback and a record of what was
+# learned; nothing schedules it.
+# [triggers]
 # Every five minutes. The fair use policy requires that what is shown to the
 # public does not differ materially from the register, and names five minutes
 # as the standard for anything promoting fuel retail opportunities. Each tick
 # is small: today's increment is normally one batch of a few dozen records.
-crons = ["*/5 * * * *"]
+# crons = ["*/5 * * * *"]
 
 [observability]
 enabled = true
