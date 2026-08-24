@@ -41,6 +41,10 @@ export async function onRequestGet({ request, env, waitUntil }) {
     if (!obj) throw new Error("no snapshot yet");
 
     const snap = await obj.json();
+    // A snapshot taken mid-sync holds only the stations the walk has
+    // reached — served as the whole corridor, it reads as 24 forecourts
+    // going silent. "Unavailable" is true; a partial picture is not.
+    if (snap.syncing) throw new Error("rebuilding the station list");
     // Staleness is measured from checkedAt -- when the Worker last ASKED --
     // not from when a price last moved. On a quiet day nothing changes for
     // hours, and that is not a fault.
