@@ -109,7 +109,7 @@ async function getToken(env) {
     client_id: env.FUEL_CLIENT_ID,
     client_secret: env.FUEL_CLIENT_SECRET,
   });
-  if (!r) throw new Error("could not obtain an access token");
+  if (!r) throw new Error(lastPostError || "could not obtain an access token");
 
   const fresh = {
     access_token: r.access_token,
@@ -124,13 +124,24 @@ async function getToken(env) {
 /* The OAuth responses arrive wrapped -- {success, data:{...}, message} on
  * generate, flat on regenerate. Unwrap defensively rather than assuming
  * either. The read endpoints, confusingly, return a bare array. */
+let lastPostError = null;
+
 async function post(path, body) {
   const res = await fetch(HOST + path, {
     method: "POST",
     headers: { "content-type": "application/json", accept: "application/json", "user-agent": UA },
     body: JSON.stringify(body),
   });
-  if (!res.ok) return null;
+  if (!res.ok) {
+    // The status used to be thrown away, which left ten hours of failure
+    // reading only "could not obtain an access token". A 403 is the WAF, a
+    // 401 is the credentials, a 5xx is their end — very different problems,
+    // and the first 200 characters of the body usually say which.
+    let body = "";
+    try { body = (await res.text()).slice(0, 200); } catch { /* ignore */ }
+    lastPostError = `${path} -> ${res.status} ${body.replace(/\s+/g, " ")}`;
+    return null;
+  }
   let j;
   try { j = await res.json(); } catch { return null; }
   const d = j && j.data ? j.data : j;
