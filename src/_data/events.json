@@ -27,7 +27,6 @@
     {
       "date": "2026-08-21",
       "until": "2026-08-30",
-      "farOut": true,
       "title": "Largs Regatta Festival",
       "venue": "The Clyde",
       "time": "21–30 Aug",
@@ -36,11 +35,185 @@
     {
       "date": "2026-08-29",
       "until": "2026-09-06",
-      "farOut": true,
       "title": "Largs Viking Festival",
       "venue": "The Promenade",
       "time": "29 Aug – 6 Sep",
       "blurb": "The Viking Village returns to the seafront, 10:00–17:00 daily, building to the Festival of Fire."
+    },
+    {
+      "date": "2026-09-11",
+      "title": "Whit's yer chat?",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "url": "https://www.ticketsource.com/barrfields/whits-yer-chat/e-gpvpbk"
+    },
+    {
+      "date": "2026-09-18",
+      "title": "Largs Operatic 80th Anniversary Concert",
+      "venue": "Barrfields Theatre",
+      "time": "19:00",
+      "blurb": "The town's operatic society marks eighty years.",
+      "url": "https://www.ticketsource.com/barrfields/largs-operatic-80th-anniversary-concert/e-mvldzq"
+    },
+    {
+      "date": "2026-09-19",
+      "title": "The Sound of Scotland with The MacDonald Brothers",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "Scottish songs from the Ayrshire brothers.",
+      "url": "https://www.ticketsource.com/barrfields/the-sound-of-scotland-with-the-macdonald-brothers/e-yjyjlk"
+    },
+    {
+      "date": "2026-09-25",
+      "title": "Thank ABBA For The Music",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "ABBA tribute concert.",
+      "url": "https://www.ticketsource.com/barrfields/thank-abba-for-the-music/e-modkko"
+    },
+    {
+      "date": "2026-10-08",
+      "title": "Whisky Galore",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "The Compton Mackenzie comedy, staged.",
+      "url": "https://www.ticketsource.com/barrfields/whisky-galore/e-jplgky"
+    },
+    {
+      "date": "2026-10-09",
+      "title": "Whisky Galore",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "The Compton Mackenzie comedy, staged.",
+      "url": "https://www.ticketsource.com/barrfields/whisky-galore/e-jplgky"
+    },
+    {
+      "date": "2026-10-10",
+      "title": "Whisky Galore",
+      "venue": "Barrfields Theatre",
+      "time": "14:00",
+      "blurb": "The Compton Mackenzie comedy, staged.",
+      "url": "https://www.ticketsource.com/barrfields/whisky-galore/e-jplgky"
+    },
+    {
+      "date": "2026-10-10",
+      "title": "Whisky Galore",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "The Compton Mackenzie comedy, staged.",
+      "url": "https://www.ticketsource.com/barrfields/whisky-galore/e-jplgky"
+    },
+    {
+      "date": "2026-10-28",
+      "title": "Stuart Mitchell & Friends: On The Road",
+      "venue": "Barrfields Theatre",
+      "time": "20:00",
+      "blurb": "Stand-up comedy.",
+      "url": "https://www.ticketsource.com/barrfields/stuart-mitchell-friends-on-the-road/e-zerevy"
+    },
+    {
+      "date": "2026-10-29",
+      "title": "Stuart Mitchell & Friends: On The Road",
+      "venue": "Barrfields Theatre",
+      "time": "17:30",
+      "blurb": "Stand-up comedy.",
+      "url": "https://www.ticketsource.com/barrfields/stuart-mitchell-friends-on-the-road/e-zerevy"
+    },
+    {
+      "date": "2026-10-29",
+      "title": "Stuart Mitchell & Friends: On The Road",
+      "venue": "Barrfields Theatre",
+      "time": "20:00",
+      "blurb": "Stand-up comedy.",
+      "url": "https://www.ticketsource.com/barrfields/stuart-mitchell-friends-on-the-road/e-zerevy"
+    },
+    {
+      "date": "2026-10-30",
+      "title": "The Rod Stewart Songbook",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "Rod Stewart tribute concert.",
+      "url": "https://www.ticketsource.com/barrfields/the-rod-stewart-songbook/e-lelmbb"
+    },
+    {
+      "date": "2026-11-08",
+      "title": "Emilio Santoro as Elvis",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "Elvis tribute concert.",
+      "url": "https://www.ticketsource.com/barrfields/emilio-santoro-as-elvis/e-bgxylk"
+    },
+    {
+      "date": "2026-11-20",
+      "title": "Oh What a Night!",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "Frankie Valli and the Four Seasons tribute.",
+      "url": "https://www.ticketsource.com/barrfields/oh-what-a-night/e-yjyjxz"
+    },
+    {
+      "date": "2026-11-21",
+      "title": "Alba Ballet presents Coppélia",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "Delibes' comic ballet, performed by Alba Ballet.",
+      "url": "https://www.ticketsource.com/barrfields/alba-ballet-presents-coppelia/e-xprqlv"
+    },
+    {
+      "date": "2026-11-28",
+      "title": "A Scottish Comedy Collective",
+      "venue": "Barrfields Theatre",
+      "time": "20:00",
+      "blurb": "Stand-up from a bill of Scottish comedians.",
+      "url": "https://www.ticketsource.com/barrfields/a-scottish-comedy-collective/e-rbgzab"
+    },
+    {
+      "date": "2026-12-03",
+      "title": "Rapunzel",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "This year's pantomime.",
+      "url": "https://www.ticketsource.com/barrfields/rapunzel-pantomime/e-ovrqev"
+    },
+    {
+      "date": "2026-12-04",
+      "title": "Rapunzel",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "This year's pantomime.",
+      "url": "https://www.ticketsource.com/barrfields/rapunzel-pantomime/e-ovrqev"
+    },
+    {
+      "date": "2026-12-05",
+      "title": "Rapunzel",
+      "venue": "Barrfields Theatre",
+      "time": "14:00",
+      "blurb": "This year's pantomime.",
+      "url": "https://www.ticketsource.com/barrfields/rapunzel-pantomime/e-ovrqev"
+    },
+    {
+      "date": "2026-12-05",
+      "title": "Rapunzel",
+      "venue": "Barrfields Theatre",
+      "time": "18:30",
+      "blurb": "This year's pantomime.",
+      "url": "https://www.ticketsource.com/barrfields/rapunzel-pantomime/e-ovrqev"
+    },
+    {
+      "date": "2026-12-06",
+      "title": "Rapunzel",
+      "venue": "Barrfields Theatre",
+      "time": "14:00",
+      "blurb": "This year's pantomime.",
+      "url": "https://www.ticketsource.com/barrfields/rapunzel-pantomime/e-ovrqev"
+    },
+    {
+      "date": "2027-06-05",
+      "title": "Across the Universe: The Beatles '66–70'",
+      "venue": "Barrfields Theatre",
+      "time": "19:30",
+      "blurb": "Beatles tribute concert covering the later years.",
+      "url": "https://www.ticketsource.com/barrfields/across-the-universe-the-beatles-66-70/e-arxqke"
     }
   ],
   "regulars": [

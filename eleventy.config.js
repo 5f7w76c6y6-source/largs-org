@@ -110,10 +110,31 @@ module.exports = function (eleventyConfig) {
   // its last day — `until` for a multi-day span, otherwise its `date`.
   // The half-hourly rebuild makes yesterday's event disappear on its
   // own; no client JavaScript involved.
+  // A weekday badge only helps if there is one such weekday between here
+  // and the event. Inside a week, "FRI 11" is unambiguous. Beyond it,
+  // there are two Fridays and the reader needs the month instead.
+  const BADGE_WEEKDAY_WITHIN_DAYS = 7;
+
   eleventyConfig.addFilter("upcoming", (items) => {
     const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });
     const today = `${p.year}-${p.month}-${p.day}`;
-    return (items || []).filter((e) => (e.until || e.date) >= today);
+    const now = Date.parse(today + "T00:00:00Z");
+    return (items || [])
+      .filter((e) => (e.until || e.date) >= today)
+      // farOut is COMPUTED, never stored. Whether something is far out
+      // depends on when you are reading it: a pantomime is months away in
+      // August and this Thursday in December, and no field in a data file
+      // can be both. Storing it left September showing "FRI 11" with no
+      // month directly under an August entry.
+      //
+      // A span always shows the month: a weekday badge on a nine-day
+      // festival names one of its nine days and implies the wrong thing.
+      .map((e) => {
+        const days = Math.round((Date.parse(e.date + "T00:00:00Z") - now) / 86400000);
+        return Object.assign({}, e, {
+          farOut: Boolean(e.until) || days > BADGE_WEEKDAY_WITHIN_DAYS,
+        });
+      });
   });
 
   // todayOnly: events whose date is exactly today (or a multi-day span
