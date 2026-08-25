@@ -679,6 +679,18 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
     div.appendChild(s);
     var lines = [];
     lines.push(typeOf(a) || "type unknown");
+    // The card shows this as a tag and the glyph carries it as colour, but
+    // the popup is the first thing a reader sees on tapping a pin and was
+    // the one place that did not say. Named service where the registration
+    // identifies one, the bare tag where only the callsign or squawk does.
+    // Plain sentence case, no badge: an air ambulance overhead usually
+    // means someone is having a bad day, and the page reports it rather
+    // than dramatising it.
+    var svc = serviceOf(a);
+    if (svc) {
+      lines.push(svc.name
+        || svc.tag.charAt(0).toUpperCase() + svc.tag.slice(1));
+    }
     var rp = routeParts(a);
     if (rp) lines.push((rp.iata || "").replace("-", " → "));
     if (!onGround) {
