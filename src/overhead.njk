@@ -474,10 +474,37 @@ subtitle: Live aircraft within thirty nautical miles of the town, closest first.
     if (cs.indexOf("RESCU") === 0 || cs.indexOf("COASTGUARD") === 0) {
       return { name: "HM Coastguard", tag: "coastguard" };
     }
+    // HLE is the flight-ID form of "Helimed", the national callsign for
+    // air ambulances. Not inference: the CAA's own squawk allocations
+    // pair the two — 0014 Kent (HLE21), 0015 Essex (HLE07), 0016 Thames
+    // Valley (HLE24), 0017 London (HLE27), 0003 Surrey/Sussex (HLE60).
+    // The operator table above already renders HLE as "Helimed"; this
+    // connects that to the tag. WHICH service is not knowable from the
+    // callsign, so no name is claimed — the tag stands alone.
+    if (cs.indexOf("HLE") === 0) return { name: null, tag: "air ambulance" };
     var owner = (ident.owner || "").toLowerCase();
     if (owner.indexOf("coastguard") >= 0) return { name: null, tag: "coastguard" };
     if (owner.indexOf("ambulance") >= 0) return { name: null, tag: "air ambulance" };
     if (owner.indexOf("police") >= 0) return { name: null, tag: "police" };
+
+    // Squawk 0020 is the UK conspicuity code allocated to "Air Ambulance
+    // Helicopter Emergency Medivac". Again not inference — it is what the
+    // code means, and the crew selects it when they are on a job.
+    //
+    // Deliberately LAST, because it is the weakest of the three signals.
+    // It is transient: the same helicopter transiting home on 7000 will
+    // not match, so the tag appears and disappears with the mission. And
+    // a marginal decode could throw up four digits by accident, so it is
+    // only trusted on something already declaring itself a rotorcraft —
+    // one bad decode should not put a blue-light tag on a light aircraft.
+    //
+    // Worth having despite that: G-WSAS on 23 Aug broadcast its
+    // registration as its callsign with no HLE prefix and no adsbdb
+    // record, so neither of the rules above would have caught it. This
+    // one would.
+    if (String(a.squawk || "").trim() === "0020" && isHeli(a)) {
+      return { name: null, tag: "air ambulance" };
+    }
     return null;
   }
 
