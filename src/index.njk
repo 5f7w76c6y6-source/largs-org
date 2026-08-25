@@ -256,7 +256,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
   {% for e in todayEvents %}
   <article class="event">
     <div class="when">
-      <div class="dow">{% if e.farOut %}{{ e.date | monthShort }}{% else %}{{ e.date | dow }}{% endif %}</div>
+      <div class="dow">{{ e.badgeTop }}</div>
       <div class="dom">{{ e.date | dom }}</div>
     </div>
     <div class="event-body">

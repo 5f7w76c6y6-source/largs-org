@@ -1037,3 +1037,16 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   .fuel-price{min-width:4.6rem;font-size:1.18rem}
 }
 /* ---------- end fuel prices ---------- */
+
+
+/* ---------- date badge year ---------- */
+/* The year, under the day, only on events outside the current year.
+   Small and muted: it is a disambiguator, not part of the date proper --
+   the month and the day are what a reader is scanning for. */
+.when-yr, .yr{
+  display:block;
+  font-family:"Spline Sans Mono",monospace;
+  font-size:.62rem;letter-spacing:.06em;
+  color:var(--muted);line-height:1.3;margin-top:1px;
+}
+/* ---------- end date badge year ---------- */

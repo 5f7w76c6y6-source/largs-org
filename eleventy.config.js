@@ -110,6 +110,28 @@ module.exports = function (eleventyConfig) {
   // its last day — `until` for a multi-day span, otherwise its `date`.
   // The half-hourly rebuild makes yesterday's event disappear on its
   // own; no client JavaScript involved.
+  // The top line of a What's On date badge, in three states.
+  //
+  //   FRI       within the week -- one such weekday between here and it
+  //   DEC       further off, or a multi-day span
+  //   JUN '27   a different calendar year
+  //
+  // The year matters more than it looks. "JUN 5" read in August 2026 is
+  // not just vague, it reads as June just gone -- the wrong direction. The
+  // apostrophe is load-bearing too: a bare "JUN 27" reads as the 27th.
+  const badgeTop = (date, farOut) =>
+    farOut ? ukParts(date, { month: "short" }).month.slice(0, 3)
+           : ukParts(date, { weekday: "short" }).weekday;
+
+  // Shown only when the event is not in the current year. "JUN 5" read in
+  // August 2026 does not just lack a year -- it reads as June just gone,
+  // which is the wrong direction. A "2026" on everything else would be
+  // noise, so this is empty far more often than not.
+  const badgeYear = (date, thisYear) => {
+    const year = String(date).slice(0, 4);
+    return year === String(thisYear) ? "" : year;
+  };
+
   // A weekday badge only helps if there is one such weekday between here
   // and the event. Inside a week, "FRI 11" is unambiguous. Beyond it,
   // there are two Fridays and the reader needs the month instead.
@@ -131,9 +153,8 @@ module.exports = function (eleventyConfig) {
       // festival names one of its nine days and implies the wrong thing.
       .map((e) => {
         const days = Math.round((Date.parse(e.date + "T00:00:00Z") - now) / 86400000);
-        return Object.assign({}, e, {
-          farOut: Boolean(e.until) || days > BADGE_WEEKDAY_WITHIN_DAYS,
-        });
+        const farOut = Boolean(e.until) || days > BADGE_WEEKDAY_WITHIN_DAYS;
+        return Object.assign({}, e, { farOut, badgeTop: badgeTop(e.date, farOut), badgeYear: badgeYear(e.date, p.year) });
       });
   });
 
@@ -142,7 +163,14 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("todayOnly", (items) => {
     const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });
     const today = `${p.year}-${p.month}-${p.day}`;
-    return (items || []).filter((e) => e.date <= today && (e.until || e.date) >= today);
+    return (items || [])
+      .filter((e) => e.date <= today && (e.until || e.date) >= today)
+      // Today by definition, so always the weekday -- but badgeTop has to
+      // be set here as well or the Today board renders an empty badge.
+      .map((e) => Object.assign({}, e, {
+        farOut: false,
+        badgeTop: ukParts(e.date, { weekday: "short" }).weekday,
+      }));
   });
 
   // ---- Regular events (classes, clubs, weekly markets) -------------
