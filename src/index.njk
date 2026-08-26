@@ -208,13 +208,25 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     </div>
     {% endif %}
 
+    {# Bins hero v1 — the pair follows the week. Two bins at the kerb in the
+       site's own swatches from bins.cjs: the week's colour and brown beside
+       it, because brown always rides along and only the calendar changes.
+       Festive weeks make no colour claim, so the bin goes house-ink — same
+       rule as every other hero: ink decorates, colour asserts. The name in
+       slate stays as the second channel, so hue never carries alone. #}
     <div class="tile">
       <div class="label">Bins this week</div>
       {% if bins.current.note %}
-      <div class="bin-row">{{ icons.bin(bins.current.swatch) }}<div class="figure">Dates move</div></div>
+      <img class="tile-hero" src="/assets/img/bins-ink.png"
+           alt="Silhouette of a dustbin" width="560" height="420"
+           loading="lazy" decoding="async">
+      <div class="figure">Dates move</div>
       <div class="sub">Festive collections this week · <a href="/bins/">bin days →</a></div>
       {% else %}
-      <div class="bin-row">{{ icons.bin(bins.current.swatch) }}<div class="figure">{{ bins.current.name }}</div></div>
+      <img class="tile-hero" src="/assets/img/bins-{{ bins.current.colour }}-brown.png"
+           alt="Silhouette of two dustbins at the kerb, {{ bins.current.name | lower }} and brown"
+           width="720" height="420" loading="lazy" decoding="async">
+      <div class="figure">{{ bins.current.name }}</div>
       <div class="sub">Brown too for {{ bins.current.brownCalendar }} streets · <a href="/bins/">bin days →</a></div>
       {% endif %}
     </div>
