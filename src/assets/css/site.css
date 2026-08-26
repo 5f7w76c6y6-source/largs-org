@@ -599,7 +599,7 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   font-family:"Marcellus",serif;font-size:2rem;line-height:1.15;
   color:var(--slate);margin-top:2px;
 }
-.bin-now-sub{font-size:.95rem;color:var(--muted);margin-top:4px}
+.bin-now-sub{font-size:.95rem;color:var(--muted);margin-top:4px;max-width:52ch;text-wrap:pretty}
 .bin-ahead-head{
   font-family:"Spline Sans Mono",monospace;font-size:.7rem;letter-spacing:.22em;
   text-transform:uppercase;color:var(--teal);font-weight:400;margin:22px 0 8px;
@@ -618,7 +618,7 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
 }
 
-.bin-now-brown{font-size:.92rem;color:var(--muted);margin-top:6px;max-width:44ch}
+.bin-now-brown{font-size:.92rem;color:var(--muted);margin-top:6px;max-width:46ch;text-wrap:pretty}
 .bin-ahead-brown{
   font-family:"Spline Sans Mono",monospace;font-size:.76rem;color:var(--muted);
 }
@@ -754,21 +754,6 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   }
 }
 
-
-/* ---- The week's bin, on the Today board --------------------------
-   Same silhouette as the small tile icon, at figure size, with the body
-   in the collection colour from bins.cjs. Sits beside the colour's name,
-   never instead of it. */
-.bin-row{display:flex;align-items:center;gap:12px}
-.bin-glyph{width:46px;height:46px;flex:none}
-
-
-/* Two sizes of the shared bin silhouette on the bins page: the headline
-   answer, and the legend that teaches what each colour holds. The three-
-   week list keeps plain swatches — three bins in a row reads as
-   decoration rather than as information. */
-.bin-glyph-lg{width:64px;height:64px}
-.bin-glyph-sm{width:38px;height:38px}
 
 /* 38px, not the 26px the tile icons use. Those label a card whose text is
    beside them; these are scanned down a column by someone looking for
@@ -1050,3 +1035,37 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   color:var(--muted);line-height:1.3;margin-top:1px;
 }
 /* ---------- end date badge year ---------- */
+
+/* Bins tile — label on the conditional bin (hero v3).
+   at-brown is the BROWN BIN'S CENTRE measured in the 720x420 pair images
+   (bins-<colour>-brown.png). If those PNGs are ever regenerated with a
+   different scale or gap, re-measure it or the label drifts off its bin.
+   Only brown is labelled: the coloured bin is town-wide and needs no
+   qualifier, and the tile is too narrow (about 130-160px of content) for two
+   captions at a size anyone can read. Kept quiet deliberately — the label
+   qualifies the picture, it does not compete with the colour name. */
+.bin-labels{position:relative;height:1.15em;margin-top:-2px}
+.bin-label{
+  position:absolute;
+  transform:translateX(-50%);
+  white-space:nowrap;
+  font-family:"Spline Sans Mono",monospace;
+  font-size:.64rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.bin-label.at-brown{left:70.9%}
+
+/* Bin days page — the retro bin, in the collection colour (matches the Today
+   board hero). Height-driven, width auto: the illustration is 385x480, so the
+   old square glyph sizing would have squashed it. Two numbers to tune if
+   the balance looks wrong on the page — nothing else here depends on them.
+
+   The colour is carried entirely by the file (bin-<colour>.png, painted from
+   the swatches in bins.cjs), so the swatch hex is no longer passed to markup
+   on this page. The SVG glyph rules and the bin() macro that went with them
+   have since been removed. */
+.bin-pic{display:block;width:auto;flex:none}
+.bin-pic-lg{height:120px}
+.bin-pic-sm{height:52px}
