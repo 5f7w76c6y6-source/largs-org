@@ -16,12 +16,12 @@ permalink: /bins/
 <section class="wrap council-page" aria-labelledby="thisweek-h">
   <h2 id="thisweek-h" class="visually-hidden">This week</h2>
 
-  {% import "tile-icons.njk" as icons %}
   {% if bins.current.note %}
   <p class="sample-note">{{ bins.current.note }}</p>
   {% else %}
   <div class="bin-now">
-    {{ icons.bin(bins.current.swatch, "bin-glyph bin-glyph-lg") }}
+    <img class="bin-pic bin-pic-lg" src="/assets/img/bin-{{ bins.current.name | lower }}.png"
+         alt="" width="385" height="480" decoding="async">
     <div>
       <div class="bin-now-label">This week in Largs</div>
       <div class="bin-now-colour">{{ bins.current.name }} bin</div>
@@ -41,7 +41,8 @@ permalink: /bins/
   <ul class="bin-ahead">
     {% for w in bins.ahead %}
     <li>
-      {{ icons.bin(w.swatch, "bin-glyph bin-glyph-sm") }}
+      <img class="bin-pic bin-pic-sm" src="/assets/img/bin-{{ w.name | lower }}.png"
+           alt="" width="385" height="480" loading="lazy" decoding="async">
       <span class="bin-ahead-colour">{{ w.name }}</span>
       <span class="bin-ahead-when">week of {{ w.startShort }}</span>
       <span class="bin-ahead-brown">brown: {{ w.brownCalendar }} streets</span>
@@ -83,13 +84,15 @@ permalink: /bins/
   <ul class="bin-key">
     {% for c in bins.order %}
     <li>
-      {{ icons.bin(c.swatch, "bin-glyph bin-glyph-sm") }}
+      <img class="bin-pic bin-pic-sm" src="/assets/img/bin-{{ c.name | lower }}.png"
+           alt="" width="385" height="480" loading="lazy" decoding="async">
       <span class="bin-key-name">{{ c.name }}</span>
       <span class="bin-key-holds">{{ c.holds }}</span>
     </li>
     {% endfor %}
     <li>
-      {{ icons.bin(bins.brown.swatch, "bin-glyph bin-glyph-sm") }}
+      <img class="bin-pic bin-pic-sm" src="/assets/img/bin-{{ bins.brown.name | lower }}.png"
+           alt="" width="385" height="480" loading="lazy" decoding="async">
       <span class="bin-key-name">{{ bins.brown.name }}</span>
       <span class="bin-key-holds">{{ bins.brown.holds }} · fortnightly, separate round</span>
     </li>
