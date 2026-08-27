@@ -295,7 +295,9 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
   <article class="event">
     <div class="when">
       <div class="dow">{{ e.badgeTop }}</div>
-      <div class="dom">{{ e.date | dom }}</div>
+      {# badgeDom, not e.date: a multi-day event running today must show
+         today, not the day it started. Set in todayOnly. #}
+      <div class="dom">{{ e.badgeDom or (e.date | dom) }}</div>
     </div>
     <div class="event-body">
       {% if e.image %}
