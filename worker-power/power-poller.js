@@ -119,7 +119,11 @@ export default {
         fetchedAt: now,
         lastAttemptAt: now,
         lastError: prev && prev.lastError ? { cleared: now, was: prev.lastError } : null,
-        totalAcrossSpen: total,
+        // NOT a SPEN-wide count: the `where` clause is applied
+        // server-side, so total_count arrives already filtered to the
+        // corridor outcodes. This is "records matching KA28/29/30",
+        // which is what the truncation check needs and all it means.
+        matchedTotal: total,
         truncated,
         incidents,
       };
@@ -136,7 +140,7 @@ export default {
           message: String(e && e.message || e),
           ...(e && e.detail ? e.detail : {}),
         },
-        totalAcrossSpen: prev ? prev.totalAcrossSpen ?? null : null,
+        matchedTotal: prev ? prev.matchedTotal ?? null : null,
         truncated: prev ? Boolean(prev.truncated) : false,
         incidents: prev && Array.isArray(prev.incidents) ? prev.incidents : [],
       };
