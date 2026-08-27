@@ -98,8 +98,16 @@ a:focus-visible,button:focus-visible,input:focus-visible{
    stretches. The ferry sits mid-crossing between Cumbrae and the shore;
    the Pencil keeps clear of Magnus above it, which is why the old SVG
    group carried translate(-145,0) — same position, stated directly. */
-.horizon .horizon-ferry{height:40px;left:47%}
+.horizon .horizon-ferry{height:40px;left:57%}
 .horizon .horizon-pencil{height:52px;left:84%}
+
+/* On a phone the band is the same 80px but the window is a third of the
+   width, so the ferry took up far too much of it and crowded the Pencil.
+   Only the ferry shrinks: the Pencil anchors the right edge and reads
+   correctly at 52px on both. */
+@media (max-width:600px){
+  .horizon .horizon-ferry{height:30px}
+}
 
 /* ---------- today board ---------- */
 .board{padding:34px 0 8px}
