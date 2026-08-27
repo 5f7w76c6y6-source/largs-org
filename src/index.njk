@@ -6,6 +6,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
 {% import "tile-icons.njk" as icons %}
 {# ================= LARGS TODAY ================= #}
 {% include "notice.njk" %}
+{% include "power-notice.njk" %}
 
 <section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
@@ -263,6 +264,17 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
         <li><span class="badge timetable">timetable</span> A fixed published pattern, with a link out to live status.</li>
         <li><span class="badge sample">sample</span> A placeholder, shown only until the real feed is connected.</li>
       </ul>
+      <p class="updates-foot">Power cut notices use SP Energy Networks data
+      (SC389555), © Scottish Power Ltd, from the
+      <a href="https://spenergynetworks.opendatasoft.com/explore/assets/national-energy-outage-data/">SPEN Open Data Portal</a>
+      under the
+      <a href="https://spenergynetworks.opendatasoft.com/p/sp-energy-networks-open-data-licence/">SP Energy Networks Open Data Licence</a>
+      — filtered here to the Largs area and provided as-is, without
+      warranty. The notice hides itself whenever our last successful
+      check is more than thirty minutes old, and incidents affecting
+      fewer than five customers never appear in the feed at all, so the
+      absence of a notice is not an all-clear. If you are affected, call
+      <a href="tel:105">105</a>.</p>
       <p class="updates-foot">Tide times here are an ocean-model estimate and
       have measured 30 to 56 minutes early against the official predictions.
       For anything that depends on the water — a crossing, a swim, a boat —

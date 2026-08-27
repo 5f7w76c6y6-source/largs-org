@@ -1,0 +1,26 @@
+# The power poller's wrangler config. Deployed manually from the laptop
+# (`npx wrangler deploy` in this directory) -- CI never touches it, same
+# rule as the metronome next door.
+#
+# This one runs on Cloudflare rather than the Pi, deliberately: a power
+# cut in Largs takes out the Pi and its broadband at exactly the moment
+# this feature matters. The Pi is inside the failure domain; Cloudflare
+# is not. SPEN's Opendatasoft portal is a purpose-built API host, not a
+# WAF-guarded aggregator, so the egress problem that moved fuel to the
+# Pi does not apply here.
+#
+# Cron :05/:15/... -- offset from the metronome's :03/:33 and the GitHub
+# schedule's :02/:17/:32/:47, so a fresh snapshot usually lands just
+# before a build picks it up.
+
+name = "largs-power"
+main = "power-poller.js"
+compatibility_date = "2026-08-01"
+workers_dev = false
+
+[triggers]
+crons = ["5,15,25,35,45,55 * * * *"]
+
+[[r2_buckets]]
+binding = "POWER_BUCKET"
+bucket_name = "largs-power"

@@ -1069,3 +1069,27 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .bin-pic{display:block;width:auto;flex:none}
 .bin-pic-lg{height:120px}
 .bin-pic-sm{height:52px}
+
+/* ---- Power cut notice ------------------------------------------------
+   Appears on the Today board only while SPEN's feed shows a live fault
+   in KA30 and our snapshot is fresh (under 30 min). The left border is
+   the one legitimate use of --red on the board: an alert, alerting.
+   Quiet otherwise -- card surfaces, house type, no new colours. */
+.power-notice{
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  background:var(--card);border:1px solid var(--sand);
+  border-left:4px solid var(--red);border-radius:10px;
+  padding:12px 16px;margin-top:18px;
+}
+.power-notice-badge{
+  font-family:"Spline Sans Mono",monospace;font-size:.66rem;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:#fff;background:var(--red);border-radius:999px;padding:3px 10px;
+  flex:none;
+}
+.power-notice-text{font-size:.95rem;color:var(--ink)}
+.power-notice-text a{color:var(--teal);font-weight:500}
+.power-notice-src{
+  font-family:"Spline Sans Mono",monospace;font-size:.7rem;
+  color:var(--muted);margin-left:auto;flex:none;
+}

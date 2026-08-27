@@ -1,0 +1,22 @@
+{# The power-cut notice. Rendered only when a KA30 fault is live in
+   SPEN's feed AND our last successful check is under thirty minutes
+   old -- both conditions are enforced upstream (power.cjs / /api/power),
+   so this template's only job is to say it plainly. Sits beside the
+   editorial notice.njk, deliberately separate: that file is hand-edited
+   words, this one is data.
+
+   The one legitimate use of --red on the whole board: an alert that is
+   actually alerting. #}
+{% if power.ok and power.faults | length %}
+<div class="wrap">
+  <div class="power-notice" role="status">
+    <span class="power-notice-badge">Power cut</span>
+    <span class="power-notice-text">
+      {%- for f in power.faults -%}
+      {{ f.area }} area{% if f.since %} · since {{ f.since }}{% endif %}{% if f.etr %} · SPEN estimate back by <span class="mono">{{ f.etr }}</span>{% endif %}{% if not loop.last %} — {% endif %}
+      {%- endfor %} · <a href="tel:105">call 105</a> · <a href="https://www.spenergynetworks.co.uk/pages/power_cuts.aspx">SPEN power cuts →</a>
+    </span>
+    <span class="power-notice-src">SP Energy Networks · checked {{ power.checked }}</span>
+  </div>
+</div>
+{% endif %}
