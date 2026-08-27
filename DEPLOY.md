@@ -95,6 +95,72 @@ breaks loudly: the fetch quietly falls back to the ocean model and the
 colophon credit switches back to Open-Meteo. Calendar the renewal, and
 treat "colophon says Open-Meteo again" as the symptom.
 
+## The pollers
+
+Five things run on a clock outside GitHub Actions. None of them is
+touched by CI: each is deployed by hand and keeps its own state, so
+this is the only place their existence is written down.
+
+**Where a poller lives is decided by one question: who refuses us.**
+Fuel Finder and the ADS-B aggregators block Cloudflare's egress
+addresses, so those poll from the Pi over home broadband, which has
+never been refused, and PUT to an ingest endpoint. SP Energy Networks
+does not block anything — and a power cut in Largs takes out the Pi and
+its broadband at exactly the moment that feature matters — so the power
+poller runs on Cloudflare instead. The Pi is inside that failure
+domain; Cloudflare is not.
+
+**largs-metronome** (`worker/`) — nudges the site on `:03` and `:33`,
+offset from the Actions schedule so the two clocks rarely collide.
+
+**largs-power** (`worker-power/`) — polls SP Energy Networks' National
+Energy Outage dataset every ten minutes and writes `power.json` to the
+`largs-power` R2 bucket. No ingest endpoint: a Worker has the bucket
+bound natively. Needs three things to exist, and all three are silent
+when absent — the bucket, the `SPEN_API_KEY` secret (Worker secrets,
+not repo secrets), and a **Pages** binding of `POWER_BUCKET` to that
+bucket, which is a separate thing from the Worker's own binding and
+only takes effect on the next Pages deploy. The notice on the Today
+board appears only while a KA30 fault is live AND the last successful
+poll is under thirty minutes old; it is silent otherwise, which is the
+honest state, because the feed omits incidents affecting fewer than
+five customers and absence was never an all-clear.
+
+**largs-overhead** (Pi, `pi/`) — the aircraft relay, every five
+seconds, as a systemd service that survives reboots. The interval is a
+budget decision, not a taste one: 5 s is about 518k R2 writes a month
+against a million-write free allowance. The arithmetic for other
+intervals is at the top of `push-overhead.sh`. Deploy is a copy to
+`/opt/largs/` plus the unit file to `/etc/systemd/system/`; the shared
+key lives in `/etc/largs-overhead.key`, mode 600, and never in the
+repo.
+
+**largs-fuel** (Pi) — a systemd timer polling the fuel register every
+five minutes and pushing to `/api/fuel-ingest`. Its script and env file
+are deliberately NOT in this repo: the credentials sit beside the code
+in `/etc/largs-fuel.env`, and state in `/var/lib/largs-fuel/`. The
+Cloudflare Worker that used to do this was retired after four 403
+outages in twenty-six hours, always on the token mint.
+
+**Checking a poller without touching the site.** The Worker's own view
+first, then the snapshot it wrote:
+
+```
+npx wrangler@4.125.0 tail largs-power          # live; "Ok" = a clean run
+npx wrangler@4.125.0 r2 object get largs-power/power.json --remote --pipe | python3 -m json.tool
+curl -s https://largs-org.pages.dev/api/power | python3 -m json.tool
+```
+
+Every snapshot carries `lastError` with the path, status and response
+body of the last failure — read that before guessing. A poller that
+cannot reach its source keeps the previous snapshot and the previous
+`fetchedAt`, so staleness retires the data honestly rather than a blip
+making a live fault vanish.
+
+**Wrangler is pinned to 4.125.0** for `--remote` R2 access. `npx
+wrangler` without the version will offer something newer; decline it,
+or lift the pin deliberately and say so here.
+
 ## Fresh machine setup
 
 1. **Node** — installer from nodejs.org, v20 or newer (v22 matches CI).
@@ -184,6 +250,16 @@ transfer, re-enter the secrets on the repository's new home.
 - Site stale and no recent runs → schedule auto-disabled at the 60-day
   mark; Actions tab, one click.
 - Locally, "could not read package.json" → wrong directory; `pwd`.
+- Power notice never appears, and `/api/power` says "no POWER_BUCKET
+  binding" → the Pages binding is missing, or was added after the last
+  deploy; add it, then push anything.
+- `/api/power` returns `ok:false` with a `lastError` → read the status
+  and body it carries. 401 or 403 means the SPEN key was rolled or
+  revoked; re-run `npx wrangler@4.125.0 secret put SPEN_API_KEY` in
+  `worker-power/` and redeploy.
+- Overhead tile stale → `systemctl status largs-overhead` on the Pi;
+  the usual cause is a missing or empty `/etc/largs-overhead.key`
+  after a rebuild.
 
 ## Safe self-checks
 
@@ -194,6 +270,7 @@ git log -1 --format='%an <%ae>'   # who commits are stamped as
 gh secret list                    # secret names and dates only
 gh run list                       # recent builds and their triggers
 npx wrangler whoami               # account and (non-secret) account ID
+npx wrangler@4.125.0 tail largs-power   # live Worker runs; no secrets in output
 ```
 
 ## At launch (largs.org handover)

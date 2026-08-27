@@ -1,0 +1,19 @@
+[Unit]
+Description=Relay Largs aircraft snapshot to largs.org
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/opt/largs/push-overhead.sh
+Restart=always
+RestartSec=30
+User=root
+# the key file is the only secret; keep the service's view of the world small
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
