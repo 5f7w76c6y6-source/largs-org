@@ -77,6 +77,37 @@ subtitle: Events in and around the town, every one checked before it goes up.
 
 </section>
 
+{# Event structured data. This is the one piece of markup on the site with
+   a real chance of earning a rich result: events with valid Event schema
+   can appear in Google's event listings for "what's on in largs", and
+   nobody else marks up this town's events at all.
+
+   Recomputed from events.items rather than reusing allEvents, so this
+   block does not depend on a variable set elsewhere in the template.
+
+   Only events with a title, a date and a venue are emitted: incomplete
+   structured data is worse than none, because Google may distrust the
+   page rather than merely ignore the item. The address is the town
+   rather than a street -- venue names in Largs are unambiguous locally,
+   and inventing a postcode we do not hold would be worse than omitting
+   one. #}
+{%- set schemaEvents = events.items | upcoming -%}
+<script type="application/ld+json">
+[
+{%- set comma = joiner(",") -%}
+{%- for e in schemaEvents %}{% if e.title and e.date and e.venue %}{{ comma() }}
+{"@context":"https://schema.org","@type":"Event",
+"name":{{ e.title | dump | safe }},
+"startDate":"{{ e.date }}",
+{% if e.until %}"endDate":"{{ e.until }}",{% endif %}
+"eventStatus":"https://schema.org/EventScheduled",
+{% if e.blurb %}"description":{{ e.blurb | dump | safe }},{% endif %}
+{% if e.url %}"url":{{ e.url | dump | safe }},{% endif %}
+"location":{"@type":"Place","name":{{ e.venue | dump | safe }},"address":{"@type":"PostalAddress","addressLocality":"Largs","addressRegion":"North Ayrshire","addressCountry":"GB"}}}
+{%- endif %}{% endfor %}
+]
+</script>
+
 {% include "regulars.njk" %}
 
 <section class="whatson-submit wrap" aria-labelledby="submit-h">

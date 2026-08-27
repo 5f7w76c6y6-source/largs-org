@@ -1,0 +1,13 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+{#- Every page, for search engines. The three generated files here
+    (sitemap, robots, manifest) set eleventyExcludeFromCollections, so
+    collections.all is exactly the real pages and needs no filtering. -#}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for p in collections.all %}
+  <url><loc>{{ site.url }}{{ p.url }}</loc></url>
+{%- endfor %}
+</urlset>

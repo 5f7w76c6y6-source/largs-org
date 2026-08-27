@@ -1,0 +1,12 @@
+---
+permalink: /robots.txt
+eleventyExcludeFromCollections: true
+---
+{#- Note: Cloudflare's "Manage your robots.txt" setting may append its own
+    AI-training directives to whatever this file serves. The two merge;
+    they do not conflict. If the served file ever looks unfamiliar, check
+    the zone's AI Crawl Control settings before editing here. -#}
+User-agent: *
+Allow: /
+
+Sitemap: {{ site.url }}/sitemap.xml

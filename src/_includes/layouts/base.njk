@@ -13,6 +13,52 @@
    this, that is three copies of every page as far as a search engine is
    concerned. site.url is the single place the canonical host is set. #}
 <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+
+{# ---- What search engines and shared links see -------------------------
+   The description falls back through: an explicit `description` in a
+   page's front matter, then its `subtitle`, then the site default. Every
+   page already carries a subtitle written for humans -- "Where to take a
+   fault so it reaches the people who can fix it" -- which is a better
+   search snippet than anything written for a search engine, so it is
+   reused rather than duplicated. Set `description` in front matter only
+   where a page wants different words in results than on the page. #}
+{%- set metaTitle = title + " — Largs" if title else site.title -%}
+{%- set metaDesc = description or subtitle or site.description -%}
+<meta name="description" content="{{ metaDesc }}">
+<meta name="theme-color" content="#17333A">
+
+{# The longship: the Battle of Largs, and the town's own emblem. Cream on
+   slate to match the masthead, and because a pale tile loses its edges
+   against a light browser toolbar at 16px. #}
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/img/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+{# Open Graph: what a shared link looks like in a Facebook or WhatsApp
+   post, which is how most of Largs will meet this site. og:image is
+   deliberately conditional -- an og:image pointing at nothing is worse
+   than none at all, so the card stays a plain link until `ogImage` is
+   set in site.json and the artwork exists. #}
+<meta property="og:site_name" content="largs.scot">
+<meta property="og:title" content="{{ metaTitle }}">
+<meta property="og:description" content="{{ metaDesc }}">
+<meta property="og:url" content="{{ site.url }}{{ page.url }}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+{%- if site.ogImage %}
+<meta property="og:image" content="{{ site.url }}{{ site.ogImage }}">
+<meta name="twitter:card" content="summary_large_image">
+{%- else %}
+<meta name="twitter:card" content="summary">
+{%- endif %}
+
+{# Tells Google the site's name, so results read "largs.scot" rather than
+   a guess made from the domain. #}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"largs.scot","alternateName":"Largs — …for you","url":"{{ site.url }}"}
+</script>
 </head>
 <body>
 

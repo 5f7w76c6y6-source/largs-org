@@ -1,5 +1,8 @@
 {
   "title": "Largs — …for you",
+  "_description": "Fallback meta description. Pages use their own `subtitle` unless they set `description` in front matter.",
+  "description": "Everyday information for the town of Largs — bin days, tides, ferry and roadworks, what's on, and council business in plain English.",
+  "_ogImage": "Set to a path like /assets/img/og.png once the 1200x630 share card exists. Left unset deliberately: an og:image pointing at nothing is worse than no card at all.",
   "url": "https://largs.scot",
   "links": {
     "calmacStatus": "https://www.calmac.co.uk/en-gb/service-status/",
