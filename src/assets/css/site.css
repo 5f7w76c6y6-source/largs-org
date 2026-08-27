@@ -1093,3 +1093,12 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   font-family:"Spline Sans Mono",monospace;font-size:.7rem;
   color:var(--muted);margin-left:auto;flex:none;
 }
+
+/* "On now" -- an event whose run includes today, on What's On. Sits in
+   the meta line rather than the badge, because the badge keeps the START
+   date: on a chronological list that is the anchor and the sort key. Teal
+   rather than red: this is a fact about an event, not an alert. */
+.on-now{
+  color:var(--teal);
+  font-weight:500;
+}

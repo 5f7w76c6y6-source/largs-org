@@ -154,7 +154,15 @@ module.exports = function (eleventyConfig) {
       .map((e) => {
         const days = Math.round((Date.parse(e.date + "T00:00:00Z") - now) / 86400000);
         const farOut = Boolean(e.until) || days > BADGE_WEEKDAY_WITHIN_DAYS;
-        return Object.assign({}, e, { farOut, badgeTop: badgeTop(e.date, farOut), badgeYear: badgeYear(e.date, p.year) });
+        // Running today. The badge still shows the START date -- on a
+        // chronological list that is the useful anchor and the right sort
+        // key -- so this carries the fact the badge cannot: that a span
+        // which began days ago has not been missed. Same test todayOnly
+        // uses, and it cannot express a gap: an event running weekdays
+        // only would be marked on now on a Saturday. If one is ever
+        // listed, give it separate dated entries rather than a span.
+        const onNow = e.date <= today && (e.until || e.date) >= today;
+        return Object.assign({}, e, { farOut, onNow, badgeTop: badgeTop(e.date, farOut), badgeYear: badgeYear(e.date, p.year) });
       });
   });
 
@@ -165,11 +173,19 @@ module.exports = function (eleventyConfig) {
     const today = `${p.year}-${p.month}-${p.day}`;
     return (items || [])
       .filter((e) => e.date <= today && (e.until || e.date) >= today)
-      // Today by definition, so always the weekday -- but badgeTop has to
-      // be set here as well or the Today board renders an empty badge.
+      // Today by definition -- so the badge is built from TODAY, not from
+      // e.date. For a one-day event those are the same; for a multi-day
+      // span they are not, and badging the start date printed a day that
+      // had already passed under a heading that says "On today".
+      //
+      // Note this deliberately does not use `until`: an end date only
+      // describes an unbroken run, so an event that skips weekends would
+      // make an "until" badge wrong. The shape of the run is carried by
+      // the human-written `time` string instead.
       .map((e) => Object.assign({}, e, {
         farOut: false,
-        badgeTop: ukParts(e.date, { weekday: "short" }).weekday,
+        badgeTop: ukParts(new Date(), { weekday: "short" }).weekday,
+        badgeDom: ukParts(new Date(), { day: "numeric" }).day,
       }));
   });
 

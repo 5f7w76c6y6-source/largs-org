@@ -39,7 +39,7 @@ subtitle: Events in and around the town, every one checked before it goes up.
         <span class="when-dom">{{ e.date | dom }}</span>{% if e.badgeYear %}<span class="when-yr">{{ e.badgeYear }}</span>{% endif %}
       </div>
       <h2 class="event-title">{{ e.title }}</h2>
-      <div class="meta">{{ e.venue | upper }} · {{ e.time | upper }}</div>
+      <div class="meta">{% if e.onNow %}<span class="on-now">On now</span> · {% endif %}{{ e.venue | upper }} · {{ e.time | upper }}</div>
       <p>{{ e.blurb }}</p>
       {% if e.url %}<a class="event-link" href="{{ e.url }}">More info →</a>{% endif %}
     </div>
@@ -65,7 +65,7 @@ subtitle: Events in and around the town, every one checked before it goes up.
     </div>
     <div class="event-body">
       <h3>{{ e.title }}</h3>
-      <div class="meta">{{ e.venue | upper }} · {{ e.time | upper }}</div>
+      <div class="meta">{% if e.onNow %}<span class="on-now">On now</span> · {% endif %}{{ e.venue | upper }} · {{ e.time | upper }}</div>
       <p>{{ e.blurb }}</p>
       {% if e.url %}<a class="event-link" href="{{ e.url }}">More info →</a>{% endif %}
     </div>
