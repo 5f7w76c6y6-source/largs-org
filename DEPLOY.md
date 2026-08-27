@@ -1,4 +1,4 @@
-# DEPLOY.md — how largs.org ships
+# DEPLOY.md — how largs.scot ships
 
 The operational runbook: how a change gets from this folder to the live
 site, how the automation is wired, and how to set up a fresh machine or
@@ -18,7 +18,10 @@ Three layers, each proven before the next was stacked on it:
    of the above on GitHub's machines: on every push to `main`, on a
    half-hourly schedule (`:17` and `:47`), and on demand.
 
-The live site is **https://largs-org.pages.dev** — that address always
+The live site is **https://largs.scot** (and www.largs.scot), served by
+the Pages project `largs-org` — the repo, project and deployment
+hostname all keep the old name, which is only ever infrastructure.
+**https://largs-org.pages.dev** also still answers — that address always
 points at the newest production deployment. Every individual deployment
 also gets a permanent snapshot URL (`https://<hash>.largs-org.pages.dev`,
 printed by wrangler and listed in the Cloudflare dashboard). Snapshots
@@ -148,7 +151,7 @@ first, then the snapshot it wrote:
 ```
 npx wrangler@4.125.0 tail largs-power          # live; "Ok" = a clean run
 npx wrangler@4.125.0 r2 object get largs-power/power.json --remote --pipe | python3 -m json.tool
-curl -s https://largs-org.pages.dev/api/power | python3 -m json.tool
+curl -s https://largs.scot/api/power | python3 -m json.tool
 ```
 
 Every snapshot carries `lastError` with the path, status and response
@@ -273,15 +276,33 @@ npx wrangler whoami               # account and (non-secret) account ID
 npx wrangler@4.125.0 tail largs-power   # live Worker runs; no secrets in output
 ```
 
-## At launch (largs.org handover)
+## Indexing, and the domain
 
-The site currently sends `X-Robots-Tag: noindex` on every page, so the
-staging hostname never competes with largs.org in search results and
-nothing publishes before its referee pass. To go indexable at launch:
+**The site is indexable.** `src/_headers` and its `X-Robots-Tag:
+noindex` were removed on 27 August 2026, along with the matching
+passthrough line in the config. The two conditions that put them there
+had both been met: the register had been refereed against its source
+minutes (through June 2026, with July quarantined until approved), and
+the "duplicate index" worry was about largs.org, which is not this
+site's address and never was.
 
-1. Delete `src/_headers`.
-2. Remove the matching `addPassthroughCopy` line in `eleventy.config.js`
-   (marked "Staging only").
-3. Rebuild, deploy, then confirm the header is gone:
-   `curl -sI https://largs.org/ | grep -i x-robots-tag`
-   — no output means it's gone and the site is indexable.
+Every page carries `<link rel="canonical">` built from `site.url`, so
+largs.scot is the one address search engines are told about even though
+www.largs.scot and the pages.dev deployment hostname serve the same
+pages. Change the canonical host in exactly one place: `url` in
+`src/_data/site.json`.
+
+To confirm indexing is on:
+
+```
+curl -sI https://largs.scot/ | grep -i x-robots-tag
+```
+
+— no output means there is no noindex header and the site is indexable.
+
+**largs.org is a different site.** It is a dormant fifteen-year-old
+site belonging to someone else, still live and still carrying a
+Wikipedia citation as the Largs community website. If it is ever
+acquired, the intent is to redirect it to largs.scot rather than move
+the site to it: the branding, the canonical URL and every printed
+mention stay largs.scot.

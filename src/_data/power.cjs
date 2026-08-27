@@ -19,7 +19,10 @@
  * properly.
  */
 
-const ORIGIN = "https://largs-org.pages.dev"; // swap to https://largs.org at handover
+// The site's own origin, for the build-time fetch. largs.scot is the
+// canonical host; the pages.dev address still answers and would work
+// here too, but this way there is one name for the site everywhere.
+const ORIGIN = "https://largs.scot";
 const SHOW_OUTCODES = ["KA30"];
 
 function londonToday() {
