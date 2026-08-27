@@ -72,8 +72,34 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 .mainnav a[aria-current="page"]{background:var(--teal)}
 
 /* ---------- horizon signature ---------- */
-.horizon{background:var(--foam);display:block}
-.horizon svg{display:block;width:100%;height:64px}
+/* The band stretches; the objects do not. --wl is the waterline, and both
+   objects are bottom-aligned to it, so changing --h and --wl together is
+   the only thing needed to resize the whole scene.
+
+   Selectors are class-on-class (.horizon .horizon-bg) rather than
+   class-on-element, so they outrank any older `.horizon svg` rule that
+   might linger. */
+.horizon{
+  background:var(--foam);
+  position:relative;
+  overflow:hidden;
+  --h:80px;
+  --wl:57.5px;
+  height:var(--h);
+}
+.horizon .horizon-bg{display:block;width:100%;height:var(--h)}
+.horizon .horizon-obj{
+  position:absolute;
+  bottom:calc(var(--h) - var(--wl));
+  width:auto;
+  display:block;
+}
+/* Percentages, so both stay in the same relative place as the band
+   stretches. The ferry sits mid-crossing between Cumbrae and the shore;
+   the Pencil keeps clear of Magnus above it, which is why the old SVG
+   group carried translate(-145,0) — same position, stated directly. */
+.horizon .horizon-ferry{height:40px;left:47%}
+.horizon .horizon-pencil{height:52px;left:84%}
 
 /* ---------- today board ---------- */
 .board{padding:34px 0 8px}
