@@ -1,3 +1,8 @@
+/* Node built-ins, for the stylesheet fingerprint below. */
+const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
+
 /* Eleventy configuration.
  *
  * Eleventy reads everything under src/, runs the templates, and writes
@@ -34,7 +39,49 @@ function ukParts(value, options) {
 
 module.exports = function (eleventyConfig) {
   // Copy src/assets/** to _site/assets/** untouched.
+
+  /* ---- The stylesheet's fingerprint -------------------------------
+   *
+   * WHY THIS EXISTS. On 27 August 2026 a CSS change went out and did
+   * not appear. The file was correct on the server -- curl proved it
+   * byte for byte, identical on both hostnames -- but browsers were
+   * holding a PARTIAL copy: Safari had parsed the first 33 lines and
+   * nothing after. A purge of Cloudflare's cache did not clear it. Two
+   * phones, a Mac and an iPad each behaved differently, and an
+   * "Add to Home Screen" icon could only be fixed by deleting and
+   * re-adding it. That is not something a resident can be asked to do.
+   *
+   * A stylesheet at a fixed URL gives you no way to force a refetch.
+   * Hashing its contents into the filename does: every change produces
+   * a URL no cache anywhere has ever seen, so a stale or truncated
+   * entry becomes unreachable rather than merely unlucky. The old
+   * name stops being emitted at all.
+   *
+   * `cssHref` is what the template asks for. The matching output file
+   * is created by the passthrough copy below; both read the same
+   * hash, so they cannot drift apart.
+   *
+   * DECLARED HERE, ABOVE THE PASSTHROUGH THAT USES IT. `const` is not
+   * hoisted: when this block sat lower in the file, beside buildTime,
+   * the passthrough referenced cssHash before it existed and every
+   * build died with "Cannot access 'cssHash' before initialization".
+   */
+  const CSS_SRC = path.join(__dirname, "src", "assets", "css", "site.css");
+  const cssHash = crypto
+    .createHash("sha256")
+    .update(fs.readFileSync(CSS_SRC))
+    .digest("hex")
+    .slice(0, 10);
+  const cssOut = `/assets/css/site.${cssHash}.css`;
+  eleventyConfig.addGlobalData("cssHref", cssOut);
+
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
+  /* The stylesheet again, under its fingerprinted name. The unhashed
+     copy still lands via the line above; nothing links to it, and it
+     can be dropped once nothing in the wild is asking for it. */
+  eleventyConfig.addPassthroughCopy({
+    "src/assets/css/site.css": `assets/css/site.${cssHash}.css`,
+  });
 
   // Roadworks filters. The date arithmetic lives here rather than in the
   // template because Nunjucks has no clean way to add days to a date, and
@@ -68,6 +115,7 @@ module.exports = function (eleventyConfig) {
   // Evaluated once per build — the masthead dateline and "Updated"
   // stamp come from this, so a page built at 09:17 says 09:17.
   eleventyConfig.addGlobalData("buildTime", () => new Date().toISOString());
+
 
   // "15:45"
   eleventyConfig.addFilter("hhmm", (value) => {
