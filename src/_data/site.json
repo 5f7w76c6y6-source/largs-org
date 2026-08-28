@@ -3,9 +3,9 @@
   "_description": "Fallback meta description. Pages use their own `subtitle` unless they set `description` in front matter.",
   "description": "Everyday information for the town of Largs — bin days, tides, ferry and roadworks, what's on, and council business in plain English.",
   "_ogImage": "The share card, and the facts about it. The filename carries a version because Facebook and Cloudflare both cache an image against its URL: a replacement at the same path would keep showing the old card in shares for weeks. To change the card, add a new file and point this at it, then re-run Facebook's Sharing Debugger once.",
-  "ogImage": "/assets/img/og-2026-08.png",
-  "ogImageWidth": 2400,
-  "ogImageHeight": 1260,
+  "ogImage": "/assets/img/og-2026-08b.png",
+  "ogImageWidth": 1200,
+  "ogImageHeight": 630,
   "ogImageAlt": "largs.scot \u2014 Magnus the Viking standing above the Largs horizon, with the Cumbrae ferry and the Pencil monument.",
   "url": "https://largs.scot",
   "links": {
