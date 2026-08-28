@@ -305,6 +305,49 @@ reasoning is recorded so it does not have to be rediscovered.
 
 ## Known and accepted
 
+- **CLS red in Cloudflare Web Analytics was a sample-size artefact, not a
+  defect.** 28 August: the `/` path showed ~70% of loads in the poor bucket
+  (>0.25) over 24 hours. Investigated to conclusion and nothing found wrong.
+  Ruled out: unsized media (every img/iframe site-wide carries width and
+  height, with `height:auto` and three `aspect-ratio` rules backing them);
+  runtime insertion (no fetch, innerHTML, appendChild or classList.remove on
+  the homepage — all ten `hidden` occurrences are `aria-hidden` on decorative
+  glyphs); font blocking (the Google Fonts URL already carries
+  `&display=swap`); and viewport, which was the leading theory and was wrong —
+  mobile scored *better*. Lab, Slow 4G with cache disabled and scrolled to
+  the footer: desktop CLS 0.03 / LCP 3.95 s (`img.tile-hero`), iPhone 12 Pro
+  390x844 CLS 0.02 / LCP 1.70 s (`p.page-subtitle`). Both green; roughly
+  eight times better than the field bar. The window held ~50 samples, mostly
+  Ian's own devices mid-development. **Recheck the panel in a fortnight**
+  once real visitors have generated real samples; if still red with a few
+  hundred visits, it is real and the next place to look is Safari on iOS,
+  untested and the likely browser for most of this audience.
+- **Overhead polling can exhaust the Workers quota, and that risk is
+  accepted.** The Cache API (`caches.default`) lives *inside* the Worker, so a
+  hit saves the R2 read and the adsbdb subrequests but never the invocation —
+  the `EDGE_TTL_S` comment in `functions/api/overhead.js` claiming "one shared
+  read serves every visitor" is true of the read and false of the request.
+  Cloudflare's newer Workers Caching product does sit in front, but its hits
+  still count as requests, so nothing helps on a plan metered in requests.
+  One poll, one invocation. At 5 s that is 720 per person-hour against an
+  account-wide 100,000/day resetting 00:00 UTC — roughly 139 person-hours of
+  watching. Not "half the town": 139 people for an hour, which one shared
+  Facebook post could produce. **The quota is account-wide**, so exhausting it
+  on `/overhead/` also stops `/api/fuel`, `/api/power`, both ingest endpoints
+  and the `largs-metronome` and `largs-power` crons — the last being the one
+  that matters, since the outage notice would go unfed until the small hours.
+  Accepted anyway: at current traffic the threshold is far off, nothing breaks
+  permanently or costs money, and both pages already degrade honestly (Error
+  1027 returns without running the Function; `r.json()` throws, `failures`
+  increments, and `showDown()` says "Live positions unavailable"). **15 s
+  polling was rejected on the merits** — a jet covers a mile and a half in
+  that time, the glyph jumps visibly on a 30 nm map, and the liveness is the
+  feature. If it ever needs fixing the cheap answer is a session cap (~20
+  minutes behind a "still watching?" button), because the failure mode is
+  dwell time, not crowd size; the thorough answer is moving enrichment to the
+  Pi and serving the finished object from a public R2 custom domain.
+
+
 - **Scheduled builds are best-effort.** On 14 August only one of six hourly
   cron runs fired between 13:00 and 16:11 — GitHub deprioritises scheduled
   workloads under load. Nothing is broken; pushes always build immediately, and
@@ -315,6 +358,23 @@ reasoning is recorded so it does not have to be rediscovered.
   Node 24. Nothing broken; a version bump is due.
 
 ## Deferred, with reasons
+
+- **`loading="lazy"` on above-the-fold tile heroes.** All nine carry it, and
+  on desktop the LCP element *is* a lazy hero at 3.95 s (amber). Lazy-loading
+  defers an image until it nears the viewport; applied to one already visible
+  on load it deprioritises exactly what the reader is waiting for. Mobile is
+  unaffected — single column, LCP is the strapline at 1.70 s — so this is a
+  wide-screen problem only. Fix is `eager` on the first row, but confirm which
+  tiles are above the fold at desktop width first: the answer differs by
+  viewport and the change is per-image.
+- **744 kB of PNG heroes; the homepage is not finished until 5.97 s.** Nine
+  files at 29-96 kB. AVIF through the pipeline already used for Alison's
+  photos should take roughly two-thirds off. Will not move CLS, but it is the
+  biggest single lever on how the site feels on a weak signal in Largs, which
+  is the audience the project exists for. Keep PNG fallbacks; check the ink
+  pipeline's flat tones survive AVIF at whatever quality is chosen, and
+  referee at true size before committing.
+
 
 - **Marine traffic map.** aisstream.io is the viable route — free websocket,
   key in GH secrets, a Worker on a short cron writing to KV. Aircraft is
@@ -337,6 +397,22 @@ reasoning is recorded so it does not have to be rediscovered.
 - **Event categories** (reuse the register's pagination pattern), **the
   directory** (~180 listings from the original site).
 
+## Renewals and expiries
+
+Dates that end things silently if missed. The TODO line is the record; the
+calendar alert is the actual notice.
+
+- **Fastmail Individual** — paid 28 Aug 2026, 36 months, **renews 28 Aug
+  2029**. Login `largs@fastmail.com`. Carries hello@, events@, corrections@
+  and letter@largs.scot, all delivering to one inbox. **Notice wanted 28 Jul
+  2029.** If it lapses every published address stops receiving, including
+  corrections@, which the editorial policy commits to answering.
+- **largs.scot domain** — registered 27 Aug 2026. Registrar and renewal date
+  NOT RECORDED — fill in. Higher stakes than the mailbox: if the domain
+  lapses the site goes dark and every inbound link dies with it, and a
+  released .scot can be registered by anyone. Check whether auto-renew is on
+  and whether the card on file expires before then.
+
 ## The design rules worth not breaking
 
 Recorded here because each was decided with a reason and would otherwise be
@@ -355,3 +431,10 @@ undone by someone reasonable.
   always appears beside it.
 - **Magnus appears on phones held portrait and at 900px and up**, and hides
   between 600 and 900 where the dateline shares his row.
+- **Core Web Vitals: field data below roughly 200 samples in the window is
+  noise.** Get the lab number before believing a red bar. DevTools ->
+  Performance -> Local metrics gives CLS and the LCP element live; throttle to
+  Slow 4G, tick Disable cache, and scroll to the bottom, because shifts
+  accumulate over the page lifetime and an unscrolled run undercounts. Test
+  both viewports — the LCP element differs between them. The older Frame
+  Rendering Stats overlay shows frame rate and GPU only, not CLS.
