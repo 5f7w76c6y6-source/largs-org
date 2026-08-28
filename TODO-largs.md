@@ -407,11 +407,12 @@ calendar alert is the actual notice.
   and letter@largs.scot, all delivering to one inbox. **Notice wanted 28 Jul
   2029.** If it lapses every published address stops receiving, including
   corrections@, which the editorial policy commits to answering.
-- **largs.scot domain** — registered 27 Aug 2026. Registrar and renewal date
-  NOT RECORDED — fill in. Higher stakes than the mailbox: if the domain
-  lapses the site goes dark and every inbound link dies with it, and a
-  released .scot can be registered by anyone. Check whether auto-renew is on
-  and whether the card on file expires before then.
+- **largs.scot domain** — registered 27 Aug 2026, one-year term, **renews 27
+  Aug 2027**. Registrar NOT RECORDED — fill in. Higher stakes than the
+  mailbox and much nearer: if the domain lapses the site goes dark, every
+  inbound link dies with it, and a released .scot can be registered by
+  anyone. Confirm auto-renew is on and that the card on file outlives August
+  2027. Calendar alert set.
 
 ## The design rules worth not breaking
 
