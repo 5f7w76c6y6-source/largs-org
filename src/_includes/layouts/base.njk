@@ -173,6 +173,11 @@
     </div>
     <div class="colophon">
       <span><a href="/">largs.scot</a> · …for you</span>
+      {# Two words, two anchors. The detail — what may be reused, what the
+         analytics do — lives on the privacy page where there is room to
+         explain it. A colophon that runs to five lines is read by nobody,
+         and this is the last thing on every page. #}
+      <span><a href="/privacy/#copyright">Copyright</a> · <a href="/privacy/#privacy-summary">Privacy</a></span>
       {# Attribution follows the tide source. UKHO's reply may specify
          exact wording — if it does, update the first branch to match. #}
       {% if today.tides.source == "ukho" %}
