@@ -90,6 +90,13 @@ eleventyComputed:
         {%- if item.phone %}<a href="tel:{{ item.phone | replace(" ", "") }}">{{ item.phone }}</a>{% endif -%}
       </p>
       {% endif %}
+      {# A second link, for groups whose Facebook page is where things
+         actually happen. The main url stays the one that works without a
+         login; this is additive, and the label says what it is so nobody
+         clicks into a login wall by surprise. #}
+      {% if item.social %}
+      <p class="directory-social"><a href="{{ item.social.url }}" rel="noopener">{{ item.social.label }} →</a></p>
+      {% endif %}
       {% if item.note %}<p class="directory-note">{{ item.note }}</p>{% endif %}
       </div>
     </div>
@@ -123,6 +130,8 @@ eleventyComputed:
      each entry reads as one block instead of an L shape. 96px logo box
      + 12px flex gap. */
   .directory-body{margin-left:68px}
+  .directory-social{margin-top:3px}
+  .directory-social a{font-size:.94rem}
   @media (max-width:600px){
     .directory-logo,.directory-logo-gap{width:44px;height:44px}
     .directory-body{margin-left:56px}
