@@ -103,6 +103,10 @@
         <li><a href="/council/"{% if page.url == "/council/" %} aria-current="page"{% endif %}>Largs Community Council</a></li>
         <li><a href="/on-the-agenda/"{% if page.url and "/on-the-agenda/" in page.url %} aria-current="page"{% endif %}>North Ayrshire Council</a></li>
         <li><a href="/photos/"{% if page.url == "/photos/" %} aria-current="page"{% endif %}>Photos</a></li>
+        {# "Directory" not "Town directory": the nav is eight items now and two
+           of them are long council names. The page and the card both say the
+           full name, where there is room for it. #}
+        <li><a href="/directory/"{% if page.url and "/directory/" in page.url %} aria-current="page"{% endif %}>Directory</a></li>
       </ul>
     </nav>
   </div>

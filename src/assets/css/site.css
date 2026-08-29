@@ -265,6 +265,32 @@ h2{
   padding:8px 15px;border-radius:999px;
 }
 .chips a:hover{border-color:var(--teal);color:var(--teal)}
+/* Directory hub index. The same chip as the home page, plus a count — a
+   reader should be able to see which categories have something in them
+   without clicking into an empty one, which was half the reason for giving
+   the directory a front door at all. The count sits inside the chip in a
+   lighter weight so it reads as a footnote, not a second label. */
+.dir-index{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0 8px}
+.dir-index-item{
+  text-decoration:none;background:var(--card);border:1px solid var(--sand);
+  color:var(--slate);font-weight:500;font-size:.92rem;
+  padding:8px 15px;border-radius:999px;
+  display:inline-flex;align-items:baseline;gap:7px;
+}
+.dir-index-item:hover{border-color:var(--teal);color:var(--teal)}
+.dir-index-sub{
+  font-family:"Spline Sans Mono",monospace;font-size:.7rem;
+  color:var(--muted);font-weight:400;white-space:nowrap;
+}
+.dir-index-item:hover .dir-index-sub{color:var(--teal)}
+/* Nine chips on one line from 1100px up. Tightened on WIDE SCREENS ONLY —
+   below this the padding and size are untouched, because a smaller tap target
+   is the wrong direction for a reader holding a phone. If a tenth category is
+   ever added this will wrap again, which is fine; two rows is not a fault. */
+@media (min-width:1100px){
+  .chips{gap:7px;flex-wrap:nowrap}
+  .chips a{padding:8px 12px;font-size:.88rem;white-space:nowrap}
+}
 .note{color:var(--muted);font-size:.92rem;margin-top:12px;max-width:70ch}
 
 /* ---------- footer ---------- */

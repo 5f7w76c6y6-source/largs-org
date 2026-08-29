@@ -6,9 +6,9 @@ pagination:
   alias: cat
 permalink: "/directory/{{ cat.slug }}/"
 eleventyComputed:
-  title: "{{ cat.label }} · Largs"
-  heading: "{{ cat.label }}"
-  subtitle: "{{ cat.blurb }}"
+  title: "{{ cat.label | safe }} · Largs"
+  heading: "{{ cat.label | safe }}"
+  subtitle: "{{ cat.blurb | safe }}"
 ---
 {# One page per directory category, same shape as the council register:
    Eleventy renders this template once per entry in directory.categories
@@ -32,36 +32,56 @@ eleventyComputed:
   <div class="rule" aria-hidden="true"></div>
 
   {% if cat.open %}
-  <p class="page-intro">There are no listings here yet, and rather than
-  publish a handful we would rather wait until the list is worth trusting.
-  A few names out of many reads as a recommendation, and this site does not
-  make recommendations about local businesses.</p>
+  <p class="page-intro">Nothing here yet. The list will grow, in an
+  alphabetical order, as people get in touch.</p>
 
-  <h2>Get listed</h2>
-  <p>Listings are free, and always will be. There is no charge to appear, no
-  charge to stay, and no way to pay for a better position — everything is
-  listed alphabetically.</p>
-  <p>Send the following to
-  <a href="mailto:hello@largs.scot?subject=Directory%20listing">hello@largs.scot</a>:</p>
+  <h2>Getting listed</h2>
+  <p>It's free — just drop us an email with the details below and we'll get
+  your listing up as soon as we can.</p>
+  <p><a href="mailto:hello@largs.scot?subject=Directory%20listing">hello@largs.scot</a></p>
+  {# Per-category, because the fields genuinely differ. Most of all for
+     trades: a sole trader works from home, and "where you are" invites a
+     home address onto a public page. Ask for the area covered instead, and
+     say we will not publish the address, so nobody has to wonder. #}
   <ul>
-    <li>The name of the business</li>
-    <li>What it does, in a sentence</li>
-    <li>Where it is, or the area it covers</li>
+    {% for ask in cat.asks %}<li>{{ ask }}</li>
+    {% else %}
+    <li>Your name</li>
+    <li>What you do, in a sentence</li>
+    <li>Where you are, or the area you cover</li>
     <li>A phone number, a website, or both</li>
+    {% endfor %}
   </ul>
-  <p>That is all. We will check the details are current before adding
-  anything, and we will not publish anything else about you.</p>
+  {# The logo spec that matters is CONTENT, not pixels: a file carrying its
+     own wordmark prints the business name twice — once in the artwork, once
+     as the heading beside it — and shrinks the mark to make room. Learned by
+     looking, 29 Aug 2026. Kept to two sentences so it reads as help rather
+     than a specification. #}
+  <p class="logo-note">If you're sending a logo, a square image works best —
+  just the symbol, not the version with your name in it, since your name is
+  already the heading. Anything from 256 pixels up is plenty and we'll crop it
+  to fit. No logo is no problem.</p>
+  <p>We'll check it's all current before it goes up, and we won't publish
+  anything else about you.</p>
 
   {% else %}
-  <p class="page-intro">{{ cat.blurb }} Listed alphabetically — this is not
-  a ranking, and nothing here is a recommendation.</p>
+  {# The blurb is already the page subtitle; repeating it here printed it
+     twice on every populated page. #}
+  <p class="page-intro">In alphabetical order, so nobody's top of the list.</p>
 
   <div class="directory-list">
     {% for item in cat.entries %}
     <div class="directory-item">
+      {# LOGO SUPPORT IS A TRIAL, 29 Aug 2026. Delete this block and the
+         style at the foot of the file to remove it. The worry: a mark beside
+         an entry makes it look weightier than the plain text next to it, so
+         businesses with better design outrank those without — ranking by
+         budget, on a page that says you cannot buy your way up. #}
       <h2 class="directory-name">
+        {% if item.logo %}<img src="{{ item.logo }}" alt="" class="directory-logo" loading="lazy">{% else %}<span class="directory-logo-gap" aria-hidden="true"></span>{% endif %}
         {% if item.url %}<a href="{{ item.url }}" rel="noopener">{{ item.name }}</a>{% else %}{{ item.name }}{% endif %}
       </h2>
+      <div class="directory-body">
       {% if item.blurb %}<p>{{ item.blurb }}</p>{% endif %}
       {% if item.where or item.phone %}
       <p class="directory-meta">
@@ -71,7 +91,7 @@ eleventyComputed:
       </p>
       {% endif %}
       {% if item.note %}<p class="directory-note">{{ item.note }}</p>{% endif %}
-      <p class="directory-checked">Checked {{ item.checked }}</p>
+      </div>
     </div>
     {% endfor %}
   </div>
@@ -79,8 +99,32 @@ eleventyComputed:
 
   <div class="rule" aria-hidden="true"></div>
   <h2>Who have we missed?</h2>
-  <p>This list is built by hand and it will be incomplete. If something is
-  missing, closed, moved, or wrong, please tell us —
-  <a href="mailto:hello@largs.scot?subject=Directory%20—%20{{ cat.label }}">hello@largs.scot</a>.
-  Listings are free and there is nothing to pay, ever.</p>
+  <p>If that's your logo above and you'd rather we didn't use it, just say and
+  we'll take it off, no questions.</p>
+
+  <p>This list is put together by hand, so there'll be gaps. If we've missed
+  you, or something's moved, closed or changed, let us know at
+  <a href="mailto:hello@largs.scot?subject=Directory%20—%20{{ cat.label }}">hello@largs.scot</a>
+  — we'd be glad to hear.</p>
 </section>
+
+{# TRIAL STYLING for the logo experiment — scoped here rather than site.css
+   so it lifts out with the block above if the answer is no. #}
+<style>
+  .directory-name{display:flex;align-items:center;gap:12px}
+  /* Square, like an app icon. Fixed box so every mark gets the same room,
+     and the spec that matters is CONTENT not size: the mark only, cropped
+     close, no wordmark. The business name is already the heading beside it,
+     so a logo carrying its own name renders that name twice and shrinks the
+     mark to fit. */
+  .directory-logo{width:56px;height:56px;object-fit:contain;flex:none}
+  .directory-logo-gap{width:56px;height:56px;flex:none}
+  /* Body text lines up under the name rather than the page margin, so
+     each entry reads as one block instead of an L shape. 96px logo box
+     + 12px flex gap. */
+  .directory-body{margin-left:68px}
+  @media (max-width:600px){
+    .directory-logo,.directory-logo-gap{width:44px;height:44px}
+    .directory-body{margin-left:56px}
+  }
+</style>

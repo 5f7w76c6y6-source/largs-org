@@ -1,0 +1,47 @@
+---
+layout: layouts/base.njk
+permalink: /directory/
+title: Town directory · Largs
+heading: Town directory
+subtitle: Clubs, groups, churches, places and businesses in Largs.
+---
+{# The front door the category pages never had. Council corner has /council/,
+   roadworks has /roadworks/; the directory had nine pages hanging off nothing
+   but a row of chips at the foot of the home page.
+
+   Each category shows what is actually in it, so nobody clicks into an empty
+   list to find out. The "getting listed" invitation lives here once rather
+   than being repeated nine times. #}
+
+<section class="wrap council-page" aria-labelledby="page-title">
+  <div class="rule" aria-hidden="true"></div>
+
+  <p class="page-intro">A list of what is in the town, put together by hand.
+  Listings are free and always will be — there is nothing to pay to appear and
+  no way to pay for a better position. Everything is alphabetical.</p>
+
+  <div class="dir-index">
+    {% for cat in directory.categories %}
+    <a class="dir-index-item" href="/directory/{{ cat.slug }}/">
+      <span class="dir-index-label">{{ cat.label | safe }}</span>
+      <span class="dir-index-sub">
+        {%- if cat.open %}open
+        {%- else %}{{ cat.entries.length }}{% endif -%}
+      </span>
+    </a>
+    {% endfor %}
+  </div>
+
+  <div class="rule" aria-hidden="true"></div>
+
+  <h2>Getting listed</h2>
+  <p>If you run something in Largs that should be here, drop us an email at
+  <a href="mailto:hello@largs.scot?subject=Directory%20listing">hello@largs.scot</a>
+  with your name, what you do, where you are and a way to get in touch. We'll
+  check it's current and put it up. It's free, and it stays free.</p>
+
+  <h2>Who have we missed?</h2>
+  <p>This is built by hand, so there'll be gaps — several categories are empty
+  and the rest are incomplete. If we've missed you, or something's moved,
+  closed or changed, let us know and we'd be glad to hear.</p>
+</section>
