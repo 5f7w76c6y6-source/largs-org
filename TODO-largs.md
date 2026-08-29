@@ -391,9 +391,33 @@ reasoning is recorded so it does not have to be rediscovered.
   used, attach it to the Viking Festival listing rather than decorate with it.
 - **School term dates** — every parent in Largs needs them, NAC publishes them,
   they are computable, and people check them repeatedly.
-- **A local services directory** — chemist opening hours, the library, the
-  recycling centre, GP surgeries. Largely static, checkable once a year, and
-  the kind of thing people currently phone a neighbour about.
+- **Essential services page** (`/essential/` or similar) — the library, the
+  recycling centre, GP surgeries, pharmacies, 999 and 101. NOT a directory
+  category: you do not browse this, you reach for it when something is wrong.
+  Belongs beside report-it, not beside Cafés & food. Decided 29 Aug 2026.
+
+  **The "checkable once a year" assumption in the old version of this entry
+  was wrong, and wrong in the dangerous direction.** It holds for the library
+  and the recycling centre. It does not hold for pharmacies: NHS Ayrshire &
+  Arran rewrite the bank-holiday rota several times a year, and Superdrug
+  Largs closes its PHARMACY on Mondays while the shop stays open — a quirk
+  nobody would guess and no annual check would catch. So the page splits in
+  two: static things compiled here and checked yearly, health things LINKED
+  OUT TO and never compiled. Wrong pharmacy hours send an unwell person to a
+  locked door on a Sunday; that is the whole reason the food-hygiene idea was
+  binned, and it applies here with higher stakes.
+
+  First version should be a SIGNPOST, not a compilation: NHS AAA's own
+  opening-times page carries the rota and says plainly it is subject to
+  change. Link it, do not copy it. A watcher on that URL — same pattern as
+  the council-papers watcher — could flag when it changes so the link text
+  can be kept accurate, but that is a later refinement and not needed to
+  ship. Police is 999 and 101 plus Police Scotland's station finder; both
+  numbers are national and neither changes.
+
+  Aggregator sites (allopeningtimes, localmint and the rest) contradict each
+  other and contradicted Superdrug's own page when checked on 29 Aug. Never
+  a source.
 - **Event categories** (reuse the register's pagination pattern), **the
   directory** (~180 listings from the original site).
 
