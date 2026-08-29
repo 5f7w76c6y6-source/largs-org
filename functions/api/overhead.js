@@ -175,8 +175,15 @@ async function lookupRoute(cache, cs) {
       const fr = j && j.response && j.response.flightroute;
       const o = fr && fr.origin;
       const d = fr && fr.destination;
+      // Same airport both ends defeats routePlausible: direct distance is
+      // zero, so the detour test reduces to "twice the distance to that
+      // airport", which passes from anywhere within 200 nm. Seen 30 Aug 2026
+      // as "Newcastle -> Newcastle" on a jet descending towards Glasgow.
+      // Circuits and return-to-base flights are real, but the label tells a
+      // reader nothing either way, so no route is the honest answer.
       if (
         o && d && o.iata_code && d.iata_code &&
+        o.iata_code !== d.iata_code &&
         typeof o.latitude === "number" && typeof o.longitude === "number" &&
         typeof d.latitude === "number" && typeof d.longitude === "number"
       ) {
