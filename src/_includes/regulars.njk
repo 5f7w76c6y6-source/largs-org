@@ -11,14 +11,23 @@
    fields in events.json. A class that stopped for the summer stops
    showing on its own. #}
 
+{# The section renders even when the list is empty, because the invitation
+   below is the point of it. It previously carried a made-up yoga class as
+   sample data, which was removed on 29 Aug 2026: an invented event is worse
+   than an invented listing, because somebody turns up. Nothing goes in here
+   that has not been told to us by whoever runs it. #}
 {% set byDay = events.regulars | regularsByDay %}
-{% if byDay | length %}
 <section class="wrap" aria-labelledby="regulars-h">
   <h2 id="regulars-h">Every week in Largs</h2>
   <div class="rule" aria-hidden="true"></div>
 
+  {% if byDay | length %}
   <p class="page-intro">Classes, clubs and groups that meet regularly. Anything
   open to the public in Largs can be listed here, free — see below to add one.</p>
+  {% else %}
+  <p class="page-intro">Nothing listed here yet. Classes, clubs and groups that
+  meet regularly in Largs can go here, free — see below to add one.</p>
+  {% endif %}
 
   {% for group in byDay %}
   <div class="regular-day">
@@ -37,4 +46,3 @@
   </div>
   {% endfor %}
 </section>
-{% endif %}

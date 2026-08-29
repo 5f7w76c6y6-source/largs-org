@@ -216,18 +216,5 @@
       "url": "https://www.ticketsource.com/barrfields/across-the-universe-the-beatles-66-70/e-arxqke"
     }
   ],
-  "regulars": [
-    {
-      "id": "yoga-vikingar",
-      "title": "Yoga class",
-      "venue": "Vikingar",
-      "weekday": "tuesday",
-      "time": "10:00",
-      "blurb": "All levels welcome, mats provided.",
-      "contact": "Contact details to follow",
-      "from": "2026-08-01",
-      "until": "",
-      "except": []
-    }
-  ]
+  "regulars": []
 }
