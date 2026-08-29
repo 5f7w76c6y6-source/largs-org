@@ -368,15 +368,18 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
 <section class="directory wrap" aria-labelledby="dir-h">
   <h2 id="dir-h">Town directory</h2>
   <div class="rule" aria-hidden="true"></div>
+  {# Generated from directory.categories, not written out by hand, so a
+     chip cannot survive its page being renamed or removed. Each is a plain
+     link to a real build-time page — bookmarkable, indexable, and working
+     with JavaScript off, same as the register and roadworks filters. #}
   <div class="chips">
-    <a href="#">Clubs &amp; societies</a>
-    <a href="#">Cafés &amp; food</a>
-    <a href="#">Trades</a>
-    <a href="#">Accommodation</a>
-    <a href="#">Halls for hire</a>
-    <a href="#">Churches</a>
-    <a href="#">Sport &amp; leisure</a>
-    <a href="#">Sailing &amp; marina</a>
+    {% for cat in directory.categories %}
+    <a href="/directory/{{ cat.slug }}/">{{ cat.label }}</a>
+    {% endfor %}
   </div>
-  <p class="note">A full directory of local businesses and services is planned. Listings will be free.</p>
+  <p class="note">Listings are free, and always will be — there is nothing to
+  pay to appear and no way to pay for a better position. Several categories
+  are still empty; if you run something in Largs that should be here, or spot
+  something missing, tell us at
+  <a href="mailto:hello@largs.scot?subject=Directory%20listing">hello@largs.scot</a>.</p>
 </section>

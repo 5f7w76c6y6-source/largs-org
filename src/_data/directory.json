@@ -1,0 +1,212 @@
+{
+  "_comment": "Town directory. Listings are free and always will be. RULES, kept here so they survive the person who wrote them: (1) An entry goes in only when its details have been checked live — a dead link is worse than a missing entry, same rule as report-it. (2) `checked` is the date that happened; it is printed, so rot is visible rather than silent. (3) Categories where local businesses compete for the same customer — food, trades, accommodation — stay OPEN rather than partly filled, because a partial list of cafes reads as a recommendation and this site takes no view on named businesses. Set `open: false` and populate only when the list is genuinely complete. (4) No ranking, no ratings, no reviews. Alphabetical within a category, and that is the whole editorial policy. Churches: St Columba's PARISH church (Church of Scotland, Gallowgate Street) is deliberately absent — the congregation united into Cumbrae, Fairlie & Largs and the building was sold, bid accepted February 2026. Do not re-add it from a directory site. The St Columba's that IS listed is the Scottish Episcopal church on Aubery Crescent, a different denomination in a different building. Churches, two traps recorded so they are not walked into again: (1) St Columba's PARISH church (Church of Scotland, Gallowgate Street) is gone — the congregation united into Cumbrae, Fairlie & Largs and the building was sold, bid accepted February 2026. The St Columba's that IS listed is the Scottish Episcopal church on Aubery Crescent: different denomination, different building. (2) Clark Memorial Church and Largs Community Church are THE SAME BUILDING on Bath Street. CFL's own site calls it Largs Parish Church; the town and the listed-building record call it Clark Memorial. Both names are in the entry so either search finds it. No service time is stated: CFL lists three times across three sites without saying which is which, and a wrong time sends someone to a locked door. Within a category, entries carry the same KINDS of detail. One entry with a phone number among five without reads as singled out, and the eye treats the difference as meaningful when it is not. If one gets a number, they all do, or none do.",
+  "categories": [
+    {
+      "slug": "clubs-and-societies",
+      "label": "Clubs & societies",
+      "open": false,
+      "blurb": "Groups that meet in Largs and welcome new members.",
+      "entries": [
+        {
+          "name": "Douglas Park Bowling Club",
+          "blurb": "Lawn bowls, around a hundred members, and new members welcome.",
+          "checked": "2026-08-29",
+          "where": "Largs"
+        },
+        {
+          "name": "Largs Bowling Club",
+          "blurb": "Lawn bowls club on Douglas Street.",
+          "checked": "2026-08-29",
+          "where": "Douglas Street, KA30 8PT",
+          "phone": "01475 689864"
+        },
+        {
+          "name": "Largs Colts",
+          "blurb": "Youth football, based at the Community Sport Hub.",
+          "checked": "2026-08-29"
+        },
+        {
+          "name": "Largs Halkshill Bowling Club",
+          "blurb": "Lawn bowls club.",
+          "checked": "2026-08-29"
+        },
+        {
+          "name": "Largs Inspire Badminton Club",
+          "blurb": "Badminton for children aged 5 to 13, at the Community Sport Hub.",
+          "checked": "2026-08-29"
+        },
+        {
+          "name": "Largs TAGB",
+          "blurb": "Taekwondo, at the Community Sport Hub.",
+          "checked": "2026-08-29"
+        },
+        {
+          "name": "Largs Table Tennis Club",
+          "blurb": "Table tennis for beginners and competitive players.",
+          "checked": "2026-08-29",
+          "where": "106 Brisbane Road, KA30 8RW",
+          "phone": "07919 887405"
+        }
+      ]
+    },
+    {
+      "slug": "cafes-and-food",
+      "label": "Cafés & food",
+      "open": true,
+      "blurb": "Places to eat and drink in Largs.",
+      "entries": []
+    },
+    {
+      "slug": "trades",
+      "label": "Trades",
+      "open": true,
+      "blurb": "Builders, joiners, electricians, plumbers and other trades working in Largs.",
+      "entries": []
+    },
+    {
+      "slug": "accommodation",
+      "label": "Accommodation",
+      "open": true,
+      "blurb": "Places to stay in and around Largs.",
+      "entries": []
+    },
+    {
+      "slug": "halls-for-hire",
+      "label": "Halls for hire",
+      "open": false,
+      "blurb": "Rooms and halls in Largs available to book.",
+      "entries": [
+        {
+          "name": "Barrfields Theatre",
+          "blurb": "A 470-seat theatre at Vikingar!, available for hire through KA Leisure.",
+          "checked": "2026-08-29",
+          "url": "https://kaleisure.com/activities/theatre/",
+          "where": "Barrfields, Greenock Road, KA30 8QL",
+          "phone": "01475 689777"
+        },
+        {
+          "name": "Largs Community Sport Hub",
+          "blurb": "Two halls, seating around 250 and 350, bookable through KA Leisure.",
+          "checked": "2026-08-29",
+          "where": "60–72 Alexander Avenue, KA30 9EU"
+        },
+        {
+          "name": "Largs Parish Church halls",
+          "blurb": "Halls and meeting spaces at the Bath Street church, with availability published online.",
+          "url": "https://www.cflchurch.co.uk/",
+          "where": "Bath Street, KA30 8BL",
+          "phone": "01475 675186",
+          "checked": "2026-08-29"
+        }
+      ]
+    },
+    {
+      "slug": "churches",
+      "label": "Churches",
+      "open": false,
+      "blurb": "Places of worship in Largs.",
+      "entries": [
+        {
+          "name": "Brisbane Evangelical Church",
+          "blurb": "An independent evangelical congregation on School Street.",
+          "url": "http://www.beclargs.org/",
+          "where": "34 School Street, KA30 8BB",
+          "checked": "2026-08-29"
+        },
+        {
+          "name": "Largs Parish Church (Clark Memorial)",
+          "blurb": "Church of Scotland, part of the Cumbrae, Fairlie and Largs parish. The 1892 building on Bath Street is category A listed and holds a Grade 1 listed Father Willis organ. Sunday morning worship — see their site for the current time.",
+          "url": "https://www.cflchurch.co.uk/",
+          "where": "Bath Street, KA30 8BL",
+          "checked": "2026-08-29"
+        },
+        {
+          "name": "Largs United Free Church",
+          "blurb": "United Free Church of Scotland congregation on Brisbane Road, near the fire station.",
+          "url": "https://www.ufcos.org.uk/congregations/largs/",
+          "where": "23 Brisbane Road, KA30 8LF",
+          "checked": "2026-08-29"
+        },
+        {
+          "name": "St Columba's Scottish Episcopal Church",
+          "blurb": "Scottish Episcopal congregation at the corner of Aubery Crescent and Greenock Road, with 19th-century connections to Lord Kelvin.",
+          "url": "http://www.largs-church.co.uk/",
+          "where": "Aubery Crescent, KA30 8PR",
+          "checked": "2026-08-29"
+        },
+        {
+          "name": "St Mary's Star of the Sea",
+          "blurb": "Roman Catholic church on Greenock Road, with a timber-clad gable and a granite statue of Our Lady.",
+          "url": "https://www.rclargsandmillport.com/",
+          "where": "28 Greenock Road, KA30 8NE",
+          "checked": "2026-08-29"
+        }
+      ]
+    },
+    {
+      "slug": "sport-and-leisure",
+      "label": "Sport & leisure",
+      "open": false,
+      "blurb": "Places to swim, play, train and watch sport in Largs.",
+      "entries": [
+        {
+          "name": "Largs Golf Club",
+          "blurb": "An 18-hole parkland course south of the town, established in 1891, with views over the Clyde to Cumbrae, Bute and Arran. Visitors welcome and tee times bookable online.",
+          "checked": "2026-08-29",
+          "url": "https://largsgolfclub.co.uk/",
+          "where": "Irvine Road, KA30 8EU",
+          "phone": "01475 673594"
+        },
+        {
+          "name": "Largs Thistle F.C.",
+          "blurb": "Founded in 1889 and playing in the West of Scotland League Premier Division, at Barrfields Park.",
+          "checked": "2026-08-29",
+          "url": "http://largsthistle.info",
+          "where": "Barrfields Park"
+        },
+        {
+          "name": "Routenburn Golf Club",
+          "blurb": "Golf course above the town.",
+          "checked": "2026-08-29",
+          "note": "Details still being checked."
+        },
+        {
+          "name": "sportscotland National Centre Inverclyde",
+          "blurb": "A residential sports training centre in 86 acres above the town, taking group bookings for facilities and organised activities.",
+          "checked": "2026-08-29",
+          "url": "https://nationalcentreinverclyde.org.uk/",
+          "where": "Burnside Road, KA30 8RW",
+          "phone": "01475 674666",
+          "note": "The golf training centre here closed permanently on 31 March 2026."
+        },
+        {
+          "name": "Vikingar!",
+          "blurb": "A four-lane 25m pool and teaching pool, gym, the Viking Experience, Multiball and a café, alongside Barrfields Theatre. Run by KA Leisure.",
+          "checked": "2026-08-29",
+          "url": "https://kaleisure.com/location/vikingar/",
+          "where": "Barrfields, Greenock Road, KA30 8QL"
+        }
+      ]
+    },
+    {
+      "slug": "sailing-and-marina",
+      "label": "Sailing & marina",
+      "open": false,
+      "blurb": "Berthing, boatyards and sailing on the Largs Channel.",
+      "entries": [
+        {
+          "name": "Largs Sailing Club",
+          "blurb": "At the Yacht Haven. Dinghy racing, RYA training through the LSTA, and an active cruising section for sail and power. The Lookout Lounge has an honesty café open daily.",
+          "checked": "2026-08-29",
+          "url": "https://largssc.co.uk/"
+        },
+        {
+          "name": "Largs Yacht Haven",
+          "blurb": "Marina berthing, lifting and launching, dry berthing and a boatyard, on the shore south of the town.",
+          "checked": "2026-08-29",
+          "url": "https://www.yachthavens.com/largs-yacht-haven"
+        }
+      ]
+    }
+  ]
+}

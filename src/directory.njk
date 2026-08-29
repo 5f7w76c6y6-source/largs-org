@@ -1,0 +1,86 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: directory.categories
+  size: 1
+  alias: cat
+permalink: "/directory/{{ cat.slug }}/"
+eleventyComputed:
+  title: "{{ cat.label }} · Largs"
+  heading: "{{ cat.label }}"
+  subtitle: "{{ cat.blurb }}"
+---
+{# One page per directory category, same shape as the council register:
+   Eleventy renders this template once per entry in directory.categories
+   and permalink writes each to its own folder. Real HTML pages —
+   bookmarkable, indexable, back-button correct, working with JavaScript
+   off. The chips on the front page are plain links to these.
+
+   TWO CATEGORY STATES. A category with `open: true` has no listings and
+   says so, inviting them. That is deliberate for food, trades and
+   accommodation: a partial list of businesses competing for the same
+   customer reads as a recommendation, and this site takes no view on
+   named businesses. Those categories get populated only when the list is
+   genuinely complete, or not at all.
+
+   EVERY page carries the "who is missing" line, not only the empty ones.
+   The populated categories are the likeliest to prompt a correction —
+   somebody who runs a group will notice it is absent and say so, which
+   is how the gaps get filled. #}
+
+<section class="wrap council-page" aria-labelledby="page-title">
+  <div class="rule" aria-hidden="true"></div>
+
+  {% if cat.open %}
+  <p class="page-intro">There are no listings here yet, and rather than
+  publish a handful we would rather wait until the list is worth trusting.
+  A few names out of many reads as a recommendation, and this site does not
+  make recommendations about local businesses.</p>
+
+  <h2>Get listed</h2>
+  <p>Listings are free, and always will be. There is no charge to appear, no
+  charge to stay, and no way to pay for a better position — everything is
+  listed alphabetically.</p>
+  <p>Send the following to
+  <a href="mailto:hello@largs.scot?subject=Directory%20listing">hello@largs.scot</a>:</p>
+  <ul>
+    <li>The name of the business</li>
+    <li>What it does, in a sentence</li>
+    <li>Where it is, or the area it covers</li>
+    <li>A phone number, a website, or both</li>
+  </ul>
+  <p>That is all. We will check the details are current before adding
+  anything, and we will not publish anything else about you.</p>
+
+  {% else %}
+  <p class="page-intro">{{ cat.blurb }} Listed alphabetically — this is not
+  a ranking, and nothing here is a recommendation.</p>
+
+  <div class="directory-list">
+    {% for item in cat.entries %}
+    <div class="directory-item">
+      <h2 class="directory-name">
+        {% if item.url %}<a href="{{ item.url }}" rel="noopener">{{ item.name }}</a>{% else %}{{ item.name }}{% endif %}
+      </h2>
+      {% if item.blurb %}<p>{{ item.blurb }}</p>{% endif %}
+      {% if item.where or item.phone %}
+      <p class="directory-meta">
+        {%- if item.where %}{{ item.where }}{% endif -%}
+        {%- if item.where and item.phone %} · {% endif -%}
+        {%- if item.phone %}<a href="tel:{{ item.phone | replace(" ", "") }}">{{ item.phone }}</a>{% endif -%}
+      </p>
+      {% endif %}
+      {% if item.note %}<p class="directory-note">{{ item.note }}</p>{% endif %}
+      <p class="directory-checked">Checked {{ item.checked }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="rule" aria-hidden="true"></div>
+  <h2>Who have we missed?</h2>
+  <p>This list is built by hand and it will be incomplete. If something is
+  missing, closed, moved, or wrong, please tell us —
+  <a href="mailto:hello@largs.scot?subject=Directory%20—%20{{ cat.label }}">hello@largs.scot</a>.
+  Listings are free and there is nothing to pay, ever.</p>
+</section>
