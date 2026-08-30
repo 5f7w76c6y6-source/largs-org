@@ -138,7 +138,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   font-family:"Marcellus",serif;font-size:1.5rem;line-height:1.2;color:var(--slate);
 }
 /* Figures that are sentences rather than numbers. "Normally every 15 min"
-   and "Usually twice hourly" wrap to two lines at full size, and beside a
+   and "Usually hourly, less in the evening" wrap at full size, and beside a
    hero that pushes the tile past its neighbours — the grid equalises row
    height, so one tall tile drags four others with it.
    The words stay: "normally" and "usually" are what stops a timetable
