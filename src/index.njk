@@ -317,9 +317,11 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       <div class="dom">{{ e.badgeDom or (e.date | dom) }}</div>
     </div>
     <div class="event-body">
-      {% if e.image %}
-      <img class="event-img" src="{{ e.image }}" alt="{{ e.title }}" loading="lazy" decoding="async">
-      {% endif %}
+      {# NO IMAGES HERE, deliberately. Everything on this board answers a
+         question about today — an event poster does not, and it would be the
+         only photograph among the site's own illustrations. It also referenced
+         a class that no longer exists, so it would have rendered a full-size
+         poster mid-board on 6 September. What's on carries the image. #}
       <h3>{{ e.title }}</h3>
       <div class="meta">{{ e.venue | upper }} · {{ e.time | upper }}</div>
       <p>{{ e.blurb }}</p>
@@ -343,6 +345,14 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     </div>
   </article>
   {% endfor %}
+
+  {# Every other tile on this board ends with a way onward — "see on map",
+     "bin days", "local fuel prices". On today had none: a reader could see
+     what was happening and had nowhere to go for the detail, the booking
+     link or the poster. One link for the section rather than one per event,
+     because the board is deliberately terse and What's on is where the
+     detail lives. #}
+  <p class="sub board-more"><a href="/whats-on/">all events →</a></p>
 </section>
 {% endif %}
 

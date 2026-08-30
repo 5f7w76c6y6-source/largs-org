@@ -489,7 +489,17 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 }
 @media (max-width:720px){
   .event-featured{grid-template-columns:1fr}
-  .event-featured-img{min-height:200px;max-height:240px}
+  /* CONTAIN, not cover. Stacked, the image spans the full width, and
+     `cover` crops a square poster top and bottom — the first submitted
+     one lost its title band and its footer. A poster is designed to be
+     read whole. Capped at 200px so it does not tower over every other
+     event in the list; 84% of readers are on a phone. */
+  .event-featured-img{
+    object-fit:contain;object-position:center;
+    min-height:0;max-height:200px;background:var(--card);
+    padding:10px 10px 0;
+  }
+  .event-featured-body{padding:14px 18px 18px}
 }
 
 /* ---------- tide curve sparkline ---------- */

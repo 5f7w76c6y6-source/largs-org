@@ -41,6 +41,15 @@
       "blurb": "The Viking Village returns to the seafront, 10:00–17:00 daily, building to the Festival of Fire."
     },
     {
+      "date": "2026-09-06",
+      "title": "Artisan Market",
+      "venue": "Kelburn Estate",
+      "time": "11:00–16:00",
+      "blurb": "Thirty stalls of handmade goods and produce, street food, cakes and bakes, a tarot reader and a mini petting zoo. Free to enter.",
+      "url": "https://wildivymarkets.co.uk",
+      "image": "/assets/img/ev-poster.png"
+    },
+    {
       "date": "2026-09-11",
       "title": "Whit's yer chat?",
       "venue": "Barrfields Theatre",

@@ -23,14 +23,26 @@ subtitle: Events in and around the town, every one checked before it goes up.
   or <a href="mailto:events@largs.scot?subject=Event%20submission%20for%20Largs&body=Title%3A%0ADate%3A%0AVenue%3A%0ATime%3A%0ADescription%3A%0AWebsite%20or%20booking%20link%20(if%20any)%3A%0A%0AImage%20(optional)%3A%20Please%20attach%20a%20photo%20if%20you%20have%20one%20%E2%80%94%20your%20own%20photograph%20or%20one%20you%20have%20permission%20to%20use.%20By%20attaching%20an%20image%20you%20confirm%20Largs%20may%20publish%20it%20alongside%20your%20event%20listing.">submit one</a>.</p>
   {% endif %}
 
-  {# Featured events — those with an image get a wide card at the top #}
-  {% set hasFeatured = false %}
-  {% for e in allEvents %}{% if e.image %}{% set hasFeatured = true %}{% endif %}{% endfor %}
+  {# ONE LIST, IN DATE ORDER. There used to be a featured tier: any event
+     carrying an image got a wide card above everything else, under its own
+     subheading. Removed 30 Aug 2026, the day the first submitted image
+     arrived and the effect could be seen for real.
 
-  {% if hasFeatured %}
-  <div class="featured-events">
+     Two reasons. A list in date order is more useful — somebody checking
+     what is on wants to know what is next, not read the top of the page and
+     then start again below it. And an image is a proxy for whether an
+     organiser has a designer, not for whether the event matters to the
+     town: an eightieth anniversary concert sat below an artisan market
+     because one organiser sent a poster. The submission email invites a
+     photo without saying it buys top billing, so either the ask discloses
+     that or the promotion goes.
+
+     An image still earns a richer card; it renders in its own place. #}
+  <div class="event-list">
   {% for e in allEvents %}
   {% if e.image %}
+  {# The wide card that used to be the featured tier, now rendered in the
+     event's own date position. The layout was right; the promotion was not. #}
   <article class="event-featured">
     <img class="event-featured-img" src="{{ e.image }}" alt="{{ e.title }}" loading="lazy" decoding="async">
     <div class="event-featured-body">
@@ -44,20 +56,7 @@ subtitle: Events in and around the town, every one checked before it goes up.
       {% if e.url %}<a class="event-link" href="{{ e.url }}">More info →</a>{% endif %}
     </div>
   </article>
-  {% endif %}
-  {% endfor %}
-  </div>
-  {% endif %}
-
-  {# Standard list — events without images #}
-  {% set hasStandard = false %}
-  {% for e in allEvents %}{% if not e.image %}{% set hasStandard = true %}{% endif %}{% endfor %}
-
-  {% if hasStandard %}
-  {% if hasFeatured %}<h3 class="whatson-subhead">More events</h3>{% endif %}
-  <div class="event-list">
-  {% for e in allEvents %}
-  {% if not e.image %}
+  {% else %}
   <article class="event">
     <div class="when">
       <div class="dow">{{ e.badgeTop }}</div>
@@ -73,7 +72,6 @@ subtitle: Events in and around the town, every one checked before it goes up.
   {% endif %}
   {% endfor %}
   </div>
-  {% endif %}
 
 </section>
 
@@ -123,3 +121,4 @@ subtitle: Events in and around the town, every one checked before it goes up.
     <li>A photo if you have one you own or have permission to use</li>
   </ul>
 </section>
+
