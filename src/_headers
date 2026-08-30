@@ -1,0 +1,24 @@
+# Cloudflare Pages headers.
+#
+# WHY. On 27 August a CSS change went out and did not appear: browsers were
+# holding a PARTIAL copy, and a Cloudflare purge did not clear it. The fix
+# was fingerprinting the filename, which works — a change is a new URL no
+# cache has seen. But it happened again on 30 August, launch day, on the dev
+# Mac: Safari held a bad copy of a CURRENT hash and served an unstyled page.
+# Chrome and the phone were fine, so it was local browser state, but a
+# visitor arriving mid-deploy could hit the same window.
+#
+# `immutable` closes it. It tells the browser this URL's contents will never
+# change, so do not revalidate, ever. Revalidation is the step that goes
+# wrong. Safe here precisely because the filename carries the content hash:
+# if the file changes, the URL changes, and a year-long max-age can never
+# serve anything stale.
+#
+# ONLY for content-addressed files. Never put immutable on a URL whose
+# contents can change under it — index.html most of all.
+
+/assets/css/site.*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable

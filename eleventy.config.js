@@ -76,6 +76,10 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addGlobalData("cssHref", cssOut);
 
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
+
+  /* Cloudflare Pages reads _headers from the site root. See the file
+     itself for why the hashed assets are marked immutable. */
+  eleventyConfig.addPassthroughCopy({ "src/_headers": "_headers" });
   /* The stylesheet again, under its fingerprinted name. The unhashed
      copy still lands via the line above; nothing links to it, and it
      can be dropped once nothing in the wild is asking for it. */
