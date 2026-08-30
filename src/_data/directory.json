@@ -11,20 +11,29 @@
           "name": "Douglas Park Bowling Club",
           "blurb": "Around a hundred members and known locally as the friendly club. As much a social club as a bowling one — bridge, quiz nights and rainbow whist run alongside the green, and new members are welcome.",
           "checked": "2026-08-29",
-          "where": "Largs"
+          "where": "Largs",
+          "social": {
+            "label": "Their Facebook group",
+            "url": "https://www.facebook.com/groups/douglasparkbowlingclub/"
+          }
         },
         {
           "name": "Largs Bowling Club",
           "blurb": "Lawn bowls on Douglas Street, green open seven days. New members of any age or ability are welcome and coaching is free, so no experience needed to turn up.",
           "checked": "2026-08-29",
           "where": "Douglas Street, KA30 8PT",
-          "phone": "01475 689864"
+          "phone": "01475 689864",
+          "url": "https://www.facebook.com/profile.php?id=61572940014446"
         },
         {
           "name": "Largs Colts",
           "blurb": "Youth football, training and playing at the Community Sport Hub on Alexander Avenue.",
           "checked": "2026-08-29",
-          "logo": "/assets/img/logo-largs-colts.png"
+          "logo": "/assets/img/logo-largs-colts.png",
+          "social": {
+            "label": "Their Facebook group",
+            "url": "https://www.facebook.com/groups/1191094421855249/"
+          }
         },
         {
           "name": "Largs Halkshill Bowling Club",
@@ -49,7 +58,8 @@
           "checked": "2026-08-29",
           "where": "106 Brisbane Road, KA30 8RW",
           "phone": "07919 887405",
-          "logo": "/assets/img/logo-table-tennis.png"
+          "logo": "/assets/img/logo-table-tennis.png",
+          "url": "https://www.facebook.com/LargsTTC"
         }
       ]
     },
