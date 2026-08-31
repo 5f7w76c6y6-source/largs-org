@@ -10,6 +10,7 @@
   "url": "https://largs.scot",
   "links": {
     "calmacStatus": "https://www.calmac.co.uk/en-gb/service-status/",
+    "calmacTimetable": "https://www.calmac.co.uk/en-gb/route-information/largs-cumbrae-slip-millport/",
     "rail": "https://www.nationalrail.co.uk"
   }
 }

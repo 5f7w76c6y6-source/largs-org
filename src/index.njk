@@ -123,8 +123,16 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       <img class="tile-hero" src="/assets/img/ferry-2.png"
            alt="Silhouette of a Clyde ferry under way" width="720" height="420"
            loading="lazy" decoding="async">
-      <div class="figure compact">Normally every 15 min</div>
-      <div class="sub">Summer timetable from the Slip · <a href="{{ site.links.calmacStatus }}">check live status →</a></div>
+      {# Source: CalMac summer 2026 timetable for Largs–Cumbrae Slip, valid
+         27 Mar – 18 Oct 2026 (PDF last updated 26 Mar 2026). Departures every
+         20 minutes from 09:30 to 19:30 Mon–Sat and from 10:00 on Sundays;
+         sparser early morning and after 20:10. Last winter's timetable ran
+         every 30 minutes; winter 2026/27 not yet published as of 31 Aug 2026.
+         Corrected 31 Aug 2026 from "every 15 min", which was never sourced
+         (a resident-reported error, confirmed against the timetable).
+         RE-CHECK BEFORE 19 OCT 2026 — the winter figure will differ. #}
+      <div class="figure compact">Usually every 20 min</div>
+      <div class="sub">Largs to Cumbrae Slip · <a href="{{ site.links.calmacTimetable }}">timetable →</a> · <a href="{{ site.links.calmacStatus }}">live status →</a></div>
     </div>
 
     {# PS Waverley — the last seagoing paddle steamer, a Clyde icon.
