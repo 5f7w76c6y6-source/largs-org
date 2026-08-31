@@ -3,21 +3,22 @@ layout: layouts/base.njk
 title: Photos
 permalink: /photos/
 heading: Photos of Largs
-subtitle: The town through the year, photographed by Alison Swinburne.
+subtitle: "Largs through the year — the town, the shore, the Clyde, and the light that makes this place what it is."
 ---
+{# One credit per photograph is enough. The page-level credits that used to
+   sit here — a subtitle naming the photographer, a © stamp and an intro
+   paragraph — came off on 31 Aug 2026 at her own request, and the order
+   stamp went the same day. The caption and lightbox credits
+   below are the ones that matter. This section now only exists while sample
+   photos are in place, so the live page goes straight from the subtitle to
+   the pictures. #}
+{% if photos.sample %}
 <section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
-    {% if photos.sample %}
     <span class="stamp">Gallery coming soon — real photos to follow</span>
-    {% else %}
-    <span class="stamp">© Alison Swinburne · newest first</span>
-    {% endif %}
   </div>
-
-  <p class="page-intro">Largs through the year — the town, the shore, the
-  Clyde, and the light that makes this place what it is. All photographs
-  © Alison Swinburne.</p>
 </section>
+{% endif %}
 
 {% if photos.sample %}
 <section class="wrap photos-coming">
