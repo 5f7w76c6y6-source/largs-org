@@ -35,11 +35,22 @@
     {% for r in group.items %}
     <article class="regular">
       {% if r.time %}<div class="regular-time">{{ r.time }}</div>{% endif %}
-      <div class="regular-body">
-        <h4 class="regular-title">{{ r.title }}</h4>
-        {% if r.venue %}<p class="regular-meta">{{ r.venue }}</p>{% endif %}
-        {% if r.blurb %}<p class="regular-blurb">{{ r.blurb }}</p>{% endif %}
-        {% if r.contact %}<p class="regular-contact">{{ r.contact }}</p>{% endif %}
+      {# Same column order as a dated event — see .event-main in site.css. #}
+      <div class="event-main">
+        {% if r.image %}<img class="event-img" src="{{ r.image }}" alt="" loading="lazy" decoding="async">{% endif %}
+        <div class="regular-body">
+          <h4 class="regular-title">{{ r.title }}</h4>
+          {% if r.venue %}<p class="regular-meta">{{ r.venue }}</p>{% endif %}
+          {% if r.blurb %}<p class="regular-blurb">{{ r.blurb }}</p>{% endif %}
+          {# `contact` is either plain text (a phone number, "ask at the
+             counter") or {label, url} for a link — the same shape the
+             directory uses. A string has no .url, so the test is safe for
+             both. Without this a URL printed as a raw address. #}
+          {% if r.contact %}<p class="regular-contact">
+            {%- if r.contact.url %}<a href="{{ r.contact.url }}" rel="noopener">{{ r.contact.label }} →</a>
+            {%- else %}{{ r.contact }}{% endif -%}
+          </p>{% endif %}
+        </div>
       </div>
     </article>
     {% endfor %}

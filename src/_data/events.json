@@ -1,6 +1,6 @@
 {
   "_comment": "Events for What's On and the Today board. TWO SEPARATE LISTS. `items` are dated one-off events, filtered by `upcoming` and `todayOnly`. `regulars` are things that happen every week — classes, clubs, markets, groups — which are fixtures rather than events: they are NOT expanded into dated occurrences and never appear in the upcoming list, because twelve copies of a yoga class would bury the actual events. They render as their own section grouped by day, and surface on the Today board on the matching weekday. LISTING RULE: anything open to the public in Largs may be listed, free, on the same terms and in the same format. No paid placement, no editorial favour, no ranking. A yoga class, a church coffee morning and a pub quiz get identical treatment. This is what makes it possible to list a friend's class without it being a favour — and what keeps free listings free if paid enhancements are ever added elsewhere on the site.",
-  "_regularsFields": "weekday (lowercase name, required) · time · venue · blurb · contact — plus three fields that stop a listing quietly rotting: `from` and `until` bound the term (most classes stop for the school holidays, and without these you would be advertising a class that is not running), and `except` lists one-off cancellations as ISO dates. All three optional; omit `until` for something that runs indefinitely.",
+  "_regularsFields": "title (REQUIRED — the template prints it with no fallback, so a listing without one renders headless; this was missing from the list until 31 Aug 2026 and the first regular was written without a title because of it) · weekday (lowercase name, required) · time · venue · blurb · contact (either plain text — a phone number, 'ask at the counter' — or {label, url} for a link, the same shape the directory uses for social links; a bare URL as plain text prints as a raw address) · image (optional, a site-relative path like /assets/img/ev-thing.png — rendered in the same fixed 200px SQUARE box a dated event's image gets, cropped to fill, so prepare it square) — plus three fields that stop a listing quietly rotting: `from` and `until` bound the term (most classes stop for the school holidays, and without these you would be advertising a class that is not running), and `except` lists one-off cancellations as ISO dates. All three optional; omit `until` for something that runs indefinitely.",
   "sample": false,
   "items": [
     {
@@ -225,5 +225,18 @@
       "url": "https://www.ticketsource.com/barrfields/across-the-universe-the-beatles-66-70/e-arxqke"
     }
   ],
-  "regulars": []
+  "regulars": [
+    {
+      "title": "Craft Drop-in",
+      "weekday": "thursday",
+      "time": "11:00–13:00",
+      "venue": "Thru Decades Upcycled, 41 Nelson Street",
+      "image": "/assets/img/ev-craft-dropin.jpg",
+      "blurb": "Bring your own table-top craft — knitting, crochet, card making, whatever you have on the go — and work on it in company over a cuppa. No need to book: drop in any time between 11 and 1. £5.",
+      "contact": {
+        "label": "Their Facebook page",
+        "url": "https://www.facebook.com/thrudecaades"
+      }
+    }
+  ]
 }

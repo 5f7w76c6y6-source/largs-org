@@ -20,7 +20,7 @@ subtitle: Events in and around the town, every one checked before it goes up.
 
   {% if allEvents | length == 0 %}
   <p class="no-events">No upcoming events at the moment — check back soon,
-  or <a href="mailto:events@largs.scot?subject=Event%20submission%20for%20Largs&body=Title%3A%0ADate%3A%0AVenue%3A%0ATime%3A%0ADescription%3A%0AWebsite%20or%20booking%20link%20(if%20any)%3A%0A%0AImage%20(optional)%3A%20Please%20attach%20a%20photo%20if%20you%20have%20one%20%E2%80%94%20your%20own%20photograph%20or%20one%20you%20have%20permission%20to%20use.%20By%20attaching%20an%20image%20you%20confirm%20Largs%20may%20publish%20it%20alongside%20your%20event%20listing.">submit one</a>.</p>
+  or <a href="mailto:events@largs.scot?subject=Event%20submission%20for%20Largs&body=Title%3A%0ADate%3A%0AVenue%3A%0ATime%3A%0ADescription%3A%0AWebsite%20or%20booking%20link%20(if%20any)%3A%0A%0AImage%20(optional)%3A%20Please%20attach%20a%20photo%20if%20you%20have%20one%20%E2%80%94%20your%20own%20photograph%20or%20one%20you%20have%20permission%20to%20use.%20A%20square%20image%20works%20best%2C%20600%20pixels%20or%20bigger%3B%20we%20crop%20it%20to%20fit.%20By%20attaching%20an%20image%20you%20confirm%20Largs%20may%20publish%20it%20alongside%20your%20event%20listing.">submit one</a>.</p>
   {% endif %}
 
   {# ONE LIST, IN DATE ORDER. There used to be a featured tier: any event
@@ -37,39 +37,42 @@ subtitle: Events in and around the town, every one checked before it goes up.
      photo without saying it buys top billing, so either the ask discloses
      that or the promotion goes.
 
-     An image still earns a richer card; it renders in its own place. #}
+     The wide card went too, on 31 Aug 2026. It kept the promotion in
+     everything but position: a bordered panel among plain rows still reads
+     as a featured item, and the only thing separating them was whether the
+     organiser had a designer. An image is now capped at a fixed width and
+     sits in its own column between the date and the words, so a picture
+     adds information without conferring rank — the same answer the
+     directory reached with its fixed 56px logo box. See .event-main in
+     site.css for why it is a column rather than a float, and what that
+     costs. #}
   <div class="event-list">
   {% for e in allEvents %}
-  {% if e.image %}
-  {# The wide card that used to be the featured tier, now rendered in the
-     event's own date position. The layout was right; the promotion was not. #}
-  <article class="event-featured">
-    <img class="event-featured-img" src="{{ e.image }}" alt="{{ e.title }}" loading="lazy" decoding="async">
-    <div class="event-featured-body">
-      <div class="when-inline">
-        <span class="when-dow">{{ e.badgeTop }}</span>
-        <span class="when-dom">{{ e.date | dom }}</span>{% if e.badgeYear %}<span class="when-yr">{{ e.badgeYear }}</span>{% endif %}
-      </div>
-      <h2 class="event-title">{{ e.title }}</h2>
-      <div class="meta">{% if e.onNow %}<span class="on-now">On now</span> · {% endif %}{{ e.venue | upper }} · {{ e.time | upper }}</div>
-      <p>{{ e.blurb }}</p>
-      {% if e.url %}<a class="event-link" href="{{ e.url }}">More info →</a>{% endif %}
-    </div>
-  </article>
-  {% else %}
   <article class="event">
     <div class="when">
       <div class="dow">{{ e.badgeTop }}</div>
       <div class="dom">{{ e.date | dom }}</div>{% if e.badgeYear %}<div class="yr">{{ e.badgeYear }}</div>{% endif %}
     </div>
-    <div class="event-body">
-      <h3>{{ e.title }}</h3>
-      <div class="meta">{% if e.onNow %}<span class="on-now">On now</span> · {% endif %}{{ e.venue | upper }} · {{ e.time | upper }}</div>
-      <p>{{ e.blurb }}</p>
-      {% if e.url %}<a class="event-link" href="{{ e.url }}">More info →</a>{% endif %}
+    {# Date, then picture, then words. The image is a column here rather
+       than a float at the right-hand edge: a reader working left to right
+       meets it before the blurb, where at the far right it was simply not
+       being looked at. A row with a picture therefore starts its text
+       further right than one without — that unevenness was weighed against
+       the picture being seen, and lost (31 Aug 2026).
+
+       alt is empty on purpose: the title sits beside it as a heading and a
+       poster's own words are already in the listing, so announcing them
+       twice helps nobody. #}
+    <div class="event-main">
+      {% if e.image %}<img class="event-img" src="{{ e.image }}" alt="" loading="lazy" decoding="async">{% endif %}
+      <div class="event-body">
+        <h3>{{ e.title }}</h3>
+        <div class="meta">{% if e.onNow %}<span class="on-now">On now</span> · {% endif %}{{ e.venue | upper }} · {{ e.time | upper }}</div>
+        <p>{{ e.blurb }}</p>
+        {% if e.url %}<a class="event-link" href="{{ e.url }}">More info →</a>{% endif %}
+      </div>
     </div>
   </article>
-  {% endif %}
   {% endfor %}
   </div>
 
@@ -112,13 +115,14 @@ subtitle: Events in and around the town, every one checked before it goes up.
   <h2 id="submit-h">Add your event or class</h2>
   <div class="rule" aria-hidden="true"></div>
   <p>Listings are free. Send the details to
-  <a href="mailto:events@largs.scot?subject=Event%20submission%20for%20Largs&body=Title%3A%0ADate%3A%0AVenue%3A%0ATime%3A%0ADescription%3A%0AWebsite%20or%20booking%20link%20(if%20any)%3A%0A%0AImage%20(optional)%3A%20Please%20attach%20a%20photo%20if%20you%20have%20one%20%E2%80%94%20your%20own%20photograph%20or%20one%20you%20have%20permission%20to%20use.%20By%20attaching%20an%20image%20you%20confirm%20Largs%20may%20publish%20it%20alongside%20your%20event%20listing.">events@largs.scot</a>
+  <a href="mailto:events@largs.scot?subject=Event%20submission%20for%20Largs&body=Title%3A%0ADate%3A%0AVenue%3A%0ATime%3A%0ADescription%3A%0AWebsite%20or%20booking%20link%20(if%20any)%3A%0A%0AImage%20(optional)%3A%20Please%20attach%20a%20photo%20if%20you%20have%20one%20%E2%80%94%20your%20own%20photograph%20or%20one%20you%20have%20permission%20to%20use.%20A%20square%20image%20works%20best%2C%20600%20pixels%20or%20bigger%3B%20we%20crop%20it%20to%20fit.%20By%20attaching%20an%20image%20you%20confirm%20Largs%20may%20publish%20it%20alongside%20your%20event%20listing.">events@largs.scot</a>
   and we'll get it up within a day or two.</p>
   <ul class="submit-list">
     <li>Title, date, venue and time</li>
     <li>A sentence or two about the event</li>
     <li>A website or booking link if there is one</li>
-    <li>A photo if you have one you own or have permission to use</li>
+    <li>A photo if you have one you own or have permission to use — square
+    works best, 600 pixels or bigger, and we'll crop it to fit</li>
   </ul>
 </section>
 

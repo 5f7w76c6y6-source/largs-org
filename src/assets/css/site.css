@@ -218,10 +218,31 @@ h2{
   font-family:"Spline Sans Mono",monospace;font-size:.76rem;color:var(--muted);margin:1px 0 3px;
 }
 .event p{font-size:.95rem;color:var(--ink)}
+/* min-width:0 lets a long title wrap instead of stretching the flex row. */
 .event-body{flex:1;min-width:0}
+/* DATE, THEN PICTURE, THEN WORDS. .event-main is the row holding the last
+   two, so an image is a column rather than a float at the right-hand edge:
+   a reader working left to right meets it before the blurb, where at the
+   far right it was not being looked at. A row with a picture starts its
+   text further right than one without; that unevenness was weighed against
+   the picture being seen, and lost (31 Aug 2026). */
+.event-main{display:flex;gap:16px;flex:1;min-width:0;align-items:flex-start}
+/* A FIXED SQUARE, like the directory's logo box. Every listing gets exactly
+   the same room, so no one can buy a bigger space with a bigger file and
+   the column edge stays straight.
+
+   It was `contain` at first — each image keeping its own shape, on the
+   grounds that a poster is designed to be read whole. With one image on the
+   page that looked fine. With two it did not: a square poster beside a
+   landscape photograph gave a ragged column and two listings that plainly
+   did not match. So: ask for a square (the submission list on this page
+   says so) and `cover` crops anything else centrally to fit.
+
+   ONE NUMBER TO NUDGE: the 200. Whatever it becomes, keep width and height
+   equal, and tell people the new number on the submission list. */
 .event-img{
-  display:block;width:100%;max-height:200px;object-fit:cover;
-  border-radius:8px;margin-bottom:10px;
+  flex:none;width:200px;height:200px;object-fit:cover;
+  border-radius:8px;background:var(--card);
 }
 .more{
   display:inline-block;margin-top:14px;font-weight:700;text-decoration:none;
@@ -467,15 +488,6 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .whatson-section{padding:28px 0 8px}
 .no-events{color:var(--muted);font-size:.97rem;padding:20px 0}
 .featured-events{display:flex;flex-direction:column;gap:20px;margin-bottom:28px}
-.event-featured{
-  display:grid;grid-template-columns:320px 1fr;gap:0;
-  background:var(--card);border:1px solid var(--sand);border-radius:12px;
-  overflow:hidden;
-}
-.event-featured-img{
-  width:100%;height:100%;object-fit:cover;display:block;min-height:220px;
-}
-.event-featured-body{padding:22px 24px}
 .when-inline{
   display:flex;align-items:baseline;gap:6px;margin-bottom:8px;
 }
@@ -509,19 +521,15 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .submit-list li::before{
   content:"→";position:absolute;left:0;color:var(--teal);font-weight:700;
 }
-@media (max-width:720px){
-  .event-featured{grid-template-columns:1fr}
-  /* CONTAIN, not cover. Stacked, the image spans the full width, and
-     `cover` crops a square poster top and bottom — the first submitted
-     one lost its title band and its footer. A poster is designed to be
-     read whole. Capped at 200px so it does not tower over every other
-     event in the list; 84% of readers are on a phone. */
-  .event-featured-img{
-    object-fit:contain;object-position:center;
-    min-height:0;max-height:200px;background:var(--card);
-    padding:10px 10px 0;
-  }
-  .event-featured-body{padding:14px 18px 18px}
+@media (max-width:600px){
+  /* NOT A ROW ON A PHONE. Beside a 64px date chip and two gaps there is not
+     enough width for a picture and readable text side by side, so
+     .event-main stops being a row and the image sits above the words.
+     Settled by looking, with a designer, on 31 Aug 2026 — and 88% of
+     readers are on a phone, so this is the case that decides. Do not
+     "tidy" it into agreement with the desktop rule above. */
+  .event-main{display:block}
+  .event-img{width:190px;height:190px;margin:0 0 10px}
 }
 
 /* ---------- tide curve sparkline ---------- */
