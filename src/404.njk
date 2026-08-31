@@ -1,0 +1,37 @@
+---
+layout: layouts/base.njk
+permalink: /404.html
+title: Page not found · Largs
+heading: That page isn't here
+subtitle: The link may be out of date, or mistyped somewhere along the way.
+eleventyExcludeFromCollections: true
+---
+{# A real 404 page, added 31 Aug 2026 — and it is load-bearing, not decoration.
+
+   Cloudflare Pages serves 404.html from the site root for anything it cannot
+   find. WITHOUT this file it answers with a generic fallback carrying a 200
+   status, which means a missing asset looks like a successful response: the
+   browser caches it, the edge caches it, and because `_headers` matches on
+   path rather than content it gets marked long-lived. That is what left the
+   live site unstyled on 31 Aug 2026 — a stylesheet URL requested seconds
+   before its deploy landed returned HTML with a 200 and was cached at the
+   edge for everyone.
+
+   So: do not delete this file, and do not give it a permalink other than
+   /404.html. Keep it plain and dependency-free. It must render correctly
+   when the thing that is missing might be the stylesheet itself. #}
+
+<p class="page-intro">If you followed a link to get here, it has probably
+moved or been mistyped. Nothing is broken at your end.</p>
+
+<h2>Try one of these</h2>
+<ul>
+  <li><a href="/">Today</a> — the day's essentials for the town</li>
+  <li><a href="/whats-on/">What's on</a> — upcoming events in Largs</li>
+  <li><a href="/bins/">Bin days</a></li>
+  <li><a href="/roadworks/">Roadworks</a></li>
+  <li><a href="/directory/">Town directory</a></li>
+</ul>
+
+<p>If a link on this site brought you here, we would like to know so it can
+be fixed — <a href="mailto:corrections@largs.scot?subject=Broken%20link">corrections@largs.scot</a>.</p>

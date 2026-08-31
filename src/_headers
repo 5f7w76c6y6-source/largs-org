@@ -1,24 +1,44 @@
 # Cloudflare Pages headers.
 #
-# WHY. On 27 August a CSS change went out and did not appear: browsers were
-# holding a PARTIAL copy, and a Cloudflare purge did not clear it. The fix
-# was fingerprinting the filename, which works — a change is a new URL no
-# cache has seen. But it happened again on 30 August, launch day, on the dev
-# Mac: Safari held a bad copy of a CURRENT hash and served an unstyled page.
-# Chrome and the phone were fine, so it was local browser state, but a
-# visitor arriving mid-deploy could hit the same window.
+# WHY THESE RULES ARE CAUTIOUS. Read this before adding `immutable` back.
 #
-# `immutable` closes it. It tells the browser this URL's contents will never
-# change, so do not revalidate, ever. Revalidation is the step that goes
-# wrong. Safe here precisely because the filename carries the content hash:
-# if the file changes, the URL changes, and a year-long max-age can never
-# serve anything stale.
+# These rules match on PATH, not on what the server actually returns. During
+# a deploy the HTML can reference a hashed stylesheet seconds before that
+# file exists. Cloudflare Pages then answers with its 404 page — and if the
+# site has no 404.html of its own, with a generic fallback carrying a 200
+# status. Either way the rule below matches the path and stamps a long life
+# on a response that is not the stylesheet.
 #
-# ONLY for content-addressed files. Never put immutable on a URL whose
-# contents can change under it — index.html most of all.
+# On 31 Aug 2026 that put HTML in the edge cache in place of the site's CSS,
+# with `immutable` telling every cache never to recheck. The live site was
+# unstyled for everyone until the URL was purged by hand. Confirmed from the
+# response: content-type text/html, cf-cache-status HIT, age 357.
+#
+# The 27 and 30 August incidents were recorded here as browsers "holding a
+# bad copy". That was wrong. The server returned HTML with a 200 and the
+# caches stored it, exactly as instructed.
+#
+# TWO THINGS KEEP IT CLOSED, and both matter:
+#
+#  1. src/404.njk gives Pages a real 404 to serve, so a missing asset fails
+#     with a 404 status instead of looking like a success. Do not delete it.
+#
+#  2. `immutable` is deliberately NOT used. A year-long max-age still means
+#     a browser does not re-ask, so the performance is the same; the
+#     difference is that a cache holding a wrong answer can recover on a
+#     reload, instead of being stuck until someone purges or clears data.
+#     That is the whole difference between an annoyance and an outage.
+#
+# AND ONE PRACTICE: wait for the Pages build to go green before loading the
+# site after a push. A single request in the deploy window, from anywhere in
+# the world, is enough to fill the edge cache with the wrong answer.
+#
+# Long max-age is safe here only because these filenames carry a content
+# hash: if the contents change, the URL changes. Never apply it to a URL
+# whose contents can change under it — index.html most of all.
 
 /assets/css/site.*.css
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=31536000
 
 /assets/fonts/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=31536000
