@@ -84,7 +84,34 @@
       "label": "Shops",
       "open": true,
       "blurb": "Shops and high-street services in Largs.",
-      "entries": [],
+      "entries": [
+        {
+          "name": "Gallery Eight Picture Framing",
+          "blurb": "Picture framing done on the premises — originals, prints, photographs, certificates, tapestries and sports strips among the things they have framed. Formerly Largs DIY: the hardware side has gone and the framing continues. Open Tuesday, Wednesday, Thursday and Saturday, 10am–2pm.",
+          "checked": "2026-08-31",
+          "where": "5–7 Stanlane Place, KA30 8DA",
+          "phone": "01475 672634",
+          "url": "https://largsdiy.co.uk",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/largshardware/"
+          },
+          "note": "They close at short notice now and again — worth a call before a special trip."
+        },
+        {
+          "name": "Studio 44 Gallery",
+          "blurb": "Art gallery showing changing exhibitions of original work by contemporary Scottish artists — paintings, ceramics, jewellery, photography — for sale. Open 11am–5pm, Tuesday to Saturday, while an exhibition is on. The space can also be hired for art classes, workshops, meetings and pop-up events: evenings from 6pm, and all day Sunday and Monday during exhibitions.",
+          "checked": "2026-08-31",
+          "where": "44 Boyd Street, KA30 8LE",
+          "phone": "07432 122772",
+          "url": "https://www.studio44gallery.co.uk",
+          "logo": "/assets/img/logo-studio-44.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/studio44gallery/"
+          }
+        }
+      ],
       "asks": [
         "The name of the shop",
         "What you sell or do, in a sentence",
