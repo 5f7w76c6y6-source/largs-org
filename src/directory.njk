@@ -16,12 +16,17 @@ eleventyComputed:
    bookmarkable, indexable, back-button correct, working with JavaScript
    off. The chips on the front page are plain links to these.
 
-   TWO CATEGORY STATES. A category with `open: true` has no listings and
-   says so, inviting them. That is deliberate for food, trades and
-   accommodation: a partial list of businesses competing for the same
-   customer reads as a recommendation, and this site takes no view on
-   named businesses. Those categories get populated only when the list is
-   genuinely complete, or not at all.
+   OPEN CATEGORIES. `open: true` means the category grows as people ask —
+   free, alphabetical, no ranking, anyone in the same day their details
+   check out. It says nothing about whether the category is empty: a
+   category can be open and populated at once, and the page then renders
+   the listings first and the "Getting listed" invitation below them.
+   Every open page says the list is growing and how to get on it, so
+   absence reads as "not sent in yet", never "not recommended". Until
+   31 Aug 2026 open meant EMPTY, and commercial categories were held back
+   until complete. Dropped: complete is never reachable (shops open and
+   close), and holding back the early askers punishes the people who
+   engaged. The full rule is (3) in directory.json's _comment.
 
    EVERY page carries the "who is missing" line, not only the empty ones.
    The populated categories are the likeliest to prompt a correction —
@@ -31,43 +36,16 @@ eleventyComputed:
 <section class="wrap council-page" aria-labelledby="page-title">
   <div class="rule" aria-hidden="true"></div>
 
-  {% if cat.open %}
-  <p class="page-intro">Nothing here yet. The list will grow, in an
-  alphabetical order, as people get in touch.</p>
-
-  <h2>Getting listed</h2>
-  <p>It's free — just drop us an email with the details below and we'll get
-  your listing up as soon as we can.</p>
-  <p><a href="mailto:hello@largs.scot?subject=Directory%20listing">hello@largs.scot</a></p>
-  {# Per-category, because the fields genuinely differ. Most of all for
-     trades: a sole trader works from home, and "where you are" invites a
-     home address onto a public page. Ask for the area covered instead, and
-     say we will not publish the address, so nobody has to wonder. #}
-  <ul>
-    {% for ask in cat.asks %}<li>{{ ask }}</li>
-    {% else %}
-    <li>Your name</li>
-    <li>What you do, in a sentence</li>
-    <li>Where you are, or the area you cover</li>
-    <li>A phone number, a website, or both</li>
-    {% endfor %}
-  </ul>
-  {# The logo spec that matters is CONTENT, not pixels: a file carrying its
-     own wordmark prints the business name twice — once in the artwork, once
-     as the heading beside it — and shrinks the mark to make room. Learned by
-     looking, 29 Aug 2026. Kept to two sentences so it reads as help rather
-     than a specification. #}
-  <p class="logo-note">If you're sending a logo, a square image works best —
-  just the symbol, not the version with your name in it, since your name is
-  already the heading. Anything from 256 pixels up is plenty and we'll crop it
-  to fit. No logo is no problem.</p>
-  <p>We'll check it's all current before it goes up, and we won't publish
-  anything else about you.</p>
-
-  {% else %}
+  {% if cat.entries | length %}
   {# The blurb is already the page subtitle; repeating it here printed it
      twice on every populated page. #}
+  {% if cat.open %}
+  <p class="page-intro">In alphabetical order, so nobody's top of the list —
+  and still growing as people get in touch, so if somewhere's missing it
+  just hasn't been sent in yet.</p>
+  {% else %}
   <p class="page-intro">In alphabetical order, so nobody's top of the list.</p>
+  {% endif %}
 
   <div class="directory-list">
     {% for item in cat.entries %}
@@ -102,6 +80,41 @@ eleventyComputed:
     </div>
     {% endfor %}
   </div>
+  {% else %}
+  <p class="page-intro">Nothing here yet. The list will grow, in alphabetical
+  order, as people get in touch.</p>
+  {% endif %}
+
+  {% if cat.open %}
+  {% if cat.entries | length %}<div class="rule" aria-hidden="true"></div>{% endif %}
+  <h2>Getting listed</h2>
+  <p>It's free — just drop us an email with the details below and we'll get
+  your listing up as soon as we can.</p>
+  <p><a href="mailto:hello@largs.scot?subject=Directory%20listing">hello@largs.scot</a></p>
+  {# Per-category, because the fields genuinely differ. Most of all for
+     trades: a sole trader works from home, and "where you are" invites a
+     home address onto a public page. Ask for the area covered instead, and
+     say we will not publish the address, so nobody has to wonder. #}
+  <ul>
+    {% for ask in cat.asks %}<li>{{ ask }}</li>
+    {% else %}
+    <li>Your name</li>
+    <li>What you do, in a sentence</li>
+    <li>Where you are, or the area you cover</li>
+    <li>A phone number, a website, or both</li>
+    {% endfor %}
+  </ul>
+  {# The logo spec that matters is CONTENT, not pixels: a file carrying its
+     own wordmark prints the business name twice — once in the artwork, once
+     as the heading beside it — and shrinks the mark to make room. Learned by
+     looking, 29 Aug 2026. Kept to two sentences so it reads as help rather
+     than a specification. #}
+  <p class="logo-note">If you're sending a logo, a square image works best —
+  just the symbol, not the version with your name in it, since your name is
+  already the heading. Anything from 256 pixels up is plenty and we'll crop it
+  to fit. No logo is no problem.</p>
+  <p>We'll check it's all current before it goes up, and we won't publish
+  anything else about you.</p>
   {% endif %}
 
   <div class="rule" aria-hidden="true"></div>
