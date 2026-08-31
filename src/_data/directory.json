@@ -28,12 +28,9 @@
         {
           "name": "Largs Colts",
           "blurb": "Youth football, training and playing at the Community Sport Hub on Alexander Avenue.",
-          "checked": "2026-08-29",
-          "logo": "/assets/img/logo-largs-colts.png",
-          "social": {
-            "label": "Their Facebook group",
-            "url": "https://www.facebook.com/groups/1191094421855249/"
-          }
+          "checked": "2026-08-31",
+          "url": "https://www.facebook.com/profile.php?id=61587252838961",
+          "logo": "/assets/img/logo-largs-colts.png"
         },
         {
           "name": "Largs Halkshill Bowling Club",
