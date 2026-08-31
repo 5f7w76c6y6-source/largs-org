@@ -263,6 +263,50 @@ transfer, re-enter the secrets on the repository's new home.
 - Overhead tile stale → `systemctl status largs-overhead` on the Pi;
   the usual cause is a missing or empty `/etc/largs-overhead.key`
   after a rebuild.
+- **Site renders unstyled** (plain text, no layout) → almost never the
+  browser, whatever it looks like. Check the server first, from any
+  machine:
+
+  ```
+  curl -s https://largs.scot | grep -o 'site\.[a-f0-9]*\.css'
+  curl -sI https://largs.scot/assets/css/site.<that hash>.css | grep -i 'HTTP\|content-type\|cf-cache-status\|age'
+  ```
+
+  Correct is `200` and `text/css`. **`200` with `content-type:
+  text/html` is the failure**: the stylesheet URL is serving a page of
+  HTML. Cause: the HTML references a content-hashed stylesheet that the
+  deploy has not published yet, so Pages answers with its 404 page, and
+  `_headers` matches on PATH not content — so a long cache life gets
+  stamped on the wrong response and stored at the edge for everyone. A
+  single request in the deploy window, from anywhere in the world, is
+  enough. Happened 31 Aug 2026: `cf-cache-status: HIT`, `age: 357`,
+  whole town unstyled.
+
+  **Recovery**: Cloudflare dashboard → largs.scot → Caching →
+  Configuration → Purge Cache → Custom Purge → URL, and paste the full
+  stylesheet URL. That fixes every visitor at once. Re-run the curl to
+  confirm `text/css`.
+
+  **Then, and only then, the local machine.** Browsers that fetched the
+  bad response during the window keep it. ⌥⌘R (reload ignoring cache)
+  usually clears it; failing that Safari → Settings → Privacy → Manage
+  Website Data → remove largs.scot. Do not start here: it fixes one
+  machine and hides a live outage. Everyone still stuck is rescued
+  automatically by the next change to `site.css`, which gives them a URL
+  they have never cached.
+
+  **Two things prevent it, both already in place — do not undo either.**
+  `src/404.njk` gives Pages a real 404 to serve, so a missing asset
+  fails visibly instead of looking like a success. And `_headers`
+  deliberately omits `immutable`: the year-long `max-age` gives the same
+  performance, but a cache holding a wrong answer can recover on a
+  reload rather than being stuck for a year. The reasoning is written
+  out at the top of `src/_headers`.
+
+  **And the practice that avoids it: after a push, wait for the Pages
+  build to go green before loading the site.** Loading it mid-deploy is
+  what fills the cache with the wrong answer — the dev machine is
+  usually the first request a new hash ever gets.
 
 ## Safe self-checks
 
