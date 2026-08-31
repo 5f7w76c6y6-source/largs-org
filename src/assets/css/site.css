@@ -1,3 +1,25 @@
+/* Hash bumped 31 Aug 2026, deliberately and for one reason: to hand every
+   reader a stylesheet URL no cache has ever seen.
+
+   That morning a hashed stylesheet URL was requested in the seconds before
+   its deploy landed. Cloudflare Pages had no 404 page for this site, so it
+   answered with generic HTML and a 200 status; `_headers` matches on path
+   rather than content, so that HTML was cached — at the edge and in
+   browsers — as though it were the stylesheet, marked never-recheck. The
+   live site rendered unstyled for everyone until the URL was purged by
+   hand, and browsers that fetched it in the window stayed stuck, because
+   `immutable` means they never ask again. A refresh does not rescue them.
+   A new URL does.
+
+   Both causes are now closed: src/404.njk makes a missing asset return a
+   real 404 instead of a fake success, and `_headers` no longer says
+   immutable, so a wrong answer can be recovered by a reload. The full
+   account is in DEPLOY.md under "When it breaks".
+
+   Nothing below this line changed. Editing this file for any reason has
+   the same effect, so this comment need not be preserved for its own
+   sake — but do not delete the 404 page or restore immutable. */
+
 /* largs.org design system — from the homepage mock-up.
    Palette and type are fixed by the project brief; change only by agreement. */
 
