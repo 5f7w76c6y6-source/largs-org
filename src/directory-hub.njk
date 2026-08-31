@@ -25,8 +25,9 @@ subtitle: Clubs, groups, churches, places and businesses in Largs.
     <a class="dir-index-item" href="/directory/{{ cat.slug }}/">
       <span class="dir-index-label">{{ cat.label | safe }}</span>
       <span class="dir-index-sub">
-        {%- if cat.open %}open
-        {%- else %}{{ cat.entries.length }}{% endif -%}
+        {%- if cat.entries.length %}{{ cat.entries.length }}
+        {%- elif cat.open %}open
+        {%- else %}0{% endif -%}
       </span>
     </a>
     {% endfor %}
