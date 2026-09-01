@@ -90,6 +90,19 @@
           }
         },
         {
+          "name": "Kindness Krew",
+          "blurb": "Volunteers who visit people who are lonely or isolated — for company, a hand with everyday tasks, help getting to grips with a phone or tablet, or a companion on a journey. A project of The Ayrshire Community Trust (TACT), North Ayrshire's volunteering charity, covering the North Coast including Largs. Anyone can ask for support for themselves, a relative or a friend, or sign up to volunteer — by phone, by email, or through the forms on their page.",
+          "checked": "2026-09-01",
+          "phone": "01294 443044",
+          "url": "https://www.tact.scot/kindness-krew/",
+          "logo": "/assets/img/logo-kindness-krew.png",
+          "social": {
+            "label": "Run by The Ayrshire Community Trust (TACT)",
+            "url": "https://www.tact.scot"
+          },
+          "note": "Co-ordinator Michelle Trainer, michelle@tact.scot."
+        },
+        {
           "name": "Largs Food Bank and Larder",
           "blurb": "Emergency food for anyone in Largs, Fairlie, Skelmorlie or Cumbrae who needs it — no referral needed, just go in. Run by volunteers at Clark Memorial Church on Bath Street, open Thursdays 11.30am–4.30pm. Their Facebook page lists what they are short of if you would like to donate.",
           "checked": "2026-09-01",
