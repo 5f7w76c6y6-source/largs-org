@@ -76,6 +76,18 @@
             "label": "Their Facebook group",
             "url": "https://www.facebook.com/groups/2768836906464823/"
           }
+        },
+        {
+          "name": "Cycling Without Age Scotland Largs",
+          "blurb": "Volunteer pilots take older and less mobile residents out on free trishaw rides around Largs. The Largs chapter of Cycling Without Age Scotland, a registered charity. Phone or message the Facebook page to book a ride or to ask about volunteering as a pilot.",
+          "checked": "2026-09-01",
+          "phone": "07300 483229",
+          "url": "https://cwas.org",
+          "logo": "/assets/img/logo-cycling-without-age.png",
+          "social": {
+            "label": "Their Largs Facebook page",
+            "url": "https://www.facebook.com/profile.php?id=61555929897837"
+          }
         }
       ]
     },
