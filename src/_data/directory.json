@@ -98,6 +98,20 @@
           "url": "https://www.facebook.com/LargsFoodbank",
           "logo": "/assets/img/logo-largs-food-bank.png",
           "note": "Out of hours, phone 07749 034747 or message their Facebook page."
+        },
+        {
+          "name": "Largs Food Hub",
+          "blurb": "A members' food larder at Largs Library — a reduced-cost weekly top-up shop, not an emergency food bank. Members choose their own food once a week on a points system that depends on household size. Open to anyone living in Largs, Fairlie or Skelmorlie: join on your first visit with two forms of ID, one showing your address. Part of North Ayrshire Council's Fairer Food Network. Open Tuesdays 2.30–4.30pm and Fridays 10.30am–12.30pm.",
+          "checked": "2026-09-01",
+          "where": "Behind Largs Library, Allanpark Street",
+          "phone": "07508 519449",
+          "url": "https://www.largs-food-hub.org",
+          "logo": "/assets/img/logo-largs-food-hub.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/profile.php?id=61556343519063"
+          },
+          "note": "Donations of food can be handed in at Largs Library. Email Largsfh@gmail.com."
         }
       ]
     },
