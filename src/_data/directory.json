@@ -88,6 +88,16 @@
             "label": "Their Largs Facebook page",
             "url": "https://www.facebook.com/profile.php?id=61555929897837"
           }
+        },
+        {
+          "name": "Largs Food Bank and Larder",
+          "blurb": "Emergency food for anyone in Largs, Fairlie, Skelmorlie or Cumbrae who needs it — no referral needed, just go in. Run by volunteers at Clark Memorial Church on Bath Street, open Thursdays 11.30am–4.30pm. Their Facebook page lists what they are short of if you would like to donate.",
+          "checked": "2026-09-01",
+          "where": "Clark Memorial Church, Bath Street",
+          "phone": "07842 718541",
+          "url": "https://www.facebook.com/LargsFoodbank",
+          "logo": "/assets/img/logo-largs-food-bank.png",
+          "note": "Out of hours, phone 07749 034747 or message their Facebook page."
         }
       ]
     },
