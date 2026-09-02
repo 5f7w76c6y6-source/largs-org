@@ -135,6 +135,21 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       <div class="sub">Largs to Cumbrae Slip · <a href="{{ site.links.calmacTimetable }}">timetable →</a> · <a href="{{ site.links.calmacStatus }}">live status →</a></div>
     </div>
 
+    {# Harbour webcam — CMAL's camera at the Largs ferry slip. CMAL own
+       the harbour; CalMac only run the ferry. We LINK to CMAL's page and
+       never embed the Twitch player: it needs Twitch cookies and scripts,
+       and this page carries none. Not labelled "live" — the stream can
+       sit minutes behind, and its burned-in clock is only as good as the
+       encoder's. Courtesy email to webcams@cmassets.co.uk, Sep 2026
+       (also asked about a periodic still frame and the pier tide gauge). #}
+    <div class="tile">
+      <div class="label">Harbour webcam</div>
+      <img class="tile-hero" src="/assets/img/webcam.png"
+           alt="Silhouette of a webcam on a stand" width="720" height="420"
+           loading="lazy" decoding="async">
+      <div class="sub">CMAL's camera at the ferry slip · <a href="{{ site.links.cmalWebcam }}" target="_blank" rel="noopener">watch the harbour →</a></div>
+    </div>
+
     {# PS Waverley — the last seagoing paddle steamer, a Clyde icon.
        Permanent tile: the link answers "where is she right now?"
        wherever she is — Firth, Thames or south coast — so no location
