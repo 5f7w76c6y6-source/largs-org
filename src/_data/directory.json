@@ -18,6 +18,17 @@
           }
         },
         {
+          "name": "Largs & District Pipes & Drums",
+          "blurb": "A community pipe band for Largs and the district, teaching piping and drumming to all ages and playing at the town's civic occasions — the Viking Festival, Remembrance Sunday and local galas — and in RSPBA competition. Weekly practices; instruments and uniforms are provided so that cost is not a barrier to joining. Contact them through their website.",
+          "checked": "2026-09-02",
+          "url": "https://largspipeband.com",
+          "logo": "/assets/img/logo-pipes-drums.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/Largsanddistrict/"
+          }
+        },
+        {
           "name": "Largs Bowling Club",
           "blurb": "Lawn bowls on Douglas Street, green open seven days. New members of any age or ability are welcome and coaching is free, so no experience needed to turn up.",
           "checked": "2026-08-29",
