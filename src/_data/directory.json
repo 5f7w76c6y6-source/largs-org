@@ -226,6 +226,33 @@
       ]
     },
     {
+      "slug": "funeral-directors",
+      "label": "Funeral directors",
+      "open": true,
+      "blurb": "Funeral directors serving Largs.",
+      "asks": [
+        "The name of the firm",
+        "The address",
+        "A phone number, a website or a Facebook page",
+        "Your logo, if you have one"
+      ],
+      "entries": [
+        {
+          "name": "William Tyre & Son Funeral Directors",
+          "blurb": "Funeral directors, in Largs since 1876; part of Dignity. The telephone is answered around the clock. Email wtyre.largs@dignityfunerals.co.uk.",
+          "checked": "2026-09-02",
+          "where": "7–11 Gallowgate Lane, KA30 8BE",
+          "phone": "01475 673133",
+          "url": "https://www.dignityfunerals.co.uk/funeral-directors/locations/scotland/north-ayrshire/largs/7-11-gallowgate-lane",
+          "logo": "/assets/img/logo-dignity.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/profile.php?id=61587247213776"
+          }
+        }
+      ]
+    },
+    {
       "slug": "health-and-wellbeing",
       "label": "Health & wellbeing",
       "open": false,

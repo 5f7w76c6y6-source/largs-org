@@ -61,6 +61,11 @@ eleventyComputed:
       </h2>
       <div class="directory-body">
       {% if item.blurb %}<p>{{ item.blurb }}</p>{% endif %}
+      {# One line for how to reach them: where · phone · site. The heading
+         is a link too, but a large underlined heading reads as decoration;
+         the arrowed link is the affordance the page has already taught.
+         It shows the destination rather than the word "website", which
+         stays honest when the only site a group has is a Facebook page. #}
       {% if item.where or item.phone %}
       <p class="directory-meta">
         {%- if item.where %}{{ item.where }}{% endif -%}
