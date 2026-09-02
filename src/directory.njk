@@ -142,16 +142,16 @@ eleventyComputed:
      close, no wordmark. The business name is already the heading beside it,
      so a logo carrying its own name renders that name twice and shrinks the
      mark to fit. */
-  .directory-logo{width:56px;height:56px;object-fit:contain;flex:none}
-  .directory-logo-gap{width:56px;height:56px;flex:none}
+  .directory-list{--logo:80px}
+  .directory-logo{width:var(--logo);height:var(--logo);object-fit:contain;flex:none}
+  .directory-logo-gap{width:var(--logo);height:var(--logo);flex:none}
   /* Body text lines up under the name rather than the page margin, so
-     each entry reads as one block instead of an L shape. 96px logo box
-     + 12px flex gap. */
-  .directory-body{margin-left:68px}
+     each entry reads as one block instead of an L shape: logo box
+     + the 12px flex gap, from the one --logo value above. */
+  .directory-body{margin-left:calc(var(--logo) + 12px)}
   .directory-social{margin-top:3px}
   .directory-social a{font-size:.94rem}
   @media (max-width:600px){
-    .directory-logo,.directory-logo-gap{width:44px;height:44px}
-    .directory-body{margin-left:56px}
+    .directory-list{--logo:56px}
   }
 </style>
