@@ -136,6 +136,14 @@
             "url": "https://www.facebook.com/profile.php?id=61556343519063"
           },
           "note": "Donations of food can be handed in at Largs Library. Email Largsfh@gmail.com."
+        },
+        {
+          "name": "OIR Largs",
+          "blurb": "Opportunities in Retirement — for anyone over 50 in and around Largs. Running since 1987, with around 750 members and some 35 regular groups (art and craft, languages, music, walking and more), plus monthly meetings and outings across Scotland. Membership is £15 a year; drop in to the office on Main Street, or email info@oirlargs.org.uk. A registered Scottish charity, SC012153.",
+          "checked": "2026-09-03",
+          "where": "133 Main Street, KA30 8JH",
+          "url": "https://oirlargs.org.uk",
+          "logo": "/assets/img/logo-oir.png"
         }
       ]
     },
