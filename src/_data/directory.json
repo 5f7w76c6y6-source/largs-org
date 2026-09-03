@@ -199,6 +199,18 @@
           "note": "Co-ordinator Michelle Trainer, michelle@tact.scot."
         },
         {
+          "name": "Largs Community Development Trust",
+          "blurb": "Community development trust and charity running projects for the town, from the new pool steps at Vikingar and Largs Radio to Your Space, its resource and advice centre on Boyd Street with a drop-in for residents. Members get updates and a say in what it takes on.",
+          "checked": "2026-09-03",
+          "where": "Boyd Street, KA30 8LE",
+          "phone": "01475 910099",
+          "logo": "/assets/img/logo-cdt.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/p/Largs-Community-Development-Trust-61557289171303/"
+          }
+        },
+        {
           "name": "Largs Food Bank and Larder",
           "blurb": "Emergency food for anyone in Largs, Fairlie, Skelmorlie or Cumbrae who needs it — no referral needed, just go in. Run by volunteers at Clark Memorial Church on Bath Street, open Thursdays 11.30am–4.30pm. Their Facebook page lists what they are short of if you would like to donate.",
           "checked": "2026-09-01",
