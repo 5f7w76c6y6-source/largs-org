@@ -43,6 +43,8 @@ eleventyComputed:
   <p class="page-intro">Listed in alphabetical order — and still growing as
   people get in touch, so if somewhere's missing it just hasn't been sent in
   yet.</p>
+  {% elif cat.order == "curated" %}
+  <p class="page-intro">In the order you'd most likely need them.</p>
   {% else %}
   <p class="page-intro">Listed in alphabetical order.</p>
   {% endif %}
