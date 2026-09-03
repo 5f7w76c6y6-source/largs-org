@@ -89,6 +89,18 @@
           }
         },
         {
+          "name": "Clyde Coast & Cumbraes Men's Shed",
+          "blurb": "A men's shed for Skelmorlie, Largs, Fairlie, West Kilbride and the Cumbraes, at the Brisbane Centre on Bath Street: a workshop and a place to make and repair things, pursue a hobby, get practical help with a project, or just have company. A charity whose purpose is men's health and wellbeing. Phone, email cccmensshed@gmail.com, or message the Facebook page to ask when the shed is open.",
+          "checked": "2026-09-03",
+          "where": "Brisbane Centre, Bath Street, KA30 8BL",
+          "phone": "07474 142682",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/cccmensshed"
+          },
+          "logo": "/assets/img/logo-mens-shed.png"
+        },
+        {
           "name": "Cycling Without Age Scotland Largs",
           "blurb": "Volunteer pilots take older and less mobile residents out on free trishaw rides along the promenade. The Largs chapter of Cycling Without Age Scotland, a registered charity. Phone or message the Facebook page to book a ride or to ask about volunteering as a pilot.",
           "checked": "2026-09-02",
