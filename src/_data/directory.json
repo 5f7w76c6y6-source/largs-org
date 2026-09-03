@@ -384,6 +384,19 @@
             "url": "https://www.facebook.com/profile.php?id=61586079819789"
           },
           "checked": "2026-08-30"
+        },
+        {
+          "name": "Isle View Spa",
+          "blurb": "Thai massage and wellness treatments on Bath Street. Open Monday to Saturday 9.30am–6pm and Sunday 10am–6pm; book online or by phone, and gift vouchers are available.",
+          "checked": "2026-09-03",
+          "where": "24 Bath Street, KA30 8BL",
+          "phone": "01475 339449",
+          "url": "https://www.isleviewspa.co.uk",
+          "logo": "/assets/img/logo-isle-view.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/profile.php?id=61592864724675"
+          }
         }
       ]
     },
