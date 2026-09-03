@@ -150,6 +150,18 @@
           "note": "Donations of food can be handed in at Largs Library. Email Largsfh@gmail.com."
         },
         {
+          "name": "Largs SWI",
+          "blurb": "The Largs institute of the Scottish Women's Institutes, formed in 2023 and twice recognised nationally for its growth. Monthly meetings with a speaker or demonstration on the first Wednesday of the month, 7.30–9.30pm, September to June; a coffee morning every Tuesday at 11am all year (£2 donation); and sewing and yarn clubs on Thursday evenings, 7–9pm, from September. All at the AD Cameron Centre. Visitors are welcome to come along before joining.",
+          "checked": "2026-09-03",
+          "where": "AD Cameron Centre, Lade Street, KA30 8AZ",
+          "url": "https://www.largsswi.co.uk",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/LargsSWI/"
+          },
+          "logo": "/assets/img/logo-swi.png"
+        },
+        {
           "name": "OIR Largs",
           "blurb": "Opportunities in Retirement — for anyone over 50 in and around Largs. Running since 1987, with around 750 members and some 35 regular groups (art and craft, languages, music, walking and more), plus monthly meetings and outings across Scotland. Membership is £15 a year; drop in to the office on Main Street, or email info@oirlargs.org.uk. A registered Scottish charity, SC012153.",
           "checked": "2026-09-03",
