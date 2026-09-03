@@ -10,9 +10,6 @@
 # Actions minutes are free and unlimited on public repositories, which
 # is why this repo should stay public.
 #
-# There is a SECOND, TEMPORARY deploy at the end of this file, to
-# largs-preview.pages.dev. See the block above it. It retires itself.
-#
 # Required repository secrets (Settings → Secrets and variables → Actions):
 #   CLOUDFLARE_API_TOKEN   — custom token with "Cloudflare Pages: Edit"
 #   CLOUDFLARE_ACCOUNT_ID  — shown in the Cloudflare dashboard sidebar
@@ -132,45 +129,3 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy _site --project-name=largs-org
-
-      # ─────────────────────────────────────────────────────────────
-      # TEMPORARY: preview mirror for Largs Community Council
-      #
-      # largs-preview.pages.dev is a neutral hostname, so the site can
-      # be shown to the Community Council without "largs-org" giving
-      # away the domain intention. It serves the identical _site build,
-      # so X-Robots-Tag: noindex travels with it automatically.
-      #
-      # REMOVE THIS WHOLE BLOCK, and delete the Cloudflare Pages
-      # project, once the Community Council conversation has happened.
-      #
-      # It retires itself so a forgotten second copy cannot quietly
-      # outlive its purpose: past PREVIEW_UNTIL the deploy stops
-      # running and the Actions run log carries a notice saying so.
-      # Extending that date should be a decision, not a reflex.
-      #
-      # continue-on-error means a preview failure can never block or
-      # fail the real deploy above — which also means it fails QUIETLY.
-      # Check the run log after the first run rather than assuming.
-      # ─────────────────────────────────────────────────────────────
-      - name: Preview mirror window
-        id: preview_window
-        env:
-          PREVIEW_UNTIL: "20270331"   # ← the only line to change (extended 18 Aug 2026 — review under way)
-        run: |
-          today="$(date -u +%Y%m%d)"
-          if [ "$today" -le "$PREVIEW_UNTIL" ]; then
-            echo "active=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "active=false" >> "$GITHUB_OUTPUT"
-            echo "::notice title=Preview mirror expired::largs-preview is no longer being updated. Delete the Cloudflare Pages project and remove this block from .github/workflows/build-and-deploy.yml"
-          fi
-
-      - name: Deploy preview mirror (temporary)
-        if: steps.preview_window.outputs.active == 'true'
-        continue-on-error: true
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy _site --project-name=largs-preview
