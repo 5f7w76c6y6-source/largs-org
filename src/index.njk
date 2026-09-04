@@ -200,6 +200,20 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       <div class="sub">Largs to Glasgow Central · <a href="{{ site.links.rail }}">live departures →</a></div>
     </div>
 
+    {# Buses — McGill's timetable now, Stagecoach's 585 to follow. No figure
+       on purpose: "every 15 min" is true on a weekday until 16:30 and false
+       on a Sunday or after tea, and "next" needs the clock, which lives on
+       /buses/. So this tile is static, like everything on the board, and
+       the page does the computing. Hero: bus.png, Alison's pipeline.
+       Data notes in scripts/fetch-data.mjs (buses section). #}
+    <div class="tile">
+      <div class="label">Buses <span class="badge timetable">timetable</span></div>
+      <img class="tile-hero" src="/assets/img/bus.png"
+           alt="Silhouette of a single-deck bus" width="720" height="420"
+           loading="lazy" decoding="async">
+      <div class="sub">Glasgow, Greenock, Paisley and every stop in town · <a href="/buses/">next buses →</a></div>
+    </div>
+
     {% set rw = today.roadworks %}
     <div class="tile">
       <div class="label">Roadworks

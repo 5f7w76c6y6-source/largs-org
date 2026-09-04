@@ -1349,6 +1349,751 @@ async function loadRoadworksDisruptions() {
 
 
 
+/* ---------- buses ---------- */
+/* McGill's timetables from their GTFS feed on the Passenger Open Data Hub
+ * (OGL v3). GTFS is a zip of CSV tables that join like a small database:
+ * stops, routes, trips (one journey), stop_times (every call of every
+ * journey), and calendar + calendar_dates, which together say which
+ * journeys run on a given date. Passenger models nearly everything as
+ * calendar_dates exceptions (20,000 rows), so "runs today" is a real
+ * computation and calendar.txt alone is wrong on any bank holiday.
+ *
+ * Fetch once a day, compute every build. The feed is 4 MB from a small
+ * vendor and this workflow runs ~96 times a day, so the zip is pulled
+ * only when the cached Largs SLICE is missing, stale (> BUSES_MAX_AGE_H)
+ * or from an older schema. The slice keeps the 40 stops inside
+ * BUSES_BOX, only the trips that call at them, and only their calendar
+ * rows. Every build then derives yesterday/today/tomorrow from the slice
+ * in milliseconds, so the page is always built for the right day.
+ *
+ * Service days, not calendar days: a 24:06 call belongs to the previous
+ * day in GTFS. Each stop's list for date D is D's own calls plus the
+ * after-midnight tail of D-1 (m >= 1440, shifted back by a day), so a
+ * reader at 00:05 sees the 00:06 as "next" and a reader at 23:00 sees
+ * it as "last". lastTo is per destination: the last bus that reaches
+ * Glasgow leaves at 18:10 on a weekday, hours before the last bus.
+ *
+ * Timetable data only. No live positions (BODS carries none for Largs
+ * — checked 1 Sep 2026), no cancellations. The page says so once.
+ *
+ * Stagecoach's 585 is NOT in this feed. It arrives as a second operator
+ * from their TransXChange in a later pass; until then the page says
+ * "McGill's services only" rather than presenting a partial list as
+ * complete. Route labels below are ours — route_long_name is blank. */
+
+// Feeds, in fetch order. Each is a Passenger Open Data Hub GTFS zip under
+// the Open Government Licence v3.0. Stop IDs are NaPTAN codes (shared
+// across feeds); trip, service and route IDs are only unique inside a
+// feed, so the slice prefixes them with the operator key.
+const BUSES_FEEDS = [
+  { op: "mcgills", url: "https://data.discoverpassenger.com/operator/mcgills/dataset/current/download/gtfs" },
+  // Shuttle Buses (the 40 town service, the 50) publish TransXChange only —
+  // no GTFS — read by busesFetchTxcFeed(). OGL v3.
+  { op: "shuttle", format: "txc", url: "https://data.discoverpassenger.com/operator/shuttlebuses/dataset/current/download/txc" },
+];
+const BUSES_UA = "largs.scot build (hello@largs.scot)";
+const BUSES_SCHEMA = 3; // bump when the slice shape or filter changes: forces one fresh pull
+const BUSES_MAX_AGE_H = 20;
+const BUSES_CACHE_FILE = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+  ".cache",
+  "buses-slice.json"
+);
+const BUSES_FILE = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+  "src",
+  "_data",
+  "buses.json"
+);
+// Loose box round Largs: Routenburn and Brisbane Glen down to the
+// Fairlie road, coast to hills. Same box as the September investigation.
+const BUSES_BOX = { latMin: 55.74, latMax: 55.83, lonMin: -4.92, lonMax: -4.82 };
+// Stops pinned to the top of the list: the corridor stop everyone means
+// by "Main Street", then the 904's terminus. The rest sort by distance.
+const BUSES_PINNED = ["61701147", "6170512"];
+const BUSES_MAIN_STOP = "61701147";
+const BUSES_OPERATORS = {
+  mcgills: {
+    name: "McGill's",
+    credit: "McGill's Bus Service Ltd, via the Passenger Open Data Hub",
+    licence: "Open Government Licence v3.0",
+    url: "https://data.discoverpassenger.com/operator/mcgills",
+    updates: "https://www.mcgillsbuses.co.uk/service-updates",
+  },
+  shuttle: {
+    name: "Shuttle Buses",
+    credit: "Shuttle Buses Ltd, via the Passenger Open Data Hub",
+    licence: "Open Government Licence v3.0",
+    url: "https://data.discoverpassenger.com/operator/shuttlebuses",
+    updates: "https://www.shuttlebuses.co.uk/timetables",
+    loaded: true,
+  },
+  stagecoach: {
+    name: "Stagecoach",
+    credit: "Stagecoach open data",
+    licence: "Stagecoach open data terms",
+    url: "https://www.stagecoachbus.com/open-data",
+    updates: "https://www.stagecoachbus.com/service-updates",
+    loaded: false,
+    // What the page says while this operator is not loaded. Plain words,
+    // ours: the template has no operator names in it.
+    pending: "585 along the coast",
+    pendingLong: "The 585 (Ardrossan – Largs – Greenock) runs from the same Main Street stops. Its timetable comes from Stagecoach's open data in a separate format and has not been added.",
+    pendingRoutes: [{ n: "585", label: "Ardrossan – Largs – Greenock" }],
+  },
+};
+// Ours, not the feed's. Correct these on the ground, not from memory.
+const BUSES_ROUTE_LABELS = {
+  "901": "Largs – Glasgow via Greenock",
+  "906": "Largs – Glasgow via Greenock",
+  "906X": "Largs – Glasgow express",
+  "904": "Largs – Paisley",
+  "576": "Largs – Greenock (evenings)",
+  "578": "Largs – Greenock (evenings)",
+  "40": "Largs town service",
+  "50": "Largs – Kilwinning",
+};
+const BUSES_VIEWS = [
+  { key: "all", label: "All buses", path: "/buses/" },
+  { key: "mcgills", label: "McGill's", path: "/buses/mcgills/" },
+  { key: "shuttle", label: "Shuttle Buses", path: "/buses/shuttle/" },
+  { key: "stagecoach", label: "Stagecoach", path: "/buses/stagecoach/" },
+];
+
+// One GTFS table → array of row objects. Uses the streaming CSVParser
+// above so stop_times (tens of MB inflated) never becomes one string.
+function busesTable(entries, name) {
+  const entry = entries.find((e) => e.name === name || e.name.endsWith("/" + name));
+  if (!entry) return [];
+  let header = null;
+  const rows = [];
+  const parser = new CSVParser((cells) => {
+    if (!header) { header = cells.map((h) => h.replace(/^\uFEFF/, "").trim()); return; }
+    if (cells.length === 1 && cells[0] === "") return;
+    const row = {};
+    header.forEach((h, i) => { row[h] = cells[i] ?? ""; });
+    rows.push(row);
+  });
+  feedBuffer(entry.read(), parser);
+  return rows;
+}
+
+function busesIsoDay(offsetDays = 0) {
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit"
+  }).format(new Date());
+  if (!offsetDays) return today;
+  const d = new Date(`${today}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + offsetDays);
+  return d.toISOString().slice(0, 10);
+}
+const BUSES_DOW = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+function busesDow(iso) { return BUSES_DOW[new Date(`${iso}T12:00:00Z`).getUTCDay()]; }
+// "Wednesday 2 September" — the label a reader sees on the page.
+function busesDayLabel(iso) {
+  return new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", weekday: "long", day: "numeric", month: "long" })
+    .format(new Date(`${iso}T12:00:00Z`));
+}
+function busesYmdLabel(ymd) {
+  return ymd && ymd.length === 8 ? `${ymd.slice(6, 8)}/${ymd.slice(4, 6)}/${ymd.slice(0, 4)}` : "";
+}
+
+// One feed → the Largs slice of it, with every feed-local ID prefixed
+// by the operator key so feeds can be merged without collisions.
+async function busesFetchFeed(feed) {
+  const res = await fetch(feed.url, {
+    headers: { "User-Agent": BUSES_UA },
+    signal: AbortSignal.timeout(120000),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} from ${feed.url}`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  const entries = unzipEntries(buf);
+  const ns = (id) => `${feed.op}:${id}`;
+
+  const stops = busesTable(entries, "stops.txt")
+    .map((s) => ({ id: s.stop_id, name: s.stop_name, lat: Number(s.stop_lat), lon: Number(s.stop_lon) }))
+    .filter((s) => s.lat >= BUSES_BOX.latMin && s.lat <= BUSES_BOX.latMax &&
+                   s.lon >= BUSES_BOX.lonMin && s.lon <= BUSES_BOX.lonMax);
+  const stopIds = new Set(stops.map((s) => s.id));
+
+  const tripsAll = busesTable(entries, "trips.txt");
+  const routesAll = busesTable(entries, "routes.txt");
+
+  // One pass over stop_times: keep Largs calls, and the last sequence
+  // number of every trip so a terminating call can be told from a departure.
+  const calls = [];
+  const lastSeq = {};
+  let header = null;
+  const st = entries.find((e) => e.name === "stop_times.txt" || e.name.endsWith("/stop_times.txt"));
+  if (!st) throw new Error(`stop_times.txt missing from ${feed.op} feed`);
+  const parser = new CSVParser((cells) => {
+    if (!header) { header = cells.map((h) => h.replace(/^\uFEFF/, "").trim()); return; }
+    const row = {};
+    header.forEach((h, i) => { row[h] = cells[i] ?? ""; });
+    if (!row.trip_id) return;
+    const seq = Number(row.stop_sequence);
+    if (!(row.trip_id in lastSeq) || seq > lastSeq[row.trip_id]) lastSeq[row.trip_id] = seq;
+    if (stopIds.has(row.stop_id)) {
+      calls.push({ trip: ns(row.trip_id), stop: row.stop_id, seq, time: row.departure_time || row.arrival_time, pickup: row.pickup_type || "0" });
+    }
+  });
+  feedBuffer(st.read(), parser);
+
+  const largsTrips = new Set(calls.map((c) => c.trip));
+  const trips = {};
+  const serviceIds = new Set();
+  const routeIds = new Set();
+  for (const t of tripsAll) {
+    const id = ns(t.trip_id);
+    if (!largsTrips.has(id)) continue;
+    trips[id] = { route: ns(t.route_id), service: ns(t.service_id), headsign: t.trip_headsign || "", last: lastSeq[t.trip_id], op: feed.op };
+    serviceIds.add(t.service_id);
+    routeIds.add(t.route_id);
+  }
+  const routes = {};
+  for (const r of routesAll) if (routeIds.has(r.route_id)) routes[ns(r.route_id)] = r.route_short_name || "?";
+
+  const calendar = busesTable(entries, "calendar.txt")
+    .filter((r) => serviceIds.has(r.service_id))
+    .map((r) => ({ ...r, service_id: ns(r.service_id) }));
+  const calendarDates = busesTable(entries, "calendar_dates.txt")
+    .filter((r) => serviceIds.has(r.service_id))
+    .map((r) => ({ service_id: ns(r.service_id), date: r.date, exception_type: r.exception_type }));
+  const feedStart = calendar.reduce((m, r) => (r.start_date < m ? r.start_date : m), "99999999");
+  const feedEnd = calendar.reduce((m, r) => (r.end_date > m ? r.end_date : m), "00000000");
+
+  console.log(`buses: ${feed.op} GTFS (${(buf.length / 1048576).toFixed(1)} MB) — ${stops.length} Largs stops, ${Object.keys(trips).length} trips calling, feed ${feedStart}–${feedEnd}`);
+  return { op: feed.op, bytes: buf.length, start: feedStart, end: feedEnd, stops, trips, routes, calendar, calendarDates, calls };
+}
+
+/* ---- TransXChange -------------------------------------------------------
+ * Shuttle Buses (the 40 town service, the 50) and Stagecoach publish
+ * TransXChange (TXC), not GTFS. A TXC file is one service: a VehicleJourney
+ * has a DepartureTime and points at a JourneyPattern; the pattern is a chain
+ * of JourneyPatternSections, each a list of timing links "from stop A to
+ * stop B takes PT3M, wait PT1M". Stop times are the running sum. Which days
+ * a journey runs is an OperatingProfile (days of week, date ranges in or out
+ * of operation, bank-holiday rules), on the journey or inherited from the
+ * service. Stops are NaPTAN ATCO codes, usually without coordinates.
+ *
+ * busesFetchTxcFeed() turns a TXC zip into exactly the object
+ * busesFetchFeed() returns for GTFS, so everything downstream is shared:
+ * profiles become GTFS-style calendar rows plus calendar_dates exceptions,
+ * journeys become trips, lines become routes, walked times become calls.
+ * Rules refereed against bustimes.org on 2 September 2026: running-sum
+ * times; a WaitTime on the To side of one link and on the From side of the
+ * next both count; an empty VehicleJourneyTimingLink inherits, it does not
+ * zero; a journey with VehicleJourneyRef borrows that journey's pattern;
+ * `pass` calls are not calls; the last call is an arrival. Stop positions
+ * come from the DfT NaPTAN API for ATCO area 617 (OGL v3) when the file has
+ * none; bank-holiday dates from gov.uk's own list, Scotland division.
+ */
+const BUSES_NAPTAN_URL = "https://naptan.api.dft.gov.uk/v1/access-nodes?atcoAreaCodes=617&dataFormat=csv";
+const BUSES_BANK_HOLIDAYS_URL = "https://www.gov.uk/bank-holidays.json";
+// Special-day and bank-holiday exceptions are expanded only inside this
+// window round today; the slice is refreshed daily, so that is enough.
+const BUSES_EXCEPTION_DAYS_BACK = 7, BUSES_EXCEPTION_DAYS_AHEAD = 60;
+
+// Minimal XML → tree, for TXC as the Passenger hub emits it: one default
+// namespace, attributes only on `id`, no CDATA, no DOCTYPE. Refuses anything
+// it does not understand rather than guessing.
+function txcDecode(t) {
+  return t.replace(/&(amp|lt|gt|quot|apos|#x[0-9a-fA-F]+|#\d+);/g, (_, e) => {
+    if (e === "amp") return "&"; if (e === "lt") return "<"; if (e === "gt") return ">";
+    if (e === "quot") return '"'; if (e === "apos") return "'";
+    return String.fromCodePoint(e[1] === "x" ? parseInt(e.slice(2), 16) : Number(e.slice(1)));
+  });
+}
+function txcParseXml(str) {
+  if (/<!\[CDATA\[|<!DOCTYPE/i.test(str)) throw new Error("TXC: CDATA/DOCTYPE not supported");
+  str = str.replace(/<!--[\s\S]*?-->/g, "");
+  const root = { name: "#root", attrs: {}, children: [], text: "" };
+  const stack = [root];
+  const re = /<([^>]+)>|([^<]+)/g;
+  let m;
+  while ((m = re.exec(str))) {
+    if (m[2] !== undefined) {
+      if (m[2].trim()) stack[stack.length - 1].text += txcDecode(m[2]);
+      continue;
+    }
+    const tag = m[1];
+    if (tag[0] === "?") continue;
+    if (tag[0] === "!") throw new Error(`TXC: unsupported construct <${tag.slice(0, 24)}`);
+    if (tag[0] === "/") {
+      const name = tag.slice(1).trim().replace(/^[^:]+:/, "");
+      const node = stack.pop();
+      if (node.name !== name) throw new Error(`TXC: </${name}> closes <${node.name}>`);
+      continue;
+    }
+    const selfClose = tag.endsWith("/");
+    const body = selfClose ? tag.slice(0, -1) : tag;
+    const sp = body.search(/\s/);
+    const name = (sp < 0 ? body : body.slice(0, sp)).replace(/^[^:]+:/, "");
+    const attrs = {};
+    if (sp >= 0) for (const a of body.slice(sp).matchAll(/([\w:.-]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g)) attrs[a[1]] = txcDecode(a[2] ?? a[3] ?? "");
+    const node = { name, attrs, children: [], text: "" };
+    stack[stack.length - 1].children.push(node);
+    if (!selfClose) stack.push(node);
+  }
+  if (stack.length !== 1) throw new Error("TXC: document ended with open elements");
+  return root;
+}
+const txcChild = (n, name) => n && n.children.find((c) => c.name === name);
+const txcChildren = (n, name) => (n ? n.children.filter((c) => c.name === name) : []);
+function txcText(n, ...names) {
+  let cur = n;
+  for (const name of names) { cur = txcChild(cur, name); if (!cur) return ""; }
+  return cur.text.trim();
+}
+
+// ISO 8601 duration (PT3M, PT30S, PT1H2M, PT0S) → seconds.
+function txcSeconds(s) {
+  if (!s) return 0;
+  const m = /^P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(s);
+  if (!m) throw new Error(`TXC: unparsed duration ${s}`);
+  const [d, h, mi, se] = m.slice(1).map((x) => Number(x || 0));
+  return ((d * 24 + h) * 60 + mi) * 60 + se;
+}
+const txcClockSeconds = (hms) => { const [h, m, s] = hms.split(":").map(Number); return h * 3600 + m * 60 + (s || 0); };
+const txcHms = (sec) => `${String(Math.floor(sec / 3600)).padStart(2, "0")}:${String(Math.floor(sec / 60) % 60).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
+const txcYmd = (iso) => iso.replaceAll("-", "");
+
+// TXC day groups → GTFS calendar columns.
+const TXC_DAYS = {
+  Monday: ["monday"], Tuesday: ["tuesday"], Wednesday: ["wednesday"], Thursday: ["thursday"], Friday: ["friday"],
+  Saturday: ["saturday"], Sunday: ["sunday"],
+  MondayToFriday: ["monday", "tuesday", "wednesday", "thursday", "friday"],
+  MondayToSaturday: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
+  MondayToSunday: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+  Weekend: ["saturday", "sunday"],
+  NotSaturday: ["monday", "tuesday", "wednesday", "thursday", "friday", "sunday"],
+};
+// TXC bank-holiday element names → gov.uk event titles (matched by prefix).
+const TXC_BANK_HOLIDAYS = {
+  NewYearsDay: ["New Year"], Jan2ndScotland: ["2nd January"], GoodFriday: ["Good Friday"],
+  EasterMonday: ["Easter Monday"], MayDay: ["Early May"], SpringBank: ["Spring bank"],
+  AugustBankHolidayScotland: ["Summer bank"], StAndrewsDay: ["St Andrew"],
+  ChristmasDay: ["Christmas Day"], BoxingDay: ["Boxing Day"],
+  Christmas: ["Christmas Day", "Boxing Day"],
+  // Substitute-day forms: gov.uk titles these "… (substitute day)", so the same prefixes match.
+  NewYearsDayHoliday: ["New Year"], Jan2ndScotlandHoliday: ["2nd January"], ChristmasDayHoliday: ["Christmas Day"],
+  BoxingDayHoliday: ["Boxing Day"], StAndrewsDayHoliday: ["St Andrew"],
+  // No Scottish date: a rule about it changes nothing here.
+  LateSummerBankHolidayNotScotland: [],
+  AllHolidaysExceptChristmas: ["New Year", "2nd January", "Good Friday", "Easter Monday", "Early May", "Spring bank", "Summer bank", "St Andrew"],
+};
+
+// OperatingProfile element → a plain description, or null when absent.
+function txcProfile(el) {
+  if (!el) return null;
+  const prof = { days: new Set(), holidaysOnly: false, in: [], out: [], bankOp: [], bankNon: [] };
+  const dow = txcChild(txcChild(el, "RegularDayType"), "DaysOfWeek");
+  if (dow) for (const c of dow.children) {
+    const cols = TXC_DAYS[c.name];
+    if (!cols) throw new Error(`TXC: unknown day group ${c.name}`);
+    cols.forEach((d) => prof.days.add(d));
+  }
+  if (txcChild(txcChild(el, "RegularDayType"), "HolidaysOnly")) prof.holidaysOnly = true;
+  const special = txcChild(el, "SpecialDaysOperation");
+  for (const [kind, key] of [["DaysOfOperation", "in"], ["DaysOfNonOperation", "out"]]) {
+    for (const dr of txcChildren(txcChild(special, kind), "DateRange")) {
+      const a = txcText(dr, "StartDate"), b = txcText(dr, "EndDate") || a;
+      if (a) prof[key].push([a, b]);
+    }
+  }
+  const bank = txcChild(el, "BankHolidayOperation");
+  prof.bankOp = txcAllChildren(txcChild(bank, "DaysOfOperation")).map((c) => c.name);
+  prof.bankNon = txcAllChildren(txcChild(bank, "DaysOfNonOperation")).map((c) => c.name);
+  return prof;
+}
+function txcAllChildren(n) { return n ? n.children : []; }
+
+// Signature for grouping journeys that run on identical days into one service.
+function txcProfileKey(prof) {
+  return JSON.stringify({ d: [...prof.days].sort(), h: prof.holidaysOnly, i: prof.in, o: prof.out, bo: prof.bankOp, bn: prof.bankNon });
+}
+
+async function busesFetchNaptan() {
+  const res = await fetch(BUSES_NAPTAN_URL, { headers: { "User-Agent": BUSES_UA }, signal: AbortSignal.timeout(60000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status} from NaPTAN`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  const pos = {};
+  let header = null, col = null;
+  const parser = new CSVParser((cells) => {
+    if (!header) {
+      header = cells.map((h) => h.replace(/^\uFEFF/, "").trim());
+      const find = (want) => header.findIndex((h) => h.toLowerCase() === want.toLowerCase());
+      col = { id: find("ATCOCode"), name: find("CommonName"), lat: find("Latitude"), lon: find("Longitude"), e: find("Easting"), n: find("Northing"), status: find("Status") };
+      for (const [k, v] of Object.entries(col)) if (v < 0 && k !== "status") throw new Error(`NaPTAN CSV: no ${k} column (header: ${header.slice(0, 12).join(",")}…)`);
+      return;
+    }
+    // The API leaves Latitude/Longitude blank and gives OSGB grid references;
+    // take lat/lon when present, otherwise convert Easting/Northing.
+    const id = cells[col.id];
+    let lat = Number(cells[col.lat]), lon = Number(cells[col.lon]);
+    if (!lat || !lon) {
+      const E = Number(cells[col.e]), N = Number(cells[col.n]);
+      if (!E || !N) return;
+      const pt = osgbToWgs84(E, N);
+      lat = pt.lat; lon = pt.lng;
+    }
+    if (!id || !Number.isFinite(lat) || !Number.isFinite(lon)) return;
+    pos[id] = { name: cells[col.name] || "", lat, lon, status: col.status >= 0 ? cells[col.status] : "" };
+  });
+  feedBuffer(buf, parser);
+  console.log(`buses: NaPTAN area 617 — ${Object.keys(pos).length} stops with positions`);
+  return pos;
+}
+
+async function busesFetchBankHolidays() {
+  const res = await fetch(BUSES_BANK_HOLIDAYS_URL, { headers: { "User-Agent": BUSES_UA }, signal: AbortSignal.timeout(30000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status} from gov.uk bank holidays`);
+  const j = await res.json();
+  const events = j && j.scotland && j.scotland.events;
+  if (!Array.isArray(events) || !events.length) throw new Error("gov.uk bank holidays: no Scotland events");
+  return events.map((e) => ({ title: e.title, date: txcYmd(e.date) }));
+}
+
+// One TXC feed → the same Largs slice object busesFetchFeed() returns.
+async function busesFetchTxcFeed(feed) {
+  const res = await fetch(feed.url, { headers: { "User-Agent": BUSES_UA }, signal: AbortSignal.timeout(120000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status} from ${feed.url}`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  const entries = unzipEntries(buf).filter((e) => /\.xml$/i.test(e.name));
+  if (!entries.length) throw new Error(`${feed.op}: no XML in TXC zip`);
+  const [naptan, bankHolidays] = await Promise.all([busesFetchNaptan(), busesFetchBankHolidays()]);
+  const ns = (id) => `${feed.op}:${id}`;
+
+  const today = new Date();
+  const winStart = txcYmd(new Date(today.getTime() - BUSES_EXCEPTION_DAYS_BACK * 86400000).toISOString().slice(0, 10));
+  const winEnd = txcYmd(new Date(today.getTime() + BUSES_EXCEPTION_DAYS_AHEAD * 86400000).toISOString().slice(0, 10));
+  const eachDay = (a, b, fn) => {
+    const lo = a > winStart ? a : winStart, hi = b < winEnd ? b : winEnd;
+    for (let d = lo; d <= hi;) {
+      fn(d);
+      const t = new Date(Date.UTC(+d.slice(0, 4), +d.slice(4, 6) - 1, +d.slice(6, 8)) + 86400000);
+      d = txcYmd(t.toISOString().slice(0, 10));
+    }
+  };
+
+  const stopInfo = {};       // atco → { name, lat, lon }
+  const trips = {}, routes = {}, calendar = [], calendarDates = [], calls = [];
+  let feedStart = "99999999", feedEnd = "00000000", journeysTotal = 0, journeysNoProfile = 0;
+  const unknownBank = new Set();
+
+  for (const entry of entries) {
+    const doc = txcChild(txcParseXml(entry.read().toString("utf8")), "TransXChange");
+    if (!doc) throw new Error(`${feed.op}: ${entry.name} is not a TransXChange document`);
+
+    for (const sp of txcChildren(txcChild(doc, "StopPoints"), "AnnotatedStopPointRef")) {
+      const id = txcText(sp, "StopPointRef");
+      const lat = Number(txcText(sp, "Location", "Latitude")), lon = Number(txcText(sp, "Location", "Longitude"));
+      if (id && !stopInfo[id]) stopInfo[id] = { name: txcText(sp, "CommonName"), lat: lat || null, lon: lon || null };
+    }
+    for (const sp of txcChildren(txcChild(doc, "StopPoints"), "StopPoint")) {
+      const id = txcText(sp, "AtcoCode");
+      if (id && !stopInfo[id]) stopInfo[id] = { name: txcText(sp, "Descriptor", "CommonName"), lat: null, lon: null };
+    }
+
+    const sections = {};
+    for (const sec of txcChildren(txcChild(doc, "JourneyPatternSections"), "JourneyPatternSection")) {
+      sections[sec.attrs.id] = txcChildren(sec, "JourneyPatternTimingLink").map((l) => ({
+        id: l.attrs.id,
+        from: txcText(l, "From", "StopPointRef"), to: txcText(l, "To", "StopPointRef"),
+        fromAct: txcText(l, "From", "Activity") || "pickUpAndSetDown", toAct: txcText(l, "To", "Activity") || "pickUpAndSetDown",
+        fromWait: txcSeconds(txcText(l, "From", "WaitTime")), toWait: txcSeconds(txcText(l, "To", "WaitTime")),
+        run: txcSeconds(txcText(l, "RunTime")),
+      }));
+    }
+
+    const services = {}, patterns = {};
+    for (const svc of txcChildren(txcChild(doc, "Services"), "Service")) {
+      const code = txcText(svc, "ServiceCode");
+      const lines = {};
+      for (const ln of txcChildren(txcChild(svc, "Lines"), "Line")) lines[ln.attrs.id] = txcText(ln, "LineName");
+      const period = [txcYmd(txcText(svc, "OperatingPeriod", "StartDate")), txcYmd(txcText(svc, "OperatingPeriod", "EndDate")) || "99991231"];
+      services[code] = { lines, period, profile: txcProfile(txcChild(svc, "OperatingProfile")), destination: txcText(svc, "StandardService", "Destination") };
+      for (const jp of txcChildren(txcChild(svc, "StandardService"), "JourneyPattern")) {
+        patterns[jp.attrs.id] = { service: code, display: txcText(jp, "DestinationDisplay"), sections: txcChildren(jp, "JourneyPatternSectionRefs").map((r) => r.text.trim()) };
+      }
+      if (period[0] && period[0] < feedStart) feedStart = period[0];
+      if (period[1] > feedEnd) feedEnd = period[1];
+    }
+
+    const journeys = [], byCode = {};
+    for (const vj of txcChildren(txcChild(doc, "VehicleJourneys"), "VehicleJourney")) {
+      const overrides = {};
+      for (const tl of txcChildren(vj, "VehicleJourneyTimingLink")) {
+        overrides[txcText(tl, "JourneyPatternTimingLinkRef")] = { run: txcText(tl, "RunTime"), fromWait: txcText(tl, "From", "WaitTime"), toWait: txcText(tl, "To", "WaitTime") };
+      }
+      const j = {
+        code: txcText(vj, "VehicleJourneyCode"), service: txcText(vj, "ServiceRef"), line: txcText(vj, "LineRef"),
+        pattern: txcText(vj, "JourneyPatternRef"), ref: txcText(vj, "VehicleJourneyRef"), dep: txcText(vj, "DepartureTime"),
+        display: txcText(vj, "DestinationDisplay"), profile: txcProfile(txcChild(vj, "OperatingProfile")), overrides,
+      };
+      journeys.push(j); byCode[j.code] = j;
+    }
+    for (const j of journeys) if (!j.pattern && j.ref && byCode[j.ref]) j.pattern = byCode[j.ref].pattern;
+
+    const serviceIds = {};   // profile key → synthetic service id (per TXC service)
+    for (const j of journeys) {
+      journeysTotal++;
+      const svc = services[j.service];
+      const pat = patterns[j.pattern];
+      if (!svc || !pat) continue;
+      const prof = j.profile || svc.profile;
+      if (!prof) { journeysNoProfile++; continue; }
+
+      // Service = one calendar row per distinct profile within this TXC service.
+      const key = txcProfileKey(prof);
+      let sid = serviceIds[key];
+      if (!sid) {
+        sid = ns(`${j.service}:p${Object.keys(serviceIds).length + 1}`);
+        serviceIds[key] = sid;
+        const row = { service_id: sid, start_date: svc.period[0], end_date: svc.period[1] };
+        for (const d of ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]) row[d] = prof.days.has(d) && !prof.holidaysOnly ? "1" : "0";
+        calendar.push(row);
+        for (const [a, b] of prof.in) eachDay(a.replaceAll("-", ""), b.replaceAll("-", ""), (d) => calendarDates.push({ service_id: sid, date: d, exception_type: "1" }));
+        for (const [a, b] of prof.out) eachDay(a.replaceAll("-", ""), b.replaceAll("-", ""), (d) => calendarDates.push({ service_id: sid, date: d, exception_type: "2" }));
+        const bankDates = (names) => {
+          const out = new Set();
+          for (const n of names) {
+            if (n === "AllBankHolidays") { bankHolidays.forEach((h) => out.add(h.date)); continue; }
+            const prefixes = TXC_BANK_HOLIDAYS[n];
+            if (!prefixes) { unknownBank.add(n); continue; }
+            for (const h of bankHolidays) if (prefixes.some((pfx) => h.title.startsWith(pfx))) out.add(h.date);
+          }
+          return [...out].filter((d) => d >= winStart && d <= winEnd && d >= svc.period[0] && d <= svc.period[1]);
+        };
+        for (const d of bankDates(prof.bankNon)) calendarDates.push({ service_id: sid, date: d, exception_type: "2" });
+        for (const d of bankDates(prof.bankOp)) calendarDates.push({ service_id: sid, date: d, exception_type: "1" });
+      }
+
+      // Walk the pattern: running-sum times, both wait sides counted.
+      const links = pat.sections.flatMap((sref) => sections[sref] || []);
+      if (!links.length) continue;
+      const val = (l, k) => { const ov = j.overrides[l.id]; return ov && ov[k] ? txcSeconds(ov[k]) : l[k]; };
+      let t = txcClockSeconds(j.dep);
+      const walked = [{ stop: links[0].from, arr: t, dep: t, act: links[0].fromAct }];
+      for (const l of links) {
+        walked[walked.length - 1].dep += val(l, "fromWait");
+        const arr = walked[walked.length - 1].dep + val(l, "run");
+        walked.push({ stop: l.to, arr, dep: arr + val(l, "toWait"), act: l.toAct });
+      }
+
+      const tripId = ns(`${j.service}:${j.code}`);
+      const routeId = ns(j.line || Object.keys(svc.lines)[0] || j.service);
+      routes[routeId] = svc.lines[j.line] || Object.values(svc.lines)[0] || "?";
+      let last = -1;
+      walked.forEach((c, i) => { if (c.act !== "pass") last = i; });
+      trips[tripId] = { route: routeId, service: sid, headsign: j.display || pat.display || svc.destination || "", last, op: feed.op };
+      walked.forEach((c, i) => {
+        if (c.act === "pass") return;
+        calls.push({ trip: tripId, stop: c.stop, seq: i, time: txcHms(i === last ? c.arr : c.dep), pickup: c.act === "setDown" ? "1" : "0" });
+      });
+    }
+  }
+  if (unknownBank.size) console.log(`buses: ${feed.op} — unknown bank-holiday elements ignored: ${[...unknownBank].join(", ")}`);
+  if (journeysNoProfile) console.log(`buses: ${feed.op} — ${journeysNoProfile} journeys with no operating profile skipped`);
+
+  // Positions: the file's own if it has them, otherwise NaPTAN; then the box.
+  const unplaced = [];
+  const stops = [];
+  for (const [id, info] of Object.entries(stopInfo)) {
+    let { lat, lon, name } = info;
+    if (!(lat && lon) && naptan[id]) { lat = naptan[id].lat; lon = naptan[id].lon; name = name || naptan[id].name; }
+    if (!(lat && lon)) { unplaced.push(id); continue; }
+    if (lat >= BUSES_BOX.latMin && lat <= BUSES_BOX.latMax && lon >= BUSES_BOX.lonMin && lon <= BUSES_BOX.lonMax) stops.push({ id, name, lat, lon });
+  }
+  if (unplaced.length) console.log(`buses: ${feed.op} — ${unplaced.length} stops with no position (not in NaPTAN 617): ${unplaced.slice(0, 8).join(", ")}${unplaced.length > 8 ? "…" : ""}`);
+  if (!stops.length) throw new Error(`${feed.op}: no stops placed inside the Largs box — NaPTAN or feed changed`);
+  const stopIds = new Set(stops.map((s) => s.id));
+  const largsCalls = calls.filter((c) => stopIds.has(c.stop));
+  const largsTrips = new Set(largsCalls.map((c) => c.trip));
+  for (const id of Object.keys(trips)) if (!largsTrips.has(id)) delete trips[id];
+
+  console.log(`buses: ${feed.op} TXC (${(buf.length / 1048576).toFixed(1)} MB, ${entries.length} files) — ${stops.length} Largs stops, ${Object.keys(trips).length} of ${journeysTotal} journeys calling, feed ${feedStart}–${feedEnd}`);
+  return { op: feed.op, bytes: buf.length, start: feedStart, end: feedEnd, stops, trips, routes, calendar, calendarDates, calls: largsCalls };
+}
+
+// All feeds → one slice. Stops merge by NaPTAN code (first feed's name
+// wins); everything else is already namespaced, so it concatenates.
+// All-or-nothing: if any feed fails the previous cached slice is kept.
+async function busesFetchSlice() {
+  const parts = [];
+  for (const feed of BUSES_FEEDS) parts.push(await (feed.format === "txc" ? busesFetchTxcFeed(feed) : busesFetchFeed(feed)));
+
+  const stopsById = {};
+  for (const p of parts) for (const st of p.stops) if (!stopsById[st.id]) stopsById[st.id] = st;
+  const stops = Object.values(stopsById);
+  if (!stops.some((st) => st.id === BUSES_MAIN_STOP)) throw new Error("Main Street stop missing from feeds — box or feed changed");
+
+  const trips = Object.assign({}, ...parts.map((p) => p.trips));
+  const routes = Object.assign({}, ...parts.map((p) => p.routes));
+  const calendar = parts.flatMap((p) => p.calendar);
+  const calendarDates = parts.flatMap((p) => p.calendarDates);
+  const calls = parts.flatMap((p) => p.calls);
+  const feeds = Object.fromEntries(parts.map((p) => [p.op, { start: p.start, end: p.end, bytes: p.bytes }]));
+  const feedStart = parts.reduce((m, p) => (p.start < m ? p.start : m), "99999999");
+  const feedEnd = parts.reduce((m, p) => (p.end > m ? p.end : m), "00000000");
+  const bytes = parts.reduce((n, p) => n + p.bytes, 0);
+
+  const slice = {
+    schema: BUSES_SCHEMA,
+    fetchedAt: new Date().toISOString(),
+    feed: { start: feedStart, end: feedEnd, bytes, feeds },
+    stops, trips, routes, calendar, calendarDates,
+    calls: calls.map((c) => [c.trip, c.stop, c.seq, c.time, c.pickup]),
+  };
+  try {
+    await mkdir(path.dirname(BUSES_CACHE_FILE), { recursive: true });
+    await writeFile(BUSES_CACHE_FILE, JSON.stringify(slice) + "\n");
+  } catch { /* cache write is best-effort */ }
+  console.log(`buses: merged ${parts.length} feeds — ${stops.length} Largs stops, ${Object.keys(trips).length} trips calling`);
+  return slice;
+}
+
+function busesActiveServices(slice, iso) {
+  const ymd = iso.replaceAll("-", "");
+  const dow = busesDow(iso);
+  const active = new Set();
+  for (const r of slice.calendar) {
+    if (r.start_date <= ymd && ymd <= r.end_date && r[dow] === "1") active.add(r.service_id);
+  }
+  let added = 0, removed = 0;
+  for (const r of slice.calendarDates) {
+    if (r.date !== ymd) continue;
+    if (r.exception_type === "1") { active.add(r.service_id); added++; }
+    else if (r.exception_type === "2") { active.delete(r.service_id); removed++; }
+  }
+  return { active, added, removed };
+}
+
+function busesClock(min) {
+  const h = Math.floor(min / 60) % 24, m = min % 60;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+// stopId -> sorted calls for one service day. m may exceed 1440.
+function busesDay(slice, iso) {
+  const { active } = busesActiveServices(slice, iso);
+  const byStop = {};
+  for (const [trip, stop, seq, time, pickup] of slice.calls) {
+    const t = slice.trips[trip];
+    if (!t || !active.has(t.service)) continue;
+    const [hh, mm] = time.split(":").map(Number);
+    const m = hh * 60 + mm;
+    (byStop[stop] ||= []).push({
+      m, t: busesClock(m),
+      route: slice.routes[t.route] || "?",
+      to: t.headsign,
+      op: t.op,
+      term: seq === t.last,
+      setdown: pickup === "1",
+    });
+  }
+  for (const list of Object.values(byStop)) list.sort((a, b) => a.m - b.m || (a.route < b.route ? -1 : 1));
+  return byStop;
+}
+
+async function loadBuses() {
+  let slice = null;
+  try { slice = JSON.parse(await readFile(BUSES_CACHE_FILE, "utf8")); } catch { /* no cache yet */ }
+  if (slice && slice.schema !== BUSES_SCHEMA) {
+    console.log("buses: cached slice uses an older schema — refreshing");
+    slice = null;
+  }
+  const ageH = slice ? (Date.now() - Date.parse(slice.fetchedAt)) / 3600000 : Infinity;
+  if (!slice || ageH > BUSES_MAX_AGE_H) {
+    try {
+      slice = await busesFetchSlice();
+    } catch (error) {
+      if (!slice) throw error;
+      console.warn(`buses: keeping ${ageH.toFixed(0)}h-old slice — ${error.message}`);
+    }
+  }
+
+  const yesterday = busesIsoDay(-1), today = busesIsoDay(0), tomorrow = busesIsoDay(1);
+  const dayY = busesDay(slice, yesterday);
+  const dayT = busesDay(slice, today);
+  const dayN = busesDay(slice, tomorrow);
+  const ex = busesActiveServices(slice, today);
+
+  const main = slice.stops.find((s) => s.id === BUSES_MAIN_STOP);
+  const dist = (s) => Math.hypot((s.lat - main.lat) * 111, (s.lon - main.lon) * 62);
+  const stops = slice.stops.map((s) => {
+    const own = dayT[s.id] || [];
+    const tail = (dayY[s.id] || []).filter((d) => d.m >= 1440).map((d) => ({ ...d, m: d.m - 1440 }));
+    const deps = tail.concat(own);
+    const tomorrowAll = dayN[s.id] || [];
+    // First / lasts / first-tomorrow / towards, for one operator or for all.
+    // A per-operator view must show its own, not everyone's: with only
+    // McGill's loaded the difference was invisible.
+    const summarise = (keep) => {
+      const mine = deps.filter(keep), ownMine = own.filter(keep);
+      const lastTo = {};
+      for (const d of ownMine) if (!d.term) lastTo[d.to] = d.t;
+      const first = tomorrowAll.filter(keep).find((d) => !d.term && d.m < 1440) || null;
+      const heads = [...new Set(mine.filter((d) => !d.term).map((d) => d.to))].sort();
+      // "First" is the morning's first bus, not last night's after-midnight
+      // tail sitting at the top of the list.
+      const firstLive = mine.find((d) => !d.term && d.m >= 180) || mine.find((d) => !d.term) || null;
+      return {
+        towards: heads,
+        first: firstLive ? { t: firstLive.t, route: firstLive.route, to: firstLive.to } : null,
+        lastTo,
+        lastToList: Object.entries(lastTo).map(([to, t]) => ({ to, t })),
+        firstTomorrow: first ? { t: first.t, route: first.route, to: first.to } : null,
+      };
+    };
+    const all = summarise(() => true);
+    const ops = [...new Set(deps.filter((d) => !d.term).map((d) => d.op))];
+    const byOp = Object.fromEntries(ops.map((k) => [k, summarise((d) => d.op === k)]));
+    return {
+      id: s.id, name: s.name, lat: s.lat, lon: s.lon,
+      pinned: BUSES_PINNED.indexOf(s.id),
+      km: Number(dist(s).toFixed(2)),
+      towards: all.towards,
+      ops,
+      first: all.first,
+      deps: deps.map(({ m, t, route, to, op, term }) => ({ m, t, route, to, op, term })),
+      lastTo: all.lastTo,
+      lastToList: all.lastToList,
+      firstTomorrow: all.firstTomorrow,
+      byOp,
+    };
+  });
+  stops.sort((a, b) => {
+    const pa = a.pinned < 0 ? 99 : a.pinned, pb = b.pinned < 0 ? 99 : b.pinned;
+    return pa - pb || a.km - b.km || (a.name < b.name ? -1 : 1);
+  });
+  for (const s of stops) delete s.pinned;
+
+  const routeNames = [...new Set(Object.values(slice.routes))].sort();
+  const routeOp = {};
+  for (const [rid, name] of Object.entries(slice.routes)) routeOp[name] ||= rid.split(":")[0];
+  const departures = stops.reduce((n, s) => n + s.deps.filter((d) => !d.term).length, 0);
+
+  return {
+    ok: true,
+    schema: BUSES_SCHEMA,
+    generated: new Date().toISOString(),
+    date: today,
+    dow: busesDow(today),
+    dateLabel: busesDayLabel(today),
+    tomorrow: { date: tomorrow, dow: busesDow(tomorrow), label: busesDayLabel(tomorrow) },
+    exceptions: { added: ex.added, removed: ex.removed },
+    feed: { ...slice.feed, endLabel: busesYmdLabel(slice.feed.end), fetchedAt: slice.fetchedAt },
+    operators: BUSES_OPERATORS,
+    routes: routeNames.map((n) => ({ n, label: BUSES_ROUTE_LABELS[n] || "", op: routeOp[n] || "mcgills" })),
+    views: BUSES_VIEWS,
+    departures,
+    stops,
+  };
+}
+
 /* ---------- main ---------- */
 
 // Start from the previous build's data so a failed source degrades to
@@ -1385,6 +2130,28 @@ try {
   console.log(`roadworks: ${out.roadworks.count} active, ${out.roadworks.plannedCount ?? 0} planned in Largs (register data to ${out.roadworks.dataDate})`);
 } catch (error) {
   console.warn(`roadworks: keeping previous value — ${error.message}`);
+}
+
+/* Buses are a separate data file, not part of today.json: the page needs
+ * every call at forty stops (~200 KB), which would swamp the board's data.
+ * Same resilience rule — a failed fetch keeps the previous file — with one
+ * extra: if there is no previous file at all, write an honest skeleton so
+ * the templates that paginate over buses.json still build. */
+try {
+  const buses = await loadBuses();
+  await writeFile(BUSES_FILE, JSON.stringify(buses) + "\n");
+  const withdrawn = buses.exceptions.removed ? ` (${buses.exceptions.removed} services withdrawn today)` : "";
+  console.log(`buses: ${buses.stops.length} stops, ${buses.departures} departures on ${buses.date}${withdrawn}`);
+} catch (error) {
+  console.warn(`buses: keeping previous buses.json — ${error.message}`);
+  try {
+    await readFile(BUSES_FILE, "utf8");
+  } catch {
+    await writeFile(BUSES_FILE, JSON.stringify({
+      ok: false, schema: BUSES_SCHEMA, views: BUSES_VIEWS, operators: BUSES_OPERATORS, routes: [], stops: []
+    }) + "\n");
+    console.warn("buses: no previous buses.json — wrote an empty skeleton");
+  }
 }
 
 if (anySuccess) out.fetchedAt = new Date().toISOString();

@@ -1,0 +1,130 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: buses.stops
+  size: 1
+  alias: stop
+permalink: "/buses/stop/{{ stop.id }}/"
+eleventyComputed:
+  title: "{{ stop.name | safe }} · Buses from Largs"
+  heading: "{{ stop.name | safe }}"
+  subtitle: "Every timetabled bus from this stop today{% if stop.towards | length %}, towards {{ stop.towards | join(' and ') | safe }}{% endif %}."
+---
+{# One page per stop, built from the same buses.json as /buses/. This is
+   the "full timetable" behind each card: today's complete list in order,
+   arrivals included but marked, and the after-midnight buses of last
+   night's service at the top where the clock puts them.
+
+   The list is static. A few lines of script dim the calls that have gone
+   and mark the next one; without script the whole day stands, which is
+   the right fallback for a page called "full list". Stop id is the
+   national NaPTAN/ATCO code, so the bustimes.org link at the foot is the
+   same physical stop in an independent source — the referee. #}
+{% set b = buses %}
+<section class="board wrap" aria-labelledby="page-title">
+
+  <div class="kicker">
+    <span class="stamp" id="stop-stamp">Timetable for {{ b.dateLabel }}</span>
+    <span class="badge timetable">timetable</span>
+  </div>
+
+  {% set loadedOps = [] %}{% set pendingOps = [] %}
+  {% for k, o in b.operators %}{% if o.loaded == false %}{% set pendingOps = (pendingOps.push(k), pendingOps) %}{% else %}{% set loadedOps = (loadedOps.push(k), loadedOps) %}{% endif %}{% endfor %}
+  <p class="page-intro">Timetabled times, <strong>not live</strong> — check
+  {% for k in loadedOps %}<a href="{{ b.operators[k].updates }}">{{ b.operators[k].name }} service updates</a>{% if loop.revindex == 2 %} or {% elif not loop.last %}, {% endif %}{% endfor %} for
+  delays and cancellations.
+  {% if pendingOps.length %}{% for k in loadedOps %}{{ b.operators[k].name }}{% if loop.revindex == 2 %} and {% elif not loop.last %}, {% endif %}{% endfor %} services only:
+  {% for k in pendingOps %}{{ b.operators[k].name }}'s {{ b.operators[k].pending }}{% if loop.revindex == 2 %} and {% elif not loop.last %}, {% endif %}{% endfor %}
+  {% if pendingOps.length == 1 %}is{% else %}are{% endif %} not in this data yet.{% endif %}
+  <a href="/buses/">← all stops</a></p>
+
+  {% if stop.deps | length %}
+  <p class="stop-summary">
+    {% for l in stop.lastToList %}<span>last to {{ l.to }} <span class="mono">{{ l.t }}</span></span>{% endfor %}
+    {% if stop.firstTomorrow %}<span>first tomorrow <span class="mono">{{ stop.firstTomorrow.t }}</span> {{ stop.firstTomorrow.route }} {{ stop.firstTomorrow.to }}</span>{% endif %}
+  </p>
+
+  <table class="stop-table">
+    <thead><tr><th scope="col">Time</th><th scope="col">Bus</th><th scope="col">To</th><th scope="col"><span class="visually-hidden">Operator</span></th></tr></thead>
+    <tbody>
+    {% for d in stop.deps %}
+      <tr data-m="{{ d.m }}"{% if d.term %} class="arrives"{% endif %}>
+        <td class="mono">{{ d.t }}{% if d.m >= 1440 %}<small>tonight</small>{% endif %}</td>
+        <td><strong>{{ d.route }}</strong></td>
+        <td>{% if d.term %}<em>arrives — journey ends here</em>{% else %}{{ d.to }}{% endif %}</td>
+        <td class="op mono">{{ b.operators[d.op].name }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="bus-notice">No buses call here today{% if stop.firstTomorrow %} — the first tomorrow is
+  <span class="mono">{{ stop.firstTomorrow.t }}</span> {{ stop.firstTomorrow.route }} {{ stop.firstTomorrow.to }}{% endif %}.</p>
+  {% endif %}
+
+  <p class="note">Rows marked <em>arrives</em> are journeys that end at this
+  stop: you can get off, not on. The list is for {{ b.dateLabel }}; for another
+  day, or to check these times against an independent source, see this stop on
+  <a href="https://bustimes.org/stops/{{ stop.id }}">bustimes.org</a>
+  (stop code <span class="mono">{{ stop.id }}</span>).</p>
+
+  <p class="note">Sources: {% for k in loadedOps %}{{ b.operators[k].credit }}
+  ({% if b.operators[k].licence == "Open Government Licence v3.0" %}<a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence v3.0</a>{% else %}{{ b.operators[k].licence }}{% endif %}){% if not loop.last %}; {% endif %}{% endfor %}.
+  Stop positions are the operators' where their feed carries them, otherwise from
+  <a href="https://www.gov.uk/government/publications/national-public-transport-access-node-schema">NaPTAN</a>
+  (Department for Transport, Open Government Licence v3.0).
+  Spotted something wrong? <a href="mailto:corrections@largs.scot">corrections@largs.scot</a>.</p>
+</section>
+
+<style>
+  .stop-summary{display:flex;gap:14px;flex-wrap:wrap;font-size:.95rem;color:var(--muted);margin:10px 0 14px}
+  .stop-summary .mono{font-family:"Spline Sans Mono",monospace;color:var(--slate)}
+  .stop-table{width:100%;border-collapse:collapse;font-size:.98rem;max-width:560px}
+  .stop-table th{text-align:left;font-family:"Spline Sans Mono",monospace;font-size:.7rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);font-weight:500;padding:6px 10px 6px 0;border-bottom:1px solid var(--sand)}
+  .stop-table td{padding:6px 10px 6px 0;border-bottom:1px dotted var(--sand);vertical-align:baseline}
+  .stop-table td.mono{font-family:"Spline Sans Mono",monospace;color:var(--slate);white-space:nowrap}
+  .stop-table td small{font-family:"Alegreya Sans",sans-serif;color:var(--muted);margin-left:4px}
+  .stop-table td.op{font-size:.72rem;color:var(--muted);letter-spacing:.06em;text-align:right}
+  .stop-table tr.arrives td{color:var(--muted)}
+  .stop-table tr.gone td{opacity:.45}
+  .stop-table tr.next td{background:var(--foam-tint)}
+  .stop-table tr.next td:first-child{border-left:3px solid var(--teal);padding-left:6px}
+  .bus-notice{background:var(--foam-tint);border:1px solid var(--foam);border-radius:10px;padding:12px 16px;margin:12px 0;font-size:.95rem}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<script>
+(function () {
+  "use strict";
+  var DATE = {{ b.date | dump | safe }}, TOMORROW = {{ b.tomorrow.date | dump | safe }};
+  var rows = Array.prototype.slice.call(document.querySelectorAll(".stop-table tbody tr"));
+  var stamp = document.getElementById("stop-stamp");
+  if (!rows.length) return;
+  var label = stamp.textContent;
+  function londonNow() {
+    var p = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London",
+      year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false })
+      .formatToParts(new Date());
+    var g = function (t) { var x = p.filter(function (q) { return q.type === t; })[0]; return x ? x.value : ""; };
+    var iso = g("year") + "-" + g("month") + "-" + g("day");
+    var min = (Number(g("hour")) % 24) * 60 + Number(g("minute"));
+    if (iso === DATE) return { min: min, ok: true };
+    if (iso === TOMORROW && min < 180) return { min: min + 1440, ok: true };
+    return { min: min, ok: false };
+  }
+  function paint() {
+    var now = londonNow(), marked = false;
+    rows.forEach(function (r) {
+      var m = Number(r.dataset.m), gone = now.ok && m < now.min;
+      r.classList.toggle("gone", gone);
+      var isNext = now.ok && !gone && !marked && !r.classList.contains("arrives");
+      r.classList.toggle("next", isNext);
+      if (isNext) marked = true;
+    });
+    stamp.textContent = now.ok ? label : label + " — this page is older than today; it refreshes within fifteen minutes";
+  }
+  paint();
+  setInterval(paint, 60 * 1000);
+})();
+</script>

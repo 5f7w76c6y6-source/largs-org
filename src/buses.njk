@@ -1,0 +1,341 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: buses.views
+  size: 1
+  alias: view
+permalink: "{{ view.path }}"
+eleventyComputed:
+  title: "{{ view.label | safe }} · Buses from Largs"
+  heading: Buses from Largs
+  subtitle: Every stop in the town, with the next two buses and the last one tonight.
+---
+{# Build-time filter pages, the same mechanism as Fuel: one rendering per
+   entry in `buses.views` — All, then one per operator — each at its own
+   path. The chips are plain links.
+
+   THE STOPS AND THE DAY'S TIMES ARE STATIC; "NEXT" IS NOT.
+
+   Who the stops are, where they are, and every timetabled call today is
+   baked at build time from the operators' feeds (fetch-data.mjs, buses section).
+   The site rebuilds every fifteen minutes, so the baked day is today. What
+   the build cannot know is what time it is when someone reads the page, so
+   the "next two" on each card are chosen by script from the baked list —
+   no fetch, no API, nothing leaves the page. With JavaScript off each card
+   shows the first and last bus and links to its full list.
+
+   THIS IS A TIMETABLE, NOT A TRACKER. BODS carries no live positions for
+   Largs (checked 1 Sep 2026) and GTFS has no notion of a cancellation.
+   The page says so once, at the top, and links to the operators' own
+   service updates. It never says "due", "expected" or "live".
+
+   An operator whose feed is not read yet has `loaded: false` in the data,
+   with the words to say about it (pending, pendingLong, pendingRoutes).
+   Its chip still exists so the gap is visible rather than silent; its
+   page says the times are not loaded; the All view names who is in. #}
+{% set b = buses %}
+{% set op = view.key %}
+{# Operators split by whether their feed is in the data. #}
+{% set loadedOps = [] %}{% set pendingOps = [] %}
+{% for k, o in b.operators %}{% if o.loaded == false %}{% set pendingOps = (pendingOps.push(k), pendingOps) %}{% else %}{% set loadedOps = (loadedOps.push(k), loadedOps) %}{% endif %}{% endfor %}
+{% set viewPending = false %}{% if b.operators[op] and b.operators[op].loaded == false %}{% set viewPending = true %}{% endif %}
+<section class="board wrap" aria-labelledby="page-title">
+
+  {% if b.ok %}
+
+  <div class="kicker">
+    <span class="stamp" id="bus-stamp">Timetable for {{ b.dateLabel }}</span>
+    <span class="badge timetable">timetable</span>
+  </div>
+
+  <p class="page-intro">Timetabled times from the operators' own published
+  data — <strong>not live</strong>. Delays, cancellations and diversions are
+  not shown here: check
+  {% for k, o in b.operators %}<a href="{{ o.updates }}">{{ o.name }} service updates</a>{% if loop.revindex == 2 %} or {% elif not loop.last %}, {% endif %}{% endfor %}
+  before you set off.
+  {% if pendingOps.length %}<strong>{% for k in loadedOps %}{{ b.operators[k].name }}{% if loop.revindex == 2 %} and {% elif not loop.last %}, {% endif %}{% endfor %} services only</strong> for
+  now — {% for k in pendingOps %}{{ b.operators[k].name }}'s {{ b.operators[k].pending }}{% if loop.revindex == 2 %} and {% elif not loop.last %}, {% endif %}{% endfor %}
+  {% if pendingOps.length == 1 %}is{% else %}are{% endif %} not in this data yet, so a stop
+  may have more buses than are listed.{% endif %}</p>
+
+  <nav class="bus-filter" aria-label="Choose an operator">
+    {% for v in b.views %}
+    <a href="{{ v.path }}"{% if v.key == view.key %} aria-current="page"{% endif %}>{{ v.label }}{% if b.operators[v.key] and b.operators[v.key].loaded == false %} <small>(not loaded yet)</small>{% endif %}</a>
+    {% endfor %}
+  </nav>
+
+  {% if viewPending %}
+  <p class="bus-notice"><strong>{{ b.operators[op].name }} times are not loaded yet.</strong>
+  {{ b.operators[op].pendingLong }} Until it is, use
+  <a href="{{ b.operators[op].updates }}">{{ b.operators[op].name }}'s own site</a>
+  or <a href="https://bustimes.org/stops/61701147">bustimes.org</a>.</p>
+  {% endif %}
+
+  <noscript>
+    <p class="bus-notice"><strong>The "next bus" needs JavaScript.</strong>
+    Every stop's full day is printed into the page, but picking out the next
+    two from it needs to know what time it is. Each card below shows its first
+    and last bus; the full list link has everything in between.</p>
+  </noscript>
+
+  <div id="bus-map" role="application"
+       aria-label="Map of the bus stops in Largs. Every stop is listed below."></div>
+  <p class="bus-legend"><span>tap a stop for its next buses</span><span>{{ b.stops | length }} stops · {{ b.departures }} departures today</span></p>
+
+  <div id="bus-list">
+  {% for s in b.stops %}
+    {# v is this view's summary of the stop: the stop itself on the All
+       view, otherwise s.byOp[op] — first, lasts, first tomorrow and
+       towards for that operator alone (empty if it does not call). #}
+    {% set v = s if op == "all" else (s.byOp[op] or {}) %}
+    {% set has = v.first %}
+    {# An operator's view lists only the stops it calls at. #}
+    {% if op == "all" or (op in s.ops) or viewPending %}
+    <article class="bus-row" id="stop-{{ s.id }}" data-id="{{ s.id }}"
+             data-lat="{{ s.lat }}" data-lng="{{ s.lon }}">
+      <div class="bus-main">
+        <h3>{{ s.name }}{% if v.towards | length %} <span class="bus-where">towards {{ v.towards | join(" / ") }}</span>{% endif %}</h3>
+        <div class="bus-next" aria-live="polite">
+          {# Static content, replaced by script. First and last are true
+             whatever the time; "next" is what the script adds. #}
+          {% if has %}
+          <span class="mono">{{ v.first.t }}</span> {{ v.first.route }} {{ v.first.to }} first ·
+          {% for l in v.lastToList %}last to {{ l.to }} <span class="mono">{{ l.t }}</span>{% if not loop.last %} · {% endif %}{% endfor %}
+          {% elif viewPending %}
+          <span class="bus-none">{{ b.operators[op].name }} times not loaded yet</span>
+          {% else %}
+          <span class="bus-none">No buses today</span>{% if v.firstTomorrow %} · first tomorrow <span class="mono">{{ v.firstTomorrow.t }}</span> {{ v.firstTomorrow.route }} {{ v.firstTomorrow.to }}{% endif %}
+          {% endif %}
+        </div>
+        <p class="meta"><a href="/buses/stop/{{ s.id }}/">full list for today →</a> · <a class="map-link" href="#bus-map">show on map →</a></p>
+      </div>
+    </article>
+    {% endif %}
+  {% endfor %}
+  </div>
+
+  <details class="updates-note">
+    <summary>Which bus goes where</summary>
+    <div class="updates-body">
+      <ul class="badge-key">
+        {% for r in b.routes %}
+        <li><strong>{{ r.n }}</strong>{% if r.label %} — {{ r.label }}{% endif %} <span class="mono">{{ b.operators[r.op].name }}</span></li>
+        {% endfor %}
+        {% for k in pendingOps %}{% for r in b.operators[k].pendingRoutes %}
+        <li><strong>{{ r.n }}</strong> — {{ r.label }} <span class="mono">{{ b.operators[k].name }}</span> — times not loaded yet</li>
+        {% endfor %}{% endfor %}
+      </ul>
+      <p class="updates-foot"><strong>Last bus</strong> is shown per
+      destination on purpose: on a weekday the last bus that gets to Glasgow
+      leaves Main Street hours before the last bus of the night, which only
+      goes as far as Greenock.</p>
+      <p class="updates-foot"><strong>Arrivals are not departures.</strong>
+      A bus that ends its journey at a stop is left out of "next" and "last"
+      here; the full list for each stop shows those too, marked <em>arrives</em>.</p>
+      <p class="updates-foot"><strong>How current is this?</strong> The
+      timetable is re-read from the operator's published data every day and
+      this page is rebuilt every fifteen minutes, so it is always built for
+      today's date — including bank-holiday patterns. What it can never tell
+      you is whether a particular bus is running.</p>
+    </div>
+  </details>
+
+  <p class="note">Sources: {% for k in loadedOps %}{{ b.operators[k].credit }}
+  ({% if b.operators[k].licence == "Open Government Licence v3.0" %}<a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence v3.0</a>{% else %}{{ b.operators[k].licence }}{% endif %}){% if not loop.last %}; {% endif %}{% endfor %}.
+  Timetable data for {{ b.dateLabel }}{% if b.feed.endLabel %}; this edition of the feed is
+  valid to {{ b.feed.endLabel }}{% endif %}.
+  Stop positions are the operators' where their feed carries them, otherwise from
+  <a href="https://www.gov.uk/government/publications/national-public-transport-access-node-schema">NaPTAN</a>
+  (Department for Transport, Open Government Licence v3.0). Spotted something wrong?
+  <a href="mailto:corrections@largs.scot">corrections@largs.scot</a>.</p>
+
+  {% else %}
+  <p class="note">The bus timetable hasn't been built yet — the deploy fetches
+  the operators' feeds in <code>scripts/fetch-data.mjs</code>.</p>
+  {% endif %}
+</section>
+
+<style>
+  /* Page-scoped, like the directory: nothing here touches site.css.
+     Mind a brace immediately followed by a hash: that pair opens a
+     Nunjucks comment. Keep a space after any "{" before an id selector. */
+  .bus-filter{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 10px}
+  .bus-filter a{display:block;padding:6px 14px;border:1px solid var(--sand);border-radius:999px;
+    background:var(--card);color:var(--slate);text-decoration:none;font-weight:500;font-size:.92rem}
+  .bus-filter a[aria-current="page"]{background:var(--teal);border-color:var(--teal);color:#fff}
+  .bus-filter a small{font-weight:400;opacity:.8}
+  .bus-notice{background:var(--foam-tint);border:1px solid var(--foam);border-radius:10px;
+    padding:12px 16px;margin:12px 0;font-size:.95rem}
+  #bus-map{height:420px;border-radius:12px;border:1px solid var(--sand);margin:12px 0 6px;background:var(--foam-tint)}
+  .bus-legend{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    font-family:"Spline Sans Mono",monospace;font-size:.74rem;color:var(--muted);margin-bottom:14px}
+  .bus-row{padding:12px 0;border-bottom:1px solid var(--sand)}
+  .bus-row h3{font-size:1.06rem;font-weight:700;color:var(--slate);margin:0}
+  .bus-where{font-weight:400;color:var(--muted);font-size:.9rem}
+  .bus-next{font-size:.98rem;color:var(--ink);margin:3px 0 2px;line-height:1.5}
+  .bus-next .mono{font-family:"Spline Sans Mono",monospace;font-size:.9rem;color:var(--slate)}
+  .bus-next .big{font-family:"Marcellus",serif;font-size:1.3rem;color:var(--slate);margin-right:4px}
+  .bus-next .op{font-family:"Spline Sans Mono",monospace;font-size:.7rem;color:var(--muted);letter-spacing:.06em;margin-left:4px}
+  .bus-next .last{display:block;color:var(--muted);font-size:.88rem}
+  .bus-none{color:var(--muted);font-style:italic}
+  .bus-row .meta{font-family:"Spline Sans Mono",monospace;font-size:.76rem;color:var(--muted);margin:2px 0 0}
+  .bus-row.pinned h3{font-size:1.18rem}
+  .bus-pin{width:14px;height:14px;border-radius:50%;background:var(--teal);border:2px solid #fff;
+    box-shadow:0 0 0 1px var(--slate);display:block}
+  .bus-pin.main{width:18px;height:18px;background:var(--slate)}
+  .bus-pin.quiet{background:var(--muted);opacity:.6}
+  .bus-popup .mono{font-family:"Spline Sans Mono",monospace}
+  @media (max-width:600px){ #bus-map{height:320px} }
+</style>
+
+{% if b.ok %}
+{# The baked data the script works from: today's calls at every stop, one
+   object, ~60 KB before compression. Nothing is fetched. #}
+<script type="application/json" id="bus-data">{{ { "date": b.date, "tomorrow": b.tomorrow, "op": op, "stops": b.stops } | dump | safe }}</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var data = JSON.parse(document.getElementById("bus-data").textContent);
+  var OP = data.op;
+  var stampEl = document.getElementById("bus-stamp");
+  var map = null, markers = {};
+
+  /* Largs wall clock, as minutes since midnight of the day the page was
+     BUILT for. Between midnight and 03:00 the reader is on the next
+     calendar date but still inside the baked service day, so if the clock
+     says tomorrow we add a day and the after-midnight buses (m >= 1440)
+     become "next". Any other mismatch means the page is older than the
+     date, and it says so rather than pretending. */
+  function londonNow() {
+    var p = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London",
+      year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false })
+      .formatToParts(new Date());
+    var g = function (t) { var x = p.filter(function (q) { return q.type === t; })[0]; return x ? x.value : ""; };
+    var iso = g("year") + "-" + g("month") + "-" + g("day");
+    var min = (Number(g("hour")) % 24) * 60 + Number(g("minute"));
+    if (iso === data.date) return { min: min, ok: true };
+    if (iso === data.tomorrow.date && min < 180) return { min: min + 1440, ok: true };
+    return { min: min, ok: false };
+  }
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  var OPERATORS = {{ b.operators | dump | safe }};
+  function opName(k) { return OPERATORS[k] ? OPERATORS[k].name : k; }
+  // This view's summary of a stop: the stop itself on All, else its byOp entry.
+  function viewOf(stop) { return OP === "all" ? stop : (stop.byOp && stop.byOp[OP]) || {}; }
+
+  function upcoming(stop, nowMin) {
+    return stop.deps.filter(function (d) {
+      return !d.term && d.m >= nowMin && (OP === "all" || d.op === OP);
+    });
+  }
+  function lastLine(stop) {
+    var parts = [];
+    var lastTo = viewOf(stop).lastTo || {};
+    Object.keys(lastTo).forEach(function (to) {
+      parts.push("last to " + esc(to) + ' <span class="mono">' + lastTo[to] + "</span>");
+    });
+    return parts.join(" · ");
+  }
+  function firstTomorrow(stop) {
+    var f = viewOf(stop).firstTomorrow;
+    return f ? ' · first tomorrow <span class="mono">' + f.t + "</span> " + esc(f.route) + " " + esc(f.to) : "";
+  }
+
+  /* Next two, then the lasts. When the day is over: say so, and say when
+     it starts again. Never "due", never "expected" — these are the times
+     the timetable prints. */
+  var OP_PENDING = {{ "true" if viewPending else "false" }};
+  var OP_NAME = {{ (b.operators[op].name if b.operators[op] else "") | dump | safe }};
+  function nextHtml(stop, nowMin) {
+    var any = stop.deps.some(function (d) { return !d.term && (OP === "all" || d.op === OP); });
+    if (!any) {
+      return OP_PENDING ? '<span class="bus-none">' + esc(OP_NAME) + ' times not loaded yet</span>'
+        : '<span class="bus-none">No buses today</span>' + firstTomorrow(stop);
+    }
+    var up = upcoming(stop, nowMin).slice(0, 2);
+    if (!up.length) return '<span class="bus-none">No more buses today</span>' + firstTomorrow(stop);
+    var html = up.map(function (d) {
+      return '<span class="big">' + d.t + "</span>" + esc(d.route) + " " + esc(d.to) +
+        (OP === "all" ? '<span class="op">' + opName(d.op) + "</span>" : "");
+    }).join(" &nbsp;·&nbsp; ");
+    return html + '<span class="last">' + lastLine(stop) + "</span>";
+  }
+
+  function paint() {
+    var now = londonNow();
+    data.stops.forEach(function (s) {
+      var row = document.getElementById("stop-" + s.id);
+      if (!row) return;
+      row.querySelector(".bus-next").innerHTML = nextHtml(s, now.min);
+      var m = markers[s.id];
+      if (m) m.setPopupContent(popupHtml(s, now.min));
+    });
+    stampEl.textContent = now.ok
+      ? "Timetable for " + stampEl.dataset.label + " · next buses from " + clock(now.min)
+      : "Timetable for " + stampEl.dataset.label + " — this page is older than today; it refreshes within fifteen minutes";
+  }
+  function clock(m) { m = m % 1440; return (m < 600 ? "0" : "") + Math.floor(m / 60) + ":" + (m % 60 < 10 ? "0" : "") + (m % 60); }
+
+  function popupHtml(s, nowMin) {
+    return '<div class="bus-popup"><strong>' + esc(s.name) + "</strong>" +
+      ((viewOf(s).towards || []).length ? "<br>towards " + esc(viewOf(s).towards.join(" / ")) : "") +
+      "<br>" + nextHtml(s, nowMin) +
+      '<br><a href="/buses/stop/' + s.id + '/">full list →</a> · <a href="#stop-' + s.id + '">details ↓</a></div>';
+  }
+
+  /* Plain dots. Main Street is larger and darker because it is the stop
+     most readers mean; stops with nothing today are faded, not hidden. */
+  function drawMap() {
+    if (!window.L) return;
+    map = L.map("bus-map", { scrollWheelZoom: false });
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    var now = londonNow(), bounds = [];
+    data.stops.forEach(function (s) {
+      var cls = "bus-pin" + (s.id === "61701147" ? " main" : "") +
+        (s.deps.some(function (d) { return !d.term && (OP === "all" || d.op === OP); }) ? "" : " quiet");
+      var m = L.marker([s.lat, s.lon], {
+        icon: L.divIcon({ className: "", html: '<span class="' + cls + '"></span>', iconSize: [18, 18], iconAnchor: [9, 9] }),
+        zIndexOffset: s.id === "61701147" ? 1000 : 0
+      }).addTo(map);
+      m.bindPopup(popupHtml(s, now.min), { maxWidth: 300 });
+      markers[s.id] = m;
+      bounds.push([s.lat, s.lon]);
+    });
+    if (bounds.length) map.fitBounds(bounds, { padding: [22, 22], maxZoom: 15 });
+    else map.setView([55.795, -4.868], 14);
+  }
+
+  document.querySelectorAll(".map-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+      var row = link.closest(".bus-row");
+      var m = row && markers[row.dataset.id];
+      if (!map || !m) return;
+      map.setView([Number(row.dataset.lat), Number(row.dataset.lng)], 16);
+      m.openPopup();
+    });
+  });
+
+  var pinned = document.getElementById("stop-61701147");
+  if (pinned) pinned.classList.add("pinned");
+  stampEl.dataset.label = stampEl.textContent.replace(/^Timetable for /, "");
+
+  drawMap();
+  paint();
+  /* Re-pick "next" once a minute while the tab is visible. No network:
+     it is the same baked list against a newer clock. */
+  var timer = null;
+  function start() { stop(); paint(); timer = setInterval(paint, 60 * 1000); }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") start(); else stop();
+  });
+  start();
+})();
+</script>
+{% endif %}
