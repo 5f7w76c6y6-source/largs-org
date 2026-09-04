@@ -227,6 +227,28 @@ Tokens → Create Token → **Custom token**:
   (or `read -s` + `export` for a session-only local test). Nowhere
   else, ever. The same rules cover the UKHO key.
 
+## Cloudflare zone settings that must stay as they are
+
+These live in the dashboard for the `largs.scot` zone, not in the
+repository, so a fresh pair of hands cannot see them from the code.
+Checked 4 September 2026.
+
+- **Email Address Obfuscation: OFF** (Security → Settings, under
+  "Client side abuse"). On, it rewrites every address into a
+  `/cdn-cgi/l/email-protection#…` token and injects a script to decode
+  it; anyone without JavaScript — reader mode, crawlers, some phones —
+  sees `[email protected]` where the site says "Tell us". The site
+  publishes deliberate role addresses with Fastmail's own filtering, so
+  the protection buys nothing and breaks the corrections link. Verify
+  with `curl -s https://largs.scot/ | grep -c cdn-cgi/l/email-protection`
+  — must print 0.
+- **Bot Fight Mode: OFF** and **Client-side security: OFF.** Bot Fight
+  Mode would challenge the GitHub Actions deploy and the Facebook and
+  search crawlers.
+- **AI crawler block:** Cloudflare injects a managed block above the
+  site's own `robots.txt`. Deliberate for now; toggleable under AI Crawl
+  Control. It does not affect Google Search.
+
 ## Renames and the long game
 
 Renaming the GitHub account is not free: repository URLs redirect, but
