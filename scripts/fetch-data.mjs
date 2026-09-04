@@ -1977,8 +1977,23 @@ function busesClock(min) {
 }
 
 // stopId -> sorted calls for one service day. m may exceed 1440.
+// Headsigns that are just the town's name mean nothing inside the town;
+// the trip's last stop is what the reader needs ("Largs" → "Largs Main St").
+const BUSES_TOWN = "Largs";
+function busesDestinations(slice) {
+  const stopName = {};
+  for (const st of slice.stops) stopName[st.id] = st.name;
+  const dest = {};
+  for (const [trip, stop, seq] of slice.calls) {
+    const t = slice.trips[trip];
+    if (t && seq === t.last && stopName[stop]) dest[trip] = stopName[stop];
+  }
+  return (trip, headsign) => (headsign === BUSES_TOWN && dest[trip]) ? dest[trip] : headsign;
+}
+
 function busesDay(slice, iso) {
   const { active } = busesActiveServices(slice, iso);
+  const destination = busesDestinations(slice);
   const byStop = {};
   for (const [trip, stop, seq, time, pickup] of slice.calls) {
     const t = slice.trips[trip];
@@ -1988,7 +2003,7 @@ function busesDay(slice, iso) {
     (byStop[stop] ||= []).push({
       m, t: busesClock(m),
       route: slice.routes[t.route] || "?",
-      to: t.headsign,
+      to: destination(trip, t.headsign),
       op: t.op,
       term: seq === t.last,
       setdown: pickup === "1",

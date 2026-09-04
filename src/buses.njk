@@ -99,12 +99,12 @@ eleventyComputed:
           {# Static content, replaced by script. First and last are true
              whatever the time; "next" is what the script adds. #}
           {% if has %}
-          <span class="mono">{{ v.first.t }}</span> {{ v.first.route }} {{ v.first.to }} first ·
+          <span class="mono">{{ v.first.t }}</span> {{ v.first.route }} to {{ v.first.to }} first ·
           {% for l in v.lastToList %}last to {{ l.to }} <span class="mono">{{ l.t }}</span>{% if not loop.last %} · {% endif %}{% endfor %}
           {% elif viewPending %}
           <span class="bus-none">{{ b.operators[op].name }} times not loaded yet</span>
           {% else %}
-          <span class="bus-none">No buses today</span>{% if v.firstTomorrow %} · first tomorrow <span class="mono">{{ v.firstTomorrow.t }}</span> {{ v.firstTomorrow.route }} {{ v.firstTomorrow.to }}{% endif %}
+          <span class="bus-none">No buses today</span>{% if v.firstTomorrow %} · first tomorrow <span class="mono">{{ v.firstTomorrow.t }}</span> {{ v.firstTomorrow.route }} to {{ v.firstTomorrow.to }}{% endif %}
           {% endif %}
         </div>
         <p class="meta"><a href="/buses/stop/{{ s.id }}/">full list for today →</a> · <a class="map-link" href="#bus-map">show on map →</a></p>
@@ -189,6 +189,8 @@ eleventyComputed:
   .bus-popup .big{font-family:"Marcellus",serif;font-size:1.15rem;color:var(--slate);margin-right:4px}
   .bus-popup .op{font-family:"Spline Sans Mono",monospace;font-size:.68rem;color:var(--muted);letter-spacing:.06em;margin-left:4px}
   .bus-popup .last{display:block;color:var(--muted);font-size:.86rem;margin-top:2px}
+  .bus-popup .dep{display:block}
+  .bus-popup .sep{display:none}
   @media (max-width:600px){ #bus-map{height:320px} }
 </style>
 
@@ -245,7 +247,7 @@ eleventyComputed:
   }
   function firstTomorrow(stop) {
     var f = viewOf(stop).firstTomorrow;
-    return f ? ' · first tomorrow <span class="mono">' + f.t + "</span> " + esc(f.route) + " " + esc(f.to) : "";
+    return f ? ' · first tomorrow <span class="mono">' + f.t + "</span> " + esc(f.route) + " to " + esc(f.to) : "";
   }
 
   /* Next two, then the lasts. When the day is over: say so, and say when
@@ -262,9 +264,9 @@ eleventyComputed:
     var up = upcoming(stop, nowMin).slice(0, 2);
     if (!up.length) return '<span class="bus-none">No more buses today</span>' + firstTomorrow(stop);
     var html = up.map(function (d) {
-      return '<span class="big">' + d.t + "</span>" + esc(d.route) + " " + esc(d.to) +
-        (OP === "all" ? '<span class="op">' + opName(d.op) + "</span>" : "");
-    }).join(" &nbsp;·&nbsp; ");
+      return '<span class="dep"><span class="big">' + d.t + "</span>" + esc(d.route) + " to " + esc(d.to) +
+        (OP === "all" ? '<span class="op">' + opName(d.op) + "</span>" : "") + "</span>";
+    }).join('<span class="sep"> &nbsp;·&nbsp; </span>');
     return html + '<span class="last">' + lastLine(stop) + "</span>";
   }
 
