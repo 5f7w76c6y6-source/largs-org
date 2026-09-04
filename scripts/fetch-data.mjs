@@ -1392,7 +1392,7 @@ const BUSES_FEEDS = [
   { op: "shuttle", format: "txc", url: "https://data.discoverpassenger.com/operator/shuttlebuses/dataset/current/download/txc" },
 ];
 const BUSES_UA = "largs.scot build (hello@largs.scot)";
-const BUSES_SCHEMA = 3; // bump when the slice shape or filter changes: forces one fresh pull
+const BUSES_SCHEMA = 4; // bump when the slice shape or filter changes: forces one fresh pull
 const BUSES_MAX_AGE_H = 20;
 const BUSES_CACHE_FILE = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -1548,12 +1548,54 @@ async function busesFetchFeed(feed) {
   for (const t of tripsAll) {
     const id = ns(t.trip_id);
     if (!largsTrips.has(id)) continue;
-    trips[id] = { route: ns(t.route_id), service: ns(t.service_id), headsign: t.trip_headsign || "", last: lastSeq[t.trip_id], op: feed.op };
+    trips[id] = { route: ns(t.route_id), service: ns(t.service_id), headsign: t.trip_headsign || "", last: lastSeq[t.trip_id], op: feed.op, ...(t.shape_id ? { shape: ns(t.shape_id) } : {}) };
     serviceIds.add(t.service_id);
     routeIds.add(t.route_id);
   }
   const routes = {};
   for (const r of routesAll) if (routeIds.has(r.route_id)) routes[ns(r.route_id)] = r.route_short_name || "?";
+
+  // Road geometry (shapes.txt) for the kept trips: clipped to a padded box,
+  // thinned to about 12 m between points, split where a shape leaves the box.
+  const shapes = {};
+  const shapeIds = new Set();
+  for (const t of tripsAll) if (largsTrips.has(ns(t.trip_id)) && t.shape_id) shapeIds.add(t.shape_id);
+  const sh = entries.find((e) => e.name === "shapes.txt" || e.name.endsWith("/shapes.txt"));
+  if (sh && shapeIds.size) {
+    const PAD_LAT = 0.02, PAD_LON = 0.035;
+    const raw = {};
+    let sHeader = null, ci = null;
+    const sp = new CSVParser((cells) => {
+      if (!sHeader) {
+        sHeader = cells.map((x) => x.replace(/^\uFEFF/, "").trim());
+        ci = { id: sHeader.indexOf("shape_id"), lat: sHeader.indexOf("shape_pt_lat"), lon: sHeader.indexOf("shape_pt_lon"), seq: sHeader.indexOf("shape_pt_sequence") };
+        return;
+      }
+      const id = cells[ci.id];
+      if (!shapeIds.has(id)) return;
+      const lat = Number(cells[ci.lat]), lon = Number(cells[ci.lon]);
+      if (lat < BUSES_BOX.latMin - PAD_LAT || lat > BUSES_BOX.latMax + PAD_LAT || lon < BUSES_BOX.lonMin - PAD_LON || lon > BUSES_BOX.lonMax + PAD_LON) return;
+      (raw[id] ||= []).push({ seq: Number(cells[ci.seq]), lat, lon });
+    });
+    feedBuffer(sh.read(), sp);
+    for (const [id, pts] of Object.entries(raw)) {
+      pts.sort((a, b) => a.seq - b.seq);
+      const segs = [];
+      let seg = [], last = null;
+      for (const pt of pts) {
+        if (last) {
+          const dKm = Math.hypot((pt.lat - last.lat) * 111, (pt.lon - last.lon) * 62);
+          if (dKm > 0.4) { if (seg.length > 1) segs.push(seg); seg = []; last = null; }
+          else if (dKm < 0.012) continue;
+        }
+        seg.push([Math.round(pt.lat * 1e5) / 1e5, Math.round(pt.lon * 1e5) / 1e5]);
+        last = pt;
+      }
+      if (seg.length > 1) segs.push(seg);
+      if (segs.length) shapes[ns(id)] = segs;
+    }
+    console.log(`buses: ${feed.op} shapes — ${Object.keys(shapes).length} of ${shapeIds.size} kept trips' shapes cross the Largs box`);
+  }
 
   const calendar = busesTable(entries, "calendar.txt")
     .filter((r) => serviceIds.has(r.service_id))
@@ -1565,7 +1607,7 @@ async function busesFetchFeed(feed) {
   const feedEnd = calendar.reduce((m, r) => (r.end_date > m ? r.end_date : m), "00000000");
 
   console.log(`buses: ${feed.op} GTFS (${(buf.length / 1048576).toFixed(1)} MB) — ${stops.length} Largs stops, ${Object.keys(trips).length} trips calling, feed ${feedStart}–${feedEnd}`);
-  return { op: feed.op, bytes: buf.length, start: feedStart, end: feedEnd, stops, trips, routes, calendar, calendarDates, calls };
+  return { op: feed.op, bytes: buf.length, start: feedStart, end: feedEnd, stops, trips, routes, calendar, calendarDates, calls, shapes };
 }
 
 /* ---- TransXChange -------------------------------------------------------
@@ -1756,6 +1798,28 @@ async function busesFetchBankHolidays() {
   return events.map((e) => ({ title: e.title, date: txcYmd(e.date) }));
 }
 
+// A track (ordered lat/lon points) → segments inside a padded Largs box,
+// thinned to about 12 m, split where the track leaves the box.
+function busesTrackSegments(pts) {
+  const PAD_LAT = 0.02, PAD_LON = 0.035;
+  const segs = [];
+  let seg = [], last = null;
+  for (const pt of pts) {
+    const inBox = pt.lat >= BUSES_BOX.latMin - PAD_LAT && pt.lat <= BUSES_BOX.latMax + PAD_LAT &&
+                  pt.lon >= BUSES_BOX.lonMin - PAD_LON && pt.lon <= BUSES_BOX.lonMax + PAD_LON;
+    if (!inBox) { if (seg.length > 1) segs.push(seg); seg = []; last = null; continue; }
+    if (last) {
+      const dKm = Math.hypot((pt.lat - last.lat) * 111, (pt.lon - last.lon) * 62);
+      if (dKm > 0.4) { if (seg.length > 1) segs.push(seg); seg = []; last = null; }
+      else if (dKm < 0.012) continue;
+    }
+    seg.push([Math.round(pt.lat * 1e5) / 1e5, Math.round(pt.lon * 1e5) / 1e5]);
+    last = pt;
+  }
+  if (seg.length > 1) segs.push(seg);
+  return segs;
+}
+
 // One TXC feed → the same Largs slice object busesFetchFeed() returns.
 async function busesFetchTxcFeed(feed) {
   const res = await fetch(feed.url, { headers: { "User-Agent": BUSES_UA }, signal: AbortSignal.timeout(120000) });
@@ -1779,7 +1843,7 @@ async function busesFetchTxcFeed(feed) {
   };
 
   const stopInfo = {};       // atco → { name, lat, lon }
-  const trips = {}, routes = {}, calendar = [], calendarDates = [], calls = [];
+  const trips = {}, routes = {}, calendar = [], calendarDates = [], calls = [], shapes = {};
   let feedStart = "99999999", feedEnd = "00000000", journeysTotal = 0, journeysNoProfile = 0;
   const unknownBank = new Set();
 
@@ -1797,10 +1861,26 @@ async function busesFetchTxcFeed(feed) {
       if (id && !stopInfo[id]) stopInfo[id] = { name: txcText(sp, "Descriptor", "CommonName"), lat: null, lon: null };
     }
 
+    // Road geometry: RouteLink/Track as OS grid points (or lat/lon when given).
+    const tracks = {};
+    for (const rs of txcChildren(txcChild(doc, "RouteSections"), "RouteSection")) {
+      for (const rl of txcChildren(rs, "RouteLink")) {
+        const pts = [];
+        for (const loc of txcChildren(txcChild(txcChild(rl, "Track"), "Mapping"), "Location")) {
+          const tr = txcChild(loc, "Translation") || loc;
+          const lat = Number(txcText(tr, "Latitude")), lon = Number(txcText(tr, "Longitude"));
+          if (lat && lon) { pts.push({ lat, lon }); continue; }
+          const E = Number(txcText(tr, "Easting")), N = Number(txcText(tr, "Northing"));
+          if (E && N) { const w = osgbToWgs84(E, N); pts.push({ lat: w.lat, lon: w.lng }); }
+        }
+        if (pts.length) tracks[rl.attrs.id] = pts;
+      }
+    }
+
     const sections = {};
     for (const sec of txcChildren(txcChild(doc, "JourneyPatternSections"), "JourneyPatternSection")) {
       sections[sec.attrs.id] = txcChildren(sec, "JourneyPatternTimingLink").map((l) => ({
-        id: l.attrs.id,
+        id: l.attrs.id, routeLink: txcText(l, "RouteLinkRef"),
         from: txcText(l, "From", "StopPointRef"), to: txcText(l, "To", "StopPointRef"),
         fromAct: txcText(l, "From", "Activity") || "pickUpAndSetDown", toAct: txcText(l, "To", "Activity") || "pickUpAndSetDown",
         fromWait: txcSeconds(txcText(l, "From", "WaitTime")), toWait: txcSeconds(txcText(l, "To", "WaitTime")),
@@ -1883,12 +1963,19 @@ async function busesFetchTxcFeed(feed) {
         walked.push({ stop: l.to, arr, dep: arr + val(l, "toWait"), act: l.toAct });
       }
 
+      // The pattern's road: its links' tracks in order, once per pattern.
+      const shapeId = ns(`jp:${j.service}:${j.pattern}`);
+      if (!(shapeId in shapes)) {
+        const pts = links.flatMap((l) => tracks[l.routeLink] || []);
+        const segs = pts.length ? busesTrackSegments(pts) : [];
+        shapes[shapeId] = segs.length ? segs : null;
+      }
       const tripId = ns(`${j.service}:${j.code}`);
       const routeId = ns(j.line || Object.keys(svc.lines)[0] || j.service);
       routes[routeId] = svc.lines[j.line] || Object.values(svc.lines)[0] || "?";
       let last = -1;
       walked.forEach((c, i) => { if (c.act !== "pass") last = i; });
-      trips[tripId] = { route: routeId, service: sid, headsign: j.display || pat.display || svc.destination || "", last, op: feed.op };
+      trips[tripId] = { route: routeId, service: sid, headsign: j.display || pat.display || svc.destination || "", last, op: feed.op, ...(shapes[shapeId] ? { shape: shapeId } : {}) };
       walked.forEach((c, i) => {
         if (c.act === "pass") return;
         calls.push({ trip: tripId, stop: c.stop, seq: i, time: txcHms(i === last ? c.arr : c.dep), pickup: c.act === "setDown" ? "1" : "0" });
@@ -1913,9 +2000,14 @@ async function busesFetchTxcFeed(feed) {
   const largsCalls = calls.filter((c) => stopIds.has(c.stop));
   const largsTrips = new Set(largsCalls.map((c) => c.trip));
   for (const id of Object.keys(trips)) if (!largsTrips.has(id)) delete trips[id];
+  const usedRoutes = new Set(Object.values(trips).map((t) => t.route));
+  for (const id of Object.keys(routes)) if (!usedRoutes.has(id)) delete routes[id];
 
   console.log(`buses: ${feed.op} TXC (${(buf.length / 1048576).toFixed(1)} MB, ${entries.length} files) — ${stops.length} Largs stops, ${Object.keys(trips).length} of ${journeysTotal} journeys calling, feed ${feedStart}–${feedEnd}`);
-  return { op: feed.op, bytes: buf.length, start: feedStart, end: feedEnd, stops, trips, routes, calendar, calendarDates, calls: largsCalls };
+  const usedShapes = new Set(Object.values(trips).map((t) => t.shape).filter(Boolean));
+  for (const id of Object.keys(shapes)) if (!shapes[id] || !usedShapes.has(id)) delete shapes[id];
+  console.log(`buses: ${feed.op} tracks — ${Object.keys(shapes).length} patterns with road geometry in the Largs box`);
+  return { op: feed.op, bytes: buf.length, start: feedStart, end: feedEnd, stops, trips, routes, calendar, calendarDates, calls: largsCalls, shapes };
 }
 
 // All feeds → one slice. Stops merge by NaPTAN code (first feed's name
@@ -1935,6 +2027,7 @@ async function busesFetchSlice() {
   const calendar = parts.flatMap((p) => p.calendar);
   const calendarDates = parts.flatMap((p) => p.calendarDates);
   const calls = parts.flatMap((p) => p.calls);
+  const shapes = Object.assign({}, ...parts.map((p) => p.shapes || {}));
   const feeds = Object.fromEntries(parts.map((p) => [p.op, { start: p.start, end: p.end, bytes: p.bytes }]));
   const feedStart = parts.reduce((m, p) => (p.start < m ? p.start : m), "99999999");
   const feedEnd = parts.reduce((m, p) => (p.end > m ? p.end : m), "00000000");
@@ -1944,7 +2037,7 @@ async function busesFetchSlice() {
     schema: BUSES_SCHEMA,
     fetchedAt: new Date().toISOString(),
     feed: { start: feedStart, end: feedEnd, bytes, feeds },
-    stops, trips, routes, calendar, calendarDates,
+    stops, trips, routes, calendar, calendarDates, shapes,
     calls: calls.map((c) => [c.trip, c.stop, c.seq, c.time, c.pickup]),
   };
   try {
@@ -1979,6 +2072,37 @@ function busesClock(min) {
 // stopId -> sorted calls for one service day. m may exceed 1440.
 // Headsigns that are just the town's name mean nothing inside the town;
 // the trip's last stop is what the reader needs ("Largs" → "Largs Main St").
+// Line colours on the map, from the site's palette: McGill's in the blue-greens,
+// Shuttle Buses in the warm ones, Stagecoach in red-brown. Ours, not the feeds'.
+const BUSES_ROUTE_STYLE = {
+  "901": { colour: "#25655C" },   // teal
+  "906": { colour: "#17333A" },   // slate
+  "906X": { colour: "#3A7CA5" },  // blue (added)
+  "904": { colour: "#7A5C9E" },   // plum (added)
+  "576": { colour: "#6E9A8F" },   // grey-green
+  "578": { colour: "#6E9A8F", dash: "10 7" },
+  "40": { colour: "#C8891E" },    // amber, the town bus
+  "50": { colour: "#2F7D4F" },    // green
+  "585": { colour: "#8C4A3C" },   // red-brown, Stagecoach
+};
+
+// Each route's most-run patterns as lines for the map, from the operators'
+// own road geometry (GTFS shapes, TXC tracks). No geometry, no line.
+function busesRouteLines(slice) {
+  const patterns = {};
+  for (const t of Object.values(slice.trips)) {
+    const name = slice.routes[t.route];
+    if (!name || !t.shape || !slice.shapes || !slice.shapes[t.shape]) continue;
+    const bucket = (patterns[name] ||= {});
+    (bucket[t.shape] ||= { journeys: 0, segs: slice.shapes[t.shape] }).journeys++;
+  }
+  const out = {};
+  for (const [name, bucket] of Object.entries(patterns)) {
+    out[name] = Object.values(bucket).sort((a, b) => b.journeys - a.journeys).slice(0, 4);
+  }
+  return out;
+}
+
 const BUSES_TOWN = "Largs";
 function busesDestinations(slice) {
   const stopName = {};
@@ -2089,6 +2213,7 @@ async function loadBuses() {
   const routeNames = [...new Set(Object.values(slice.routes))].sort();
   const routeOp = {};
   for (const [rid, name] of Object.entries(slice.routes)) routeOp[name] ||= rid.split(":")[0];
+  const routeLines = busesRouteLines(slice);
   const departures = stops.reduce((n, s) => n + s.deps.filter((d) => !d.term).length, 0);
 
   return {
@@ -2102,7 +2227,13 @@ async function loadBuses() {
     exceptions: { added: ex.added, removed: ex.removed },
     feed: { ...slice.feed, endLabel: busesYmdLabel(slice.feed.end), fetchedAt: slice.fetchedAt },
     operators: BUSES_OPERATORS,
-    routes: routeNames.map((n) => ({ n, label: BUSES_ROUTE_LABELS[n] || "", op: routeOp[n] || "mcgills" })),
+    routes: routeNames.map((n) => ({
+      n, label: BUSES_ROUTE_LABELS[n] || "", op: routeOp[n] || "mcgills",
+      colour: (BUSES_ROUTE_STYLE[n] || {}).colour || "#5B6E6D",
+      dash: (BUSES_ROUTE_STYLE[n] || {}).dash || "",
+      lines: routeLines[n] || [],
+      drawn: (routeLines[n] || []).length ? "road" : "",
+    })),
     views: BUSES_VIEWS,
     departures,
     stops,

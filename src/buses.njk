@@ -80,7 +80,12 @@ eleventyComputed:
 
   <div id="bus-map" role="application"
        aria-label="Map of the bus stops in Largs. Every stop is listed below."></div>
-  <p class="bus-legend"><span>tap a stop for its next buses</span><span>{{ b.stops | length }} stops · {{ b.departures }} departures today</span></p>
+  <div class="route-chips" aria-label="Bring one route forward">
+    {% for r in b.routes %}{% if r.drawn and (op == "all" or r.op == op) %}
+    <button type="button" class="route-chip" data-route="{{ r.n }}" aria-pressed="false"><span class="swatch{% if r.dash %} dashed{% endif %}" style="border-color:{{ r.colour }}"></span>{{ r.n }}</button>
+    {% endif %}{% endfor %}
+  </div>
+  <p class="bus-legend"><span>tap a stop for its next buses · lines are the routes, from the operators' own route data · tap a route number to bring it forward</span><span>{{ b.stops | length }} stops · {{ b.departures }} departures today</span></p>
 
   <div id="bus-list">
   {% for s in b.stops %}
@@ -119,7 +124,7 @@ eleventyComputed:
     <div class="updates-body">
       <ul class="badge-key">
         {% for r in b.routes %}
-        <li><strong>{{ r.n }}</strong>{% if r.label %} — {{ r.label }}{% endif %} <span class="mono">{{ b.operators[r.op].name }}</span></li>
+        <li><span class="swatch{% if r.dash %} dashed{% endif %}" style="border-color:{{ r.colour }}"></span><strong>{{ r.n }}</strong>{% if r.label %} — {{ r.label }}{% endif %} <span class="mono">{{ b.operators[r.op].name }}</span>{% if not r.drawn %} <span class="bus-none">no route line in the operator's data</span>{% endif %}</li>
         {% endfor %}
         {% for k in pendingOps %}{% for r in b.operators[k].pendingRoutes %}
         <li><strong>{{ r.n }}</strong> — {{ r.label }} <span class="mono">{{ b.operators[k].name }}</span> — times not loaded yet</li>
@@ -178,6 +183,13 @@ eleventyComputed:
   .bus-next .op{font-family:"Spline Sans Mono",monospace;font-size:.7rem;color:var(--muted);letter-spacing:.06em;margin-left:4px}
   .bus-next .last{display:block;color:var(--muted);font-size:.88rem}
   .bus-none{color:var(--muted);font-style:italic}
+  .swatch{display:inline-block;width:22px;height:0;border-top:3px solid;vertical-align:middle;margin-right:8px}
+  .swatch.dashed{border-top-style:dashed}
+  .route-chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+  .route-chip{font-family:"Spline Sans Mono",monospace;font-size:.82rem;color:var(--slate);background:var(--card);border:1px solid var(--sand);border-radius:999px;padding:4px 10px 4px 8px;cursor:pointer}
+  .route-chip .swatch{width:16px;margin-right:6px}
+  .route-chip[aria-pressed="true"]{background:#1E6FD9;color:#fff;border-color:#1E6FD9}
+  .route-chip[aria-pressed="true"] .swatch{border-color:#fff !important}
   .bus-row .meta{font-family:"Spline Sans Mono",monospace;font-size:.76rem;color:var(--muted);margin:2px 0 0}
   .bus-row.pinned h3{font-size:1.18rem}
   .bus-pin{width:14px;height:14px;border-radius:50%;background:var(--teal);border:2px solid #fff;
@@ -197,7 +209,7 @@ eleventyComputed:
 {% if b.ok %}
 {# The baked data the script works from: today's calls at every stop, one
    object, ~60 KB before compression. Nothing is fetched. #}
-<script type="application/json" id="bus-data">{{ { "date": b.date, "tomorrow": b.tomorrow, "op": op, "stops": b.stops } | dump | safe }}</script>
+<script type="application/json" id="bus-data">{{ { "date": b.date, "tomorrow": b.tomorrow, "op": op, "stops": b.stops, "routes": b.routes } | dump | safe }}</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
@@ -206,7 +218,31 @@ eleventyComputed:
   var data = JSON.parse(document.getElementById("bus-data").textContent);
   var OP = data.op;
   var stampEl = document.getElementById("bus-stamp");
-  var map = null, markers = {};
+  var map = null, markers = {}, routeLayers = {}, isolated = null;
+  var HIGHLIGHT = "#1E6FD9";   // the route brought forward; used nowhere else on the site
+
+  /* Route chips: tap a route to bring it forward — its variants appear,
+     the other routes fade. Tap again to release. */
+  function isolateRoute(n) {
+    isolated = isolated === n ? null : n;
+    Object.keys(routeLayers).forEach(function (k) {
+      var l = routeLayers[k], on = isolated === null || isolated === k;
+      var restyle = function (p) {
+        if (!p.options.baseColor) { p.setStyle({ opacity: on ? 0.9 : 0.15 }); return; }
+        p.setStyle({ color: isolated === k ? HIGHLIGHT : p.options.baseColor, opacity: on ? 1 : 0.15, weight: isolated === k ? 5 : 4 });
+      };
+      l.main.eachLayer(restyle);
+      l.variants.eachLayer(restyle);
+      if (isolated === k) { if (!map.hasLayer(l.variants)) l.variants.addTo(map); }
+      else if (map.hasLayer(l.variants)) map.removeLayer(l.variants);
+    });
+    document.querySelectorAll(".route-chip").forEach(function (c) {
+      c.setAttribute("aria-pressed", c.dataset.route === isolated ? "true" : "false");
+    });
+  }
+  document.querySelectorAll(".route-chip").forEach(function (c) {
+    c.addEventListener("click", function () { if (map) isolateRoute(c.dataset.route); });
+  });
 
   /* Largs wall clock, as minutes since midnight of the day the page was
      BUILT for. Between midnight and 03:00 the reader is on the next
@@ -301,8 +337,29 @@ eleventyComputed:
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+    /* Route lines for this view, from the operators' own road geometry.
+       The most-run pattern of each route is solid; its others are dashed. */
+    (data.routes || []).forEach(function (r) {
+      if (OP !== "all" && r.op !== OP) return;
+      if (!(r.lines || []).length) return;
+      var tip = esc(r.n) + (r.label ? " · " + esc(r.label) : "");
+      var main = L.layerGroup().addTo(map), variants = L.layerGroup();
+      r.lines.forEach(function (line, i) {
+        var group = i === 0 ? main : variants;
+        line.segs.forEach(function (seg) {
+          if (seg.length < 2) return;
+          L.polyline(seg, { color: "#fff", weight: 7, opacity: 0.9, lineCap: "round", lineJoin: "round" }).addTo(group);
+          L.polyline(seg, {
+            color: r.colour, baseColor: r.colour, weight: 4, opacity: 1,
+            dashArray: i === 0 ? (r.dash || null) : "6 8", lineCap: "round", lineJoin: "round"
+          }).bindTooltip(tip, { sticky: true }).addTo(group);
+        });
+      });
+      routeLayers[r.n] = { main: main, variants: variants };
+    });
     var now = londonNow(), bounds = [];
     data.stops.forEach(function (s) {
+      if (OP !== "all" && s.ops.indexOf(OP) < 0) return;
       var cls = "bus-pin" + (s.id === "61701147" ? " main" : "") +
         (s.deps.some(function (d) { return !d.term && (OP === "all" || d.op === OP); }) ? "" : " quiet");
       var m = L.marker([s.lat, s.lon], {
