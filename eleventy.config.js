@@ -258,6 +258,22 @@ module.exports = function (eleventyConfig) {
     return true;
   }
 
+  // A regular whose term starts within the next ten weeks is shown on the
+  // What's On page with a "starts …" note rather than hidden: September
+  // is when people choose classes, and hiding them until day one is the
+  // wrong kind of careful. The Today board still waits for the real start.
+  const STARTS_SOON_DAYS = 70;
+  function startsSoon(r, today) {
+    if (!r.from || r.from <= today) return false;
+    const limit = new Date(today + "T00:00:00Z");
+    limit.setUTCDate(limit.getUTCDate() + STARTS_SOON_DAYS);
+    return r.from <= limit.toISOString().slice(0, 10);
+  }
+  function startsLabel(iso) {
+    const d = new Date(iso + "T12:00:00Z");
+    return "starts " + d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "Europe/London" });
+  }
+
   // regularsToday(regulars) -> those running today, in Largs wall-clock time.
   eleventyConfig.addFilter("regularsToday", (regulars) => {
     const today = ukToday();
@@ -272,7 +288,9 @@ module.exports = function (eleventyConfig) {
   // an empty heading. Only currently-active regulars are included.
   eleventyConfig.addFilter("regularsByDay", (regulars) => {
     const today = ukToday();
-    const live = (regulars || []).filter((r) => isActive(r, today));
+    const live = (regulars || [])
+      .filter((r) => isActive(r, today) || startsSoon(r, today))
+      .map((r) => (startsSoon(r, today) ? { ...r, startsLabel: startsLabel(r.from) } : r));
     return WEEKDAYS.map((day) => ({
       day: day.charAt(0).toUpperCase() + day.slice(1),
       items: live
