@@ -82,12 +82,30 @@
       "url": "https://www.ticketsource.com/barrfields/the-sound-of-scotland-with-the-macdonald-brothers/e-yjyjlk"
     },
     {
+      "date": "2026-09-24",
+      "title": "OIR coach outing to Stirling",
+      "venue": "Departs Bath Street, Largs",
+      "time": "10:00–17:00",
+      "image": "/assets/img/ev-oir-outing-stirling.png",
+      "blurb": "A day out with OIR Largs. Bannockburn for a couple of hours (the visitor centre may be closed for maintenance — OIR will confirm; concession entry £8), or Stirling Castle (concession £16.50, £15 booked online; free to Historic Scotland members), then an hour at Dobbies Stirling for a coffee and a browse. £28 plus admission. Coach leaves Bath Street at 10am and Stirling at 5pm. For OIR members — anyone 50 or over can join. Book with Kay on 07544 941087, at the office (133 Main Street, weekdays 10am–noon) or via oirlargs.org.uk.",
+      "url": "https://oirlargs.org.uk"
+    },
+    {
       "date": "2026-09-25",
       "title": "Thank ABBA For The Music",
       "venue": "Barrfields Theatre",
       "time": "19:30",
       "blurb": "ABBA tribute concert.",
       "url": "https://www.ticketsource.com/barrfields/thank-abba-for-the-music/e-modkko"
+    },
+    {
+      "date": "2026-10-07",
+      "title": "OIR monthly meeting: 70 Years with Boots and Camera — Iain Park",
+      "venue": "Largs Parish Church Hall",
+      "time": "14:00",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "OIR Largs's monthly general meeting: a guest speaker or entertainment, then light refreshments. Members and prospective members welcome — anyone 50 or over can join. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "url": "https://oirlargs.org.uk"
     },
     {
       "date": "2026-10-08",
@@ -154,6 +172,15 @@
       "url": "https://www.ticketsource.com/barrfields/the-rod-stewart-songbook/e-lelmbb"
     },
     {
+      "date": "2026-11-04",
+      "title": "OIR monthly meeting: The Legacy of George Wyllie — Willie Sutherland",
+      "venue": "Largs Parish Church Hall",
+      "time": "14:00",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "OIR Largs's monthly general meeting: a guest speaker or entertainment, then light refreshments. Members and prospective members welcome — anyone 50 or over can join. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "url": "https://oirlargs.org.uk"
+    },
+    {
       "date": "2026-11-08",
       "title": "Emilio Santoro as Elvis",
       "venue": "Barrfields Theatre",
@@ -184,6 +211,15 @@
       "time": "20:00",
       "blurb": "Stand-up from a bill of Scottish comedians.",
       "url": "https://www.ticketsource.com/barrfields/a-scottish-comedy-collective/e-rbgzab"
+    },
+    {
+      "date": "2026-12-02",
+      "title": "OIR monthly meeting: Musical entertainment — accordionist Robin Hyland",
+      "venue": "Largs Parish Church Hall",
+      "time": "14:00",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "OIR Largs's monthly general meeting: a guest speaker or entertainment, then light refreshments. Members and prospective members welcome — anyone 50 or over can join. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "url": "https://oirlargs.org.uk"
     },
     {
       "date": "2026-12-03",
@@ -226,6 +262,60 @@
       "url": "https://www.ticketsource.com/barrfields/rapunzel-pantomime/e-ovrqev"
     },
     {
+      "date": "2027-01-06",
+      "title": "OIR monthly meeting: Within these Walls — Rhona Hotchkiss",
+      "venue": "Largs Parish Church Hall",
+      "time": "14:00",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "OIR Largs's monthly general meeting: a guest speaker or entertainment, then light refreshments. Members and prospective members welcome — anyone 50 or over can join. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "url": "https://oirlargs.org.uk"
+    },
+    {
+      "date": "2027-02-03",
+      "title": "OIR monthly meeting: Home Grown Talent — OIR's Guitar Group",
+      "venue": "Largs Parish Church Hall",
+      "time": "14:00",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "OIR Largs's monthly general meeting: a guest speaker or entertainment, then light refreshments. Members and prospective members welcome — anyone 50 or over can join. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "url": "https://oirlargs.org.uk"
+    },
+    {
+      "date": "2027-03-04",
+      "title": "OIR monthly meeting: The Sundowners — OIR's Dram Group",
+      "venue": "Largs Parish Church Hall",
+      "time": "14:00",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "OIR Largs's monthly general meeting: a guest speaker or entertainment, then light refreshments. Members and prospective members welcome — anyone 50 or over can join. On a Thursday this month, because of Lent. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "url": "https://oirlargs.org.uk"
+    },
+    {
+      "date": "2027-04-07",
+      "title": "OIR monthly meeting: Greek and Roman History — Jim Carmichael",
+      "venue": "Largs Parish Church Hall",
+      "time": "14:00",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "OIR Largs's monthly general meeting: a guest speaker or entertainment, then light refreshments. Members and prospective members welcome — anyone 50 or over can join. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "url": "https://oirlargs.org.uk"
+    },
+    {
+      "date": "2027-05-05",
+      "title": "OIR monthly meeting: Clyde Eldorado — how Greenock grew",
+      "venue": "Largs Parish Church Hall",
+      "time": "14:00",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "OIR Largs's monthly general meeting: a guest speaker or entertainment, then light refreshments. Members and prospective members welcome — anyone 50 or over can join. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "url": "https://oirlargs.org.uk"
+    },
+    {
+      "date": "2027-06-02",
+      "title": "OIR monthly meeting: Annual General Meeting, then music with Sandalian",
+      "venue": "Largs Parish Church Hall",
+      "time": "14:00",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "OIR Largs's monthly general meeting: a guest speaker or entertainment, then light refreshments. Members and prospective members welcome — anyone 50 or over can join. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "url": "https://oirlargs.org.uk"
+    },
+    {
       "date": "2027-06-05",
       "title": "Across the Universe: The Beatles '66–70'",
       "venue": "Barrfields Theatre",
@@ -246,6 +336,626 @@
         "label": "Their Facebook page",
         "url": "https://www.facebook.com/thrudecaades"
       }
+    },
+    {
+      "title": "Line Dancing",
+      "weekday": "monday",
+      "time": "10:00–12:00",
+      "venue": "Halkshill Bowling Club",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "year-round"
+    },
+    {
+      "title": "Drama",
+      "weekday": "monday",
+      "time": "13:30–16:00",
+      "venue": "Largs Parish Church, Choir Room",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-14"
+    },
+    {
+      "title": "Ukulele",
+      "weekday": "monday",
+      "time": "14:00–16:00",
+      "venue": "Brisbane Evangelical Church, Main Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-14"
+    },
+    {
+      "title": "Tea Dances",
+      "weekday": "monday",
+      "time": "14:00–16:00",
+      "venue": "Largs Parish Church, Main Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-07"
+    },
+    {
+      "title": "Archaeology Discussion",
+      "weekday": "tuesday",
+      "time": "10:00–12:00",
+      "venue": "United Free Church Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "monthly, first Tuesday",
+      "from": "2026-10-06"
+    },
+    {
+      "title": "Calligraphy",
+      "weekday": "tuesday",
+      "time": "10:00–12:00",
+      "venue": "Douglas Park Bowling Club",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-22"
+    },
+    {
+      "title": "Italian — Advanced",
+      "weekday": "tuesday",
+      "time": "10:00–12:00",
+      "venue": "The George Hotel",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-10-06"
+    },
+    {
+      "title": "Keyboard",
+      "weekday": "tuesday",
+      "time": "10:00–12:00",
+      "venue": "Largs Episcopal Church",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-22"
+    },
+    {
+      "title": "French — Intermediate",
+      "weekday": "tuesday",
+      "time": "12:30–15:30",
+      "venue": "Brisbane Evangelical Church, Upper Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-08"
+    },
+    {
+      "title": "Carpet Bowls",
+      "weekday": "tuesday",
+      "time": "14:00–16:00",
+      "venue": "Inverclyde Sports Centre",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-15"
+    },
+    {
+      "title": "Geology",
+      "weekday": "tuesday",
+      "time": "14:00",
+      "venue": "The George Hotel",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "monthly, second Tuesday, plus site visits"
+    },
+    {
+      "title": "Philosophy: Discussion",
+      "weekday": "tuesday",
+      "time": "14:00–16:00",
+      "venue": "Dunn Memorial Small Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-08"
+    },
+    {
+      "title": "Singing for Fun",
+      "weekday": "tuesday",
+      "time": "14:00–16:00",
+      "venue": "Halkshill Bowling Club",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-29"
+    },
+    {
+      "title": "Yarn Matters",
+      "weekday": "tuesday",
+      "time": "14:00–16:00",
+      "venue": "United Free Church Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-08"
+    },
+    {
+      "title": "Book Group",
+      "weekday": "tuesday",
+      "time": "15:45–16:45",
+      "venue": "Largs Library, Community Room",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "monthly, first Tuesday"
+    },
+    {
+      "title": "Table Tennis",
+      "weekday": "tuesday",
+      "time": "19:00–21:00",
+      "venue": "Inverclyde Sports Centre",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "year-round"
+    },
+    {
+      "title": "Level Walking",
+      "weekday": "wednesday",
+      "time": "Time TBC",
+      "venue": "",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Times and meeting place from OIR. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "year-round"
+    },
+    {
+      "title": "Tai-Chi — Advanced",
+      "weekday": "wednesday",
+      "time": "09:45–10:45",
+      "venue": "Largs Parish Church, Main Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-23"
+    },
+    {
+      "title": "Tai-Chi — Beginners",
+      "weekday": "wednesday",
+      "time": "11:00–12:00",
+      "venue": "Largs Parish Church, Main Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-23"
+    },
+    {
+      "title": "Pilates",
+      "weekday": "wednesday",
+      "time": "10:00–11:00",
+      "venue": "Largs Episcopal Church",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-02"
+    },
+    {
+      "title": "Scottish Country Dancing",
+      "weekday": "wednesday",
+      "time": "14:00–16:00",
+      "venue": "Brisbane Evangelical Church, Main Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-09"
+    },
+    {
+      "title": "Cycling",
+      "weekday": "thursday",
+      "time": "Time TBC",
+      "venue": "",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Times and meeting place from OIR. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "year-round"
+    },
+    {
+      "title": "Zumba Gold",
+      "weekday": "thursday",
+      "time": "10:00–11:00",
+      "venue": "Largs Parish Church, Main Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "year-round"
+    },
+    {
+      "title": "Play and Poetry Reading",
+      "weekday": "thursday",
+      "time": "10:00–12:00",
+      "venue": "Largs Parish Church, Choir Room",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-03"
+    },
+    {
+      "title": "Spanish — Intermediate",
+      "weekday": "thursday",
+      "time": "10:00–12:00",
+      "venue": "United Free Church Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-03"
+    },
+    {
+      "title": "Italian",
+      "weekday": "thursday",
+      "time": "10:15–12:15",
+      "venue": "The George Hotel",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "year-round",
+      "from": "2026-09-03"
+    },
+    {
+      "title": "Life Writing",
+      "weekday": "thursday",
+      "time": "11:00–13:00",
+      "venue": "Largs Library",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-17"
+    },
+    {
+      "title": "Easy Exercise",
+      "weekday": "thursday",
+      "time": "11:00–12:00",
+      "venue": "Gym at 45 Gogo Street",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "year-round"
+    },
+    {
+      "title": "Yoga",
+      "weekday": "thursday",
+      "time": "12:00–13:00",
+      "venue": "Largs Parish Church, Annexe",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "year-round"
+    },
+    {
+      "title": "Guitar",
+      "weekday": "thursday",
+      "time": "14:00–16:00",
+      "venue": "Douglas Park Bowling Club",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-10-01"
+    },
+    {
+      "title": "Latin",
+      "weekday": "thursday",
+      "time": "14:00–16:00",
+      "venue": "Brisbane Evangelical Church, Upper Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "monthly",
+      "from": "2026-09-24"
+    },
+    {
+      "title": "Scottish History",
+      "weekday": "thursday",
+      "time": "14:00–16:00",
+      "venue": "Brisbane Evangelical Church, Main Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "fortnightly, first and third Thursday",
+      "from": "2026-09-03"
+    },
+    {
+      "title": "Art and Chat",
+      "weekday": "friday",
+      "time": "09:30–12:30",
+      "venue": "Douglas Park Bowling Club",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Moves to 13:00–16:00 from 2 October. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly",
+      "from": "2026-09-04"
+    },
+    {
+      "title": "German",
+      "weekday": "friday",
+      "time": "14:00–16:00",
+      "venue": "Brisbane Evangelical Church, Upper Hall",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "fortnightly",
+      "from": "2026-09-11"
+    },
+    {
+      "title": "Hill Walking",
+      "weekday": "saturday",
+      "time": "08:30–09:00 depart",
+      "venue": "From near the Vikingar car park exit",
+      "image": "/assets/img/ev-oir.png",
+      "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Time and place may vary. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
+      "contact": {
+        "label": "OIR Largs website",
+        "url": "https://oirlargs.org.uk"
+      },
+      "org": {
+        "name": "OIR Largs",
+        "url": "https://oirlargs.org.uk"
+      },
+      "freq": "weekly"
     }
   ]
 }

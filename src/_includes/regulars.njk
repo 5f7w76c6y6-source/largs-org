@@ -17,8 +17,8 @@
    than an invented listing, because somebody turns up. Nothing goes in here
    that has not been told to us by whoever runs it. #}
 {% set byDay = events.regulars | regularsByDay %}
-<section class="wrap" aria-labelledby="regulars-h">
-  <h2 id="regulars-h">Every week in Largs</h2>
+<section class="wrap" id="regulars" aria-labelledby="regulars-h">
+  <h2 id="regulars-h">Regular classes and groups</h2>
   <div class="rule" aria-hidden="true"></div>
 
   {% if byDay | length %}
@@ -40,7 +40,7 @@
         {% if r.image %}<img class="event-img" src="{{ r.image }}" alt="" loading="lazy" decoding="async">{% endif %}
         <div class="regular-body">
           <h4 class="regular-title">{{ r.title }}</h4>
-          {% if r.venue %}<p class="regular-meta">{{ r.venue }}</p>{% endif %}
+          {% if r.venue or r.freq %}<p class="regular-meta">{{ r.venue }}{% if r.venue and r.freq %} · {% endif %}{{ r.freq }}</p>{% endif %}
           {% if r.blurb %}<p class="regular-blurb">{{ r.blurb }}</p>{% endif %}
           {# `contact` is either plain text (a phone number, "ask at the
              counter") or {label, url} for a link — the same shape the

@@ -11,9 +11,12 @@ subtitle: Events in and around the town, every one checked before it goes up.
   </div>
   <p class="page-intro">Upcoming events in and around Largs — from the seafront
   to the stage. All listings are checked before they go up. Free to submit.</p>
+  <p class="sub"><strong><a href="#events">Upcoming events ({{ events.items | upcoming | length }})</a> ·
+  <a href="#regulars">Regular classes and groups ({{ events.regulars | length }})</a> ·
+  <a href="#submit-h">Add yours</a></strong></p>
 </section>
 
-<section class="wrap whatson-section" aria-label="Upcoming events">
+<section class="wrap whatson-section" id="events" aria-label="Upcoming events">
 
   {# Separate upcoming events into those with and without images #}
   {% set allEvents = events.items | upcoming %}
@@ -110,6 +113,22 @@ subtitle: Events in and around the town, every one checked before it goes up.
 </script>
 
 {% include "regulars.njk" %}
+
+<style>
+  /* Day headings in the regulars list. site.css styles them as quiet
+     labels, which was right with one regular; with dozens they are what
+     people navigate by. Larger, dark, a rule above, and sticky: the day
+     stays at the top of the screen until the next one pushes it off. */
+  .regular-day{margin-bottom:28px}
+  .regular-dayname{
+    position:sticky;top:0;z-index:2;
+    background:var(--paper,#FBF8F1);
+    font-family:"Spline Sans Mono",monospace;font-size:1rem;letter-spacing:.18em;
+    text-transform:uppercase;font-weight:700;color:var(--slate);
+    margin:0 0 4px;padding:12px 0 8px;
+    border-top:2px solid var(--teal);
+  }
+</style>
 
 <section class="whatson-submit wrap" aria-labelledby="submit-h">
   <h2 id="submit-h">Add your event or class</h2>

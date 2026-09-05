@@ -369,11 +369,34 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
   {# Regular classes and clubs meeting today. Same .event markup as
      above so they read as one list — the time takes the place of the
      date block, since a weekly class has no date to show. #}
+  {# Regulars that share an `org` collapse to one line — an organisation
+     with a dozen classes on a Tuesday would otherwise fill the board.
+     What's on lists every one of them. #}
+  {% set dayShort = {"monday":"Mon","tuesday":"Tue","wednesday":"Wed","thursday":"Thu","friday":"Fri","saturday":"Sat","sunday":"Sun"} %}
+  {% set orgsSeen = [] %}
   {% for r in todayRegulars %}
+  {% if r.org and r.org.name %}
+    {% if r.org.name not in orgsSeen %}
+    {% set orgsSeen = (orgsSeen.push(r.org.name), orgsSeen) %}
+    {% set mine = [] %}
+    {% for x in todayRegulars %}{% if x.org and x.org.name == r.org.name %}{% set mine = (mine.push(x), mine) %}{% endif %}{% endfor %}
   <article class="event">
     <div class="when">
       <div class="dow">Every</div>
-      <div class="dom">{% set dayShort = {"monday":"Mon","tuesday":"Tue","wednesday":"Wed","thursday":"Thu","friday":"Fri","saturday":"Sat","sunday":"Sun"} %}{{ dayShort[r.weekday] }}</div>
+      <div class="dom">{{ dayShort[r.weekday] }}</div>
+    </div>
+    <div class="event-body">
+      <h3>{{ r.org.name }} — {{ mine | length }} {% if (mine | length) == 1 %}activity{% else %}activities{% endif %} today</h3>
+      <div class="meta">{% for x in mine %}{{ x.title | upper }}{% if not loop.last %} · {% endif %}{% endfor %}</div>
+      <p><a href="/whats-on/#regulars">Times and venues on What's on →</a></p>
+    </div>
+  </article>
+    {% endif %}
+  {% else %}
+  <article class="event">
+    <div class="when">
+      <div class="dow">Every</div>
+      <div class="dom">{{ dayShort[r.weekday] }}</div>
     </div>
     <div class="event-body">
       <h3>{{ r.title }}</h3>
@@ -381,6 +404,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       {% if r.blurb %}<p>{{ r.blurb }}</p>{% endif %}
     </div>
   </article>
+  {% endif %}
   {% endfor %}
 
   {# Every other tile on this board ends with a way onward — "see on map",
