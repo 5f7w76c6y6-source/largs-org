@@ -231,7 +231,7 @@ Tokens → Create Token → **Custom token**:
 
 These live in the dashboard for the `largs.scot` zone, not in the
 repository, so a fresh pair of hands cannot see them from the code.
-Checked 4 September 2026.
+Checked 6 September 2026.
 
 - **Email Address Obfuscation: OFF** (Security → Settings, under
   "Client side abuse"). On, it rewrites every address into a
@@ -247,7 +247,15 @@ Checked 4 September 2026.
   search crawlers.
 - **AI crawler block:** Cloudflare injects a managed block above the
   site's own `robots.txt`. Deliberate for now; toggleable under AI Crawl
-  Control. It does not affect Google Search.
+  Control. It does not affect Google Search. Verify with
+  `curl -s https://largs.scot/robots.txt | grep -c Disallow` — 9 on 6 Sep
+  2026; 0 means the block has been switched off.
+- **www → root redirect: ON** (Rules → Overview → Redirect Rules,
+  "WWW to root", from the Cloudflare template, 301, query string
+  preserved). Without it `www.largs.scot` serves a second copy of the
+  site and Google indexes both. Verify with
+  `curl -sI https://www.largs.scot/whats-on/ | grep -i '^HTTP\|^location'`
+  — must show `301` and `location: https://largs.scot/whats-on/`.
 
 ## Renames and the long game
 
