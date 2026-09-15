@@ -151,6 +151,19 @@
       "blurb": "Volunteer groups working for the town, the coast and the people in it.",
       "entries": [
         {
+          "name": "Ayrshire Independent Living Network",
+          "blurb": "Peer-led charity, funded by the three Ayrshire councils since 2005, giving free information and advice on Self-directed Support — the arrangement that lets people who need social care choose how it is provided — and running a payroll and budget service for people who employ their own personal assistants. From 28 October it runs a weekly Dementia Wellbeing Café at Largs Bowling Club on Wednesday afternoons, for people living with dementia, their families and carers, and is looking for volunteers for it. Office in Ardrossan; for the café, email befriending@ailn.org or call 07771 453192.",
+          "checked": "2026-09-15",
+          "where": "Michael Lynch Centre, 71 Princes Street, Ardrossan, KA22 8DG",
+          "phone": "01294 475685",
+          "url": "https://www.ailn.org",
+          "logo": "/assets/img/logo-ailn.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/AyrshireIndependentLivingNetwork/"
+          }
+        },
+        {
           "name": "Cairnie's Quay Mooring Association",
           "blurb": "A volunteer-run association looking after Cairnie's Quay — the slipway, the quay itself and 28 moorings. As well as boat owners it supports wild swimmers, divers, paddleboarders and anglers, and runs beach clean-ups and social meet-ups.",
           "url": "https://www.cairniesquay.org",
