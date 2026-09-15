@@ -4,6 +4,8 @@ pagination:
   data: council.statuses
   size: 1
   alias: view
+  # Every page of this set joins collections.all, so the sitemap lists them all (Eleventy's default is the first page only).
+  addAllPagesToCollections: true
 permalink: "/council/{{ view.slug }}/"
 eleventyComputed:
   title: "{{ view.label }} · Largs Community Council"

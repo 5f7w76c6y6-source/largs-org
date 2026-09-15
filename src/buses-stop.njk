@@ -4,6 +4,8 @@ pagination:
   data: buses.stops
   size: 1
   alias: stop
+  # Every page of this set joins collections.all, so the sitemap lists them all (Eleventy's default is the first page only).
+  addAllPagesToCollections: true
 permalink: "/buses/stop/{{ stop.id }}/"
 eleventyComputed:
   title: "{{ stop.name | safe }} · Buses from Largs"

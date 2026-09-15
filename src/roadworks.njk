@@ -4,6 +4,8 @@ pagination:
   data: views
   size: 1
   alias: view
+  # Every page of this set joins collections.all, so the sitemap lists them all (Eleventy's default is the first page only).
+  addAllPagesToCollections: true
 views:
   - key: all
     label: All works

@@ -4,6 +4,8 @@ pagination:
   data: directory.categories
   size: 1
   alias: cat
+  # Every page of this set joins collections.all, so the sitemap lists them all (Eleventy's default is the first page only).
+  addAllPagesToCollections: true
 permalink: "/directory/{{ cat.slug }}/"
 eleventyComputed:
   title: "{{ cat.label | safe }} · Largs"
