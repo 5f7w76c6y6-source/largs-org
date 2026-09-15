@@ -149,6 +149,14 @@
       "url": "https://www.ticketsource.com/barrfields/whisky-galore/e-jplgky"
     },
     {
+      "date": "2026-10-14",
+      "title": "Dementia awareness training day",
+      "venue": "Largs Bowling Club, Douglas Street",
+      "time": "10:00–14:00",
+      "image": "/assets/img/ev-ailn-dementia-cafe.webp",
+      "blurb": "A day to increase understanding of dementia and how we can all make a positive difference, run by Ayrshire Independent Living Network ahead of their Dementia Wellbeing Café, which launches here on Wednesday 28 October. Open to anyone, and especially to people who might volunteer a couple of hours a week at the café. To come along, email befriending@ailn.org or call 07771 453192."
+    },
+    {
       "date": "2026-10-28",
       "title": "Stuart Mitchell & Friends: On The Road",
       "venue": "Barrfields Theatre",
@@ -1017,6 +1025,24 @@
       "except": [
         "2026-09-10"
       ]
+    },
+    {
+      "title": "Dementia Wellbeing Café",
+      "weekday": "wednesday",
+      "time": "13:00–15:00",
+      "venue": "Largs Bowling Club, Douglas Street",
+      "image": "/assets/img/ev-ailn-dementia-cafe.webp",
+      "blurb": "A warm welcome for people living with dementia, their families and carers: relax, connect and share in a friendly, supportive setting. Run by Ayrshire Independent Living Network with Meeting Centres Scotland, supported by the National Lottery Community Fund. Launches on Wednesday 28 October and runs every Wednesday after that. AILN are also looking for volunteers who can spare a couple of hours a week. To come along or to volunteer, email befriending@ailn.org or call 07771 453192.",
+      "contact": {
+        "label": "Email befriending@ailn.org",
+        "url": "mailto:befriending@ailn.org"
+      },
+      "org": {
+        "name": "Ayrshire Independent Living Network",
+        "url": "https://www.ailn.org"
+      },
+      "freq": "weekly",
+      "from": "2026-10-28"
     }
   ]
 }
