@@ -33,6 +33,21 @@ permalink: /on-the-agenda/
   nothing to show. This page will fill in once it has run.</p>
 {% else %}
 
+{# When the council's website was last read, said on every visit -- the
+   same stamp the roadworks page carries ("Register data to …"). The page
+   can only vouch for what it saw that day. Past agenda.staleDays it says
+   so in the sand box already used for "nothing here": a lapsed check is
+   a fact to state, not an alarm to raise. #}
+<div class="kicker">
+  <span class="stamp">Council's website last checked {% if agenda.collectedAt %}{{ agenda.collectedAt | dom }} {{ agenda.collectedAt | monthShort }}{% else %}— date unknown{% endif %}</span>
+</div>
+{% if agenda.stale %}
+<p class="agenda-none"><strong>This page has not checked the council's website
+since {% if agenda.collectedAt %}{{ agenda.collectedAt | dateLong }}{% else %}its last collection{% endif %}.</strong>
+Papers published since then have not been looked at, so what follows is how
+things stood on that day, not today.</p>
+{% endif %}
+
 <p class="agenda-intro">North Ayrshire Council publishes the papers for its
 committees at least three days before each meeting. This page lists the ones
 that mention Largs, so you can see what is coming before it is decided rather
@@ -54,6 +69,9 @@ in a list. Follow the link to see which.</p>
     </li>
   {% endfor %}
   </ul>
+{% elif agenda.stale %}
+  <p class="agenda-none">None was known when the council's website was last
+  checked.</p>
 {% else %}
   <p class="agenda-none">No meeting with published papers mentions Largs at the
   moment. Papers appear about three days before a meeting, so this is the normal

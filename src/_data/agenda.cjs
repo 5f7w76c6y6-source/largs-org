@@ -46,6 +46,11 @@ const SEARCH = path.join(DIR, 'largs-agenda.json');
 
 const PRIMACY = ['AgendaPack', 'Agenda', 'Report', 'AgendaContents', 'Minute'];
 const RECENT_DAYS = 90;
+// Papers appear about three days before a meeting, so a page that has not
+// read the council's website in the last two days cannot honestly say what
+// is coming up. Past this the page says when it last looked, and presents
+// what it holds as a snapshot from that day rather than the current state.
+const STALE_DAYS = 2;
 
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'];
@@ -169,12 +174,28 @@ module.exports = function () {
                                    && r.state === 'mentioned');
   const earlier = all.filter((r) => r.date < recentFloor && r.state === 'mentioned');
 
+  // When the council's website was last read. Each collector stamps its own
+  // run; the OLDER of the two bounds every claim the page makes. A stamp
+  // without a zone is the collector's local clock -- an hour either way,
+  // which does not matter when the unit is days.
+  const stamps = [calendar && calendar.collected, search && search.collected]
+    .map((s) => Date.parse(s || '')).filter(Number.isFinite);
+  const collectedMs = stamps.length ? Math.min(...stamps) : null;
+  const ageDays = collectedMs === null ? null
+    : Math.floor((today.getTime() - collectedMs) / 86400000);
+
   return {
     ok: true,
     collectedCalendar: (calendar && calendar.collected) || null,
     collectedSearch: (search && search.collected) || null,
     cutoff: (search && search.cutoff) || null,
     recentDays: RECENT_DAYS,
+    // The page's honesty line: when the council's site was last read, and
+    // whether that is recent enough to describe the present tense.
+    collectedAt: collectedMs === null ? null : new Date(collectedMs).toISOString(),
+    ageDays,
+    stale: collectedMs === null || ageDays > STALE_DAYS,
+    staleDays: STALE_DAYS,
     // The furthest date the council has currently published, so the page
     // can say how far ahead it can see rather than implying it sees all.
     scheduledTo: scheduled.length ? scheduled[scheduled.length - 1].date : null,

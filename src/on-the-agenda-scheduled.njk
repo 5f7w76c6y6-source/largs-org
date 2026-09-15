@@ -30,6 +30,17 @@ permalink: /on-the-agenda/scheduled/
   likely means the calendar has not been collected recently.</p>
 {% else %}
 
+{# Same "last checked" stamp and staleness rule as the main page: a diary
+   that has not been refreshed cannot claim to be the council's diary. #}
+<div class="kicker">
+  <span class="stamp">Council's website last checked {% if agenda.collectedAt %}{{ agenda.collectedAt | dom }} {{ agenda.collectedAt | monthShort }}{% else %}— date unknown{% endif %}</span>
+</div>
+{% if agenda.stale %}
+<p class="agenda-none"><strong>This diary has not been refreshed from the council's
+website since {% if agenda.collectedAt %}{{ agenda.collectedAt | dateLong }}{% else %}its last collection{% endif %}.</strong>
+Meetings added, moved or cancelled since then are not reflected here.</p>
+{% endif %}
+
 <p class="agenda-intro">These are the meetings North Ayrshire Council has in its
 diary. <strong>Most will have no papers yet</strong> — they are normally
 published about three days beforehand, and until then there is no way to know
