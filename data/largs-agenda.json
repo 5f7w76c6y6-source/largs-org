@@ -1,8 +1,41 @@
 {
- "collected": "2026-08-16T10:22:47+00:00",
+ "collected": "2026-09-15T21:28:27+00:00",
  "term": "largs",
  "cutoff": "2025-01-01",
  "items": [
+  {
+   "hits": 16,
+   "title": "Agenda 7 September 2026",
+   "doc_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=df1xMQRYQuIVHmXeSng4rDuwmRRomLyp%2fYJBsMhIqnOEki4dN7Czhw%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d",
+   "type": "Agenda",
+   "size": "11.14 Mb",
+   "committee": "North Ayrshire Licensing Board",
+   "date": "2026-09-07",
+   "days": -8,
+   "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4000/Committee/129/Default.aspx"
+  },
+  {
+   "hits": 10,
+   "title": "Agenda Document Pack - Cabinet - 01/09/2026",
+   "doc_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=lqtTVfkOTw6%2fR0F%2bBZjN80Lorn7oI%2fyhD7KNd2ds9Ue%2bnQK8SSglTA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d",
+   "type": "AgendaPack",
+   "size": "21.02 Mb",
+   "committee": "Cabinet",
+   "date": "2026-09-01",
+   "days": -14,
+   "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3983/Committee/139/Default.aspx"
+  },
+  {
+   "hits": 3,
+   "title": "Agenda Document Pack - Audit and Scrutiny Committee - 27/08/2026",
+   "doc_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=EuspmJ7GIyYztZRjQCBnE%2fcQVhVTu21sSP%2fGpaI6rCafmdrqdmtIcA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d",
+   "type": "AgendaPack",
+   "size": "7.26 Mb",
+   "committee": "Audit and Scrutiny Committee",
+   "date": "2026-08-27",
+   "days": -19,
+   "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3933/Committee/137/Default.aspx"
+  },
   {
    "hits": 4,
    "title": "Agenda Document Pack - Integration Joint Board - 20/08/2026",
@@ -11,7 +44,7 @@
    "size": "9.39 Mb",
    "committee": "Integration Joint Board",
    "date": "2026-08-20",
-   "days": 4,
+   "days": -26,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4008/Committee/141/Default.aspx"
   },
   {
@@ -22,7 +55,7 @@
    "size": "2.12 Mb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2026-08-12",
-   "days": -4,
+   "days": -34,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4028/Committee/129/Default.aspx"
   },
   {
@@ -33,7 +66,7 @@
    "size": "6.83 Mb",
    "committee": "North Ayrshire Council",
    "date": "2026-06-24",
-   "days": -53,
+   "days": -83,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3960/Committee/135/Default.aspx"
   },
   {
@@ -44,7 +77,7 @@
    "size": "359 Kb",
    "committee": "North Ayrshire Council",
    "date": "2026-06-24",
-   "days": -53,
+   "days": -83,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3960/Committee/135/Default.aspx"
   },
   {
@@ -55,7 +88,7 @@
    "size": "150 Kb",
    "committee": "North Ayrshire Council",
    "date": "2026-06-24",
-   "days": -53,
+   "days": -83,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3960/Committee/135/Default.aspx"
   },
   {
@@ -66,7 +99,7 @@
    "size": "124 Kb",
    "committee": "North Ayrshire Council",
    "date": "2026-06-24",
-   "days": -53,
+   "days": -83,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3960/Committee/135/Default.aspx"
   },
   {
@@ -77,7 +110,7 @@
    "size": "3.01 Mb",
    "committee": "Cabinet",
    "date": "2026-06-19",
-   "days": -58,
+   "days": -88,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4026/Committee/139/Default.aspx"
   },
   {
@@ -88,7 +121,7 @@
    "size": "17.93 Mb",
    "committee": "Integration Joint Board",
    "date": "2026-06-18",
-   "days": -59,
+   "days": -89,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4007/Committee/141/Default.aspx"
   },
   {
@@ -99,7 +132,7 @@
    "size": "3.05 Mb",
    "committee": "Audit and Scrutiny Committee",
    "date": "2026-06-15",
-   "days": -62,
+   "days": -92,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4024/Committee/137/Default.aspx"
   },
   {
@@ -110,7 +143,7 @@
    "size": "32.12 Mb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2026-06-08",
-   "days": -69,
+   "days": -99,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3999/Committee/129/Default.aspx"
   },
   {
@@ -121,7 +154,7 @@
    "size": "207 Kb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2026-06-08",
-   "days": -69,
+   "days": -99,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3999/Committee/129/Default.aspx"
   },
   {
@@ -132,7 +165,7 @@
    "size": "18.71 Mb",
    "committee": "Cabinet",
    "date": "2026-06-02",
-   "days": -75,
+   "days": -105,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3982/Committee/139/Default.aspx"
   },
   {
@@ -143,7 +176,7 @@
    "size": "2.74 Mb",
    "committee": "North Ayrshire Council",
    "date": "2026-05-20",
-   "days": -88,
+   "days": -118,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3959/Committee/135/Default.aspx"
   },
   {
@@ -154,7 +187,7 @@
    "size": "950 Kb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2026-04-29",
-   "days": -109,
+   "days": -139,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4016/Committee/129/Default.aspx"
   },
   {
@@ -165,7 +198,7 @@
    "size": "6.63 Mb",
    "committee": "Cabinet",
    "date": "2026-04-28",
-   "days": -110,
+   "days": -140,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3981/Committee/139/Default.aspx"
   },
   {
@@ -176,7 +209,7 @@
    "size": "35.17 Mb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2026-04-20",
-   "days": -118,
+   "days": -148,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3998/Committee/129/Default.aspx"
   },
   {
@@ -187,7 +220,7 @@
    "size": "66 Kb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2026-04-20",
-   "days": -118,
+   "days": -148,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3998/Committee/129/Default.aspx"
   },
   {
@@ -198,7 +231,7 @@
    "size": "1.68 Mb",
    "committee": "North Ayrshire Council",
    "date": "2026-03-25",
-   "days": -144,
+   "days": -174,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3958/Committee/135/Default.aspx"
   },
   {
@@ -209,7 +242,7 @@
    "size": "5.33 Mb",
    "committee": "Cabinet",
    "date": "2026-03-17",
-   "days": -152,
+   "days": -182,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3980/Committee/139/Default.aspx"
   },
   {
@@ -220,7 +253,7 @@
    "size": "2.24 Mb",
    "committee": "Audit and Scrutiny Committee",
    "date": "2026-03-12",
-   "days": -157,
+   "days": -187,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3931/Committee/137/Default.aspx"
   },
   {
@@ -231,7 +264,7 @@
    "size": "9.58 Mb",
    "committee": "North Ayrshire Council",
    "date": "2026-02-25",
-   "days": -172,
+   "days": -202,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3957/Committee/135/Default.aspx"
   },
   {
@@ -242,7 +275,7 @@
    "size": "22.82 Mb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2026-02-16",
-   "days": -181,
+   "days": -211,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3997/Committee/129/Default.aspx"
   },
   {
@@ -253,7 +286,7 @@
    "size": "6.07 Mb",
    "committee": "North Ayrshire Council",
    "date": "2026-02-11",
-   "days": -186,
+   "days": -216,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3956/Committee/135/Default.aspx"
   },
   {
@@ -264,7 +297,7 @@
    "size": "7.62 Mb",
    "committee": "Audit and Scrutiny Committee",
    "date": "2026-01-29",
-   "days": -199,
+   "days": -229,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3930/Committee/137/Default.aspx"
   },
   {
@@ -275,7 +308,7 @@
    "size": "720 Kb",
    "committee": "Planning Committee",
    "date": "2026-01-28",
-   "days": -200,
+   "days": -230,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3968/Committee/147/Default.aspx"
   },
   {
@@ -286,7 +319,7 @@
    "size": "13.89 Mb",
    "committee": "Cabinet",
    "date": "2026-01-27",
-   "days": -201,
+   "days": -231,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3978/Committee/139/Default.aspx"
   },
   {
@@ -297,7 +330,7 @@
    "size": "1.38 Mb",
    "committee": "North Ayrshire Council",
    "date": "2025-12-17",
-   "days": -242,
+   "days": -272,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3880/Committee/135/Default.aspx"
   },
   {
@@ -308,7 +341,7 @@
    "size": "163 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-12-17",
-   "days": -242,
+   "days": -272,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3880/Committee/135/Default.aspx"
   },
   {
@@ -319,7 +352,7 @@
    "size": "144 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-12-17",
-   "days": -242,
+   "days": -272,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3880/Committee/135/Default.aspx"
   },
   {
@@ -330,7 +363,7 @@
    "size": "345 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-12-17",
-   "days": -242,
+   "days": -272,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3880/Committee/135/Default.aspx"
   },
   {
@@ -341,7 +374,7 @@
    "size": "114 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-12-17",
-   "days": -242,
+   "days": -272,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3880/Committee/135/Default.aspx"
   },
   {
@@ -352,7 +385,7 @@
    "size": "6.56 Mb",
    "committee": "Integration Joint Board",
    "date": "2025-12-11",
-   "days": -248,
+   "days": -278,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3911/Committee/141/Default.aspx"
   },
   {
@@ -363,7 +396,7 @@
    "size": "2.81 Mb",
    "committee": "Local Development Plan Committee",
    "date": "2025-12-09",
-   "days": -250,
+   "days": -280,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4003/Committee/143/Default.aspx"
   },
   {
@@ -374,7 +407,7 @@
    "size": "26.50 Mb",
    "committee": "Cabinet",
    "date": "2025-12-02",
-   "days": -257,
+   "days": -287,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3839/Committee/139/Default.aspx"
   },
   {
@@ -385,7 +418,7 @@
    "size": "107 Kb",
    "committee": "Cabinet",
    "date": "2025-12-02",
-   "days": -257,
+   "days": -287,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3839/Committee/139/Default.aspx"
   },
   {
@@ -396,7 +429,7 @@
    "size": "92 Kb",
    "committee": "Cabinet",
    "date": "2025-12-02",
-   "days": -257,
+   "days": -287,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3839/Committee/139/Default.aspx"
   },
   {
@@ -407,7 +440,7 @@
    "size": "3.09 Mb",
    "committee": "Police and Fire and Rescue Committee",
    "date": "2025-11-24",
-   "days": -265,
+   "days": -295,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3890/Committee/148/Default.aspx"
   },
   {
@@ -418,7 +451,7 @@
    "size": "22.99 Mb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2025-11-17",
-   "days": -272,
+   "days": -302,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3917/Committee/129/Default.aspx"
   },
   {
@@ -429,7 +462,7 @@
    "size": "8.60 Mb",
    "committee": "Integration Joint Board",
    "date": "2025-11-13",
-   "days": -276,
+   "days": -306,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3910/Committee/141/Default.aspx"
   },
   {
@@ -440,7 +473,7 @@
    "size": "3.61 Mb",
    "committee": "North Ayrshire Council",
    "date": "2025-11-05",
-   "days": -284,
+   "days": -314,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3879/Committee/135/Default.aspx"
   },
   {
@@ -451,7 +484,7 @@
    "size": "305 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-11-05",
-   "days": -284,
+   "days": -314,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3879/Committee/135/Default.aspx"
   },
   {
@@ -462,7 +495,7 @@
    "size": "5.94 Mb",
    "committee": "Planning Committee",
    "date": "2025-10-29",
-   "days": -291,
+   "days": -321,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3850/Committee/147/Default.aspx"
   },
   {
@@ -473,7 +506,7 @@
    "size": "18.60 Mb",
    "committee": "Cabinet",
    "date": "2025-10-28",
-   "days": -292,
+   "days": -322,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3838/Committee/139/Default.aspx"
   },
   {
@@ -484,7 +517,7 @@
    "size": "13.97 Mb",
    "committee": "Cabinet",
    "date": "2025-09-30",
-   "days": -320,
+   "days": -350,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3837/Committee/139/Default.aspx"
   },
   {
@@ -495,7 +528,7 @@
    "size": "173 Kb",
    "committee": "Cabinet",
    "date": "2025-09-30",
-   "days": -320,
+   "days": -350,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3837/Committee/139/Default.aspx"
   },
   {
@@ -506,7 +539,7 @@
    "size": "8.57 Mb",
    "committee": "Integration Joint Board",
    "date": "2025-09-25",
-   "days": -325,
+   "days": -355,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3909/Committee/141/Default.aspx"
   },
   {
@@ -517,7 +550,7 @@
    "size": "8.95 Mb",
    "committee": "Audit and Scrutiny Committee",
    "date": "2025-09-23",
-   "days": -327,
+   "days": -357,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3885/Committee/137/Default.aspx"
   },
   {
@@ -528,7 +561,7 @@
    "size": "3.32 Mb",
    "committee": "North Ayrshire Council",
    "date": "2025-09-17",
-   "days": -333,
+   "days": -363,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3928/Committee/135/Default.aspx"
   },
   {
@@ -539,7 +572,7 @@
    "size": "6.17 Mb",
    "committee": "North Ayrshire Council",
    "date": "2025-09-17",
-   "days": -333,
+   "days": -363,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3878/Committee/135/Default.aspx"
   },
   {
@@ -550,7 +583,7 @@
    "size": "524 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-09-17",
-   "days": -333,
+   "days": -363,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3878/Committee/135/Default.aspx"
   },
   {
@@ -561,7 +594,7 @@
    "size": "355 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-09-17",
-   "days": -333,
+   "days": -363,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3878/Committee/135/Default.aspx"
   },
   {
@@ -572,7 +605,7 @@
    "size": "28.68 Mb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2025-09-08",
-   "days": -342,
+   "days": -372,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3916/Committee/129/Default.aspx"
   },
   {
@@ -583,7 +616,7 @@
    "size": "62 Kb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2025-09-08",
-   "days": -342,
+   "days": -372,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3916/Committee/129/Default.aspx"
   },
   {
@@ -594,7 +627,7 @@
    "size": "23.27 Mb",
    "committee": "Cabinet",
    "date": "2025-09-02",
-   "days": -348,
+   "days": -378,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3836/Committee/139/Default.aspx"
   },
   {
@@ -605,7 +638,7 @@
    "size": "3.15 Mb",
    "committee": "Police and Fire and Rescue Committee",
    "date": "2025-09-01",
-   "days": -349,
+   "days": -379,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3889/Committee/148/Default.aspx"
   },
   {
@@ -616,7 +649,7 @@
    "size": "2.16 Mb",
    "committee": "Audit and Scrutiny Committee",
    "date": "2025-08-28",
-   "days": -353,
+   "days": -383,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3884/Committee/137/Default.aspx"
   },
   {
@@ -627,7 +660,7 @@
    "size": "3.94 Mb",
    "committee": "Planning Committee",
    "date": "2025-08-27",
-   "days": -354,
+   "days": -384,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3848/Committee/147/Default.aspx"
   },
   {
@@ -638,7 +671,7 @@
    "size": "110 Kb",
    "committee": "Planning Committee",
    "date": "2025-08-27",
-   "days": -354,
+   "days": -384,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3848/Committee/147/Default.aspx"
   },
   {
@@ -649,7 +682,7 @@
    "size": "80 Kb",
    "committee": "Planning Committee",
    "date": "2025-08-27",
-   "days": -354,
+   "days": -384,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3848/Committee/147/Default.aspx"
   },
   {
@@ -660,7 +693,7 @@
    "size": "13.29 Mb",
    "committee": "Integration Joint Board",
    "date": "2025-08-21",
-   "days": -360,
+   "days": -390,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3908/Committee/141/Default.aspx"
   },
   {
@@ -671,7 +704,7 @@
    "size": "3.31 Mb",
    "committee": "North Ayrshire Council",
    "date": "2025-06-25",
-   "days": -417,
+   "days": -447,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3877/Committee/135/Default.aspx"
   },
   {
@@ -682,7 +715,7 @@
    "size": "702 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-06-25",
-   "days": -417,
+   "days": -447,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3877/Committee/135/Default.aspx"
   },
   {
@@ -693,7 +726,7 @@
    "size": "5.03 Mb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2025-06-23",
-   "days": -419,
+   "days": -449,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3915/Committee/129/Default.aspx"
   },
   {
@@ -704,7 +737,7 @@
    "size": "48 Kb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2025-06-23",
-   "days": -419,
+   "days": -449,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3915/Committee/129/Default.aspx"
   },
   {
@@ -715,7 +748,7 @@
    "size": "9.08 Mb",
    "committee": "Integration Joint Board",
    "date": "2025-06-19",
-   "days": -423,
+   "days": -453,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3907/Committee/141/Default.aspx"
   },
   {
@@ -726,7 +759,7 @@
    "size": "5.21 Mb",
    "committee": "Audit and Scrutiny Committee",
    "date": "2025-06-19",
-   "days": -423,
+   "days": -453,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3927/Committee/137/Default.aspx"
   },
   {
@@ -737,7 +770,7 @@
    "size": "2.15 Mb",
    "committee": "Police and Fire and Rescue Committee",
    "date": "2025-06-16",
-   "days": -426,
+   "days": -456,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3888/Committee/148/Default.aspx"
   },
   {
@@ -748,7 +781,7 @@
    "size": "22.13 Mb",
    "committee": "Cabinet",
    "date": "2025-06-03",
-   "days": -439,
+   "days": -469,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3835/Committee/139/Default.aspx"
   },
   {
@@ -759,7 +792,7 @@
    "size": "4.20 Mb",
    "committee": "Audit and Scrutiny Committee",
    "date": "2025-05-29",
-   "days": -444,
+   "days": -474,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3883/Committee/137/Default.aspx"
   },
   {
@@ -770,7 +803,7 @@
    "size": "735 Kb",
    "committee": "Planning Committee",
    "date": "2025-05-21",
-   "days": -452,
+   "days": -482,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3846/Committee/147/Default.aspx"
   },
   {
@@ -781,7 +814,7 @@
    "size": "1.52 Mb",
    "committee": "Local Review Body",
    "date": "2025-05-21",
-   "days": -452,
+   "days": -482,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3856/Committee/144/Default.aspx"
   },
   {
@@ -792,7 +825,7 @@
    "size": "1.47 Mb",
    "committee": "North Ayrshire Council",
    "date": "2025-05-14",
-   "days": -459,
+   "days": -489,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3876/Committee/135/Default.aspx"
   },
   {
@@ -803,7 +836,7 @@
    "size": "172 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-05-14",
-   "days": -459,
+   "days": -489,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3876/Committee/135/Default.aspx"
   },
   {
@@ -814,7 +847,7 @@
    "size": "162 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-05-14",
-   "days": -459,
+   "days": -489,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3876/Committee/135/Default.aspx"
   },
   {
@@ -825,7 +858,7 @@
    "size": "107 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-05-14",
-   "days": -459,
+   "days": -489,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3876/Committee/135/Default.aspx"
   },
   {
@@ -836,7 +869,7 @@
    "size": "655 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-05-14",
-   "days": -459,
+   "days": -489,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3925/Committee/135/Default.aspx"
   },
   {
@@ -847,7 +880,7 @@
    "size": "2.22 Mb",
    "committee": "Cabinet",
    "date": "2025-05-06",
-   "days": -467,
+   "days": -497,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3834/Committee/139/Default.aspx"
   },
   {
@@ -858,7 +891,7 @@
    "size": "6.45 Mb",
    "committee": "North Ayrshire Licensing Board",
    "date": "2025-04-28",
-   "days": -475,
+   "days": -505,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3914/Committee/129/Default.aspx"
   },
   {
@@ -869,7 +902,7 @@
    "size": "248 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-03-26",
-   "days": -508,
+   "days": -538,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3874/Committee/135/Default.aspx"
   },
   {
@@ -880,7 +913,7 @@
    "size": "1.88 Mb",
    "committee": "North Ayrshire Council",
    "date": "2025-03-26",
-   "days": -508,
+   "days": -538,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3874/Committee/135/Default.aspx"
   },
   {
@@ -891,7 +924,7 @@
    "size": "213 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-03-26",
-   "days": -508,
+   "days": -538,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3874/Committee/135/Default.aspx"
   },
   {
@@ -902,7 +935,7 @@
    "size": "128 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-03-26",
-   "days": -508,
+   "days": -538,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3874/Committee/135/Default.aspx"
   },
   {
@@ -913,7 +946,7 @@
    "size": "316 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-03-26",
-   "days": -508,
+   "days": -538,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3874/Committee/135/Default.aspx"
   },
   {
@@ -924,7 +957,7 @@
    "size": "2.17 Mb",
    "committee": "Planning Committee",
    "date": "2025-03-19",
-   "days": -515,
+   "days": -545,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3844/Committee/147/Default.aspx"
   },
   {
@@ -935,7 +968,7 @@
    "size": "9.98 Mb",
    "committee": "Cabinet",
    "date": "2025-03-18",
-   "days": -516,
+   "days": -546,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3920/Committee/139/Default.aspx"
   },
   {
@@ -946,7 +979,7 @@
    "size": "4.09 Mb",
    "committee": "Audit and Scrutiny Committee",
    "date": "2025-03-13",
-   "days": -521,
+   "days": -551,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3882/Committee/137/Default.aspx"
   },
   {
@@ -957,7 +990,7 @@
    "size": "5.24 Mb",
    "committee": "Police and Fire and Rescue Committee",
    "date": "2025-03-03",
-   "days": -531,
+   "days": -561,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3887/Committee/148/Default.aspx"
   },
   {
@@ -968,7 +1001,7 @@
    "size": "5.98 Mb",
    "committee": "North Ayrshire Council",
    "date": "2025-02-26",
-   "days": -536,
+   "days": -566,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3875/Committee/135/Default.aspx"
   },
   {
@@ -979,7 +1012,7 @@
    "size": "1.16 Mb",
    "committee": "Planning Committee",
    "date": "2025-02-19",
-   "days": -543,
+   "days": -573,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3843/Committee/147/Default.aspx"
   },
   {
@@ -990,7 +1023,7 @@
    "size": "3.28 Mb",
    "committee": "Cabinet",
    "date": "2025-02-18",
-   "days": -544,
+   "days": -574,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3832/Committee/139/Default.aspx"
   },
   {
@@ -1001,7 +1034,7 @@
    "size": "99 Kb",
    "committee": "Cabinet",
    "date": "2025-02-18",
-   "days": -544,
+   "days": -574,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3832/Committee/139/Default.aspx"
   },
   {
@@ -1012,7 +1045,7 @@
    "size": "164 Kb",
    "committee": "Cabinet",
    "date": "2025-02-18",
-   "days": -544,
+   "days": -574,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3832/Committee/139/Default.aspx"
   },
   {
@@ -1023,7 +1056,7 @@
    "size": "10.97 Mb",
    "committee": "North Ayrshire Council",
    "date": "2025-02-12",
-   "days": -550,
+   "days": -580,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3873/Committee/135/Default.aspx"
   },
   {
@@ -1034,7 +1067,7 @@
    "size": "348 Kb",
    "committee": "North Ayrshire Council",
    "date": "2025-02-12",
-   "days": -550,
+   "days": -580,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3873/Committee/135/Default.aspx"
   },
   {
@@ -1045,7 +1078,7 @@
    "size": "827 Kb",
    "committee": "Audit and Scrutiny Committee",
    "date": "2025-02-06",
-   "days": -556,
+   "days": -586,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3918/Committee/137/Default.aspx"
   },
   {
@@ -1056,7 +1089,7 @@
    "size": "7.39 Mb",
    "committee": "Audit and Scrutiny Committee",
    "date": "2025-01-23",
-   "days": -570,
+   "days": -600,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3881/Committee/137/Default.aspx"
   },
   {
@@ -1067,7 +1100,7 @@
    "size": "40.09 Mb",
    "committee": "Planning Committee",
    "date": "2025-01-22",
-   "days": -571,
+   "days": -601,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3842/Committee/147/Default.aspx"
   },
   {
@@ -1078,7 +1111,7 @@
    "size": "101 Kb",
    "committee": "Planning Committee",
    "date": "2025-01-22",
-   "days": -571,
+   "days": -601,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3842/Committee/147/Default.aspx"
   },
   {
@@ -1089,7 +1122,7 @@
    "size": "78 Kb",
    "committee": "Planning Committee",
    "date": "2025-01-22",
-   "days": -571,
+   "days": -601,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3842/Committee/147/Default.aspx"
   },
   {
@@ -1100,7 +1133,7 @@
    "size": "10.20 Mb",
    "committee": "Cabinet",
    "date": "2025-01-21",
-   "days": -572,
+   "days": -602,
    "meeting_url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3831/Committee/139/Default.aspx"
   }
  ]
