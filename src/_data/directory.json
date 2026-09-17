@@ -522,6 +522,18 @@
           "logo": "/assets/img/logo-largs-golf.png"
         },
         {
+          "name": "Largs Tennis Club",
+          "blurb": "Tennis club with four floodlit artificial-grass courts at the sportscotland National Centre on Burnside Road. Social mix-in sessions on Monday, Wednesday and Friday 10:00–12:00, Monday 18:00–20:00 and Sunday 13:00–15:00; coaching for junior and adult beginners; club championships, box leagues and the Ayrshire leagues. Court bookings, for members and non-members, go through the centre’s reception. A registered charity (SC053297). Email largstennisclub@gmail.com.",
+          "checked": "2026-09-17",
+          "where": "sportscotland National Centre Inverclyde, Burnside Road, KA30 8RW",
+          "url": "https://clubspark.lta.org.uk/LargsTennisClub",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/LargsTennis/"
+          },
+          "logo": "/assets/img/logo-largs-tennis.png"
+        },
+        {
           "name": "Largs Thistle F.C.",
           "blurb": "Founded in 1889 and playing in the West of Scotland League Premier Division, at Barrfields Park.",
           "checked": "2026-08-29",
