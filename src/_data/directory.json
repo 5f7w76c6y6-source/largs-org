@@ -345,6 +345,19 @@
           }
         },
         {
+          "name": "Soups 'N' Scoops",
+          "kind": "Café",
+          "blurb": "Café on Bath Street: homemade soups, baked potatoes, toasties, paninis, baguettes, bagels, hot dogs, sandwiches and filled rolls, plus Porrelli's ice cream. Phone ahead and they will have your order ready to collect. Open 8.30am–4pm Monday to Friday and 10am–4pm on Saturday and Sunday.",
+          "checked": "2026-09-18",
+          "where": "17 Bath Street, KA30 8BL",
+          "phone": "07852 753974",
+          "logo": "/assets/img/logo-soups-n-scoops.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/soops.nscoops"
+          }
+        },
+        {
           "name": "The Fish Works",
           "kind": "Chip shop",
           "blurb": "Fish and chip takeaway on the Promenade, family-run since 2017. Everything is made to order: haddock from Peterhead market, langoustines landed at Largs by the Eilidh Anne, plus calamari and fish finger sandwiches, with a gluten-free menu available. Takeaway only, with outdoor seating on the prom; orders for collection or delivery can be placed online. Holds the National Federation of Fish Friers' Quality Award (2023–2025).",
