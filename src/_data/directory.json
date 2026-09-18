@@ -114,6 +114,16 @@
           }
         },
         {
+          "name": "Largs Aubery Sea Swimmers",
+          "blurb": "Sea swimming from the Aubery on Sundays. Times and what to bring are arranged through their Facebook group.",
+          "checked": "2026-09-18",
+          "logo": "/assets/img/logo-aubery-swimmers.png",
+          "social": {
+            "label": "Their Facebook group",
+            "url": "https://www.facebook.com/groups/2625805937668370"
+          }
+        },
+        {
           "name": "Largs Bowling Club",
           "blurb": "Lawn bowls on Douglas Street, green open seven days. New members of any age or ability are welcome and coaching is free, so no experience needed to turn up.",
           "checked": "2026-08-29",
