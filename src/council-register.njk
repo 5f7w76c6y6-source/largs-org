@@ -24,9 +24,10 @@ eleventyComputed:
    is written.
 
    Four of the five slice by stored status. /council/no-update/ is
-   different: it is DERIVED — every item whose last mention is six months
-   or more behind the newest minutes, whatever its status (staleOnly in
-   eleventy.config.js). The status used to be typed by hand and drifted;
+   different: it is DERIVED — every OPEN item (raised or in progress) whose
+   last mention is six months or more behind the newest minutes (staleOnly
+   in eleventy.config.js). Completed items never appear: a settled matter
+   is not expected to be minuted again. The status used to be typed by hand and drifted;
    a date cannot.
 
    `eleventyComputed` exists because front matter is evaluated before
@@ -62,7 +63,7 @@ eleventyComputed:
     {% endfor %}
   </div>
   {% else %}
-  <p class="note">{% if view.derived %}No item in the register is six months or more behind the newest minutes.{% else %}No items in the register currently carry this status.{% endif %}</p>
+  <p class="note">{% if view.derived %}No open item in the register is six months or more behind the newest minutes.{% else %}No items in the register currently carry this status.{% endif %}</p>
   {% endif %}
 
   {{ statusKey() }}

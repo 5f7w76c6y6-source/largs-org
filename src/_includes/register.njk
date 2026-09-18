@@ -24,7 +24,8 @@
 {% macro issueCard(item, minutesUrl, latestMinutes) %}
 {# Three stored statuses. "No recent update" is not one of them: it is
    worked out from the dates (isStale, eleventy.config.js) and shown as the
-   line below the last-recorded date, whatever the item's status. #}
+   line below the last-recorded date on items that are still open. A
+   completed item is never stale: settled matters are not minuted again. #}
 {% set labels = { "raised": "Raised", "progress": "In progress", "completed": "Completed" } %}
 {% set glyphs = { "raised": "◇", "progress": "◐", "completed": "●" } %}
 <article class="issue" id="issue-{{ item.id }}">
@@ -41,7 +42,7 @@
     <div><span class="issue-label">Next step</span> · {{ item.nextStep }}</div>
     {% endif %}
     <div><span class="issue-label">Last recorded</span> · {{ item.lastRecorded | dateLong }}{% if minutesUrl %} · <a href="{{ minutesUrl }}">minutes</a>{% endif %}</div>
-    {% if item.lastRecorded | isStale(latestMinutes) %}
+    {% if item | isStale(latestMinutes) %}
     <p class="issue-stale">No later minutes mention this item. That describes the
     written record, not necessarily what has happened since.</p>
     {% endif %}
@@ -63,9 +64,10 @@
     The minutes record the matter as done. Completed means it was settled,
     not that everyone was content with how.</li>
   <li><span class="issue-status no-update"><span aria-hidden="true">○</span> No recent update</span>
-    Not a status but a view: any item, whatever its status, whose last mention
-    is six months or more behind the newest minutes. Worked out from the dates,
-    never set by hand.</li>
+    Not a status but a view: an item still open — raised or in progress —
+    whose last mention is six months or more behind the newest minutes.
+    Worked out from the dates, never set by hand; completed matters are not
+    expected to be minuted again, so they are never counted.</li>
 </ul>
 {% endmacro %}
 

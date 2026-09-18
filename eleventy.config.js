@@ -350,11 +350,14 @@ module.exports = function (eleventyConfig) {
 
   // ---- Staleness, defined once --------------------------------------
   // "No recent update" is not a stored status. It is worked out here from
-  // the dates: an item whose last mention is STALE_MONTHS or more behind
-  // the newest minutes. One definition feeds both the line on the card and
-  // the /council/no-update/ view, so they cannot disagree, and no hand-set
-  // label can outlive the minutes that contradict it (as one did on 14
-  // August 2026). Whole months, same arithmetic as monthsBetween.
+  // the dates: an OPEN item (raised or in progress) whose last mention is
+  // STALE_MONTHS or more behind the newest minutes. Completed items are
+  // never stale -- a settled matter has every reason not to be minuted
+  // again, and saying so would be noise (22 of the first 43 were completed,
+  // caught by Ian on 18 September 2026). One definition feeds both the line
+  // on the card and the /council/no-update/ view, so they cannot disagree,
+  // and no hand-set label can outlive the minutes that contradict it (as
+  // one did on 14 August 2026). Whole months, same arithmetic as monthsBetween.
   const STALE_MONTHS = 6;
   const monthsApart = (from, to) => {
     if (!from || !to) return 0;
@@ -362,11 +365,12 @@ module.exports = function (eleventyConfig) {
     const [ty, tm] = String(to).split("-").map(Number);
     return (ty - fy) * 12 + (tm - fm);
   };
-  eleventyConfig.addFilter("isStale", (lastRecorded, latestMinutes) =>
-    Boolean(latestMinutes) && monthsApart(lastRecorded, latestMinutes) >= STALE_MONTHS
-  );
+  const isStaleItem = (item, latestMinutes) =>
+    Boolean(item && latestMinutes) && item.status !== "completed"
+    && monthsApart(item.lastRecorded, latestMinutes) >= STALE_MONTHS;
+  eleventyConfig.addFilter("isStale", (item, latestMinutes) => isStaleItem(item, latestMinutes));
   eleventyConfig.addFilter("staleOnly", (items, latestMinutes) =>
-    (items || []).filter((i) => Boolean(latestMinutes) && monthsApart(i.lastRecorded, latestMinutes) >= STALE_MONTHS)
+    (items || []).filter((i) => isStaleItem(i, latestMinutes))
   );
 
   // newestFirst(items) -> sorted by last recorded, most recent first.
