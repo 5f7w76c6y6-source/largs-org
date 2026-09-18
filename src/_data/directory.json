@@ -128,6 +128,19 @@
           "logo": "/assets/img/logo-largs-colts.png"
         },
         {
+          "name": "Largs Flower Club",
+          "blurb": "Flower arranging: a demonstration by a visiting Area or National demonstrator on the third Wednesday of the month from September to April, with the finished arrangements raffled at the end, plus practical workshops, social events and an annual coffee morning in March. Affiliated to SAFAS and NAFAS. Meets in Largs Parish Church main hall on Bath Street.",
+          "checked": "2026-09-18",
+          "where": "Largs Parish Church main hall, Bath Street, KA30 8BL",
+          "url": "https://www.largsflowerclub.co.uk",
+          "logo": "/assets/img/logo-largs-flower-club.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/largsflowerclub"
+          },
+          "note": "Contact Sheila Mitchell on 07485 403281 or info@largsflowerclub.co.uk."
+        },
+        {
           "name": "Largs Halkshill Bowling Club",
           "blurb": "Bowls indoors and out — the only Largs club with both. The green was laid in 1888 with turf from the Halkshill estate, which is where the name comes from. The clubhouse takes bookings for functions.",
           "checked": "2026-08-29",
