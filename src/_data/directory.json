@@ -357,6 +357,19 @@
             "label": "Their Facebook page",
             "url": "https://www.facebook.com/fishworkslargs"
           }
+        },
+        {
+          "name": "The Three Reasons",
+          "kind": "Pub",
+          "blurb": "Pub on Gallowgate Street with real ale and pub food, to sit in or order to take away. Opening hours and what's on are posted on their Facebook page.",
+          "checked": "2026-09-18",
+          "where": "14 Gallowgate Street, KA30 8LX",
+          "phone": "01475 672330",
+          "logo": "/assets/img/logo-three-reasons.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/TheThreeReasonsLargs"
+          }
         }
       ],
       "asks": [
