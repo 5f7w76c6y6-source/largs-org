@@ -102,6 +102,17 @@
           }
         },
         {
+          "name": "Largs Amateur Operatic Society",
+          "blurb": "Musicals and operettas staged at Barrfields Theatre since 1947; the 2026 show, Disney's Beauty and the Beast, was the society's eightieth production. Rehearsals for the 2027 production start in September 2026 and anyone interested in joining is welcome — ask through their Facebook page.",
+          "checked": "2026-09-18",
+          "url": "https://www.largsoperatic.co.uk",
+          "logo": "/assets/img/logo-largs-operatic.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/LargsAmateurOperaticSociety"
+          }
+        },
+        {
           "name": "Largs Bowling Club",
           "blurb": "Lawn bowls on Douglas Street, green open seven days. New members of any age or ability are welcome and coaching is free, so no experience needed to turn up.",
           "checked": "2026-08-29",
