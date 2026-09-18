@@ -1,0 +1,8 @@
+# Cloudflare Pages reads _redirects from the site root, one rule per line:
+#   from  to  status
+# Only permanent moves of URLs that have been published belong here. A
+# rule is cheap to add and easy to forget, so say why each one exists.
+
+# Cafés & food became Food & drink on 18 Sep 2026; the old address had been
+# in the sitemap since August.
+/directory/cafes-and-food/  /directory/food-and-drink/  301

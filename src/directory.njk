@@ -64,6 +64,12 @@ eleventyComputed:
         {% if item.url %}<a href="{{ item.url }}" rel="noopener">{{ item.name }}</a>{% else %}{{ item.name }}{% endif %}
       </h2>
       <div class="directory-body">
+      {# What sort of place it is, in the place's own word — Restaurant,
+         Café, Chip shop, Bar & restaurant. Food & drink asks for it so a
+         reader can pick the sit-down places out of an alphabetical list
+         without the list being split or ranked. Any category may carry
+         it; only Food & drink asks. Same mono line as an event's venue. #}
+      {% if item.kind %}<p class="directory-kind">{{ item.kind }}</p>{% endif %}
       {% if item.blurb %}<p>{{ item.blurb }}</p>{% endif %}
       {# One line for how to reach them: where · phone · site. The heading
          is a link too, but a large underlined heading reads as decoration;
@@ -153,6 +159,10 @@ eleventyComputed:
      each entry reads as one block instead of an L shape: logo box
      + the 12px flex gap, from the one --logo value above. */
   .directory-body{margin-left:calc(var(--logo) + 12px)}
+  .directory-kind{
+    font-family:"Spline Sans Mono",monospace;font-size:.72rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);margin:-4px 0 6px;
+  }
   .directory-social{margin-top:3px}
   .directory-social a{font-size:.94rem}
   @media (max-width:600px){
