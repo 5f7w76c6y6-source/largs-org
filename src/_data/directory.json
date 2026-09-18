@@ -343,6 +343,20 @@
             "label": "Their Facebook page",
             "url": "https://www.facebook.com/scottslargs"
           }
+        },
+        {
+          "name": "The Fish Works",
+          "kind": "Chip shop",
+          "blurb": "Fish and chip takeaway on the Promenade, family-run since 2017. Everything is made to order: haddock from Peterhead market, langoustines landed at Largs by the Eilidh Anne, plus calamari and fish finger sandwiches, with a gluten-free menu available. Takeaway only, with outdoor seating on the prom; orders for collection or delivery can be placed online. Holds the National Federation of Fish Friers' Quality Award (2023–2025).",
+          "checked": "2026-09-18",
+          "where": "3 The Promenade, KA30 8BG",
+          "phone": "01475 674111",
+          "url": "https://thefishworks.co.uk",
+          "logo": "/assets/img/logo-fish-works.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/fishworkslargs"
+          }
         }
       ],
       "asks": [
