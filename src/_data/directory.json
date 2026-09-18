@@ -342,6 +342,20 @@
       "blurb": "Places to eat and drink in Largs.",
       "entries": [
         {
+          "name": "Kohinoor",
+          "kind": "Indian restaurant",
+          "blurb": "Indian restaurant and takeaway on Main Street — Punjabi cooking, with set meals for one to four alongside the full menu. Sit in, collect or have it delivered; orders and table bookings on their website or by phone. Open from 4pm Tuesday to Sunday, until 10pm (10.30pm on Friday and Saturday).",
+          "checked": "2026-09-18",
+          "where": "43a Main Street, KA30 8AE",
+          "phone": "01475 686051",
+          "url": "https://www.kohinoorlargs.com",
+          "logo": "/assets/img/logo-kohinoor.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/kohinoorlargsindian"
+          }
+        },
+        {
           "name": "Scotts",
           "kind": "Bar & restaurant",
           "blurb": "Bar and restaurant at Largs Yacht Haven, on Irvine Road, with a terrace looking over the marina; the terrace has a retractable roof and heaters, and takes dogs. Food all day — breakfast until 11.45am, lunch from midday, then dinner — with seafood and steaks on the menu, a cocktail list, and vegan, low-gluten and children's menus. Open 9am–10pm Sunday to Thursday and 9am–11pm Friday and Saturday. Tables can be booked online or by phone. Run by the Buzzworks group.",
