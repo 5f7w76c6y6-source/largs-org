@@ -1,5 +1,5 @@
 {
-  "_comment": "Largs Community Council issue register. Each entry is an ISSUE, not a monthly note: `id` is permanent and never reused, so when later minutes are digested the item is UPDATED in place rather than added again, and its earlier appearances are listed in `alsoRecorded`. STATUS DESCRIBES THE RECORD, NOT THE WORLD — it says what the minutes record at the last mention, never what may have happened since. raised = recorded, no action yet assigned or taken. progress = an action is assigned and the minutes record it moving. completed = the minutes record it done. no-update = the item was recorded and nothing new has appeared since. Nothing is rated, ranked or scored, and no status implies criticism of anyone. Every entry is read against the source minutes before it is pushed.",
+  "_comment": "Largs Community Council issue register. Each entry is an ISSUE, not a monthly note: `id` is permanent and never reused, so when later minutes are digested the item is UPDATED in place rather than added again, and its earlier appearances are listed in `alsoRecorded`. STATUS DESCRIBES THE RECORD, NOT THE WORLD — it says what the minutes record at the last mention, never what may have happened since. raised = recorded, no action yet assigned or taken. progress = an action is assigned and the minutes record it moving. completed = the minutes record it done. There is no stored 'no update' status: the No recent update view is DERIVED at build time from the dates (six months or more behind latestMinutes, see staleOnly in eleventy.config.js), so it can never drift from the record — which it did on 14 August 2026 when a hand-set label outlived the minutes it contradicted. Nothing is rated, ranked or scored, and no status implies criticism of anyone. Every entry is read against the source minutes before it is pushed.",
   "_rules": [
     "A SCHEDULE IS NOT A COMPLETION. 'Will take place on 25/02/25' is a plan; unless a later meeting records it happening, the status is not completed.",
     "A QUALIFICATION TRAVELS WITH ITS COMPLETION. Where the minutes record a caveat alongside a result — no oversight of a fund, a decision LCC disagreed with — the caveat is part of the entry, not an omission.",
@@ -69,9 +69,10 @@
     },
     {
       "slug": "no-update",
-      "key": "no-update",
+      "key": "",
+      "derived": "stale",
       "label": "No recent update",
-      "blurb": "The item was recorded and nothing new has appeared since. No criticism is implied — minutes are a record of what was said, not of everything that happened."
+      "blurb": "Items whose last mention is six months or more behind the newest minutes, whatever their status. Worked out from the dates at each build, never set by hand. No criticism is implied — minutes are a record of what was said, not of everything that happened."
     }
   ],
   "digest": [
@@ -555,7 +556,7 @@
     {
       "id": "i3-site-open-letter",
       "title": "Open letter on the i3 site money",
-      "status": "no-update",
+      "status": "progress",
       "summary": "LCC agreed to write an open letter to the five elected members proposing that £1.25m allocated to the i3 site in Irvine be repurposed and shared between communities, with Largs's share going towards a community minibus, flower beds on the promenade and, subject to funds remaining, works to reopen the Aubery toilets. Other community councils were to be asked to support the approach. In February 2026 CCllr Woodburn recorded that he had asked about redistributing the money to local communities in August 2025 and had received no reply.",
       "responsible": "CCllr Woodburn. Proposed by CCllr Woodburn, seconded by CCllr Low Thomson, agreed by all.",
       "nextStep": "",
@@ -595,7 +596,7 @@
     {
       "id": "energy-buying-group",
       "title": "Buying energy at a reduced rate for local businesses",
-      "status": "no-update",
+      "status": "progress",
       "summary": "The effect of high energy prices on local businesses was raised, together with an arrangement by which local communities can buy energy at a reduced rate. Businesses would need to be involved.",
       "responsible": "CCllr Low Thomson was to investigate further.",
       "nextStep": "",
@@ -655,7 +656,7 @@
     {
       "id": "free-school-lunches-library",
       "title": "Free school lunches at Largs library",
-      "status": "no-update",
+      "status": "raised",
       "summary": "The Secretary raised that free school lunches were available in libraries across North Ayrshire except Largs, and recorded the expectation that this was a clerical error.",
       "responsible": "North Ayrshire Council.",
       "nextStep": "",
@@ -665,7 +666,7 @@
     {
       "id": "helter-skelter-trustee-request",
       "title": "Request for a trustee position on the Helter Skelter board",
-      "status": "no-update",
+      "status": "progress",
       "summary": "A letter from LCC to the Chair of Helter Skelter requesting a trustee position remained unanswered. The minutes record LCC's disappointment that its offer to be involved had not been responded to.",
       "responsible": "Helter Skelter trustees. Pursued by CCllr Alexander and Cllr Hill.",
       "nextStep": "",
@@ -771,7 +772,7 @@
     {
       "id": "largs-food-hub-funding",
       "title": "Funding for Largs Food Hub",
-      "status": "no-update",
+      "status": "progress",
       "summary": "Funding for the Food Hub was due to end in October, which was not known when the hub opened. The two meetings name the funder differently — Scottish Government funding in January, North Ayrshire Council funding in February. Concern was recorded about its viability after only a year, and about how much is expected of volunteers. A larder network meeting in March was to discuss finances.",
       "responsible": "The Locality Partnership was to consider the issue.",
       "nextStep": "",
@@ -892,7 +893,7 @@
     {
       "id": "christmas-lights-funding",
       "title": "Funding for the Christmas lights",
-      "status": "no-update",
+      "status": "progress",
       "summary": "Largs Events recorded difficulty securing a budget for the Christmas lights, and that North Ayrshire Council declined to approve money from the car park fund because of previous budget decisions. Council electricians were no longer certified to install on AMEY street furniture, and completing the installation through AMEY's appointed contractor cost Largs Events approximately £3,000. AMEY has put the cost forward to its community fund.",
       "responsible": "Largs Events, with North Ayrshire Council and AMEY.",
       "nextStep": "",

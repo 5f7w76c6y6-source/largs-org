@@ -22,8 +22,11 @@
    gone quiet. Optional: called without it, the staleness line simply never
    renders, so nothing breaks if a future template forgets it. #}
 {% macro issueCard(item, minutesUrl, latestMinutes) %}
-{% set labels = { "raised": "Raised", "progress": "In progress", "completed": "Completed", "no-update": "No recent update" } %}
-{% set glyphs = { "raised": "◇", "progress": "◐", "completed": "●", "no-update": "○" } %}
+{# Three stored statuses. "No recent update" is not one of them: it is
+   worked out from the dates (isStale, eleventy.config.js) and shown as the
+   line below the last-recorded date, whatever the item's status. #}
+{% set labels = { "raised": "Raised", "progress": "In progress", "completed": "Completed" } %}
+{% set glyphs = { "raised": "◇", "progress": "◐", "completed": "●" } %}
 <article class="issue" id="issue-{{ item.id }}">
   <div class="issue-head">
     <h3 class="issue-title">{{ item.title }}</h3>
@@ -38,7 +41,7 @@
     <div><span class="issue-label">Next step</span> · {{ item.nextStep }}</div>
     {% endif %}
     <div><span class="issue-label">Last recorded</span> · {{ item.lastRecorded | dateLong }}{% if minutesUrl %} · <a href="{{ minutesUrl }}">minutes</a>{% endif %}</div>
-    {% if latestMinutes and (item.lastRecorded | monthsBetween(latestMinutes)) >= 6 %}
+    {% if item.lastRecorded | isStale(latestMinutes) %}
     <p class="issue-stale">No later minutes mention this item. That describes the
     written record, not necessarily what has happened since.</p>
     {% endif %}
@@ -60,7 +63,9 @@
     The minutes record the matter as done. Completed means it was settled,
     not that everyone was content with how.</li>
   <li><span class="issue-status no-update"><span aria-hidden="true">○</span> No recent update</span>
-    The item was recorded and nothing new has appeared since.</li>
+    Not a status but a view: any item, whatever its status, whose last mention
+    is six months or more behind the newest minutes. Worked out from the dates,
+    never set by hand.</li>
 </ul>
 {% endmacro %}
 
@@ -70,16 +75,17 @@
    part of a whole record and the rest is one click away.
    `current` is the slug of the page being rendered, or "" on the hub. #}
 {% macro registerNav(council, current) %}
-{% set glyphs = { "raised": "◇", "progress": "◐", "completed": "●", "no-update": "○" } %}
+{% set glyphs = { "raised": "◇", "progress": "◐", "completed": "●" } %}
 <nav class="register-nav" aria-label="The issue register">
   <ul>
     {% for s in council.statuses %}
     <li>
       <a href="/council/{{ s.slug }}/"
-         class="register-tab{% if s.key %} {{ s.key }}{% endif %}"
+         class="register-tab{% if s.key %} {{ s.key }}{% elif s.derived %} no-update{% endif %}"
          {% if current == s.slug %}aria-current="page"{% endif %}>
-        {% if s.key %}<span aria-hidden="true">{{ glyphs[s.key] }}</span> {% endif %}{{ s.label }}
-        <span class="register-count">{{ council.digest | byStatus(s.key) | length }}</span>
+        {% if s.key %}<span aria-hidden="true">{{ glyphs[s.key] }}</span> {% elif s.derived %}<span aria-hidden="true">○</span> {% endif %}{{ s.label }}
+        {# The derived view counts by date; the others by stored status. #}
+        <span class="register-count">{% if s.derived == "stale" %}{{ council.digest | staleOnly(council.latestMinutes) | length }}{% else %}{{ council.digest | byStatus(s.key) | length }}{% endif %}</span>
       </a>
     </li>
     {% endfor %}

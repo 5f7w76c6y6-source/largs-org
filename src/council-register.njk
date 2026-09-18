@@ -23,6 +23,12 @@ eleventyComputed:
    the browser; the filtering has already happened by the time the file
    is written.
 
+   Four of the five slice by stored status. /council/no-update/ is
+   different: it is DERIVED — every item whose last mention is six months
+   or more behind the newest minutes, whatever its status (staleOnly in
+   eleventy.config.js). The status used to be typed by hand and drifted;
+   a date cannot.
+
    `eleventyComputed` exists because front matter is evaluated before
    pagination assigns `view`; computed data is evaluated after, so the
    per-page title and heading can depend on which status is being
@@ -30,7 +36,11 @@ eleventyComputed:
 
 {% from "register.njk" import issueCard, statusKey, registerNav, coverageNote %}
 
+{% if view.derived == "stale" %}
+{% set items = council.digest | staleOnly(council.latestMinutes) | newestFirst %}
+{% else %}
 {% set items = council.digest | byStatus(view.key) | newestFirst %}
+{% endif %}
 
 <section class="wrap council-page" aria-labelledby="page-title">
   <div class="rule" aria-hidden="true"></div>
@@ -52,7 +62,7 @@ eleventyComputed:
     {% endfor %}
   </div>
   {% else %}
-  <p class="note">No items in the register currently carry this status.</p>
+  <p class="note">{% if view.derived %}No item in the register is six months or more behind the newest minutes.{% else %}No items in the register currently carry this status.{% endif %}</p>
   {% endif %}
 
   {{ statusKey() }}
