@@ -87,8 +87,13 @@ eleventyComputed:
          actually happen. The main url stays the one that works without a
          login; this is additive, and the label says what it is so nobody
          clicks into a login wall by surprise. #}
+      {# `social` is one {label, url} or a list of them — Largs SWI asked for
+         both its institute page and the local women's group (19 Sep 2026). #}
       {% if item.social %}
-      <p class="directory-social"><a href="{{ item.social.url }}" rel="noopener">{{ item.social.label }} →</a></p>
+      {% set socials = [item.social] if item.social.url else item.social %}
+      {% for s in socials %}
+      <p class="directory-social"><a href="{{ s.url }}" rel="noopener">{{ s.label }} →</a></p>
+      {% endfor %}
       {% endif %}
       {% if item.note %}<p class="directory-note">{{ item.note }}</p>{% endif %}
       </div>
