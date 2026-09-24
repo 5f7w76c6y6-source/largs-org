@@ -114,6 +114,16 @@
           }
         },
         {
+          "name": "Largs Archery Club",
+          "blurb": "Target archery at the sportscotland National Centre Inverclyde on Burnside Road, with three coaches in the club for new and experienced archers alike. Shoots on Tuesday evenings, and on Thursdays when enough archers want a session to cover the hall. From £5 a session for adults and £4 for juniors, students and disabled archers.",
+          "checked": "2026-09-24",
+          "where": "sportscotland National Centre Inverclyde, Burnside Road, KA30 8RW",
+          "phone": "01475 521105",
+          "logo": "/assets/img/logo-largs-archery.png",
+          "url": "https://www.facebook.com/largsarcheryclub",
+          "note": "Email info@largs-archery.co.uk."
+        },
+        {
           "name": "Largs Aubery Sea Swimmers",
           "blurb": "Sea swimming from the Aubery on Sundays. Times and what to bring are arranged through their Facebook group.",
           "checked": "2026-09-18",
