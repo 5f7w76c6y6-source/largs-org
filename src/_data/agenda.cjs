@@ -172,6 +172,15 @@ module.exports = function () {
 
   const recent = all.filter((r) => r.date < todayIso && r.date >= recentFloor
                                    && r.state === 'mentioned');
+  // Past meetings whose papers are out, later than anything the council's
+  // search has found Largs in. Their absence from "Recently" would read as
+  // "no mention"; more likely the index has not reached them (see papersOut).
+  const newestFound = all.filter((r) => r.state === 'mentioned')
+    .map((r) => r.date).sort().pop() || null;
+  const notYetSearched = all
+    .filter((r) => r.date < todayIso && r.date >= recentFloor && r.state === 'nothing'
+                   && newestFound && r.date > newestFound)
+    .sort((a, b) => (a.date < b.date ? -1 : 1));
   const earlier = all.filter((r) => r.date < recentFloor && r.state === 'mentioned');
 
   // When the council's website was last read. Each collector stamps its own
@@ -216,6 +225,7 @@ module.exports = function () {
     scheduled,
     scheduledByMonth,
     recent,
+    notYetSearched,
     earlier,
   };
 };

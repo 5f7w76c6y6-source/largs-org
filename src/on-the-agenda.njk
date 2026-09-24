@@ -85,9 +85,7 @@ more meetings are in the council's diary{% if agenda.scheduledTo %}, up to
 {{ agenda.scheduledTo }}{% endif %} →</a><br>
 <span class="agenda-sub">{% if agenda.counts.papersOut %}{{ agenda.counts.papersOut }}
 of them {% if agenda.counts.papersOut == 1 %}has{% else %}have{% endif %} papers out
-with no mention of Largs found so far; the rest are not published yet. The
-council's search index can run a fortnight behind publication, so a mention
-can still turn up.{% else %}Their papers are not published yet, so there is
+with no mention of Largs found so far; the rest are not published yet.{% else %}Their papers are not published yet, so there is
 no way to know yet whether Largs is in them.{% endif %}</span></p>
 {% endif %}
 
@@ -108,6 +106,11 @@ no way to know yet whether Largs is in them.{% endif %}</span></p>
   </ul>
 {% else %}
   <p class="agenda-none">Nothing in the last {{ agenda.recentDays }} days.</p>
+{% endif %}
+{% if agenda.notYetSearched | length %}
+<p class="agenda-note">Not listed: {% for m in agenda.notYetSearched %}{% if m.url %}<a href="{{ m.url }}">{{ m.committee }}</a>{% else %}{{ m.committee }}{% endif %} ({{ m.display }}){% if not loop.last %}, {% endif %}{% endfor %}.
+Their papers are published, but the council's search has not found Largs in
+them yet; its index can run a fortnight behind, so they may appear here later.</p>
 {% endif %}
 
 {% if agenda.earlier | length %}
