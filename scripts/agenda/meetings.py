@@ -153,12 +153,14 @@ def main():
     quick = '--quick' in sys.argv
     today = datetime.now().date().isoformat()
     out = []
+    failed = []          # any fetch that failed: then nothing is written
 
     for cid, name in {**COMMITTEES, **BOARDS}.items():
         try:
             page = get(page_url(cid))
         except Exception as exc:
             print(f'{name:<50} FAILED {exc}')
+            failed.append(name)
             continue
         rows = [r for r in meetings_on(page, cid) if r['date']]
         rows.sort(key=lambda r: r['date'])
@@ -178,12 +180,23 @@ def main():
                 m['documents'] = documents_on(page)
             except Exception as exc:
                 print(f'  [{i}/{len(out)}] {m["date"]} {m["committee"]}: {exc}')
+                failed.append(f'{m["date"]} {m["committee"]}')
                 continue
             n = len(m['documents'])
             if n or m['ahead']:
                 print(f'  [{i}/{len(out)}] {m["date"]}  {m["committee"][:40]:<42}'
                       f'{n} document(s)' + ('  ← ahead' if m['ahead'] else ''))
             time.sleep(PAUSE)
+
+    if failed:
+        # A partial file would be committed and shown as fresh. Leave the
+        # last good one in place instead; the page flags itself stale on its
+        # own after STALE_DAYS. (24 September 2026: a run with no route to the
+        # council's site wrote an empty file before this guard existed.)
+        print(f'\nSTOP: {len(failed)} fetch(es) failed; {OUT} left as it was:')
+        for f in failed:
+            print('  ' + f)
+        raise SystemExit(1)
 
     out.sort(key=lambda m: m['date'])
     json.dump({'collected': datetime.now().isoformat(timespec='seconds'),
