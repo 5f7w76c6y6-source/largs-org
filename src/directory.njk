@@ -70,7 +70,10 @@ eleventyComputed:
          without the list being split or ranked. Any category may carry
          it; only Food & drink asks. Same mono line as an event's venue. #}
       {% if item.kind %}<p class="directory-kind">{{ item.kind }}</p>{% endif %}
-      {% if item.blurb %}<p>{{ item.blurb }}</p>{% endif %}
+      {# A blurb is one paragraph, or a list of them when a group's own text
+         arrives in paragraphs and is kept as written (Largs Town Twinning
+         Association, 24 Sep 2026). #}
+      {% if item.blurb %}{% if item.blurb is string %}<p>{{ item.blurb }}</p>{% else %}{% for para in item.blurb %}<p>{{ para }}</p>{% endfor %}{% endif %}{% endif %}
       {# One line for how to reach them: where · phone · site. The heading
          is a link too, but a large underlined heading reads as decoration;
          the arrowed link is the affordance the page has already taught.

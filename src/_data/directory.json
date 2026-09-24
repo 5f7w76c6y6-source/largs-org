@@ -180,6 +180,21 @@
           "phone": "07919 887405",
           "logo": "/assets/img/logo-table-tennis.png",
           "url": "https://www.facebook.com/LargsTTC"
+        },
+        {
+          "name": "Largs Town Twinning Association",
+          "blurb": [
+            "Do you have some connection with France? Or perhaps you’re just looking for a new experience?  Either way, Largs Town Twinning Association already has a French Connection and is seeking new members, plus potential hosts for next summer, when a group will come to Largs from our twin town, Andernos-les-Bains.",
+            "What’s involved in hosting? If you have a spare room to offer, we’re looking for people to host a single person or a couple for four or five nights. During this time there will be organised outings and meals in local restaurants which you can enjoy, both with your guests and with the group as a whole. Since most of our counterparts in Andernos are learning English, there’s absolutely no need to be able to speak French but you will have the chance to pick some up, if you wish.",
+            "Every second year, we travel to Andernos, staying with the people we hosted in Largs, and our hospitality is returned with visits to local attractions and restaurants offering great regional food and excellent wine.",
+            "We’re always looking for new members (there’s no obligation to host or to travel to France). For further information contact: lttaevents@yahoo.com"
+          ],
+          "checked": "2026-09-24",
+          "logo": "/assets/img/logo-largs-twinning.png",
+          "social": {
+            "label": "Comité de jumelage Andernos–Largs, our twin town’s site (in French)",
+            "url": "https://www.andernos-largs.com/"
+          }
         }
       ]
     },
