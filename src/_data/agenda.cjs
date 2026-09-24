@@ -1,10 +1,18 @@
-/* On the council's agenda — build-time shaping, from two sources.
+/* On the council's agenda — build-time shaping, from three sources.
  *
  *   data/meetings.json      every scheduled meeting, from the council's own
  *                           committee pages. Knows about meetings months
  *                           ahead whose papers do not exist yet.
  *   data/largs-agenda.json  which meetings have papers mentioning Largs,
  *                           from the council's document search.
+ *   data/largs-papers.json  the agenda packs this site has read itself
+ *                           (scripts/agenda/papers.py), with its own count.
+ *                           Added 24 Sep 2026 because the council's search
+ *                           indexes new papers a fortnight or more after
+ *                           they are published — too late for "coming up".
+ *                           The count is the same measure the search uses
+ *                           (occurrences of the word), verified on two
+ *                           packs, and where both exist ours is used.
  *
  * WHY BOTH. The search can only see documents, so it cannot know a meeting
  * is happening until its papers are lodged — three days beforehand. The
@@ -13,7 +21,10 @@
  * would have made all three look alike:
  *
  *   mentioned   papers are published and Largs appears in them
- *   nothing     papers are published and Largs does not appear
+ *   none        papers are published, this site has read them, no Largs
+ *   nothing     papers are published, unread here, and the council's
+ *               search has not found Largs in them — which, given the
+ *               lag, is not the same as "no mention"
  *   awaited     papers are not published yet
  *
  * The union is taken, not the intersection. Each committee page shows its
@@ -43,6 +54,7 @@ const path = require('path');
 const DIR = path.join(__dirname, '..', '..', 'data');
 const CALENDAR = path.join(DIR, 'meetings.json');
 const SEARCH = path.join(DIR, 'largs-agenda.json');
+const PAPERS = path.join(DIR, 'largs-papers.json');
 
 const PRIMACY = ['AgendaPack', 'Agenda', 'Report', 'AgendaContents', 'Minute'];
 const RECENT_DAYS = 90;
@@ -80,6 +92,7 @@ function monthLabel(isoDate) {
 module.exports = function () {
   const calendar = readJson(CALENDAR);
   const search = readJson(SEARCH);
+  const papers = readJson(PAPERS);
 
   if (!calendar && !search) {
     return { ok: false, upcoming: [], scheduled: [], scheduledByMonth: [],
@@ -121,6 +134,7 @@ module.exports = function () {
     const existing = rows.get(k);
     if (existing) {
       existing.hits = best.hits;
+      existing.searchHits = best.hits;
       existing.docType = best.type;
       if (existing.papers === null) existing.papers = docs.length;
       if (!existing.url) existing.url = best.meeting_url || null;
@@ -132,7 +146,59 @@ module.exports = function () {
         url: best.meeting_url || null,
         papers: docs.length,
         hits: best.hits,
+        searchHits: best.hits,
         docType: best.type,
+      });
+    }
+  }
+
+  // Packs this site has read. One number per meeting: the packs summed
+  // (main plus any supplementary), or, where no pack existed and loose
+  // documents were read, the largest count, since those overlap. Two
+  // meetings on one date under one committee (a Special Council) are
+  // separate meetings, so their numbers add.
+  const byRead = new Map();
+  for (const r of (papers && papers.records) || []) {
+    if (r.status !== 'ok' || !r.date || !r.committee) continue;
+    const k = key(r.committee, r.date);
+    if (!byRead.has(k)) byRead.set(k, new Map());
+    const perMeeting = byRead.get(k);
+    const mid = String(r.meetingId || r.meetingUrl || '');
+    const cur = perMeeting.get(mid) || { hits: 0, pack: false, docs: 0, read: null, url: null };
+    if (r.pack) {
+      cur.hits = (cur.pack ? cur.hits : 0) + (r.hits || 0);
+      cur.pack = true;
+    } else if (!cur.pack) {
+      cur.hits = Math.max(cur.hits, r.hits || 0);
+    }
+    cur.docs += 1;
+    if (!cur.read || r.read > cur.read) cur.read = r.read;
+    cur.url = cur.url || r.meetingUrl || null;
+    perMeeting.set(mid, cur);
+  }
+  for (const [k, perMeeting] of byRead) {
+    const parts = [...perMeeting.values()];
+    const hits = parts.reduce((s, p) => s + p.hits, 0);
+    const readAt = parts.map((p) => p.read).sort().pop() || null;
+    const existing = rows.get(k);
+    if (existing) {
+      existing.hits = hits;
+      existing.read = true;
+      existing.readAt = readAt;
+      existing.docType = parts.some((p) => p.pack) ? 'AgendaPack' : (existing.docType || 'Report');
+      if (existing.papers === null) existing.papers = parts.reduce((s, p) => s + p.docs, 0);
+      if (!existing.url) existing.url = parts[0].url;
+    } else {
+      const [committee, date] = k.split('|');
+      rows.set(k, {
+        committee,
+        date,
+        url: parts[0].url,
+        papers: parts.reduce((s, p) => s + p.docs, 0),
+        hits,
+        docType: parts.some((p) => p.pack) ? 'AgendaPack' : 'Report',
+        read: true,
+        readAt,
       });
     }
   }
@@ -144,7 +210,9 @@ module.exports = function () {
   const all = [...rows.values()].map((r) => ({
     ...r,
     display: display(r.date),
-    state: r.hits ? 'mentioned' : (r.papers ? 'nothing' : 'awaited'),
+    state: r.hits ? 'mentioned'
+      : r.read ? 'none'
+        : (r.papers ? 'nothing' : 'awaited'),
   }));
 
   all.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
@@ -175,8 +243,13 @@ module.exports = function () {
   // Past meetings whose papers are out, later than anything the council's
   // search has found Largs in. Their absence from "Recently" would read as
   // "no mention"; more likely the index has not reached them (see papersOut).
-  const newestFound = all.filter((r) => r.state === 'mentioned')
+  // "Newest the search has found" is about the search's reach, so packs
+  // this site read itself do not move it.
+  const newestFound = all.filter((r) => r.searchHits)
     .map((r) => r.date).sort().pop() || null;
+  const readNone = all
+    .filter((r) => r.date < todayIso && r.date >= recentFloor && r.state === 'none')
+    .sort((a, b) => (a.date < b.date ? -1 : 1));
   const notYetSearched = all
     .filter((r) => r.date < todayIso && r.date >= recentFloor && r.state === 'nothing'
                    && newestFound && r.date > newestFound)
@@ -197,6 +270,7 @@ module.exports = function () {
     ok: true,
     collectedCalendar: (calendar && calendar.collected) || null,
     collectedSearch: (search && search.collected) || null,
+    collectedPapers: (papers && papers.collected) || null,
     cutoff: (search && search.cutoff) || null,
     recentDays: RECENT_DAYS,
     // The page's honesty line: when the council's site was last read, and
@@ -218,6 +292,8 @@ module.exports = function () {
       // a search for a word in a 16 Sep report title found nothing from that
       // meeting), so the page says "found" and "yet", never "none".
       papersOut: scheduled.filter((r) => r.state === 'nothing').length,
+      // Ahead, papers read by this site, no Largs: a real "no mention".
+      papersRead: scheduled.filter((r) => r.state === 'none').length,
       recent: recent.length,
       earlier: earlier.length,
     },
@@ -225,6 +301,7 @@ module.exports = function () {
     scheduled,
     scheduledByMonth,
     recent,
+    readNone,
     notYetSearched,
     earlier,
   };

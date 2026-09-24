@@ -65,7 +65,7 @@ in a list. Follow the link to see which.</p>
         {% else %}{{ m.committee }}{% endif %}
       </p>
       <p class="agenda-detail">{{ m.hits }} mention{% if m.hits != 1 %}s{% endif %}
-      of Largs in the papers.</p>
+      of Largs in the papers{% if m.read %}, counted by this site from the pack{% endif %}.</p>
     </li>
   {% endfor %}
   </ul>
@@ -73,20 +73,27 @@ in a list. Follow the link to see which.</p>
   <p class="agenda-none">None was known when the council's website was last
   checked.</p>
 {% else %}
-  <p class="agenda-none">The council's search finds no mention of Largs in the
-  papers published so far. Its index can run a fortnight behind publication,
-  so a mention can still turn up; papers appear about three days before a
-  meeting.</p>
+  <p class="agenda-none">{% if agenda.counts.papersRead %}This site has read the
+  papers published for {{ agenda.counts.papersRead }} of the meetings ahead, and
+  none mentions Largs.{% if agenda.counts.papersOut %} {{ agenda.counts.papersOut }}
+  more {% if agenda.counts.papersOut == 1 %}has{% else %}have{% endif %} papers out
+  not read yet.{% endif %}{% else %}The council's search finds no mention of Largs
+  in the papers published so far. Its index can run a fortnight behind
+  publication, so a mention can still turn up.{% endif %} Papers appear about
+  three days before a meeting.</p>
 {% endif %}
 
 {% if agenda.counts.scheduled %}
 <p class="agenda-forward"><a href="/on-the-agenda/scheduled/">{{ agenda.counts.scheduled }}
 more meetings are in the council's diary{% if agenda.scheduledTo %}, up to
 {{ agenda.scheduledTo }}{% endif %} →</a><br>
-<span class="agenda-sub">{% if agenda.counts.papersOut %}{{ agenda.counts.papersOut }}
-of them {% if agenda.counts.papersOut == 1 %}has{% else %}have{% endif %} papers out
-with no mention of Largs found so far; the rest are not published yet.{% else %}Their papers are not published yet, so there is
-no way to know yet whether Largs is in them.{% endif %}</span></p>
+<span class="agenda-sub">{% set pr = agenda.counts.papersRead %}{% set po = agenda.counts.papersOut %}
+{%- if pr or po %}{% if pr %}{{ pr }} of them {% if pr == 1 %}has{% else %}have{% endif %}
+papers out which this site has read: no mention of Largs.{% endif %}{% if po %} {{ po }}
+{% if pr %}more{% else %}of them{% endif %} {% if po == 1 %}has{% else %}have{% endif %} papers
+out not read yet, and no mention found by the council's search so far.{% endif %}
+The rest are not published yet.{% else %}Their papers are not published yet, so
+there is no way to know yet whether Largs is in them.{% endif %}</span></p>
 {% endif %}
 
 <h2>Recently</h2>
@@ -100,12 +107,15 @@ no way to know yet whether Largs is in them.{% endif %}</span></p>
         {% else %}{{ m.committee }}{% endif %}
       </p>
       <p class="agenda-detail">{{ m.hits }} mention{% if m.hits != 1 %}s{% endif %}
-      in the papers</p>
+      in the papers{% if m.read %}, counted by this site from the pack{% endif %}</p>
     </li>
   {% endfor %}
   </ul>
 {% else %}
   <p class="agenda-none">Nothing in the last {{ agenda.recentDays }} days.</p>
+{% endif %}
+{% if agenda.readNone | length %}
+<p class="agenda-note">Read by this site, with no mention of Largs: {% for m in agenda.readNone %}{% if m.url %}<a href="{{ m.url }}">{{ m.committee }}</a>{% else %}{{ m.committee }}{% endif %} ({{ m.display }}){% if not loop.last %}, {% endif %}{% endfor %}.</p>
 {% endif %}
 {% if agenda.notYetSearched | length %}
 <p class="agenda-note">Not listed: {% for m in agenda.notYetSearched %}{% if m.url %}<a href="{{ m.url }}">{{ m.committee }}</a>{% else %}{{ m.committee }}{% endif %} ({{ m.display }}){% if not loop.last %}, {% endif %}{% endfor %}.
@@ -125,7 +135,7 @@ them yet; its index can run a fortnight behind, so they may appear here later.</
         {% else %}{{ m.committee }}{% endif %}
       </p>
       <p class="agenda-detail">{{ m.hits }} mention{% if m.hits != 1 %}s{% endif %}
-      in the papers</p>
+      in the papers{% if m.read %}, counted by this site from the pack{% endif %}</p>
     </li>
   {% endfor %}
   </ul>
@@ -134,11 +144,15 @@ them yet; its index can run a fortnight behind, so they may appear here later.</
 
 <details class="agenda-how">
   <summary>How this page is made</summary>
-  <p>Two lists are put together. North Ayrshire publishes a calendar of its
+  <p>Three things are put together. North Ayrshire publishes a calendar of its
   committee meetings months in advance, which is where the dates come from. It
-  also runs a search across its own committee documents, which is where the
-  mention counts come from. Nothing here is written by hand, and nothing is
-  interpreted.</p>
+  runs a search across its own committee documents, which is where the older
+  mention counts come from. And because that search can take a fortnight or
+  more to index new papers, this site now reads the agenda pack for each
+  meeting ahead itself and counts the word “Largs” in it — the same measure
+  the council's search reports, checked against it. A row says when the count
+  is ours. Only the number is kept: nothing from inside a pack is copied here.
+  Nothing on this page is written by hand, and nothing is interpreted.</p>
   <p>A mention can be substantial or trivial. A town name in a list of
   settlements counts the same as a decision about the town, and there is no way
   to tell which is which without opening the paper. That is why this page points
