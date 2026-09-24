@@ -73,17 +73,22 @@ in a list. Follow the link to see which.</p>
   <p class="agenda-none">None was known when the council's website was last
   checked.</p>
 {% else %}
-  <p class="agenda-none">No meeting with published papers mentions Largs at the
-  moment. Papers appear about three days before a meeting, so this is the normal
-  state between sittings.</p>
+  <p class="agenda-none">The council's search finds no mention of Largs in the
+  papers published so far. Its index can run a fortnight behind publication,
+  so a mention can still turn up; papers appear about three days before a
+  meeting.</p>
 {% endif %}
 
 {% if agenda.counts.scheduled %}
 <p class="agenda-forward"><a href="/on-the-agenda/scheduled/">{{ agenda.counts.scheduled }}
 more meetings are in the council's diary{% if agenda.scheduledTo %}, up to
 {{ agenda.scheduledTo }}{% endif %} →</a><br>
-<span class="agenda-sub">Their papers are not published yet, so there is no way
-to know yet whether Largs is in them.</span></p>
+<span class="agenda-sub">{% if agenda.counts.papersOut %}{{ agenda.counts.papersOut }}
+of them {% if agenda.counts.papersOut == 1 %}has{% else %}have{% endif %} papers out
+with no mention of Largs found so far; the rest are not published yet. The
+council's search index can run a fortnight behind publication, so a mention
+can still turn up.{% else %}Their papers are not published yet, so there is
+no way to know yet whether Largs is in them.{% endif %}</span></p>
 {% endif %}
 
 <h2>Recently</h2>

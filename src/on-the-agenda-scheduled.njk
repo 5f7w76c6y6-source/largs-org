@@ -59,7 +59,7 @@ as the council has published; more will appear as they set the dates.</p>
     <p class="agenda-what">
       {% if m.url %}<a href="{{ m.url }}">{{ m.committee }}</a>
       {% else %}{{ m.committee }}{% endif %}
-      {%- if m.state == "nothing" %} <span class="agenda-tag">papers out · no mention of Largs</span>{% endif %}
+      {%- if m.state == "nothing" %} <span class="agenda-tag">papers out · no mention found yet</span>{% endif %}
     </p>
   </li>
 {% endfor %}

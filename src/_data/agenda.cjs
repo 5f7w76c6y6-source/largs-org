@@ -204,6 +204,11 @@ module.exports = function () {
       mentioned: all.filter((r) => r.state === 'mentioned').length,
       upcoming: upcoming.length,
       scheduled: scheduled.length,
+      // Ahead, papers out, nothing found. Not "no mention": the council's
+      // full-text index can run a fortnight behind publication (24 Sep 2026:
+      // a search for a word in a 16 Sep report title found nothing from that
+      // meeting), so the page says "found" and "yet", never "none".
+      papersOut: scheduled.filter((r) => r.state === 'nothing').length,
       recent: recent.length,
       earlier: earlier.length,
     },
