@@ -287,6 +287,26 @@
           "note": "Donations of food can be handed in at Largs Library. Email Largsfh@gmail.com."
         },
         {
+          "name": "Largs Radio",
+          "blurb": "Community radio station run by residents of Largs and the North Coast, broadcasting online from Your Space on Boyd Street: local news, music from resident DJs and voices from the town. A Largs Community Development Trust project. Listen through the web player, and get in touch to get involved; local businesses can advertise.",
+          "checked": "2026-09-24",
+          "where": "Your Space, Boyd Street, KA30 8LE",
+          "phone": "01475 782809",
+          "url": "https://www.largsradio.co.uk",
+          "logo": "/assets/img/logo-largs-radio.png",
+          "social": [
+            {
+              "label": "Listen online",
+              "url": "https://ldcr.broadcast.radio/listen"
+            },
+            {
+              "label": "Their Facebook page",
+              "url": "https://www.facebook.com/p/Largs-Radio-61576827096396/"
+            }
+          ],
+          "note": "Email info@largsradio.co.uk."
+        },
+        {
           "name": "Largs SWI",
           "blurb": "The Largs institute of the Scottish Women's Institutes, formed in 2023 and twice recognised nationally for its growth. Monthly meetings with a speaker or demonstration on the first Wednesday of the month, 7.30–9.30pm, September to June; a coffee morning every Tuesday at 11am all year (£2 donation); and sewing and yarn clubs on Thursday evenings, 7–9pm, from September. All at the AD Cameron Centre. Visitors are welcome to come along before joining.",
           "checked": "2026-09-19",
