@@ -1,5 +1,5 @@
 {
- "collected": "2026-09-15T22:26:36",
+ "collected": "2026-09-24T14:13:03",
  "committees": {
   "135": "North Ayrshire Council",
   "137": "Audit and Scrutiny Committee",
@@ -1128,9 +1128,9 @@
    "committeeId": 135,
    "id": "3961",
    "date": "2026-09-16",
-   "status": "scheduled",
+   "status": "occurred",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3961/Committee/135/Default.aspx",
-   "ahead": true,
+   "ahead": false,
    "documents": [
     {
      "title": "Agenda Contents",
@@ -1187,6 +1187,14 @@
     {
      "title": "260916 Minute Volume",
      "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=wqa4oUsu0s%2bU7z%2febt0wxI%2b%2bmflTl0CGO65UENduQ8M%2bk6qryKLlew%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Responses to Council Questions",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=jUBn0YL%2f53upCSsc%2bP3iL9etKLe6qPoVQo5tvKfx4v2DXdrbxhkEzA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "260916 Council Minute",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=LmjxI158gZNA9xPgpyO2jTrQfzSqED6nP8RrGXiLxu9jsuhCVlBFww%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
     }
    ]
   },
@@ -1195,9 +1203,9 @@
    "committeeId": 135,
    "id": "4040",
    "date": "2026-09-16",
-   "status": "scheduled",
+   "status": "occurred",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4040/Committee/135/Default.aspx",
-   "ahead": true,
+   "ahead": false,
    "documents": [
     {
      "title": "Agenda Contents",
@@ -1210,38 +1218,78 @@
     {
      "title": "Review of the Scheme for Establishment of Community Councils Report and Appendices",
      "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=BvOpAKkskrm4WIY8bQpDKIS7hbW1%2fX4WCdKwtJso6P21rL%2b6hkEMng%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "260916 Special Council Minute",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=shwfvM8M4M16lKjmUV%2f%2b75IB8GN%2bW5Mpql8CFBRRTyZHrFSXO8yoMg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
     }
    ]
-  },
-  {
-   "committee": "Local Review Body",
-   "committeeId": 144,
-   "id": "3994",
-   "date": "2026-09-23",
-   "status": "scheduled",
-   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3994/Committee/144/Default.aspx",
-   "ahead": true,
-   "documents": []
   },
   {
    "committee": "Planning Committee",
    "committeeId": 147,
    "id": "3975",
    "date": "2026-09-23",
-   "status": "scheduled",
+   "status": "occurred",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3975/Committee/147/Default.aspx",
-   "ahead": true,
-   "documents": []
+   "ahead": false,
+   "documents": [
+    {
+     "title": "Agenda Contents",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=jTWlMNnt24eAtTE%2fy9yxZZdTt2sK1UqhrcEieKWyyBlAIWlupfqJ3A%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Agenda Document Pack - Planning Committee - 23/09/2026",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=QZSZFkQlzy6ID2%2bv5OpuRbDmhbXDVFKHndU4KVIXR9OhDEt5bbrWUA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "260826 Planning Minute",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=W0DA%2b2RRTGy6fXVkzbvpckBR1dVCSXw8NX%2fLYuFco0zdfC31g79KUg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "23092026 DPS 2026",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=sEDsBDQ12hNPxVdlKEHWxB5tXfQCDxxqsxN%2bwUhAOrbesgVC4qm1qg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Committee Report - CMPP Update Sept 2026",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=t7eNkHA8rhCgEr25CsPIMBckjUFaLoAwjf9Ch0Pn3GDmRf2SC1Kzyg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "(Revised) Committee Report - CMPP Update Sept 2026",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=M%2b%2bpTgM3d7oX2vNv%2faJa0K0uIR70GZN8RYKlDcsKZUHOg4aaXpBTvw%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    }
+   ]
   },
   {
    "committee": "Audit and Scrutiny Committee",
    "committeeId": 137,
    "id": "3934",
    "date": "2026-09-24",
-   "status": "scheduled",
+   "status": "occurred",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3934/Committee/137/Default.aspx",
    "ahead": true,
-   "documents": []
+   "documents": [
+    {
+     "title": "Agenda Contents",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=6DsFYFtwlFmy5cyaAfbnq8TOqFGvHqtGwwICX2r7ucxHJqYnY%2fzJQA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Agenda Document Pack - Audit and Scrutiny Committee - 24/09/2026",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=XQm%2bCO22pi5Pdtsqkmi8lBHozkNFJvHIhgL6c7YfZ%2b%2b7kQTpia86wA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "External Audit Report",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=VCzZ8HvBqmhQM9ofJvN9S1%2f6AF5RDeHEH91ywYV2mxXemGhOUsEMOQ%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Our Council Plan Year End Progress Reporting",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=Pl0jJdAzTzi%2bZJGtiUsaX1MqRiKtHgsQNCwvdEqwB3gAw1aOkhjxHQ%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Annual Assurance Statement",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=bDD4Og%2bei9Q0a%2bMFam5lvD7fgjrQzRfvI2f5KRXK8wxjK5CcV5fT1w%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    }
+   ]
   },
   {
    "committee": "Integration Joint Board",
@@ -1251,7 +1299,20 @@
    "status": "scheduled",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4027/Committee/141/Default.aspx",
    "ahead": true,
-   "documents": []
+   "documents": [
+    {
+     "title": "Agenda Contents",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=bLjAyL%2f5jHQ6n7XRxYVFX1uWgJnLkGcQ%2bDA%2bMvAh%2bT25GTnvtjCtjA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Agenda Document Pack - Integration Joint Board - 25/09/2026",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=2RW5DJ5%2f0EGNS9uG0r76MwXKvidAxqzyuk8E%2bt%2bKlbyCrfpf85r5zw%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "01 -IJB 250926 - 25-26 Audited Annual Accounts",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=XH%2b4jg%2bDBlbpxr11EnUEVB%2b3RqpHjiPs4FfxEnCTcjuH4CA1uOYp0w%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    }
+   ]
   },
   {
    "committee": "Cabinet",
@@ -1261,7 +1322,56 @@
    "status": "scheduled",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3984/Committee/139/Default.aspx",
    "ahead": true,
-   "documents": []
+   "documents": [
+    {
+     "title": "Agenda Contents",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=IFGdSKSXAiuQeusjdr090LXxb7d1CI0y4%2fi7DLCxZVvxff%2bwzRO3tg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Agenda Document Pack - Cabinet - 29/09/2026",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=QB24ncCBcFwn3c20Ppfn%2fOaloukJCFP2%2fY25gK2IptfiLpj9OM8mBA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "260901 - Cabinet Minute",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=BPQLf79Y2L7i629PHqXd3DqngFnRTyGtojcjWVv7oJntaD8wwUqJyg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Chief Social Work Officer Annual Report 2025-26",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=3UVp4m3nZGmal6GfIMoi%2byvUFtC%2ftCEW3zXPM6Y3nMKadFvDA69UbA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Community Investment Fund - Dreghorn Bowling Club",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=0UqHKgVscykFL%2bsnUxaWy%2fu6%2f9gta765teEouIv2MiwStxmoDxQO%2fA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Community Transport",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=PH5SmYPR1P1qAwNiKm24wcw1Gwk0AR2n1rdVoniYcnoU7l2pK50SAA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Local Housing Strategy 2023\u20132028 - 2025-26 Progress Update",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=AdXeql%2fUTtZaoPtYSUcuuQN0VIXw8Iw9ykr5w1O9hvXiWOZfPlcePw%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Roads Winter Service & Weather Emergencies Plan 2026-27",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=deM7zJIYAjheua%2fh45b6HRy03zNCw2LPzClN%2b9hzEfqwQt5hSMFjmw%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Road Safety Plan",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=5vJVKZ8Ca0R2%2bA3pa2lhFY9hivp%2flqLvfnfM1Wz2a3mn5x1tYlu8Qw%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Litter Flytipping and Dog Fouling Prevention Strategy",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=QvKRq6FMEEbFqSdwp43Edsf30N%2fvoVFIkdhAr9ahTJdpHW4h2P5PCQ%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "Climate Change Update",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=c0zFy41Acjf3RDwo38DA5wA63IKJzDby7vJCpB%2bFftBQ4op%2bpcn6fQ%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "15 Year Lease Extension \u2013 Meadowside Pavilion & Football Ground",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=b68BRioqB5dvrr%2fe%2bji8Ofrcn0Hm1KYb5gUYHe5aiKtckBvoUuMM%2fw%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    }
+   ]
   },
   {
    "committee": "Integration Joint Board",
@@ -1384,6 +1494,16 @@
    "documents": []
   },
   {
+   "committee": "Local Review Body",
+   "committeeId": 144,
+   "id": "3996",
+   "date": "2026-11-25",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3996/Committee/144/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
    "committee": "Planning Committee",
    "committeeId": 147,
    "id": "3977",
@@ -1410,6 +1530,16 @@
    "date": "2026-12-09",
    "status": "scheduled",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3946/Committee/142/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "North Ayrshire Licensing Board",
+   "committeeId": 129,
+   "id": "4041",
+   "date": "2026-12-09",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4041/Committee/129/Default.aspx",
    "ahead": true,
    "documents": []
   },
