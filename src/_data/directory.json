@@ -168,6 +168,18 @@
           "logo": "/assets/img/logo-inspire.png"
         },
         {
+          "name": "Largs Karate Club",
+          "blurb": "Shotokan karate club founded in 1981. It began under the Budokan Karate Association and in 1986 became the first club in the west of Scotland to join the Karate Union of Great Britain, which it still trains under.",
+          "checked": "2026-09-24",
+          "logo": "/assets/img/logo-largs-karate.png",
+          "url": "https://www.facebook.com/largskarateclub",
+          "social": {
+            "label": "Their Instagram",
+            "url": "https://www.instagram.com/largskarateclub/"
+          },
+          "note": "Email lkc.largskarateclub@gmail.com."
+        },
+        {
           "name": "Largs TAGB",
           "blurb": "Taekwondo at the Community Sport Hub, under the Tang Soo Do Association of Great Britain.",
           "checked": "2026-08-29"
