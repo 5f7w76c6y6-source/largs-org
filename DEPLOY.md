@@ -36,6 +36,7 @@ cd ~/Developer/largs-org
 npm run serve          # check at http://localhost:8080, Ctrl+C to stop
 git add <the files>
 git commit -m "what changed and why"
+git pull --rebase    # main moves overnight: the agenda watcher commits nightly
 git push
 ```
 
@@ -102,7 +103,8 @@ treat "colophon says Open-Meteo again" as the symptom.
 
 Five things run on a clock outside GitHub Actions. None of them is
 touched by CI: each is deployed by hand and keeps its own state, so
-this is the only place their existence is written down.
+this is the only place their existence is written down. A sixth, the
+agenda watcher, runs *inside* GitHub Actions and is listed at the end.
 
 **Where a poller lives is decided by one question: who refuses us.**
 Fuel Finder and the ADS-B aggregators block Cloudflare's egress
@@ -145,6 +147,24 @@ in `/etc/largs-fuel.env`, and state in `/var/lib/largs-fuel/`. The
 Cloudflare Worker that used to do this was retired after four 403
 outages in twenty-six hours, always on the token mint.
 
+**largs-ships** (Pi, `pi/ships.py`, `pi/largs-ships.service`) — vessels
+in the Largs Channel, from 25 September 2026. Holds one WebSocket to
+aisstream.io (free; it will not accept browser connections, so a server
+must proxy) for a box from Ardrossan to Gourock, keeps a table of every
+vessel heard in the last ten minutes, and PUTs it to `/api/ships-ingest`
+every 20 s using the *aircraft relay's* key and bucket — same
+`x-overhead-key`, same `OVERHEAD_BUCKET`, object `ships.json` — so there
+was nothing to add in the dashboard. `/api/ships` serves it; the page is
+`/on-the-water/`. 20 s is ~130k R2 writes a month on top of overhead's
+~518k; do not go below 15 s. Secrets: `AISSTREAM_KEY` in
+`/etc/largs-ships.env` (the unit's `EnvironmentFile`), the ingest key
+in `/etc/largs-overhead.key`; neither in the repo. Needs
+`python3-websockets` (apt). Deploy is the two files to `/opt/largs/` and
+`/etc/systemd/system/`; `python3 /opt/largs/ships.py --listen` prints 40 s
+of what it hears without pushing, which is the first thing to run when
+the page looks wrong. Nothing is kept: the relay forgets a vessel ten
+minutes after its last position and the object is overwritten every push.
+
 **Checking a poller without touching the site.** The Worker's own view
 first, then the snapshot it wrote:
 
@@ -159,6 +179,23 @@ body of the last failure — read that before guessing. A poller that
 cannot reach its source keeps the previous snapshot and the previous
 `fetchedAt`, so staleness retires the data honestly rather than a blip
 making a live fault vanish.
+
+**agenda-watch** (`.github/workflows/agenda-watch.yml`, `scripts/agenda/`)
+-- reads North Ayrshire's committee calendar, searches its papers for
+Largs, and reads the agenda packs for the meetings ahead (the council's
+search indexes new papers a fortnight or more late; `papers.py` counts
+the word itself, once per pack, and needs `pypdf`) at 05:20 UTC nightly,
+and commits `data/meetings.json`, `data/largs-agenda.json` and
+`data/largs-papers.json` when they changed. The commit is made with the
+workflow's own token, which never triggers a build, so the metronome
+carries it onto the page within the half hour. It commits every night
+(the `collected` stamp moves even when the council published nothing),
+which is why the ritual above pulls before pushing. A red run means the
+council's site refused us or its form changed shape -- `gh run list
+--workflow agenda-watch.yml` and read the log; the page keeps the last
+good data and says when it was collected, and after two days says so in
+words. Run by hand: `gh workflow run agenda-watch.yml`. Added 15 September
+2026; before that the two files were a one-off from 16 August.
 
 **Wrangler is pinned to 4.125.0** for `--remote` R2 access. `npx
 wrangler` without the version will offer something newer; decline it,

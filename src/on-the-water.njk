@@ -1,0 +1,369 @@
+---
+layout: layouts/base.njk
+permalink: /on-the-water/
+title: On the water · vessels in the Largs Channel now
+heading: On the water
+subtitle: Vessels within fifteen nautical miles of the town, closest first.
+---
+{# Vessels in the Largs Channel, v1.0, 25 September 2026. The sea-going
+   twin of overhead.njk, and laid out the same way: stamp and intro first
+   (the honesty framing precedes the picture), then the map, then the
+   cards. Tap a vessel on the map for the short version; its card has the
+   detail and flashes via :target.
+
+   Data path: pi/ships.py holds a WebSocket to aisstream.io for a box
+   around the channel and PUTs a snapshot to /api/ships-ingest every 20 s;
+   /api/ships (functions/api/ships.js) serves it with a 10 s edge cache.
+   This page polls it every 20 s while visible.
+
+   TWO RULINGS (Ian, 25 Sep 2026). Private yachts are named as they
+   broadcast, which is the norm on every public tracker. And the page
+   shows NOW, never history: no trails, no "last seen yesterday", and the
+   relay forgets a vessel ten minutes after its last position.
+
+   WHAT IS SHOWN IS WHAT WAS SAID. Name, type, destination, size all come
+   from the vessel's own static messages (or aisstream's cache of them),
+   so a blank means the crew never entered it, and a destination can be
+   stale — ships forget to change it. Nothing is looked up anywhere. #}
+
+<section class="board wrap" aria-labelledby="page-title">
+  <div class="kicker">
+    <span class="stamp" id="sh-stamp">Live positions — loading…</span>
+  </div>
+
+  <noscript><p class="page-intro"><strong>This page needs JavaScript</strong> —
+  the positions update live, several times a minute, which a static page
+  can't do. Everything else on the site works without it.</p></noscript>
+
+  <div id="sh-map" aria-hidden="true"></div>
+
+  <ol class="sh-list" id="sh-list" aria-live="polite" aria-label="Vessels on the water now, closest first"></ol>
+  <p class="sh-empty" id="sh-empty" hidden>Nothing broadcasting within fifteen
+  nautical miles just now — the quiet firth is also an answer.</p>
+  <p class="sh-down" id="sh-down" hidden>Live vessel data is unavailable at
+  the moment. It comes from a network of volunteer receivers, relayed by
+  this site's own machine in Largs, and will return when that feed does.</p>
+
+  <p class="page-intro sh-about">Ships and many yachts broadcast their own
+  position, course and speed several times a minute (a system called AIS);
+  volunteer receivers around the coast collect it, and this page shows every
+  vessel heard within fifteen nautical miles of Largs — the Cumbrae ferry,
+  the bulk carriers and tankers for Hunterston, yachts in and out of the
+  Haven, the occasional cruise ship at anchor off the town. Tap a vessel on
+  the map for the short version; the cards below have the detail,
+  <strong>closest first</strong>. Names, types and destinations are what the
+  vessels themselves broadcast, so they appear only where the crew entered
+  them, and a destination can be out of date. Not everything afloat appears:
+  AIS is compulsory only for larger commercial ships, many small boats carry
+  none, and a yacht on a low-power set can be missed when the nearest
+  receiver is across the firth. This is what's transmitting and being heard,
+  not a complete picture of the water.</p>
+
+  <p class="sh-credit">Vessel data via
+  <a href="https://aisstream.io">aisstream.io</a>, a free network of volunteer
+  AIS receivers; this site's own machine in Largs listens to that stream and
+  relays the Largs box here. Positions are as broadcast by the vessels
+  themselves. Map © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
+  contributors.</p>
+</section>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<style>
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+  }
+  .sh-list{list-style:none;margin:16px 0 22px;display:grid;gap:10px}
+  .sh-row{background:var(--card);border:1px solid var(--sand);border-radius:10px;
+    padding:11px 16px;display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline}
+  .sh-row:target{outline:3px solid var(--teal);outline-offset:2px}
+  .sh-who{font-weight:700;font-size:1.05rem}
+  .sh-type{color:var(--teal);font-weight:500}
+  .sh-type-unknown{color:var(--muted);font-weight:400;font-style:italic}
+  .sh-where{width:100%;color:var(--ink)}
+  .sh-where .sh-meta{color:var(--muted);font-size:.92rem}
+  .sh-dest{color:var(--slate);font-weight:500}
+  .sh-tag{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--muted);border:1px solid var(--muted);border-radius:6px;padding:0 6px}
+  .sh-stale .sh-who,.sh-stale .sh-type{color:var(--muted)}
+  .sh-empty,.sh-down{margin:18px 0;color:var(--muted);font-style:italic}
+  #sh-map{height:400px;border-radius:12px;border:1px solid var(--sand);margin:12px 0 4px}
+  .sh-about{margin-top:24px}
+  .sh-credit{color:var(--muted);font-size:.88rem;margin:10px 0 26px}
+  .sh-vessel{color:var(--slate)}
+  .sh-pop strong{font-size:1rem}
+  .sh-pop a{color:var(--teal)}
+</style>
+
+<script>
+(function () {
+  "use strict";
+
+  var HOME = [55.795, -4.87];
+  var POLL_MS = 20000;
+
+  // AIS ship-type codes, as the vessels broadcast them (ITU-R M.1371).
+  // A code outside the table shows as "type N" rather than a guess.
+  function typeLabel(t) {
+    if (typeof t !== "number" || t === 0) return null;
+    if (t >= 20 && t <= 29) return "Wing-in-ground craft";
+    if (t === 30) return "Fishing vessel";
+    if (t === 31 || t === 32) return "Towing vessel";
+    if (t === 33) return "Dredger or underwater operations";
+    if (t === 34) return "Diving operations";
+    if (t === 35) return "Military vessel";
+    if (t === 36) return "Sailing vessel";
+    if (t === 37) return "Pleasure craft";
+    if (t >= 40 && t <= 49) return "High-speed craft";
+    if (t === 50) return "Pilot vessel";
+    if (t === 51) return "Search and rescue vessel";
+    if (t === 52) return "Tug";
+    if (t === 53) return "Port tender";
+    if (t === 54) return "Anti-pollution vessel";
+    if (t === 55) return "Law enforcement vessel";
+    if (t === 58) return "Medical transport";
+    if (t >= 60 && t <= 69) return "Passenger ship";
+    if (t >= 70 && t <= 79) return "Cargo ship";
+    if (t >= 80 && t <= 89) return "Tanker";
+    if (t >= 90 && t <= 99) return "Other vessel";
+    return "type " + t;
+  }
+  function isLeisure(t) { return t === 36 || t === 37; }
+
+  // Navigational status, as declared by the vessel. Only the ones worth a
+  // word on a card; "under way" is the default and says nothing.
+  var NAV = { 1: "at anchor", 2: "not under command", 3: "restricted in ability to manoeuvre",
+    4: "constrained by her draught", 5: "moored", 6: "aground", 7: "fishing",
+    8: "under sail", 11: "towing astern", 12: "pushing ahead" };
+
+  var COMPASS = ["north","north-north-east","north-east","east-north-east",
+    "east","east-south-east","south-east","south-south-east","south",
+    "south-south-west","south-west","west-south-west","west",
+    "west-north-west","north-west","north-north-west"];
+  function compass(deg) { return COMPASS[Math.round(deg / 22.5) % 16]; }
+
+  var TEAL = "#25655C";       // working vessels
+  var OCHRE = "#B8743A";      // sailing vessels and pleasure craft
+
+  var listEl = document.getElementById("sh-list");
+  var stampEl = document.getElementById("sh-stamp");
+  var emptyEl = document.getElementById("sh-empty");
+  var downEl = document.getElementById("sh-down");
+
+  var map = L.map("sh-map", { scrollWheelZoom: false }).setView(HOME, 10);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 13,
+    attribution: "&copy; OpenStreetMap contributors"
+  }).addTo(map);
+  L.circleMarker(HOME, { radius: 5, color: TEAL, fillOpacity: 0.9 })
+    .addTo(map).bindPopup("Largs");
+
+  var markers = {};    // mmsi -> Leaflet marker
+  var markerKey = {};  // mmsi -> "colour|moving", so the icon is only rebuilt when it changes
+  var cards = {};      // mmsi -> { li, who, type, where, meta }
+
+  // A hull seen from above, pointing up; rotated to the heading (or the
+  // course over ground when no heading is broadcast). A vessel that is
+  // stopped and reports no heading is a plain disc, since it has none.
+  var HULL = "M12 2.5 L16.5 9 L16.5 19.5 L7.5 19.5 L7.5 9 Z";
+  function shipIcon(colour, deg) {
+    var inner = (typeof deg === "number")
+      ? '<path fill="' + colour + '" d="' + HULL + '"/>'
+      : '<circle fill="' + colour + '" cx="12" cy="12" r="5"/>';
+    return L.divIcon({
+      className: "sh-vessel",
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+      html: '<svg viewBox="0 0 24 24" width="24" height="24" ' +
+        'style="transform:rotate(' + (typeof deg === "number" ? deg : 0) + 'deg)">' + inner + "</svg>"
+    });
+  }
+  function headingOf(v) {
+    if (typeof v.hdg === "number") return v.hdg;
+    if (typeof v.cog === "number" && (v.sog || 0) >= 0.5) return v.cog;
+    return null;
+  }
+
+  function label(v) {
+    return v.name || ("MMSI " + v.mmsi);
+  }
+
+  function makeCard(v) {
+    var li = document.createElement("li");
+    li.id = "sh-" + v.mmsi;
+    var who = document.createElement("span"); who.className = "sh-who";
+    var type = document.createElement("span");
+    var where = document.createElement("span"); where.className = "sh-where";
+    var meta = document.createElement("span"); meta.className = "sh-meta";
+    li.appendChild(who); li.appendChild(type); li.appendChild(where);
+    where.appendChild(meta);
+    return { li: li, who: who, type: type, where: where, meta: meta };
+  }
+
+  function updateCard(c, v) {
+    c.li.className = "sh-row" + ((v.seen_s || 0) > 120 ? " sh-stale" : "");
+    c.who.textContent = label(v);
+    var t = typeLabel(v.type);
+    c.type.className = t ? "sh-type" : "sh-type sh-type-unknown";
+    c.type.textContent = t || "type not broadcast";
+
+    // where and what it is doing, in one line
+    var parts = [];
+    var status = NAV[v.nav];
+    if (status) parts.push(status);
+    parts.push(v.dst.toFixed(1) + " nm " + compass(v.dir) + " of Largs");
+    if (typeof v.sog === "number" && v.sog >= 0.5) {
+      var h = headingOf(v);
+      parts.push(v.sog.toFixed(1) + " kn" + (typeof h === "number" ? ", heading " + compass(h) : ""));
+    } else if (!status) {
+      parts.push("stopped");
+    }
+    var text = parts.join(" · ");
+    // rebuild the where line: text, optional destination, then the meta span
+    while (c.where.firstChild && c.where.firstChild !== c.meta) c.where.removeChild(c.where.firstChild);
+    c.where.insertBefore(document.createTextNode(text), c.meta);
+    if (v.dest) {
+      var d = document.createElement("span"); d.className = "sh-dest";
+      d.textContent = " · bound for " + v.dest;
+      c.where.insertBefore(d, c.meta);
+    }
+    c.where.insertBefore(document.createElement("br"), c.meta);
+
+    var m = [];
+    if (typeof v.length === "number" && v.length > 0) m.push(v.length + " m long");
+    m.push("MMSI " + v.mmsi);
+    if (v.callsign) m.push("callsign " + v.callsign);
+    m.push("heard " + heardText(v.seen_s));
+    c.meta.textContent = m.join(" · ");
+  }
+
+  function heardText(s) {
+    if (typeof s !== "number") return "just now";
+    if (s < 15) return "just now";
+    if (s < 90) return s + " s ago";
+    return Math.round(s / 60) + " min ago";
+  }
+
+  function popupFor(v) {
+    var div = document.createElement("div");
+    div.className = "sh-pop";
+    var strong = document.createElement("strong");
+    strong.textContent = label(v);
+    div.appendChild(strong);
+    var lines = [];
+    var t = typeLabel(v.type); if (t) lines.push(t);
+    var status = NAV[v.nav];
+    if (typeof v.sog === "number" && v.sog >= 0.5) lines.push(v.sog.toFixed(1) + " kn");
+    else lines.push(status || "stopped");
+    if (v.dest) lines.push("bound for " + v.dest);
+    lines.forEach(function (tx) {
+      div.appendChild(document.createElement("br"));
+      div.appendChild(document.createTextNode(tx));
+    });
+    div.appendChild(document.createElement("br"));
+    var link = document.createElement("a");
+    link.href = "#sh-" + v.mmsi;
+    link.textContent = "full details ↓";
+    div.appendChild(link);
+    return div;
+  }
+
+  function render(data, staleHeader) {
+    var vs = (data.vessels || []).filter(function (v) {
+      return typeof v.lat === "number" && typeof v.lon === "number" && v.mmsi;
+    });
+    vs.sort(function (x, y) { return (x.dst || 99) - (y.dst || 99); });
+
+    var seen = {};
+    vs.forEach(function (v) { seen[v.mmsi] = true; });
+
+    Object.keys(cards).forEach(function (id) {
+      if (!seen[id]) {
+        if (cards[id].li.parentNode) listEl.removeChild(cards[id].li);
+        delete cards[id];
+      }
+    });
+    vs.forEach(function (v) {
+      var c = cards[v.mmsi] || (cards[v.mmsi] = makeCard(v));
+      updateCard(c, v);
+      listEl.appendChild(c.li);
+    });
+
+    emptyEl.hidden = vs.length !== 0;
+    downEl.hidden = true;
+
+    vs.forEach(function (v) {
+      var pos = [v.lat, v.lon];
+      var colour = isLeisure(v.type) ? OCHRE : TEAL;
+      var h = headingOf(v);
+      var key = colour + "|" + (typeof h === "number" ? h : "-");
+      if (markers[v.mmsi]) {
+        markers[v.mmsi].setLatLng(pos);
+        if (markerKey[v.mmsi] !== key) {
+          markers[v.mmsi].setIcon(shipIcon(colour, h));
+          markerKey[v.mmsi] = key;
+        }
+      } else {
+        markers[v.mmsi] = L.marker(pos, { icon: shipIcon(colour, h) }).addTo(map);
+        markers[v.mmsi].bindPopup("");
+        markerKey[v.mmsi] = key;
+      }
+      markers[v.mmsi].getPopup().setContent(popupFor(v));
+    });
+    Object.keys(markers).forEach(function (id) {
+      if (!seen[id]) {
+        map.removeLayer(markers[id]);
+        delete markers[id];
+        delete markerKey[id];
+      }
+    });
+
+    var when = data.now ? new Date(data.now) : new Date();
+    var hhmmss = when.toLocaleTimeString("en-GB");
+    var age = data.now ? Math.round((Date.now() - data.now) / 1000) : 0;
+    stampEl.textContent = "Positions as of " + hhmmss +
+      (staleHeader || age > 60 ? " — feed interrupted, showing last received" : "") +
+      " · updates every 20 seconds while this page is open";
+  }
+
+  function showDown() {
+    listEl.textContent = "";
+    cards = {};
+    Object.keys(markers).forEach(function (id) {
+      map.removeLayer(markers[id]); delete markers[id]; delete markerKey[id];
+    });
+    emptyEl.hidden = true;
+    downEl.hidden = false;
+    stampEl.textContent = "Live positions unavailable";
+  }
+
+  var failures = 0;
+  function poll() {
+    fetch("/api/ships")
+      .then(function (r) {
+        if (r.status === 503) throw new Error("unavailable");
+        var stale = r.headers.get("x-ships-stale") === "1";
+        return r.json().then(function (d) {
+          if (d.unavailable) throw new Error("unavailable");
+          failures = 0;
+          render(d, stale);
+        });
+      })
+      .catch(function () {
+        failures += 1;
+        if (failures >= 3) showDown();
+      });
+  }
+
+  var timer = null;
+  function start() { if (!timer) { poll(); timer = setInterval(poll, POLL_MS); } }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) { stop(); } else { start(); }
+  });
+  start();
+})();
+</script>
