@@ -83,8 +83,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 }
 .wordmark span{color:var(--foam)}
 .tagline{
-  font-family:"Spline Sans Mono",monospace;font-size:.72rem;
-  letter-spacing:.28em;text-transform:uppercase;color:var(--foam);
+  font-family:"Caveat","Spline Sans Mono",monospace;font-size:1.25rem;font-weight:600;
+  letter-spacing:.01em;color:var(--foam);
 }
 .dateline{
   font-family:"Spline Sans Mono",monospace;font-size:.78rem;color:#B9CCC6;
@@ -384,6 +384,7 @@ footer{background:var(--slate-deep);color:#C9D8D2;margin-top:44px}
   .cols{grid-template-columns:1fr}
   .foot{grid-template-columns:1fr}
   .wordmark{font-size:2rem}
+  .tagline{font-size:1rem}
 }
 a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s ease,color .15s ease}
 @media (prefers-reduced-motion:reduce){
@@ -812,14 +813,17 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .regular-contact{font-size:.9rem;color:var(--muted);margin:0}
 
 /* Masthead tagline. Completes the wordmark as a phrase — "Largs" …
-   "…for you" — so it is set lowercase: an ellipsis implies speech
-   carrying on, while the small-caps mono used elsewhere on the site
-   (SAMPLE, TIMETABLE, TRAINS TO GLASGOW) is the vocabulary of category
-   labels, and the two read against each other. Tracking is tightened
-   from the .28em used for those labels so the ellipsis sits close to
-   the word it leads into. */
-.tagline{text-transform:none;letter-spacing:.06em;
-  margin-top:-2px;padding-left:.05em;word-spacing:-.12em}
+   "…for you" — and from 26 September 2026 it is handwritten: Caveat
+   SemiBold, the one place on the site set in a pen hand, because the
+   line is a person's aside under the formal Marcellus name and the mono
+   it used to share with the category labels read as system text. Used
+   for this line only; anywhere else it would turn into a greeting card.
+   Kept in foam, not a warm accent, for the same reason. The font file is
+   cut to these eight characters (fonts/README-caveat.txt); if the line
+   changes, re-cut it. Sized up from the mono's .72rem because a hand
+   face has a small x-height; the mono fallback in the stack only ever
+   shows for the instant before the 3.7 KB file arrives. */
+.tagline{text-transform:none;margin-top:-3px;padding-left:.06em;line-height:1.1}
 
 /* ---- PS Waverley tile -------------------------------------------
    The one tile whose icon is the picture: her silhouette spans the
@@ -1308,6 +1312,15 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   font-display:swap;
   src:url('/assets/fonts/marcellus-400-latin.woff2') format('woff2');
   unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Caveat: the masthead tagline's hand. One weight, eight characters --
+   see fonts/README-caveat.txt. No unicode-range: the file IS the range. */
+@font-face{
+  font-family:'Caveat';
+  font-style:normal;
+  font-weight:600;
+  font-display:swap;
+  src:url('/assets/fonts/caveat-600-tagline.woff2') format('woff2');
 }
 @font-face{
   font-family:'Spline Sans Mono';

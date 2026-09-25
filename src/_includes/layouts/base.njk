@@ -10,10 +10,12 @@
    two DNS lookups, two TLS handshakes and a render-blocking round trip,
    measured at 2.66s on a throttled connection. All three families are
    SIL Open Font Licence; the licence text sits beside the files.
-   Preloaded: the two faces on screen at first paint. Not the rest --
+   Preloaded: the three faces on screen at first paint (the tagline's
+   Caveat is 3.7 KB, cut to its eight characters). Not the rest --
    preloading everything makes them compete with the images. #}
 <link rel="preload" href="/assets/fonts/alegreya-sans-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/marcellus-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/caveat-600-tagline.woff2" as="font" type="font/woff2" crossorigin>
 {# Fingerprinted: the filename carries a hash of the file's contents, so
    a change is always a new URL and no cache can serve a stale copy. See
    the cssHref block in eleventy.config.js for what went wrong without it. #}
