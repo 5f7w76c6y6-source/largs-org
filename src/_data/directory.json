@@ -530,6 +530,20 @@
       "blurb": "Places to stay in and around Largs.",
       "entries": [
         {
+          "name": "Brisbane House Hotel",
+          "kind": "Hotel & wedding venue",
+          "blurb": "Hotel overlooking the Firth of Clyde, part of the Manorview group, with rooms and suites including a family suite. Its Brisbane Suite holds up to 200 for parties, celebrations and funeral teas, with its own bar and a terrace, and the whole hotel can be taken for weddings.",
+          "logo": "/assets/img/logo-brisbane-house.png",
+          "checked": "2026-09-26",
+          "where": "14 Greenock Road, KA30 8NE",
+          "phone": "01475 687200",
+          "url": "https://manorviewhotels.co.uk/hotels/brisbane/",
+          "social": {
+            "label": "Facebook page",
+            "url": "https://www.facebook.com/brisbanehousehotel"
+          }
+        },
+        {
           "name": "Haylie Hotel",
           "kind": "Hotel & restaurant",
           "blurb": "Family-owned hotel with its own restaurant, set on a plateau looking over Largs and Fairlie to Cumbrae, Bute and Arran. Rooms and restaurant tables can both be booked on the hotel's website.",
