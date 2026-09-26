@@ -544,6 +544,16 @@
           }
         },
         {
+          "name": "Broom Lodge",
+          "kind": "Bed & breakfast",
+          "blurb": "Owner-run bed & breakfast on the seafront, looking out to the Cumbraes, Arran and Bute. Family and single rooms, most of them en suite, for short or long stays. Open all year except Christmas and New Year.",
+          "logo": "/assets/img/logo-broom-lodge.png",
+          "checked": "2026-09-26",
+          "where": "5 Broomfield Place, KA30 8DR",
+          "phone": "01475 674290",
+          "url": "http://www.broomlodge.co.uk"
+        },
+        {
           "name": "Haylie Hotel",
           "kind": "Hotel & restaurant",
           "blurb": "Family-owned hotel with its own restaurant, set on a plateau looking over Largs and Fairlie to Cumbrae, Bute and Arran. Rooms and restaurant tables can both be booked on the hotel's website.",
