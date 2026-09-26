@@ -2,12 +2,16 @@
 permalink: /sitemap.xml
 eleventyExcludeFromCollections: true
 ---
-{#- Every page, for search engines. The three generated files here
-    (sitemap, robots, manifest) set eleventyExcludeFromCollections, so
-    collections.all is exactly the real pages and needs no filtering. -#}
+{#- Every page, for search engines, except any that sets excludeFromSitemap
+    in its front matter (the bus-stop pages, from 26 Sep 2026). The three
+    generated files here (sitemap, robots, manifest) set
+    eleventyExcludeFromCollections, so collections.all is otherwise exactly
+    the real pages. -#}
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {%- for p in collections.all %}
+  {%- if not p.data.excludeFromSitemap %}
   <url><loc>{{ site.url }}{{ p.url }}</loc></url>
+  {%- endif %}
 {%- endfor %}
 </urlset>

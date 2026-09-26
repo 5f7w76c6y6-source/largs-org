@@ -4,9 +4,13 @@ pagination:
   data: buses.stops
   size: 1
   alias: stop
-  # Every page of this set joins collections.all, so the sitemap lists them all (Eleventy's default is the first page only).
+  # Every page of this set joins collections.all (Eleventy's default is the first page only).
   addAllPagesToCollections: true
 permalink: "/buses/stop/{{ stop.id }}/"
+# Kept out of sitemap.xml from 26 Sep 2026: 90 of 132 sitemap entries were
+# stop pages, on a new domain with one page indexed. The pages stay live and
+# linked from /buses/, so Google can still reach them by links. See sitemap.njk.
+excludeFromSitemap: true
 eleventyComputed:
   title: "{{ stop.name | safe }} · Buses from Largs"
   heading: "{{ stop.name | safe }}"
