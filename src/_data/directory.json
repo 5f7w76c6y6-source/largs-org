@@ -542,6 +542,20 @@
             "label": "Facebook page",
             "url": "https://www.facebook.com/profile.php?id=100063558940086"
           }
+        },
+        {
+          "name": "Woodhouse Hotel",
+          "kind": "Hotel & bar",
+          "blurb": "Family-run hotel with nine en-suite rooms, from singles to a family room. Woody's Bar and the beer garden are open to day visitors for drinks and snacks, and dogs are welcome in the bar, the rooms and the garden. Also hosts small weddings, christenings and funeral teas.",
+          "logo": "/assets/img/logo-woodhouse-hotel.jpg",
+          "checked": "2026-09-26",
+          "where": "2 Barr Crescent, KA30 8PX",
+          "phone": "01475 673381",
+          "url": "https://woodhousehotel.co.uk",
+          "social": {
+            "label": "Facebook page",
+            "url": "https://www.facebook.com/woodhouse.hotel"
+          }
         }
       ],
       "asks": [
