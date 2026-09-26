@@ -578,6 +578,19 @@
           "url": "https://peacockguesthouse.co.uk"
         },
         {
+          "name": "St Leonards Guest House",
+          "kind": "Guest house",
+          "blurb": "Guest house on Irvine Road, a few minutes' walk from the town centre, with private parking. Rooms are booked by phone or through their Facebook page.",
+          "logo": "/assets/img/logo-st-leonards-guest-house.jpg",
+          "checked": "2026-09-26",
+          "where": "9 Irvine Road, KA30 8JP",
+          "phone": "01475 673318",
+          "social": {
+            "label": "Facebook page",
+            "url": "https://www.facebook.com/p/St-Leonards-Guest-House-100063856140050/"
+          }
+        },
+        {
           "name": "Woodhouse Hotel",
           "kind": "Hotel & bar",
           "blurb": "Family-run hotel with nine en-suite rooms, from singles to a family room. Woody's Bar and the beer garden are open to day visitors for drinks and snacks, and dogs are welcome in the bar, the rooms and the garden. Also hosts small weddings, christenings and funeral teas.",
