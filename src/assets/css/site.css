@@ -134,6 +134,18 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   height:var(--h);
 }
 .horizon .horizon-bg{display:block;width:100%;height:var(--h)}
+/* The Cumbraes, 26 Sep 2026. Stretched with the band, they were long and
+   low on a wide screen (as the islands really are from the prom) but were
+   squeezed into humps on a phone, where the same 35px of height had a
+   third of the width. Their own layer's height now follows the screen
+   width: the full 35px from ~1200px wide, down to 16px on phones, so the
+   islands keep roughly the same long, low proportions everywhere. Sits on
+   the waterline, 1px into the sea so no hairline shows between them. */
+.horizon .horizon-hills{
+  position:absolute;left:0;width:100%;display:block;
+  bottom:calc(var(--h) - var(--wl) - 1px);
+  height:clamp(16px,2.9vw,35px);
+}
 .horizon .horizon-obj{
   position:absolute;
   bottom:calc(var(--h) - var(--wl));
@@ -169,12 +181,13 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   bottom:calc(var(--h) - var(--wl) - 3px);
 }
 
-/* On a phone the band is the same 80px but the window is a third of the
+/* On a phone the band is the same 84px but the window is a third of the
    width, so the ferry took up far too much of it and crowded the Pencil.
    Only the ferry shrinks: the Pencil anchors the right edge and reads
-   correctly at 52px on both. */
+   correctly at 52px on both. 18px from 26 Sep 2026, once the islands were
+   lowered on phones (above) and a 22.5px ferry looked oversized beside them. */
 @media (max-width:600px){
-  .horizon .horizon-ferry{height:22.5px}
+  .horizon .horizon-ferry{height:18px}
 }
 
 /* ---------- today board ---------- */

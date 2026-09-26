@@ -135,6 +135,11 @@
   <svg class="horizon-bg" viewBox="0 0 1200 84" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="1200" height="84" fill="#BFDED2"/>
     <rect y="61.5" width="1200" height="22.5" fill="#17333A"/>
+  </svg>
+  {# The Cumbraes, in their own layer so their height can follow the width
+     of the screen (site.css, .horizon-hills). The viewBox is just the strip
+     above the waterline, y 26.5 to 61.5 of the band's 84. #}
+  <svg class="horizon-hills" viewBox="0 26.5 1200 35" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
     <path d="M0 61.5 L120 61.5 Q210 26.5 320 46.5 Q420 61.5 520 61.5 Z" fill="#17333A"/>
     <path d="M300 61.5 Q400 36.5 500 54 Q560 61.5 620 61.5 Z" fill="#17333A" opacity="0.55"/>
   </svg>
