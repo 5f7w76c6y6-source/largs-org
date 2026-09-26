@@ -125,9 +125,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 }
 /* Percentages, so both stay in the same relative place as the band
    stretches. The ferry sits mid-crossing between Cumbrae and the shore;
-   the Pencil keeps clear of Magnus above it, which is why the old SVG
-   group carried translate(-145,0) — same position, stated directly. */
-.horizon .horizon-ferry{height:40px;left:57%}
+   the Pencil keeps clear of the masthead's right edge, which is why the
+   old SVG group carried translate(-145,0) — same position, stated directly.
+   Ferry at 75% of its first size (40 → 30px, phones 30 → 22.5px) from
+   26 Sep 2026: it is two miles out mid-crossing, and the Pencil — the
+   one object only Largs has — should be the tallest thing on the line. */
+.horizon .horizon-ferry{height:30px;left:57%}
 .horizon .horizon-pencil{height:52px;left:84%}
 
 /* On a phone the band is the same 80px but the window is a third of the
@@ -135,7 +138,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
    Only the ferry shrinks: the Pencil anchors the right edge and reads
    correctly at 52px on both. */
 @media (max-width:600px){
-  .horizon .horizon-ferry{height:30px}
+  .horizon .horizon-ferry{height:22.5px}
 }
 
 /* ---------- today board ---------- */
@@ -833,45 +836,20 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
    so it sits clean on the card. */
 .tile-hero{display:block;width:100%;height:auto;margin:10px 0 8px}
 
-/* ---- Magnus in the masthead -------------------------------------
-   Cream line-art of the seafront Viking statue, standing at the right
-   of the banner. Absolutely positioned so he costs the header no
-   height; bottom-aligned to the masthead's lower edge so he stands on
-   the horizon strip. pointer-events none so he never intercepts a tap
-   meant for the nav. Hidden below 900px — on a phone the header has
-   no spare width and he would crowd the dateline. */
+/* ---- The longship beside the wordmark ----------------------------
+   The site's mark (the home-screen icon's ship, cream on transparent)
+   locks up with "Largs …for you" the way the icon sits beside its name
+   on a phone. Centred on the two-line wordmark block; the ship's own
+   bottom edge then becomes the row's baseline, which is where the
+   dateline aligns on desktop. Replaced Magnus in the right-hand corner
+   on 26 Sep 2026 (the header is ~16px taller on desktop, a few px on a
+   phone — accepted when the mock-up was chosen). */
 .masthead{position:relative;overflow:hidden}
-.masthead-magnus{
-  /* height tracks the band itself: spear tip near the top edge, feet
-     at the horizon, and he grows or shrinks with the masthead rather
-     than living at a magic number. */
-  position:absolute;right:3.5%;bottom:7px;height:calc(100% - 14px);width:auto;
-  opacity:.9;pointer-events:none;
-}
-/* On a phone the dateline drops to its own line, leaving the space to
-   the right of the wordmark empty. Magnus moves into it: top-aligned,
-   sized to the wordmark block rather than the whole band, and lightened
-   so he reads as part of the banner rather than competing with the nav
-   below him. To remove him from phones again, replace this whole block
-   with:  @media (max-width:900px){.masthead-magnus{display:none}}  */
-@media (max-width:900px){
-  .masthead-magnus{display:none}
-}
-
-/* Below 600px the dateline drops to its own line and the space beside
-   the wordmark is free, so Magnus comes back there — small, top-aligned
-   and lightened. Between 600 and 900px, which includes a phone held
-   landscape, the dateline still shares a row with the wordmark and he
-   would sit on top of it, so he stays hidden. */
+.brand{display:flex;align-items:center;gap:16px}
+.brand-mark{height:74px;width:auto;margin-top:4px;opacity:.95;flex:none}
 @media (max-width:600px){
-  .masthead-magnus{
-    display:block;
-    right:5%;
-    bottom:auto;
-    top:10px;
-    height:72px;
-    opacity:.55;
-  }
+  .brand{gap:11px}
+  .brand-mark{height:52px}
 }
 
 

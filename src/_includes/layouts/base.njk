@@ -78,21 +78,21 @@
 <body>
 
 <header class="masthead">
-  {# Magnus — the Viking statue on the seafront, rendered as cream
-     linework so the banner shows through him, the same treatment as
-     the horizon silhouette below. Decorative (alt empty) so screen
-     readers are not told about him on every page. Generated from a
-     photograph of the statue; sculpture permanently sited in a public
-     place (CDPA s62). TODO: confirm the sculptor's name and credit
-     them in the colophon. #}
-  <img class="masthead-magnus" src="/assets/img/magnus.png"
-       alt="" aria-hidden="true" width="320" height="640"
-       loading="eager" decoding="async">
   <div class="wrap">
     <div class="masthead-inner">
-      <div>
-        <a class="wordmark" href="/">Largs</a>
-        <div class="tagline">…for you</div>
+      <div class="brand">
+        {# The longship: the same mark as the home-screen icon and favicon,
+           cut from icon-512.png as cream on transparent (mark-longship.png,
+           a 256-entry palette of one colour, alpha exact). Decorative, so
+           "Largs" is announced once. Replaced Magnus in the corner on
+           26 Sep 2026; magnus.png is kept, so rollback is a template revert. #}
+        <img class="brand-mark" src="/assets/img/mark-longship.png"
+             alt="" aria-hidden="true" width="243" height="222"
+             loading="eager" decoding="async">
+        <div>
+          <a class="wordmark" href="/">Largs</a>
+          <div class="tagline">…for you</div>
+        </div>
       </div>
       <div class="dateline">{{ buildTime | dateLong }} · Firth of Clyde</div>
     </div>
