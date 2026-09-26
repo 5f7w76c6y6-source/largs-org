@@ -528,7 +528,22 @@
       "label": "Accommodation",
       "open": true,
       "blurb": "Places to stay in and around Largs.",
-      "entries": [],
+      "entries": [
+        {
+          "name": "Haylie Hotel",
+          "kind": "Hotel & restaurant",
+          "blurb": "Family-owned hotel with its own restaurant, set on a plateau looking over Largs and Fairlie to Cumbrae, Bute and Arran. Rooms and restaurant tables can both be booked on the hotel's website.",
+          "logo": "/assets/img/logo-haylie-hotel.png",
+          "checked": "2026-09-26",
+          "where": "108 Irvine Road, KA30 8EY",
+          "phone": "01475 673207",
+          "url": "https://www.hayliehotel.com",
+          "social": {
+            "label": "Facebook page",
+            "url": "https://www.facebook.com/profile.php?id=100063558940086"
+          }
+        }
+      ],
       "asks": [
         "The name of the place",
         "What sort — B&B, guest house, hotel, self-catering",
