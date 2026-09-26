@@ -77,11 +77,25 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   display:flex;align-items:baseline;justify-content:space-between;
   gap:16px;padding:26px 0 14px;flex-wrap:wrap;
 }
+/* The dateline sits on the baseline of "…for you", not of the ship.
+   With the longship first in .brand, plain baseline alignment took the
+   brand's baseline from the ship's bottom edge, ~6px below the
+   handwriting. "last baseline" takes it from .brand's last item, the
+   text block, whose last line is the tagline. Browsers without it
+   (pre-2022) keep the line above and land where they did before. */
+@supports (align-items:last baseline){
+  .masthead-inner{align-items:last baseline}
+}
 .wordmark{
   font-family:"Marcellus",serif;font-size:2.5rem;letter-spacing:.04em;
   color:var(--paper);text-decoration:none;line-height:1;
 }
 .wordmark span{color:var(--foam)}
+/* "Largs.scot", 26 Sep 2026: the address in the masthead, so readers who
+   came from a shared link or word of mouth see where they are and can
+   type it again. Marcellus has one weight, so the town leads by size
+   and colour: .scot in foam at 62%. Screen readers hear "Largs.scot". */
+.wordmark .tld{font-size:.62em;letter-spacing:.03em}
 .tagline{
   font-family:"Caveat","Spline Sans Mono",monospace;font-size:1.25rem;font-weight:600;
   letter-spacing:.01em;color:var(--foam);
@@ -102,8 +116,11 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 
 /* ---------- horizon signature ---------- */
 /* The band stretches; the objects do not. --wl is the waterline, and both
-   objects are bottom-aligned to it, so changing --h and --wl together is
-   the only thing needed to resize the whole scene.
+   objects are bottom-aligned to it. The SVG's viewBox is in the same
+   pixels as --h, so a change of --h or --wl must be matched in the SVG
+   in base.njk (viewBox height, rect heights, and every y). 84/61.5 from
+   26 Sep 2026: 4px more sky above the same scene, because the Pencil,
+   lifted onto its rise, had 1.5px of headroom and looked jammed. Now 5.5.
 
    Selectors are class-on-class (.horizon .horizon-bg) rather than
    class-on-element, so they outrank any older `.horizon svg` rule that
@@ -112,8 +129,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   background:var(--foam);
   position:relative;
   overflow:hidden;
-  --h:80px;
-  --wl:57.5px;
+  --h:84px;
+  --wl:61.5px;
   height:var(--h);
 }
 .horizon .horizon-bg{display:block;width:100%;height:var(--h)}
@@ -144,8 +161,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
    (half the Pencil's 17.7px width at 52px tall). The file's waterline
    is 3px above its bottom edge, hence the -3px, so the rocks overlap
    the sea rather than leave a seam. The Pencil is lifted 4px to stand
-   on the rise; its tip then clears the top of the band by 1.5px, so
-   do not lift it further without raising --h. */
+   on the rise; its tip clears the top of the band by 5.5px (84px band). */
 .horizon .horizon-shore{
   position:absolute;display:block;
   width:800px;height:14px;max-width:none;
