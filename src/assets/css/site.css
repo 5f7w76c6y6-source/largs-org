@@ -131,7 +131,27 @@ a:focus-visible,button:focus-visible,input:focus-visible{
    26 Sep 2026: it is two miles out mid-crossing, and the Pencil — the
    one object only Largs has — should be the tallest thing on the line. */
 .horizon .horizon-ferry{height:30px;left:57%}
-.horizon .horizon-pencil{height:52px;left:84%}
+.horizon .horizon-pencil{height:52px;left:84%;bottom:calc(var(--h) - var(--wl) + 4px)}
+
+/* The shore the Pencil stands on (26 Sep 2026), so it reads as on land
+   rather than floating. One drawn shoreline, horizon-shore.svg, 800x14,
+   the same slate as Cumbrae and the sea: a low rise under the Pencil
+   (flat, 5px above the water, x 52-68 in the file) and rocks 2-5px high
+   running off the right edge. Not a repeating tile: a repeat read as a
+   harbour wall. 800px covers the 16% right of the Pencil on screens up
+   to ~4,700px wide; .horizon's overflow:hidden trims the rest.
+   Placed by the Pencil's centre: the file's x=60 sits at 84% + 8.8px
+   (half the Pencil's 17.7px width at 52px tall). The file's waterline
+   is 3px above its bottom edge, hence the -3px, so the rocks overlap
+   the sea rather than leave a seam. The Pencil is lifted 4px to stand
+   on the rise; its tip then clears the top of the band by 1.5px, so
+   do not lift it further without raising --h. */
+.horizon .horizon-shore{
+  position:absolute;display:block;
+  width:800px;height:14px;max-width:none;
+  left:calc(84% + 8.8px - 60px);
+  bottom:calc(var(--h) - var(--wl) - 3px);
+}
 
 /* On a phone the band is the same 80px but the window is a third of the
    width, so the ferry took up far too much of it and crowded the Pencil.
@@ -846,10 +866,17 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
    phone — accepted when the mock-up was chosen). */
 .masthead{position:relative;overflow:hidden}
 .brand{display:flex;align-items:center;gap:16px}
-.brand-mark{height:74px;width:auto;margin-top:4px;opacity:.95;flex:none}
+/* 67px (90% of the first 74px, 26 Sep 2026): a touch taller than the
+   ink of "Largs …for you" (57px), which reads as the same size because
+   the ship carries more detail than the letters. margin-top centres the
+   ship on the ink of the two lines, not on their boxes; measured in a
+   headless render, within half a pixel at 1280, 768 and 390px. The
+   wordmark shrinks at 880px, hence the second value. */
+.brand-mark{height:67px;width:auto;margin-top:4px;opacity:.95;flex:none}
+@media (max-width:880px){.brand-mark{margin-top:2px}}
 @media (max-width:600px){
   .brand{gap:11px}
-  .brand-mark{height:52px}
+  .brand-mark{height:47px}
 }
 
 
