@@ -554,6 +554,16 @@
           "url": "http://www.broomlodge.co.uk"
         },
         {
+          "name": "Dawn Break Guest House",
+          "kind": "Guest house",
+          "blurb": "Detached guest house near the centre of town with four large double rooms, all en suite. Off-street and on-street parking. Rooms can be booked through the website or directly by phone.",
+          "logo": "/assets/img/logo-dawn-break-guest-house.jpg",
+          "checked": "2026-09-26",
+          "where": "29 Irvine Road, KA30 8HS",
+          "phone": "01475 689764",
+          "url": "https://www.dawnbreakguesthouse.com"
+        },
+        {
           "name": "Haylie Hotel",
           "kind": "Hotel & restaurant",
           "blurb": "Family-owned hotel with its own restaurant, set on a plateau looking over Largs and Fairlie to Cumbrae, Bute and Arran. Rooms and restaurant tables can both be booked on the hotel's website.",
