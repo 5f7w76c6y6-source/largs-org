@@ -568,6 +568,16 @@
           }
         },
         {
+          "name": "Peacock Guest House",
+          "kind": "Bed & breakfast",
+          "blurb": "Family-run bed & breakfast with four en-suite rooms, a five- to ten-minute walk from the seafront and town centre. Breakfast is served in the dining room. Private parking at the front, and secure parking for motorbikes and bicycles at the back.",
+          "logo": "/assets/img/logo-peacock-guest-house.png",
+          "checked": "2026-09-26",
+          "where": "38 Charles Street, KA30 8HL",
+          "phone": "07465 255999",
+          "url": "https://peacockguesthouse.co.uk"
+        },
+        {
           "name": "Woodhouse Hotel",
           "kind": "Hotel & bar",
           "blurb": "Family-run hotel with nine en-suite rooms, from singles to a family room. Woody's Bar and the beer garden are open to day visitors for drinks and snacks, and dogs are welcome in the bar, the rooms and the garden. Also hosts small weddings, christenings and funeral teas.",
