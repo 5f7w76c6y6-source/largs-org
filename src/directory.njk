@@ -83,7 +83,10 @@ eleventyComputed:
       <p class="directory-meta">
         {%- if item.where %}{{ item.where }}{% endif -%}
         {%- if item.where and item.phone %} · {% endif -%}
-        {%- if item.phone %}<a href="tel:{{ item.phone | replace(" ", "") }}">{{ item.phone }}</a>{% endif -%}
+        {#- `phone` is one number or a list of them, printed in order on the
+            same line — St Leonards asked for their mobile beside the
+            landline (27 Sep 2026). -#}
+        {%- if item.phone %}{% set phones = [item.phone] if item.phone is string else item.phone %}{% for ph in phones %}{% if not loop.first %} · {% endif %}<a href="tel:{{ ph | replace(" ", "") }}">{{ ph }}</a>{% endfor %}{% endif -%}
       </p>
       {% endif %}
       {# A second link, for groups whose Facebook page is where things

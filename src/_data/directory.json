@@ -598,8 +598,7 @@
           "logo": "/assets/img/logo-st-leonards-guest-house.jpg",
           "checked": "2026-09-27",
           "where": "9 Irvine Road, KA30 8JP",
-          "phone": "01475 673318",
-          "note": "Mobile 07774 866520.",
+          "phone": ["01475 673318", "07774 866520"],
           "social": {
             "label": "Facebook page",
             "url": "https://www.facebook.com/p/St-Leonards-Guest-House-100063856140050/"
