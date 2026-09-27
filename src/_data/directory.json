@@ -590,11 +590,16 @@
         {
           "name": "St Leonards Guest House",
           "kind": "Guest house",
-          "blurb": "Guest house on Irvine Road, a few minutes' walk from the town centre, with private parking. Rooms are booked by phone or through their Facebook page.",
+          "blurb": [
+            "A privately run Family Guesthouse ideally positioned a few minutes from the town centre.",
+            "5 guest rooms, 3 en-suite with parking, complimentary home cooked breakfast included.",
+            "A warm welcome awaits."
+          ],
           "logo": "/assets/img/logo-st-leonards-guest-house.jpg",
-          "checked": "2026-09-26",
+          "checked": "2026-09-27",
           "where": "9 Irvine Road, KA30 8JP",
           "phone": "01475 673318",
+          "note": "Mobile 07774 866520.",
           "social": {
             "label": "Facebook page",
             "url": "https://www.facebook.com/p/St-Leonards-Guest-House-100063856140050/"
