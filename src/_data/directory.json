@@ -324,6 +324,12 @@
           "note": "Donations of food can be handed in at Largs Library. Email Largsfh@gmail.com."
         },
         {
+          "name": "Largs Life",
+          "blurb": "Bi-monthly free newsletter delivered to every address in Largs – contact info@largscdt.org.uk for more information or to send us a submission!",
+          "logo": "/assets/img/logo-largs-life.png",
+          "checked": "2026-09-29"
+        },
+        {
           "name": "Largs Radio",
           "blurb": "Community radio station run by residents of Largs and the North Coast, broadcasting online from Your Space on Boyd Street: local news, music from resident DJs and voices from the town. A Largs Community Development Trust project. Listen through the web player, and get in touch to get involved; local businesses can advertise.",
           "checked": "2026-09-24",
@@ -368,6 +374,13 @@
           "where": "133 Main Street, KA30 8JH",
           "url": "https://oirlargs.org.uk",
           "logo": "/assets/img/logo-oir.png"
+        },
+        {
+          "name": "Your Space",
+          "blurb": "Your Space is the home of Largs Community Development Trust at 36 Boyd Street. It houses our radio station, and you can also book out one of our 3 work spaces. We have two individual work spaces, and a larger meeting room. For more information, contact info@largscdt.org.uk",
+          "logo": "/assets/img/logo-your-space.png",
+          "checked": "2026-09-29",
+          "where": "36 Boyd Street"
         }
       ]
     },
@@ -598,7 +611,10 @@
           "logo": "/assets/img/logo-st-leonards-guest-house.jpg",
           "checked": "2026-09-27",
           "where": "9 Irvine Road, KA30 8JP",
-          "phone": ["01475 673318", "07774 866520"],
+          "phone": [
+            "01475 673318",
+            "07774 866520"
+          ],
           "social": {
             "label": "Facebook page",
             "url": "https://www.facebook.com/p/St-Leonards-Guest-House-100063856140050/"

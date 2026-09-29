@@ -1089,6 +1089,28 @@
       },
       "freq": "weekly",
       "from": "2026-10-28"
+    },
+    {
+      "title": "Your Space Residents Drop-In",
+      "weekday": "monday",
+      "time": "10:30–13:00",
+      "venue": "Your Space, 36 Boyd Street",
+      "image": "/assets/img/logo-your-space.png",
+      "blurb": "The Drop In is an informal service where members of the public can drop in to seek help, support and information about local services and resources. We often deal with questions about: • Benefits and how to apply • Social care • What’s on in Largs • Navigating online applications • We will endeavour to help you with whatever you bring in! And if we can’t help, we have a number of expert partners that we can refer you on to.",
+      "org": {
+        "name": "Largs Community Development Trust"
+      }
+    },
+    {
+      "title": "Your Space Residents Drop-In",
+      "weekday": "wednesday",
+      "time": "13:00–15:30",
+      "venue": "Your Space, 36 Boyd Street",
+      "image": "/assets/img/logo-your-space.png",
+      "blurb": "The Drop In is an informal service where members of the public can drop in to seek help, support and information about local services and resources. We often deal with questions about: • Benefits and how to apply • Social care • What’s on in Largs • Navigating online applications • We will endeavour to help you with whatever you bring in! And if we can’t help, we have a number of expert partners that we can refer you on to.",
+      "org": {
+        "name": "Largs Community Development Trust"
+      }
     }
   ]
 }
