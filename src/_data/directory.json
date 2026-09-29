@@ -385,6 +385,34 @@
       ]
     },
     {
+      "slug": "wee-ones",
+      "label": "Wee ones & grown-ups",
+      "open": true,
+      "blurb": "Classes, groups and things to do for babies, toddlers and the grown-ups who bring them.",
+      "entries": [
+        {
+          "name": "Wee Wonders",
+          "blurb": "Wee Wonders creates high-quality creative experiences for babies, toddlers, and their grown-ups, using live music, storytelling, and sensory play to nurture imagination, connection, and wellbeing for the whole family. Using live violin, handmade puppets, and carefully chosen songs, we create calm, welcoming spaces where little ones can explore, play, and engage at their own pace—no pressure, no overstimulation, just time to enjoy being together. Designed by two experienced artists and mums, everything is created and delivered by us. Grown-ups are part of the experience too, with music and activities that are enjoyable to share, helping build confidence and connection for parents and their Wee Wonders.",
+          "logo": "/assets/img/logo-wee-wonders.png",
+          "checked": "2026-09-29",
+          "where": "St Columba's Episcopal Church, Aubery Crescent, KA30 8PR",
+          "url": "https://helloweewonders.wixsite.com/weewonders",
+          "social": {
+            "label": "Facebook page",
+            "url": "https://www.facebook.com/profile.php?id=61582061661666"
+          }
+        }
+      ],
+      "asks": [
+        "The name of the class or group",
+        "Who it's for — ages, and whether grown-ups stay",
+        "When and where it meets",
+        "How to book or just turn up, and what it costs",
+        "A website or public Facebook page",
+        "Your logo, if you have one"
+      ]
+    },
+    {
       "slug": "shops",
       "label": "Shops",
       "open": true,

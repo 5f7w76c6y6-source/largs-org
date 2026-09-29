@@ -1111,6 +1111,48 @@
       "org": {
         "name": "Largs Community Development Trust"
       }
+    },
+    {
+      "title": "Wee Wonders — mixed class (0–5)",
+      "weekday": "thursday",
+      "time": "10:00–10:45",
+      "venue": "St Columba's Episcopal Church, Aubery Crescent",
+      "image": "/assets/img/logo-wee-wonders.png",
+      "blurb": "Music and sensory play for 0–5s and their grown-ups: live violin, handmade puppets, songs and a story, then half an hour for a cuppa and a play. Suits little ones once they're walking, and their younger brothers and sisters. £9 a session or £62 for an eight-week block; booking appreciated.",
+      "contact": {
+        "label": "Book online here",
+        "url": "https://bookwhen.com/weewondersnorthayrshire"
+      },
+      "org": {
+        "name": "Wee Wonders",
+        "url": "https://helloweewonders.wixsite.com/weewonders"
+      },
+      "from": "2026-09-24",
+      "until": "2026-11-19",
+      "except": [
+        "2026-10-22"
+      ]
+    },
+    {
+      "title": "Wee Wonders — babies' class (0–1)",
+      "weekday": "thursday",
+      "time": "11:30–12:15",
+      "venue": "St Columba's Episcopal Church, Aubery Crescent",
+      "image": "/assets/img/logo-wee-wonders.png",
+      "blurb": "A slower-paced class for babies who aren't walking yet, and their grown-ups: live music, puppets, songs and sensory play, then half an hour for a cuppa and a chat. £9 a session or £62 for an eight-week block; booking appreciated.",
+      "contact": {
+        "label": "Book online here",
+        "url": "https://bookwhen.com/weewondersnorthayrshire"
+      },
+      "org": {
+        "name": "Wee Wonders",
+        "url": "https://helloweewonders.wixsite.com/weewonders"
+      },
+      "from": "2026-09-24",
+      "until": "2026-11-19",
+      "except": [
+        "2026-10-22"
+      ]
     }
   ]
 }
