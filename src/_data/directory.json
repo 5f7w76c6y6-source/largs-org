@@ -419,6 +419,19 @@
       "blurb": "Shops and high-street services in Largs.",
       "entries": [
         {
+          "name": "Copper Nut",
+          "blurb": "Coastal gift shop on Gallowgate Street, trading as Coppernut by the Sea: home wares, cards, jewellery and coastal scents, with its own handmade wax melts and candles. The candles and melts can also be bought online through Etsy.",
+          "logo": "/assets/img/logo-copper-nut.png",
+          "checked": "2026-09-30",
+          "where": "Gallowgate Street, KA30 8LX",
+          "url": "https://www.etsy.com/uk/shop/CoppernutGifts",
+          "phone": "07377 556267",
+          "social": {
+            "label": "Facebook page",
+            "url": "https://www.facebook.com/Coppernutinteriors/"
+          }
+        },
+        {
           "name": "Gallery Eight Picture Framing",
           "blurb": "Picture framing done on the premises — originals, prints, photographs, certificates, tapestries and sports strips among the things they have framed. Formerly Largs DIY: the hardware side has gone and the framing continues. Open Tuesday, Wednesday and Thursday, 10am–2pm, and Saturday, 10am–1pm.",
           "checked": "2026-09-24",
