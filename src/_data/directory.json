@@ -729,6 +729,19 @@
           "checked": "2026-08-30"
         },
         {
+          "name": "Bay Court Care Home",
+          "blurb": "Care home on Anthony Road offering residential, nursing, dementia, respite and palliative care. It also opens its doors to the wider community each month: a free Carers' Brunch on the last Wednesday, and a cancer support group run by The Kindness Crew on the last Thursday. The next dates are on What's On.",
+          "logo": "/assets/img/logo-bay-court-care-home.png",
+          "checked": "2026-09-30",
+          "where": "2 Anthony Road, KA30 8EQ",
+          "url": "https://baycourtcare.co.uk",
+          "social": {
+            "label": "Facebook page",
+            "url": "https://www.facebook.com/profile.php?id=61573540328885"
+          },
+          "phone": "01475 308020"
+        },
+        {
           "name": "Isle View Spa",
           "blurb": "Thai massage and wellness treatments on Bath Street. Open Monday to Saturday 9.30am–6pm and Sunday 10am–6pm; book online or by phone, and gift vouchers are available.",
           "checked": "2026-09-03",
