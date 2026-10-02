@@ -261,6 +261,35 @@ module.exports = function (eleventyConfig) {
     return true;
   }
 
+  // `week` makes a regular MONTHLY: 1-4 = the nth such weekday of the
+  // month, "last" = the last one. Absent = every week, as before. Any
+  // other value fails the build, so a typo cannot silently turn a
+  // monthly group into a weekly one.
+  function weekOk(r, iso) {
+    if (r.week === undefined || r.week === null || r.week === "") return true;
+    const dom = Number(iso.slice(8, 10));
+    if (r.week === "last") {
+      const d = new Date(iso + "T12:00:00Z");
+      const dim = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).getUTCDate();
+      return dom + 7 > dim;
+    }
+    if ([1, 2, 3, 4].includes(r.week)) return Math.ceil(dom / 7) === r.week;
+    throw new Error(`events.json regular "${r.title}": week must be 1, 2, 3, 4 or "last", got ${JSON.stringify(r.week)}`);
+  }
+  const ORDINAL = { 1: "first", 2: "second", 3: "third", 4: "fourth", last: "last" };
+  // Next date a monthly regular meets, looking up to nine weeks ahead
+  // and respecting from/until/except. null if none in that window.
+  function nextOn(r, today) {
+    const want = WEEKDAYS.indexOf(String(r.weekday || "").toLowerCase());
+    const d = new Date(today + "T12:00:00Z");
+    for (let i = 0; i < 63; i++, d.setUTCDate(d.getUTCDate() + 1)) {
+      const iso = d.toISOString().slice(0, 10);
+      if ((d.getUTCDay() + 6) % 7 !== want) continue;
+      if (isActive(r, iso) && weekOk(r, iso)) return iso;
+    }
+    return null;
+  }
+
   // A regular whose term starts within the next ten weeks is shown on the
   // What's On page with a "starts …" note rather than hidden: September
   // is when people choose classes, and hiding them until day one is the
@@ -282,7 +311,7 @@ module.exports = function (eleventyConfig) {
     const today = ukToday();
     const dow = ukParts(new Date(), { weekday: "long" }).weekday.toLowerCase();
     return (regulars || []).filter(
-      (r) => String(r.weekday || "").toLowerCase() === dow && isActive(r, today)
+      (r) => String(r.weekday || "").toLowerCase() === dow && isActive(r, today) && weekOk(r, today)
     );
   });
 
@@ -293,7 +322,16 @@ module.exports = function (eleventyConfig) {
     const today = ukToday();
     const live = (regulars || [])
       .filter((r) => isActive(r, today) || startsSoon(r, today))
-      .map((r) => (startsSoon(r, today) ? { ...r, startsLabel: startsLabel(r.from) } : r));
+      .map((r) => (startsSoon(r, today) ? { ...r, startsLabel: startsLabel(r.from) } : r))
+      .map((r) => {
+        if (r.week === undefined || r.week === null || r.week === "") return r;
+        weekOk(r, today); // validates `week`; throws on a bad value
+        const day = String(r.weekday || "").toLowerCase();
+        const freq = r.freq || `${ORDINAL[r.week]} ${day.charAt(0).toUpperCase() + day.slice(1)} of the month`;
+        const n = nextOn(r, today);
+        const nextLabel = n ? "next " + new Date(n + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "Europe/London" }) : "";
+        return { ...r, freq, nextLabel };
+      });
     return WEEKDAYS.map((day) => ({
       day: day.charAt(0).toUpperCase() + day.slice(1),
       items: live

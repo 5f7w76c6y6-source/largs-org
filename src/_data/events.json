@@ -1,6 +1,6 @@
 {
   "_comment": "Events for What's On and the Today board. TWO SEPARATE LISTS. `items` are dated one-off events, filtered by `upcoming` and `todayOnly`. `regulars` are things that happen every week — classes, clubs, markets, groups — which are fixtures rather than events: they are NOT expanded into dated occurrences and never appear in the upcoming list, because twelve copies of a yoga class would bury the actual events. They render as their own section grouped by day, and surface on the Today board on the matching weekday. LISTING RULE: anything open to the public in Largs may be listed, free, on the same terms and in the same format. No paid placement, no editorial favour, no ranking. A yoga class, a church coffee morning and a pub quiz get identical treatment. This is what makes it possible to list a friend's class without it being a favour — and what keeps free listings free if paid enhancements are ever added elsewhere on the site.",
-  "_regularsFields": "title (REQUIRED — the template prints it with no fallback, so a listing without one renders headless; this was missing from the list until 31 Aug 2026 and the first regular was written without a title because of it) · weekday (lowercase name, required) · time · venue · blurb · contact (either plain text — a phone number, 'ask at the counter' — or {label, url} for a link, the same shape the directory uses for social links; a bare URL as plain text prints as a raw address) · image (optional, a site-relative path like /assets/img/ev-thing.png — rendered in the same fixed 200px SQUARE box a dated event's image gets, cropped to fill, so prepare it square) — plus three fields that stop a listing quietly rotting: `from` and `until` bound the term (most classes stop for the school holidays, and without these you would be advertising a class that is not running), and `except` lists one-off cancellations as ISO dates. All three optional; omit `until` for something that runs indefinitely. · `org` (optional, {name, url}) — the organisation running it. The Today board groups regulars on `org.name`, collapsing them to one line ('OIR Largs — n activities today') that links to /whats-on/#regulars, so spell the name identically on every listing; `url` is stored but not yet printed anywhere · `freq` (optional, plain words: 'fortnightly', 'first Tuesday of the month') — printed after the venue in regulars.njk for the reader only; it does not change when the listing appears, which is still every week on its `weekday`, so use `except` for the weeks a fortnightly group is off.",
+  "_regularsFields": "title (REQUIRED — the template prints it with no fallback, so a listing without one renders headless; this was missing from the list until 31 Aug 2026 and the first regular was written without a title because of it) · weekday (lowercase name, required) · time · venue · blurb · contact (either plain text — a phone number, 'ask at the counter' — or {label, url} for a link, the same shape the directory uses for social links; a bare URL as plain text prints as a raw address) · image (optional, a site-relative path like /assets/img/ev-thing.png — rendered in the same fixed 200px SQUARE box a dated event's image gets, cropped to fill, so prepare it square) — plus three fields that stop a listing quietly rotting: `from` and `until` bound the term (most classes stop for the school holidays, and without these you would be advertising a class that is not running), and `except` lists one-off cancellations as ISO dates. All three optional; omit `until` for something that runs indefinitely. · `org` (optional, {name, url}) — the organisation running it. The Today board groups regulars on `org.name`, collapsing them to one line ('OIR Largs — n activities today') that links to /whats-on/#regulars, so spell the name identically on every listing; `url` is stored but not yet printed anywhere · `freq` (optional, plain words: 'fortnightly', 'first Tuesday of the month') — printed after the venue in regulars.njk for the reader only; it does not change when the listing appears, which is still every week on its `weekday`, so use `except` for the weeks a fortnightly group is off. · `week` (optional: 1, 2, 3, 4 or \"last\") makes a regular MONTHLY: the nth (or last) of its weekday in each month. It changes when the listing appears (Today board on matching days only; What's On prints \"next Wed 28 Oct\"), and if `freq` is blank it is written for you (\"last Wednesday of the month\"). Any other value fails the build. Use `except` for a month it doesn't meet; a one-off change of date or format is a dated item.",
   "sample": false,
   "items": [
     {
@@ -219,15 +219,6 @@
       "url": "https://www.ticketsource.com/barrfields/stuart-mitchell-friends-on-the-road/e-zerevy"
     },
     {
-      "date": "2026-10-28",
-      "title": "Carers' Brunch at Bay Court",
-      "venue": "Bay Court Care Home, 2 Anthony Road",
-      "time": "10:00–12:00",
-      "image": "/assets/img/logo-bay-court-care-home.png",
-      "blurb": "A free brunch for carers on the last Wednesday of every month: time out over food and a chat with others who understand what caring involves. Places need to be booked; call 01475 308020 or get in touch through their website.",
-      "url": "https://baycourtcare.co.uk/contact/"
-    },
-    {
       "date": "2026-10-29",
       "title": "Stuart Mitchell & Friends: On The Road",
       "venue": "Barrfields Theatre",
@@ -242,15 +233,6 @@
       "time": "20:00",
       "blurb": "Stand-up comedy.",
       "url": "https://www.ticketsource.com/barrfields/stuart-mitchell-friends-on-the-road/e-zerevy"
-    },
-    {
-      "date": "2026-10-29",
-      "title": "Cancer Support Group at Bay Court",
-      "venue": "Bay Court Care Home, 2 Anthony Road",
-      "time": "11:00–12:30",
-      "image": "/assets/img/logo-bay-court-care-home.png",
-      "blurb": "A cancer support group run by The Kindness Crew on the last Thursday of every month: a relaxed space to share experiences and make new friends. For details, call Bay Court on 01475 308020.",
-      "url": "https://baycourtcare.co.uk"
     },
     {
       "date": "2026-10-30",
@@ -301,24 +283,6 @@
       "image": "/assets/img/ev-folk-nights-lussa.jpg",
       "blurb": "The second of Largs Folk Nights' three Sunday-afternoon concerts. Lussa are a Scottish traditional folk quartet based in Glasgow, formed in 2023 by four graduates of the Royal Conservatoire of Scotland. Doors 2:30pm, music 3pm. Tickets £10 plus Eventbrite's £1.55 booking fee.",
       "url": "https://www.eventbrite.co.uk/e/lussa-largs-folk-nights-tickets-1998670672785"
-    },
-    {
-      "date": "2026-11-25",
-      "title": "Carers' Brunch at Bay Court",
-      "venue": "Bay Court Care Home, 2 Anthony Road",
-      "time": "10:00–12:00",
-      "image": "/assets/img/logo-bay-court-care-home.png",
-      "blurb": "A free brunch for carers on the last Wednesday of every month: time out over food and a chat with others who understand what caring involves. Places need to be booked; call 01475 308020 or get in touch through their website.",
-      "url": "https://baycourtcare.co.uk/contact/"
-    },
-    {
-      "date": "2026-11-26",
-      "title": "Cancer Support Group at Bay Court",
-      "venue": "Bay Court Care Home, 2 Anthony Road",
-      "time": "11:00–12:30",
-      "image": "/assets/img/logo-bay-court-care-home.png",
-      "blurb": "A cancer support group run by The Kindness Crew on the last Thursday of every month: a relaxed space to share experiences and make new friends. For details, call Bay Court on 01475 308020.",
-      "url": "https://baycourtcare.co.uk"
     },
     {
       "date": "2026-11-28",
@@ -396,15 +360,6 @@
       "url": "https://www.eventbrite.co.uk/e/tim-edey-largs-folk-nights-tickets-1999762655936"
     },
     {
-      "date": "2026-12-30",
-      "title": "Carers' Brunch at Bay Court",
-      "venue": "Bay Court Care Home, 2 Anthony Road",
-      "time": "10:00–12:00",
-      "image": "/assets/img/logo-bay-court-care-home.png",
-      "blurb": "A free brunch for carers on the last Wednesday of every month: time out over food and a chat with others who understand what caring involves. Places need to be booked; call 01475 308020 or get in touch through their website.",
-      "url": "https://baycourtcare.co.uk/contact/"
-    },
-    {
       "date": "2027-01-06",
       "title": "OIR monthly meeting: Within these Walls — Rhona Hotchkiss",
       "venue": "Largs Parish Church Hall",
@@ -468,6 +423,26 @@
     }
   ],
   "regulars": [
+    {
+      "title": "Cancer Support Group at Bay Court",
+      "weekday": "thursday",
+      "week": "last",
+      "time": "11:00–12:30",
+      "venue": "Bay Court Care Home, 2 Anthony Road",
+      "blurb": "A cancer support group run by The Kindness Crew: a relaxed space to share experiences and make new friends. For details, call Bay Court on 01475 308020.",
+      "contact": {
+        "label": "Bay Court website",
+        "url": "https://baycourtcare.co.uk"
+      },
+      "image": "/assets/img/logo-bay-court-care-home.png",
+      "org": {
+        "name": "Bay Court Care Home",
+        "url": "https://baycourtcare.co.uk"
+      },
+      "except": [
+        "2026-12-31"
+      ]
+    },
     {
       "title": "Craft Drop-in",
       "weekday": "thursday",
@@ -772,6 +747,23 @@
         "url": "https://oirlargs.org.uk"
       },
       "freq": "year-round"
+    },
+    {
+      "title": "Carers' Brunch at Bay Court",
+      "weekday": "wednesday",
+      "week": "last",
+      "time": "10:00–12:00",
+      "venue": "Bay Court Care Home, 2 Anthony Road",
+      "blurb": "A free brunch for carers: time out over food and a chat with others who understand what caring involves. Places need to be booked; call 01475 308020 or get in touch through their website.",
+      "contact": {
+        "label": "Bay Court contact page",
+        "url": "https://baycourtcare.co.uk/contact/"
+      },
+      "image": "/assets/img/logo-bay-court-care-home.png",
+      "org": {
+        "name": "Bay Court Care Home",
+        "url": "https://baycourtcare.co.uk"
+      }
     },
     {
       "title": "Level Walking",
