@@ -159,12 +159,38 @@
       "url": "https://www.ticketsource.com/barrfields/whisky-galore/e-jplgky"
     },
     {
+      "date": "2026-10-10",
+      "title": "Opening: The Mythology of Now",
+      "venue": "Studio 44 Gallery, 44 Boyd Street",
+      "time": "14:00–16:00",
+      "blurb": "The opening event for The Mythology of Now, an exhibition by four artists who live and work in Ullapool. The exhibition runs from 13 to 31 October.",
+      "url": "https://www.studio44gallery.co.uk"
+    },
+    {
+      "date": "2026-10-13",
+      "until": "2026-10-31",
+      "title": "The Mythology of Now",
+      "venue": "Studio 44 Gallery, 44 Boyd Street",
+      "time": "Tue–Sat, 11:00–17:00",
+      "image": "/assets/img/ev-mythology-of-now.jpg",
+      "blurb": "An exhibition by four artists who live and work in Ullapool: LG Thomson, Mhairi Muncaster, Nicki Johnson and Susan Lorna Brown. Open Tuesday to Saturday, 11am to 5pm.",
+      "url": "https://www.studio44gallery.co.uk"
+    },
+    {
       "date": "2026-10-14",
       "title": "Dementia awareness training day",
       "venue": "Largs Bowling Club, Douglas Street",
       "time": "10:00–14:00",
       "image": "/assets/img/ev-ailn-dementia-cafe.webp",
       "blurb": "A day to increase understanding of dementia and how we can all make a positive difference, run by Ayrshire Independent Living Network ahead of their Dementia Wellbeing Café, which launches here on Wednesday 28 October. Open to anyone, and especially to people who might volunteer a couple of hours a week at the café. To come along, email befriending@ailn.org or call 07771 453192."
+    },
+    {
+      "date": "2026-10-18",
+      "title": "Markmaking to Abstraction: workshop with Lesley Herd",
+      "venue": "Studio 44 Gallery, 44 Boyd Street",
+      "time": "10:00–16:00",
+      "blurb": "A one-day workshop with Kilmarnock artist Lesley Herd: experimental mark-making, then using what it turns up as the starting point for a larger abstract painting. For beginners to experienced. £80, with all materials and a light lunch. Book through her website.",
+      "url": "https://www.lesleyherdart.com/art-workshops"
     },
     {
       "date": "2026-10-24",

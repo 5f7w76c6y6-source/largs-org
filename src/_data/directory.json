@@ -459,8 +459,8 @@
         },
         {
           "name": "Studio 44 Gallery",
-          "blurb": "Art gallery showing changing exhibitions of original work by contemporary Scottish artists — paintings, ceramics, jewellery, photography — for sale. Open 11am–5pm, Tuesday to Saturday, while an exhibition is on. The space can also be hired for art classes, workshops, meetings and pop-up events: evenings from 6pm, and all day Sunday and Monday during exhibitions.",
-          "checked": "2026-08-31",
+          "blurb": "Art gallery showing changing exhibitions of original work by contemporary Scottish artists — paintings, ceramics, jewellery, photography — for sale. Open 11am–5pm, Tuesday to Saturday, while an exhibition is on. The shop can also be hired: by the week as exhibition, studio or retail space, or for art classes, workshops, meetings and pop-up events in the evenings from 6pm and all day Sunday and Monday during exhibitions.",
+          "checked": "2026-10-02",
           "where": "44 Boyd Street, KA30 8LE",
           "phone": "07432 122772",
           "url": "https://www.studio44gallery.co.uk",
@@ -758,9 +758,9 @@
     },
     {
       "slug": "halls-for-hire",
-      "label": "Halls for hire",
+      "label": "Spaces for hire",
       "open": false,
-      "blurb": "Rooms and halls in Largs available to book.",
+      "blurb": "Halls, rooms and other spaces in Largs available to book or hire.",
       "entries": [
         {
           "name": "Barrfields Theatre",
@@ -791,6 +791,14 @@
           "url": "https://www.largs-church.co.uk/church-hall",
           "where": "Aubery Crescent, KA30 8PR",
           "note": "Bookings: Linda Young, llyoung1960@gmail.com."
+        },
+        {
+          "name": "Studio 44 Gallery",
+          "blurb": "A double-fronted shop on Boyd Street, available by the week as exhibition, studio or retail space, with a picture-hanging system and display equipment. During exhibitions it can also be booked for classes, workshops, meetings and pop-up events in the evenings from 6pm and all day Sunday and Monday. Also listed under Shops.",
+          "url": "https://www.studio44gallery.co.uk",
+          "where": "44 Boyd Street, KA30 8LE",
+          "phone": "07432 122772",
+          "checked": "2026-10-02"
         }
       ]
     },
