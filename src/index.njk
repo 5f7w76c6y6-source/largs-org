@@ -10,6 +10,23 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
 {% include "power-notice.njk" %}
 
 <section class="board wrap" aria-labelledby="page-title">
+  {# ON TODAY STRIP (2 Oct 2026). On today sits below all the tiles, seven
+     rows down on a phone, and was being missed. This line says how many
+     things are on and jumps to the list. It counts ACTIVITIES: every dated
+     item plus every regular meeting today, so an organisation whose two
+     classes share one line in the list still counts as two (that line says
+     "2 activities today", so the numbers agree). Absent when nothing is on.
+     todayEvents/todayRegulars are set again further down; same filters,
+     same result. #}
+  {% set todayEvents = events.items | todayOnly %}
+  {% set todayRegulars = events.regulars | regularsToday %}
+  {% set onTodayCount = (todayEvents | length) + (todayRegulars | length) %}
+  {% if onTodayCount > 0 %}
+  <div class="today-strip">
+    <span class="count"><strong>{{ onTodayCount }}</strong> {% if onTodayCount == 1 %}event{% else %}events{% endif %} on in Largs today</span>
+    <a class="pill" href="#on-today">See what’s on ↓</a>
+  </div>
+  {% endif %}
   <div class="kicker">
     {% if today.fetchedAt %}
     <span class="stamp">Updated {{ today.fetchedAt | hhmm }} · rebuilt every half hour</span>
@@ -342,10 +359,9 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
 {% set todayEvents = events.items | todayOnly %}
 {% set todayRegulars = events.regulars | regularsToday %}
 {% if (todayEvents | length) + (todayRegulars | length) > 0 %}
-<section class="board wrap" aria-labelledby="today-events-h">
-  <div class="kicker">
-    <span id="today-events-h">On today</span>
-  </div>
+<section class="board wrap" id="on-today" aria-labelledby="today-events-h">
+  <div class="ontoday">
+  <h2 id="today-events-h">On today</h2>
   {% for e in todayEvents %}
   <article class="event">
     <div class="when">
@@ -414,7 +430,8 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
      link or the poster. One link for the section rather than one per event,
      because the board is deliberately terse and What's on is where the
      detail lives. #}
-  <p class="sub board-more"><a href="/whats-on/">all events →</a></p>
+  <p class="sub board-more"><a href="/whats-on/">All events on What’s on →</a></p>
+  </div>
 </section>
 {% endif %}
 
