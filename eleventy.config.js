@@ -184,6 +184,21 @@ module.exports = function (eleventyConfig) {
   // there are two Fridays and the reader needs the month instead.
   const BADGE_WEEKDAY_WITHIN_DAYS = 7;
 
+  // `days` on a dated item: the weekdays a multi-day span is actually open,
+  // as lowercase three-letter names (["tue","wed","thu","fri","sat"] for a
+  // gallery shut on Sundays and Mondays). Absent = open every day of the
+  // span, as before. It decides whether the item is "on today" (Today board,
+  // the homepage count, What's On's "on now"); the span still lists on
+  // What's On on every day until it ends. Any other value fails the build,
+  // so a typo cannot quietly show a closed exhibition as open.
+  const DAY_NAMES = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  function daysOk(e, iso) {
+    if (e.days === undefined || e.days === null) return true;
+    if (!Array.isArray(e.days) || e.days.length === 0 || e.days.some((d) => !DAY_NAMES.includes(d)))
+      throw new Error(`events.json item "${e.title}" (${e.date}): days must be a list of sun/mon/tue/wed/thu/fri/sat, got ${JSON.stringify(e.days)}`);
+    return e.days.includes(DAY_NAMES[new Date(iso + "T12:00:00Z").getUTCDay()]);
+  }
+
   eleventyConfig.addFilter("upcoming", (items) => {
     const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });
     const today = `${p.year}-${p.month}-${p.day}`;
@@ -205,10 +220,12 @@ module.exports = function (eleventyConfig) {
         // chronological list that is the useful anchor and the right sort
         // key -- so this carries the fact the badge cannot: that a span
         // which began days ago has not been missed. Same test todayOnly
-        // uses, and it cannot express a gap: an event running weekdays
-        // only would be marked on now on a Saturday. If one is ever
-        // listed, give it separate dated entries rather than a span.
-        const onNow = e.date <= today && (e.until || e.date) >= today;
+        // uses, including `days`: a span open only on some weekdays (an
+        // exhibition Tue-Sat) is not marked on now on a day it is shut.
+        // daysOk runs for every item so a bad `days` value fails the build
+        // even before the span starts.
+        const openToday = daysOk(e, today);
+        const onNow = e.date <= today && (e.until || e.date) >= today && openToday;
         return Object.assign({}, e, { farOut, onNow, badgeTop: badgeTop(e.date, farOut), badgeYear: badgeYear(e.date, p.year) });
       });
   });
@@ -219,7 +236,7 @@ module.exports = function (eleventyConfig) {
     const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });
     const today = `${p.year}-${p.month}-${p.day}`;
     return (items || [])
-      .filter((e) => e.date <= today && (e.until || e.date) >= today)
+      .filter((e) => e.date <= today && (e.until || e.date) >= today && daysOk(e, today))
       // Today by definition -- so the badge is built from TODAY, not from
       // e.date. For a one-day event those are the same; for a multi-day
       // span they are not, and badging the start date printed a day that
