@@ -3,3 +3,5 @@ _site/
 .DS_Store
 .cache/
 __pycache__/
+# Scratch folder left by Cowork sessions on the Mac; never part of the site.
+Claude outputs/
