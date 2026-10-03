@@ -94,7 +94,13 @@ subtitle: Events in and around the town, every one checked before it goes up.
    page rather than merely ignore the item. The address is the town
    rather than a street -- venue names in Largs are unambiguous locally,
    and inventing a postcode we do not hold would be worse than omitting
-   one. #}
+   one.
+   3 Oct 2026, after Search Console's first Events report: endDate is
+   always given (a one-day event ends on its own date); image is the
+   listing's own picture, made absolute; organizer only where an item
+   carries one. offers and performer are left out on purpose -- most
+   listings have no price or performer, and filling them in would be
+   inventing data. Google lists them as non-critical. #}
 {%- set schemaEvents = events.items | upcoming -%}
 <script type="application/ld+json">
 [
@@ -103,10 +109,12 @@ subtitle: Events in and around the town, every one checked before it goes up.
 {"@context":"https://schema.org","@type":"Event",
 "name":{{ e.title | dump | safe }},
 "startDate":"{{ e.date }}",
-{% if e.until %}"endDate":"{{ e.until }}",{% endif %}
+"endDate":"{{ e.until or e.date }}",
 "eventStatus":"https://schema.org/EventScheduled",
 {% if e.blurb %}"description":{{ e.blurb | dump | safe }},{% endif %}
 {% if e.url %}"url":{{ e.url | dump | safe }},{% endif %}
+{% if e.image %}"image":[{{ (site.url + e.image) | dump | safe }}],{% endif %}
+{% if e.organizer %}"organizer":{"@type":"Organization","name":{{ e.organizer | dump | safe }}},{% endif %}
 "location":{"@type":"Place","name":{{ e.venue | dump | safe }},"address":{"@type":"PostalAddress","addressLocality":"Largs","addressRegion":"North Ayrshire","addressCountry":"GB"}}}
 {%- endif %}{% endfor %}
 ]
