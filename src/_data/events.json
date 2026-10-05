@@ -1,6 +1,6 @@
 {
   "_comment": "Events for What's On and the Today board. TWO SEPARATE LISTS. `items` are dated one-off events, filtered by `upcoming` and `todayOnly`. `regulars` are things that happen every week — classes, clubs, markets, groups — which are fixtures rather than events: they are NOT expanded into dated occurrences and never appear in the upcoming list, because twelve copies of a yoga class would bury the actual events. They render as their own section grouped by day, and surface on the Today board on the matching weekday. LISTING RULE: anything open to the public in Largs may be listed, free, on the same terms and in the same format. No paid placement, no editorial favour, no ranking. A yoga class, a church coffee morning and a pub quiz get identical treatment. This is what makes it possible to list a friend's class without it being a favour — and what keeps free listings free if paid enhancements are ever added elsewhere on the site. DAYS: a multi-day item (date + until) may carry `days`, the weekdays it is actually open, as lowercase three-letter names, e.g. [\"tue\",\"wed\",\"thu\",\"fri\",\"sat\"] for a gallery shut on Sundays and Mondays. It decides whether the item counts as on today (Today board, the homepage count, the on-now mark); the item still lists on What's On every day until it ends, and the `time` string should still say \"Tue–Sat\". Any other value fails the build.",
-  "_regularsFields": "title (REQUIRED — the template prints it with no fallback, so a listing without one renders headless; this was missing from the list until 31 Aug 2026 and the first regular was written without a title because of it) · weekday (lowercase name, required) · time · venue · blurb · contact (either plain text — a phone number, 'ask at the counter' — or {label, url} for a link, the same shape the directory uses for social links; a bare URL as plain text prints as a raw address) · image (optional, a site-relative path like /assets/img/ev-thing.png — rendered in the same fixed 200px SQUARE box a dated event's image gets, cropped to fill, so prepare it square) — plus three fields that stop a listing quietly rotting: `from` and `until` bound the term (most classes stop for the school holidays, and without these you would be advertising a class that is not running), and `except` lists one-off cancellations as ISO dates. All three optional; omit `until` for something that runs indefinitely. · `org` (optional, {name, url}) — the organisation running it. The Today board groups regulars on `org.name`, collapsing them to one line ('OIR Largs — n activities today') that links to /whats-on/#regulars, so spell the name identically on every listing; `url` is stored but not yet printed anywhere · `freq` (optional, plain words: 'fortnightly', 'first Tuesday of the month') — printed after the venue in regulars.njk for the reader only; it does not change when the listing appears, which is still every week on its `weekday`, so use `except` for the weeks a fortnightly group is off. · `week` (optional: 1, 2, 3, 4 or \"last\") makes a regular MONTHLY: the nth (or last) of its weekday in each month. It changes when the listing appears (Today board on matching days only; What's On prints \"next Wed 28 Oct\"), and if `freq` is blank it is written for you (\"last Wednesday of the month\"). Any other value fails the build. Use `except` for a month it doesn't meet; a one-off change of date or format is a dated item.",
+  "_regularsFields": "title (REQUIRED — the template prints it with no fallback, so a listing without one renders headless; this was missing from the list until 31 Aug 2026 and the first regular was written without a title because of it) · weekday (lowercase name, required) · time · venue · blurb · contact (either plain text — a phone number, 'ask at the counter' — or {label, url} for a link, the same shape the directory uses for social links; a bare URL as plain text prints as a raw address) · image (optional, a site-relative path like /assets/img/ev-thing.png — rendered in the same fixed 200px SQUARE box a dated event's image gets, cropped to fill, so prepare it square) — plus three fields that stop a listing quietly rotting: `from` and `until` bound the term (most classes stop for the school holidays, and without these you would be advertising a class that is not running), and `except` lists one-off cancellations as ISO dates. All three optional; omit `until` for something that runs indefinitely. · `org` (optional, {name, url}) — the organisation running it. The Today board groups regulars on `org.name`, collapsing them to one line ('OIR Largs — n activities today') that links to /whats-on/#regulars, so spell the name identically on every listing; `url` is stored but not yet printed anywhere · `freq` (optional, plain words: 'fortnightly', 'first Tuesday of the month') — printed after the venue in regulars.njk for the reader only; it does not change when the listing appears, which is still every week on its `weekday`, so use `except` for the weeks a fortnightly group is off. · `week` (optional: 1, 2, 3, 4 or \"last\", or a list of them such as [1, 3] for first and third) makes a regular MONTHLY: the nth (or last) of its weekday in each month. It changes when the listing appears (Today board on matching days only; What's On prints \"next Wed 28 Oct\"), and if `freq` is blank it is written for you (\"last Wednesday of the month\"). Any other value fails the build. Use `except` for a month it doesn't meet; a one-off change of date or format is a dated item.",
   "sample": false,
   "items": [
     {
@@ -674,6 +674,7 @@
     {
       "title": "Geology",
       "weekday": "tuesday",
+      "week": 2,
       "time": "14:00",
       "venue": "The George Hotel",
       "image": "/assets/img/ev-oir.png",
@@ -745,6 +746,7 @@
     {
       "title": "Book Group",
       "weekday": "tuesday",
+      "week": 1,
       "time": "15:45–16:45",
       "venue": "Largs Library, Community Room",
       "image": "/assets/img/ev-oir.png",
@@ -1043,6 +1045,7 @@
     {
       "title": "Latin",
       "weekday": "thursday",
+      "week": 4,
       "time": "14:00–16:00",
       "venue": "Brisbane Evangelical Church, Upper Hall",
       "image": "/assets/img/ev-oir.png",
@@ -1055,12 +1058,16 @@
         "name": "OIR Largs",
         "url": "https://oirlargs.org.uk"
       },
-      "freq": "monthly",
+      "freq": "monthly, fourth Thursday",
       "from": "2026-09-24"
     },
     {
       "title": "Scottish History",
       "weekday": "thursday",
+      "week": [
+        1,
+        3
+      ],
       "time": "14:00–16:00",
       "venue": "Brisbane Evangelical Church, Main Hall",
       "image": "/assets/img/ev-oir.png",
@@ -1097,6 +1104,10 @@
     {
       "title": "German",
       "weekday": "friday",
+      "week": [
+        1,
+        3
+      ],
       "time": "14:00–16:00",
       "venue": "Brisbane Evangelical Church, Upper Hall",
       "image": "/assets/img/ev-oir.png",
@@ -1109,7 +1120,7 @@
         "name": "OIR Largs",
         "url": "https://oirlargs.org.uk"
       },
-      "freq": "fortnightly",
+      "freq": "first and third Friday of the month",
       "from": "2026-09-11"
     },
     {

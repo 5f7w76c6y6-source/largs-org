@@ -284,6 +284,11 @@ module.exports = function (eleventyConfig) {
   // monthly group into a weekly one.
   function weekOk(r, iso) {
     if (r.week === undefined || r.week === null || r.week === "") return true;
+    // A list means "any of these": [1, 3] = first and third (5 Oct 2026).
+    if (Array.isArray(r.week)) {
+      if (r.week.length === 0) throw new Error(`events.json regular "${r.title}": week list is empty`);
+      return r.week.some((w) => weekOk({ ...r, week: w }, iso));
+    }
     const dom = Number(iso.slice(8, 10));
     if (r.week === "last") {
       const d = new Date(iso + "T12:00:00Z");
@@ -344,7 +349,8 @@ module.exports = function (eleventyConfig) {
         if (r.week === undefined || r.week === null || r.week === "") return r;
         weekOk(r, today); // validates `week`; throws on a bad value
         const day = String(r.weekday || "").toLowerCase();
-        const freq = r.freq || `${ORDINAL[r.week]} ${day.charAt(0).toUpperCase() + day.slice(1)} of the month`;
+        const which = Array.isArray(r.week) ? r.week.map((w) => ORDINAL[w]).join(" and ") : ORDINAL[r.week];
+        const freq = r.freq || `${which} ${day.charAt(0).toUpperCase() + day.slice(1)} of the month`;
         const n = nextOn(r, today);
         const nextLabel = n ? "next " + new Date(n + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "Europe/London" }) : "";
         return { ...r, freq, nextLabel };
