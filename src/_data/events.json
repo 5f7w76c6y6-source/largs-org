@@ -600,7 +600,7 @@
       "from": "2026-09-22"
     },
     {
-      "title": "Italian — Advanced",
+      "title": "Italian",
       "weekday": "tuesday",
       "time": "10:00–12:00",
       "venue": "The George Hotel",
@@ -955,11 +955,11 @@
       "from": "2026-09-03"
     },
     {
-      "title": "Italian",
+      "title": "Italian — Advanced",
       "weekday": "thursday",
       "time": "10:15–12:15",
       "venue": "The George Hotel",
-      "image": "/assets/img/ev-oir.png",
+      "image": "/assets/img/ev-oir-italian-advanced.jpg",
       "blurb": "For OIR members — anyone aged 50 or over can join (£15 a year plus a small attendance charge); new members welcome. Details from OIR Largs: oirlargs.org.uk, the office at 133 Main Street (weekdays 10am–noon, except over the festive period), or 07353 186946.",
       "contact": {
         "label": "OIR Largs website",
