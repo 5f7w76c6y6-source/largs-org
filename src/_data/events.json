@@ -255,6 +255,7 @@
       "title": "The Rod Stewart Songbook",
       "venue": "Barrfields Theatre",
       "time": "19:30",
+      "image": "/assets/img/ev-rod-stewart-songbook.jpg",
       "blurb": "Rod Stewart tribute concert.",
       "url": "https://www.ticketsource.com/barrfields/the-rod-stewart-songbook/e-lelmbb"
     },
@@ -272,6 +273,7 @@
       "title": "Emilio Santoro as Elvis",
       "venue": "Barrfields Theatre",
       "time": "19:30",
+      "image": "/assets/img/ev-elvis-santoro.jpg",
       "blurb": "Elvis tribute concert.",
       "url": "https://www.ticketsource.com/barrfields/emilio-santoro-as-elvis/e-bgxylk"
     },
@@ -280,6 +282,7 @@
       "title": "Oh What a Night!",
       "venue": "Barrfields Theatre",
       "time": "19:30",
+      "image": "/assets/img/ev-oh-what-a-night.jpg",
       "blurb": "Frankie Valli and the Four Seasons tribute.",
       "url": "https://www.ticketsource.com/barrfields/oh-what-a-night/e-yjyjxz"
     },
@@ -288,6 +291,7 @@
       "title": "Alba Ballet presents Coppélia",
       "venue": "Barrfields Theatre",
       "time": "19:30",
+      "image": "/assets/img/ev-coppelia.jpg",
       "blurb": "Delibes' comic ballet, performed by Alba Ballet.",
       "url": "https://www.ticketsource.com/barrfields/alba-ballet-presents-coppelia/e-xprqlv"
     },
@@ -305,6 +309,7 @@
       "title": "A Scottish Comedy Collective",
       "venue": "Barrfields Theatre",
       "time": "20:00",
+      "image": "/assets/img/ev-scottish-comedy-collective.jpg",
       "blurb": "Stand-up from a bill of Scottish comedians.",
       "url": "https://www.ticketsource.com/barrfields/a-scottish-comedy-collective/e-rbgzab"
     },
@@ -322,6 +327,7 @@
       "title": "Rapunzel",
       "venue": "Barrfields Theatre",
       "time": "19:30",
+      "image": "/assets/img/ev-rapunzel.jpg",
       "blurb": "This year's pantomime.",
       "url": "https://www.ticketsource.com/barrfields/rapunzel-pantomime/e-ovrqev"
     },
@@ -330,6 +336,7 @@
       "title": "Rapunzel",
       "venue": "Barrfields Theatre",
       "time": "19:30",
+      "image": "/assets/img/ev-rapunzel.jpg",
       "blurb": "This year's pantomime.",
       "url": "https://www.ticketsource.com/barrfields/rapunzel-pantomime/e-ovrqev"
     },
@@ -338,6 +345,7 @@
       "title": "Rapunzel",
       "venue": "Barrfields Theatre",
       "time": "14:00",
+      "image": "/assets/img/ev-rapunzel.jpg",
       "blurb": "This year's pantomime.",
       "url": "https://www.ticketsource.com/barrfields/rapunzel-pantomime/e-ovrqev"
     },
@@ -346,6 +354,7 @@
       "title": "Rapunzel",
       "venue": "Barrfields Theatre",
       "time": "18:30",
+      "image": "/assets/img/ev-rapunzel.jpg",
       "blurb": "This year's pantomime.",
       "url": "https://www.ticketsource.com/barrfields/rapunzel-pantomime/e-ovrqev"
     },
@@ -354,6 +363,7 @@
       "title": "Rapunzel",
       "venue": "Barrfields Theatre",
       "time": "14:00",
+      "image": "/assets/img/ev-rapunzel.jpg",
       "blurb": "This year's pantomime.",
       "url": "https://www.ticketsource.com/barrfields/rapunzel-pantomime/e-ovrqev"
     },
@@ -434,6 +444,7 @@
       "title": "Across the Universe: The Beatles '66–70'",
       "venue": "Barrfields Theatre",
       "time": "19:30",
+      "image": "/assets/img/ev-across-the-universe.jpg",
       "blurb": "Beatles tribute concert covering the later years.",
       "url": "https://www.ticketsource.com/barrfields/across-the-universe-the-beatles-66-70/e-arxqke"
     }
