@@ -472,7 +472,8 @@
       "time": "19:30",
       "venue": "Barrfields Theatre",
       "blurb": "Bon Jovi tribute.",
-      "url": "https://www.barrfieldstheatre.com/events-3/just-jovi"
+      "url": "https://www.barrfieldstheatre.com/events-3/just-jovi",
+      "image": "/assets/img/ev-just-jovi.jpg"
     },
     {
       "title": "Fae Here Tae Maternity",
@@ -480,7 +481,8 @@
       "time": "19:30",
       "venue": "Barrfields Theatre",
       "blurb": "Comedy play: four pregnant strangers meet on a Glasgow maternity ward.",
-      "url": "https://www.barrfieldstheatre.com/events-3/fae-here-tae-maternity"
+      "url": "https://www.barrfieldstheatre.com/events-3/fae-here-tae-maternity",
+      "image": "/assets/img/ev-fae-here-tae-maternity.jpg"
     },
     {
       "title": "Oasiz",
@@ -488,7 +490,8 @@
       "time": "19:30",
       "venue": "Barrfields Theatre",
       "blurb": "Oasis tribute band.",
-      "url": "https://www.barrfieldstheatre.com/events-3/oasiz"
+      "url": "https://www.barrfieldstheatre.com/events-3/oasiz",
+      "image": "/assets/img/ev-oasiz.jpg"
     },
     {
       "title": "A Beautiful Noise: The Definitive Neil Diamond Tribute",
@@ -496,7 +499,8 @@
       "time": "19:30",
       "venue": "Barrfields Theatre",
       "blurb": "Neil Diamond tribute show.",
-      "url": "https://www.barrfieldstheatre.com/events-3/a-beautiful-noise%3A-the-definitive-neil-diamond-tribute"
+      "url": "https://www.barrfieldstheatre.com/events-3/a-beautiful-noise%3A-the-definitive-neil-diamond-tribute",
+      "image": "/assets/img/ev-beautiful-noise.jpg"
     },
     {
       "title": "Clatty Pats",
@@ -504,7 +508,8 @@
       "time": "19:30",
       "venue": "Barrfields Theatre",
       "blurb": "Cleopatra's nightclub revival night.",
-      "url": "https://www.barrfieldstheatre.com/events-3/clatty-pats"
+      "url": "https://www.barrfieldstheatre.com/events-3/clatty-pats",
+      "image": "/assets/img/ev-clatty-pats.jpg"
     },
     {
       "title": "The Scottish Pink Floyd",
@@ -521,7 +526,8 @@
       "time": "19:30",
       "venue": "Barrfields Theatre",
       "blurb": "Bee Gees tribute concert.",
-      "url": "https://www.barrfieldstheatre.com/events-3/jive-talkin%E2%80%99-perform-the-bee-gees-live-in-concert"
+      "url": "https://www.barrfieldstheatre.com/events-3/jive-talkin%E2%80%99-perform-the-bee-gees-live-in-concert",
+      "image": "/assets/img/ev-jive-talkin-bee-gees.jpg"
     },
     {
       "title": "Ultimate 70s Show",
@@ -529,7 +535,8 @@
       "time": "19:30",
       "venue": "Barrfields Theatre",
       "blurb": "Seventies hits, live.",
-      "url": "https://www.barrfieldstheatre.com/events-3/ultimate-70s-show"
+      "url": "https://www.barrfieldstheatre.com/events-3/ultimate-70s-show",
+      "image": "/assets/img/ev-ultimate-70s.jpg"
     }
   ],
   "regulars": [
