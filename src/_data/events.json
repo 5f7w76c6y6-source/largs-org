@@ -454,7 +454,8 @@
       "time": "13:00",
       "venue": "Barrfields Theatre",
       "blurb": "Musical show for all the family.",
-      "url": "https://www.ticketsource.co.uk/themcdougalls"
+      "url": "https://www.ticketsource.co.uk/themcdougalls",
+      "image": "/assets/img/ev-mcdougalls-halloween.jpg"
     },
     {
       "title": "MANIA: The ABBA Tribute",
@@ -462,7 +463,8 @@
       "time": "19:30",
       "venue": "Barrfields Theatre",
       "blurb": "ABBA tribute show.",
-      "url": "https://www.barrfieldstheatre.com/events-3/mania%3A-the-abba-tribute"
+      "url": "https://www.barrfieldstheatre.com/events-3/mania%3A-the-abba-tribute",
+      "image": "/assets/img/ev-mania-abba.jpg"
     },
     {
       "title": "Just Jovi",
