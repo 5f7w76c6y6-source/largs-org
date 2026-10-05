@@ -33,17 +33,10 @@ subtitle: "Largs through the year — the town, the shore, the Clyde, and the li
 {% else %}
 <section class="wrap" aria-labelledby="photos-h">
 
-  {# Group by year-month for natural chronological navigation #}
-  {% set lastMonth = "" %}
+  {# One grid, newest first (order of photos.json). Month headings
+     removed 5 Oct 2026 at Ian's request. #}
   <div class="photo-grid" id="photo-grid">
   {% for p in photos.photos %}
-    {% set thisMonth = p.date | monthYear %}
-    {% if thisMonth != lastMonth %}
-    </div>{# close previous grid #}
-    <h2 class="month-rule">{{ thisMonth }}</h2>
-    <div class="photo-grid">
-    {% set lastMonth = thisMonth %}
-    {% endif %}
 
     <a class="photo-thumb"
        href="{{ p.full }}"
@@ -61,7 +54,7 @@ subtitle: "Largs through the year — the town, the shore, the Clyde, and the li
       </div>
     </a>
   {% endfor %}
-  </div>{# close last grid #}
+  </div>{# end .photo-grid #}
 
 </section>
 {% endif %}
