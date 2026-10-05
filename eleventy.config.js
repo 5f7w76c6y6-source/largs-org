@@ -227,7 +227,13 @@ module.exports = function (eleventyConfig) {
         const openToday = daysOk(e, today);
         const onNow = e.date <= today && (e.until || e.date) >= today && openToday;
         return Object.assign({}, e, { farOut, onNow, badgeTop: badgeTop(e.date, farOut), badgeYear: badgeYear(e.date, p.year) });
-      });
+      })
+      // Date order, whatever order events.json is in: a show moved a year
+      // (Rod Stewart Songbook, 5 Oct 2026) otherwise kept its old place
+      // among the 2026 items. Start date first -- the same key the badge
+      // shows -- then time, so a matinee lists before the evening show.
+      // map() has already made a new array, so sorting it in place is safe.
+      .sort((a, b) => a.date.localeCompare(b.date) || String(a.time || "").localeCompare(String(b.time || "")));
   });
 
   // todayOnly: events whose date is exactly today (or a multi-day span
