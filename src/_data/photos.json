@@ -2,6 +2,15 @@
   "sample": false,
   "photos": [
     {
+      "date": "2026-10-05",
+      "title": "Pirates ahoy!",
+      "caption": "A pirate-ship climbing frame in a seafront play park, silhouetted against a low sun over the water.",
+      "category": "Coast",
+      "original": "originals/2026-10-05-pirates-ahoy.jpeg",
+      "thumb": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-10-05-pirates-ahoy-400.jpg",
+      "full": "https://pub-f878f11e18cb4d1c89452f36df8667b5.r2.dev/web/2026-10-05-pirates-ahoy-1200.jpg"
+    },
+    {
       "date": "2026-08-08",
       "title": "Big Skies",
       "caption": "Big Skies",

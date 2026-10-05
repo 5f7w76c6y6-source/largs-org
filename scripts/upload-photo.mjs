@@ -3,7 +3,7 @@
  * scripts/upload-photo.mjs
  *
  * Takes one of Alison's originals off your desktop, makes a 1200px
- * full-size AVIF and a 400px thumbnail AVIF, pushes all three to the
+ * full-size JPEG and a 400px thumbnail JPEG, pushes all three to the
  * largs-photos R2 bucket, and prints the JSON entry ready to paste
  * into src/_data/photos.json.
  *
@@ -80,8 +80,8 @@ const slug = title.toLowerCase()
   .slice(0, 40);
 const stem       = `${date}-${slug}`;
 const origKey    = `originals/${stem}${extname(originalPath).toLowerCase()}`;
-const fullKey    = `web/${stem}-1200.avif`;
-const thumbKey   = `web/${stem}-400.avif`;
+const fullKey    = `web/${stem}-1200.jpg`;
+const thumbKey   = `web/${stem}-400.jpg`;
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── Check sharp is installed ──────────────────────────────────────────────────
@@ -100,37 +100,40 @@ try {
 // ── Resize ────────────────────────────────────────────────────────────────────
 const tmp = join(tmpdir(), `largs-upload-${Date.now()}`);
 mkdirSync(tmp);
-const fullPath  = join(tmp, "full.avif");
-const thumbPath = join(tmp, "thumb.avif");
+const fullPath  = join(tmp, "full.jpg");
+const thumbPath = join(tmp, "thumb.jpg");
+// JPEG, not AVIF: Safari before iOS 16.4 cannot show AVIF, so older
+// iPads and iPhones saw blank tiles. JPEG works on every device.
+const JPEG_QUALITY = 80;
 
 console.log(`\nResizing ${basename(originalPath)}…`);
 await sharp(originalPath)
   .resize(FULL_WIDTH, null, { withoutEnlargement: true })
-  .avif({ quality: AVIF_QUALITY })
+  .jpeg({ quality: JPEG_QUALITY, mozjpeg: true, progressive: true })
   .toFile(fullPath);
-console.log(`  ✓  full  — ${FULL_WIDTH}px AVIF`);
+console.log(`  ✓  full  — ${FULL_WIDTH}px JPEG`);
 
 await sharp(originalPath)
   .resize(THUMB_WIDTH, Math.round(THUMB_WIDTH * 3 / 4), {
     fit: "cover",
     position: "attention"   // smart crop: keeps faces and salient features
   })
-  .avif({ quality: AVIF_QUALITY })
+  .jpeg({ quality: JPEG_QUALITY, mozjpeg: true, progressive: true })
   .toFile(thumbPath);
-console.log(`  ✓  thumb — ${THUMB_WIDTH}×${Math.round(THUMB_WIDTH * 3 / 4)}px AVIF`);
+console.log(`  ✓  thumb — ${THUMB_WIDTH}×${Math.round(THUMB_WIDTH * 3 / 4)}px JPEG`);
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── Upload via wrangler ───────────────────────────────────────────────────────
 const put = (localFile, key, label) => {
   console.log(`\nUploading ${label}…`);
   execSync(
-    `npx wrangler r2 object put "${BUCKET}/${key}" --file "${localFile}" --remote`,
+    `npx wrangler r2 object put "${BUCKET}/${key}" --file "${localFile}"${key.endsWith(".jpg") ? " --content-type image/jpeg" : ""} --remote`,
     { stdio: "inherit" }
   );
 };
 put(originalPath, origKey,  "original (private)");
-put(fullPath,     fullKey,  "full 1200px AVIF   (public)");
-put(thumbPath,    thumbKey, "thumb 400px AVIF   (public)");
+put(fullPath,     fullKey,  "full 1200px JPEG   (public)");
+put(thumbPath,    thumbKey, "thumb 400px JPEG   (public)");
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── Clean up temp files ───────────────────────────────────────────────────────
