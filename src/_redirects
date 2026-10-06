@@ -6,3 +6,8 @@
 # Cafés & food became Food & drink on 18 Sep 2026; the old address had been
 # in the sitemap since August.
 /directory/cafes-and-food/  /directory/food-and-drink/  301
+
+# Wee ones & grown-ups became Children's activities on 6 Oct 2026, so the
+# category could take clubs and classes for older children too; the old
+# address had been published.
+/directory/wee-ones/  /directory/childrens-activities/  301
