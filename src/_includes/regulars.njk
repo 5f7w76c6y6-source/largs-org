@@ -29,8 +29,12 @@
   meet regularly in Largs can go here, free — see below to add one.</p>
   {% endif %}
 
+  {# Each day carries an id (regulars-monday and so on) so the home
+     page's On today board can link straight to today rather than to
+     Monday at the top of the list. Lowercased here and in index.njk
+     so the two always match. 6 Oct 2026. #}
   {% for group in byDay %}
-  <div class="regular-day">
+  <div class="regular-day" id="regulars-{{ group.day | lower }}">
     <h3 class="regular-dayname">{{ group.day }}</h3>
     {% for r in group.items %}
     <article class="regular">

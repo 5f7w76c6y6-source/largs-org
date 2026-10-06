@@ -405,7 +405,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     <div class="event-body">
       <h3>{{ r.org.name }} — {{ mine | length }} {% if (mine | length) == 1 %}activity{% else %}activities{% endif %} today</h3>
       <div class="meta">{% for x in mine %}{{ x.title | upper }}{% if not loop.last %} · {% endif %}{% endfor %}</div>
-      <p><a href="/whats-on/#regulars">Times and venues on What's on →</a></p>
+      <p><a href="/whats-on/#regulars-{{ r.weekday | lower }}">Times and venues on What's on →</a></p>
     </div>
   </article>
     {% endif %}
@@ -429,8 +429,15 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
      what was happening and had nowhere to go for the detail, the booking
      link or the poster. One link for the section rather than one per event,
      because the board is deliberately terse and What's on is where the
-     detail lives. #}
-  <p class="sub board-more"><a href="/whats-on/">All events on What’s on →</a></p>
+     detail lives.
+
+     It lands on today, not the top of the page: whoever clicks it
+     from On today wants today's times, and the regulars list starts
+     on Monday. On a day with a dated event it goes to the events
+     list, which is in date order so today is at the top; otherwise
+     to today's heading in the regulars. The "Times and venues"
+     links above land on the same heading. 6 Oct 2026. #}
+  <p class="sub board-more"><a href="/whats-on/#{% if todayEvents | length %}events{% else %}regulars-{{ todayRegulars[0].weekday | lower }}{% endif %}">Today’s events on What’s on →</a></p>
   </div>
 </section>
 {% endif %}
