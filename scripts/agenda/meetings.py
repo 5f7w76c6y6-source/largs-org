@@ -58,6 +58,7 @@ import re
 import os
 import sys
 import time
+import urllib.error
 import urllib.request
 from datetime import datetime
 
@@ -104,10 +105,32 @@ MONTHS = {m: i for i, m in enumerate(
      'August', 'September', 'October', 'November', 'December'], 1)}
 
 
-def get(url, timeout=90):
-    return urllib.request.urlopen(
-        urllib.request.Request(url, headers=UA), timeout=timeout
-    ).read().decode('utf-8', 'replace')
+def get(url, timeout=90, tries=4):
+    """Fetch a page, retrying a failed read before giving up on it.
+
+    The council's gateway answered 502 for ten consecutive meeting pages on
+    the first scheduled run (8 October 2026) and was fine a minute later;
+    one bad minute should cost a retry, not the night's collection. Waits
+    5, 15 and 45 seconds between attempts. A 4xx answer is the server's
+    considered reply and is not retried.
+    """
+    delay = 5
+    for attempt in range(1, tries + 1):
+        try:
+            return urllib.request.urlopen(
+                urllib.request.Request(url, headers=UA), timeout=timeout
+            ).read().decode('utf-8', 'replace')
+        except urllib.error.HTTPError as exc:
+            if exc.code < 500 or attempt == tries:
+                raise
+            reason = f'HTTP {exc.code}'
+        except Exception as exc:
+            if attempt == tries:
+                raise
+            reason = exc.__class__.__name__
+        print(f'    retry {attempt}/{tries - 1} in {delay}s after {reason}: …{url[-48:]}')
+        time.sleep(delay)
+        delay *= 3
 
 
 def to_iso(s):
