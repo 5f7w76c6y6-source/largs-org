@@ -1,0 +1,101 @@
+# Agenda watch: reads North Ayrshire Council's committee calendar, searches
+# its papers for Largs, reads the agenda packs for the meetings ahead (the
+# council's search indexes new papers a fortnight late), once a night, and
+# commits the result.
+#
+# WHY A SEPARATE WORKFLOW. The collectors are polite (two seconds between
+# requests) and take a few minutes; the build runs ~100 times a day and
+# must stay fast. This runs once, writes data/meetings.json,
+# data/largs-agenda.json and data/largs-papers.json, and commits them when
+# they changed. The build picks the commit up on its next tick -- the
+# metronome's :02/:17/:32/:47 -- so a nightly run at 05:20 UTC is on the
+# page by about 05:35.
+#
+# WHY COMMIT RATHER THAN CACHE. The three files are a public record of what
+# the council published and when; git history is the audit trail, and a
+# diff answers "what changed last night" in one command. Bot commits also
+# count as repository activity, so the 60-day schedule pause never comes.
+# The cost is one line in the shipping ritual: `git pull --rebase` before
+# `git push`, because main moves overnight.
+#
+# A push made with the workflow's own GITHUB_TOKEN does NOT trigger other
+# workflows (GitHub's guard against runaway loops), which is why this does
+# not try to start a build itself and leaves that to the metronome.
+#
+# Failure is loud on purpose: a collector that cannot reach the council's
+# site exits non-zero, the run goes red, and GitHub emails the owner. The
+# page meanwhile keeps the last good data and says when it was collected --
+# past two days it says so in words (agenda.cjs, STALE_DAYS). The `collected`
+# stamps are written only when a collector succeeds, so "last checked" on
+# the page never claims a check that did not happen.
+#
+# TWO GUARDS ADDED 8 OCT 2026. pypdf is installed into a Python provided by
+# actions/setup-python rather than the runner's system interpreter, because
+# newer Ubuntu images refuse `pip install` into system Python (PEP 668) and
+# the step would have failed the night the image changed. And the commit
+# step pulls with --rebase before pushing, so a push made from the Mac
+# during the few minutes of a crawl does not make the night's commit bounce.
+#
+# On demand: Actions tab -> Agenda watch -> Run workflow, or
+#   gh workflow run agenda-watch.yml && sleep 10 && gh run watch
+
+name: Agenda watch
+
+on:
+  schedule:
+    - cron: "20 5 * * *"
+  workflow_dispatch:
+
+# One at a time, and never cancel a run that is mid-way through a polite
+# crawl -- the next one simply waits.
+concurrency:
+  group: agenda-watch
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Each collector writes its own file under data/ and exits non-zero
+      # if the council's site refuses it or the form has changed shape;
+      # meetings.py leaves its last good file alone when any fetch fails.
+      # papers.py needs pypdf to read the packs; the other two are standard
+      # library only.
+      - name: Read the committee calendar
+        run: python3 scripts/agenda/meetings.py
+
+      - name: Search the papers for Largs
+        run: python3 scripts/agenda/collect.py
+
+      - name: Read the agenda packs for the meetings ahead
+        run: |
+          python3 -m pip install --quiet pypdf
+          python3 scripts/agenda/papers.py
+
+      # All three files carry a `collected` stamp, so there is a change every
+      # night even when the council published nothing; that is the point --
+      # the stamp is what the page shows as "last checked". Runs even if a
+      # collector failed, so a calendar that succeeded still lands.
+      - name: Commit what changed
+        if: always()
+        run: |
+          git add data/meetings.json data/largs-agenda.json data/largs-papers.json
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+            exit 0
+          fi
+          git config user.name "agenda-watch"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Agenda: nightly collection, $(date -u +%Y-%m-%d)"
+          git pull --rebase origin main
+          git push
