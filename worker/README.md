@@ -1,11 +1,22 @@
 # The metronome — runbook
 
-A Cloudflare Worker that fires on Cloudflare's cron (`:03` and `:33`,
-every hour) and dispatches the `build-and-deploy.yml` workflow via
-GitHub's API. It exists because GitHub's own cron honoured roughly one
-slot in sixteen over the first four days; Cloudflare's cron actually
-fires. The workflow's schedule stays on as a backup — overlaps are
-cancelled by the workflow's concurrency group.
+A Cloudflare Worker that fires on Cloudflare's cron and dispatches
+workflows via GitHub's API. It exists because GitHub's own cron
+honoured roughly one slot in sixteen over the first four days;
+Cloudflare's cron actually fires. The workflows' schedules stay on as
+a backup — overlaps are settled by each workflow's concurrency group.
+
+Two clocks since 9 October 2026:
+
+| Cron (UTC) | Dispatches | Why |
+|---|---|---|
+| `3,33 * * * *` | `build-and-deploy.yml` | The half-hourly heartbeat, offset from GitHub's 2,17,32,47. |
+| `20 5 * * *` | `agenda-watch.yml` | The nightly North Ayrshire collection. Its GitHub schedule for the same minute was not run on its first night. |
+
+Each cron string in `wrangler.toml` must appear verbatim as a key in
+the `WORKFLOWS` table in `metronome.js`; an unknown string throws
+rather than dispatching the wrong workflow. Cloudflare crons are UTC
+all year, so 05:20 is 06:20 during British Summer Time.
 
 ## The token (mint once, carefully)
 
@@ -16,7 +27,8 @@ GitHub → Settings → Developer settings → Personal access tokens →
   `5f7w76c6y6-source/largs-org`. Nothing else.
 - **Permissions → Repository permissions → Actions: Read and write.**
   Every other permission stays "No access". This is the whole surface:
-  the token can start this repo's workflows and nothing more.
+  the token can start this repo's workflows (any of them) and nothing
+  more.
 - **Expiration:** take "No expiration" if offered; otherwise the
   longest available, and calendar the renewal next to the UKHO one.
   An expiring token means the heartbeat silently stops on some future
@@ -30,13 +42,15 @@ GitHub → Settings → Developer settings → Personal access tokens →
 
 ```
 cd ~/Developer/largs-org/worker
-npx wrangler deploy                    # creates the Worker + cron
+npx wrangler deploy                    # creates the Worker + crons
 npx wrangler secret put GITHUB_TOKEN   # paste the token at the hidden prompt
 ```
 
 Deploy first, then the secret: putting a secret before the Worker
 exists makes wrangler invent a draft. The one cron tick that may fire
 between the two commands fails harmlessly and shows in the logs.
+Secrets survive later redeploys; only the first deploy needs the
+`secret put`.
 
 ## Verifying it works
 
@@ -47,10 +61,12 @@ gh run list --limit 5
 ```
 
 A fresh run with EVENT `workflow_dispatch` on the half hour is the
-metronome's signature (pushes also say `workflow_dispatch`? No —
-pushes say `push`; only the metronome and the Actions tab produce
-`workflow_dispatch`). Live logs, if ever needed:
-`npx wrangler tail largs-metronome` while a tick fires.
+metronome's signature (pushes say `push`; only the metronome and the
+Actions tab produce `workflow_dispatch`). The Actions tab labels a
+metronome run "Manually run by" the token's owner, because the API
+dispatch is made with that owner's token — a 06:20 Agenda watch run
+"manually run by" you is the second clock working. Live logs, if ever
+needed: `npx wrangler tail largs-metronome` while a tick fires.
 
 ## When it breaks
 
@@ -58,7 +74,9 @@ pushes say `push`; only the metronome and the Actions tab produce
   tick. HTTP 401 = token expired or rolled without re-putting; 404 =
   token lacks access to the repo (wrong repository selected, or
   Actions permission missing); 403 with a rate message = something is
-  very wrong, read the body.
+  very wrong, read the body. "no workflow for cron" = `wrangler.toml`
+  and the `WORKFLOWS` table in `metronome.js` disagree; make them
+  match and redeploy.
 - Rolled the token on GitHub → `npx wrangler secret put GITHUB_TOKEN`
   with the new one. Nothing else changes.
 - Retiring the metronome entirely → `npx wrangler delete` in this
@@ -66,6 +84,7 @@ pushes say `push`; only the metronome and the Actions tab produce
 
 ## Changing the cadence
 
-Edit `crons` in `wrangler.toml`, then `npx wrangler deploy` again.
-The Worker only redeploys when you redeploy it — pushing this
-directory to GitHub changes nothing on Cloudflare.
+Edit `crons` in `wrangler.toml` and the matching key in `metronome.js`,
+then `npx wrangler deploy` again. The Worker only redeploys when you
+redeploy it — pushing this directory to GitHub changes nothing on
+Cloudflare.

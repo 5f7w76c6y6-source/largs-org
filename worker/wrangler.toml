@@ -3,6 +3,13 @@
 # Cron minutes are :03 and :33, deliberately offset from the GitHub
 # schedule's 2,17,32,47 so the two clocks rarely collide; when they
 # do, the workflow's concurrency group settles it.
+#
+# The second cron, 05:20 UTC daily, dispatches Agenda watch (added
+# 9 Oct 2026 after GitHub did not run that workflow's own first
+# scheduled slot). Cloudflare crons are UTC all year round: 06:20 in
+# British Summer Time, 05:20 in winter. Every string here must appear
+# verbatim as a key in the WORKFLOWS table in metronome.js, or the
+# Worker throws on that tick instead of guessing.
 
 name = "largs-metronome"
 main = "metronome.js"
@@ -10,4 +17,4 @@ compatibility_date = "2026-08-01"
 workers_dev = false
 
 [triggers]
-crons = ["3,33 * * * *"]
+crons = ["3,33 * * * *", "20 5 * * *"]
