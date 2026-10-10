@@ -116,7 +116,10 @@ poller runs on Cloudflare instead. The Pi is inside that failure
 domain; Cloudflare is not.
 
 **largs-metronome** (`worker/`) — nudges the site on `:03` and `:33`,
-offset from the Actions schedule so the two clocks rarely collide.
+offset from the Actions schedule so the two clocks rarely collide, and
+from 05:00 UTC each tick also starts Agenda watch, the nightly North
+Ayrshire collection, unless it has already run that day — its only
+clock (see `worker/README.md`).
 
 **largs-power** (`worker-power/`) — polls SP Energy Networks' National
 Energy Outage dataset every ten minutes and writes `power.json` to the

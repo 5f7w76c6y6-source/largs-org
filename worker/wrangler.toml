@@ -4,17 +4,31 @@
 # schedule's 2,17,32,47 so the two clocks rarely collide; when they
 # do, the workflow's concurrency group settles it.
 #
-# The second cron, 05:20 UTC daily, dispatches Agenda watch (added
-# 9 Oct 2026 after GitHub did not run that workflow's own first
-# scheduled slot). Cloudflare crons are UTC all year round: 06:20 in
-# British Summer Time, 05:20 in winter. Every string here must appear
-# verbatim as a key in the WORKFLOWS table in metronome.js, or the
-# Worker throws on that tick instead of guessing.
+# One trigger, two jobs (10 Oct 2026): every tick dispatches the build,
+# and from AGENDA_NOT_BEFORE (UTC, "HH:MM") onward each tick also starts
+# Agenda watch, the nightly North Ayrshire collection, unless GitHub
+# says it has already run today. A dedicated daily cron trigger was
+# tried first and was skipped by Cloudflare, so the nightly rides on the
+# half-hourly one and checks its own work. To prove the nightly path
+# today rather than wait for 05:03, deploy once with the threshold at
+# midnight —
+#   npx wrangler deploy --var AGENDA_NOT_BEFORE:00:00
+# — watch the next tick dispatch both, then `npx wrangler deploy` with
+# no --var to restore the value below.
 
 name = "largs-metronome"
 main = "metronome.js"
 compatibility_date = "2026-08-01"
 workers_dev = false
 
+[vars]
+AGENDA_NOT_BEFORE = "05:00"
+
+# Workers Logs: every tick's console lines and any exception, in the
+# dashboard under the Worker's Observability tab for three days. 48
+# invocations a day is nothing against the free allowance.
+[observability]
+enabled = true
+
 [triggers]
-crons = ["3,33 * * * *", "20 5 * * *"]
+crons = ["3,33 * * * *"]

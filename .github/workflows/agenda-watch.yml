@@ -7,16 +7,26 @@
 # requests) and take a few minutes; the build runs ~100 times a day and
 # must stay fast. This runs once, writes data/meetings.json,
 # data/largs-agenda.json and data/largs-papers.json, and commits them when
-# they changed. The build picks the commit up on its next tick -- the
-# metronome's :02/:17/:32/:47 -- so a nightly run at 05:20 UTC is on the
-# page by about 05:35.
+# they changed. The build picks the commit up on its next tick.
+#
+# WHO STARTS IT. The metronome Worker (worker/metronome.js). From 05:00
+# UTC, each of its half-hourly ticks asks GitHub whether this workflow has
+# run yet today and dispatches it if not -- normally the 05:03 tick. The
+# collection commits by about 05:10 and the 05:33 build publishes, so the
+# page reads "last checked today" by about 05:35 UTC, 06:35 in British
+# Summer Time. There is deliberately NO `schedule:` here. GitHub's cron
+# skipped this workflow's first night (9 Oct 2026) and ran it six and a
+# half hours late when it did run; left in place it would have given the
+# council a second crawl a day at an unpredictable hour. One clock. A
+# manual "Run workflow" counts as that day's run: the metronome sees it
+# and does not start another.
 #
 # WHY COMMIT RATHER THAN CACHE. The three files are a public record of what
 # the council published and when; git history is the audit trail, and a
 # diff answers "what changed last night" in one command. Bot commits also
-# count as repository activity, so the 60-day schedule pause never comes.
-# The cost is one line in the shipping ritual: `git pull --rebase` before
-# `git push`, because main moves overnight.
+# count as repository activity. The cost is one line in the shipping
+# ritual: `git pull --rebase` before `git push`, because main moves
+# overnight.
 #
 # A push made with the workflow's own GITHUB_TOKEN does NOT trigger other
 # workflows (GitHub's guard against runaway loops), which is why this does
@@ -42,8 +52,6 @@
 name: Agenda watch
 
 on:
-  schedule:
-    - cron: "20 5 * * *"
   workflow_dispatch:
 
 # One at a time, and never cancel a run that is mid-way through a polite
