@@ -1,5 +1,5 @@
 {
- "collected": "2026-10-13T05:07:07",
+ "collected": "2026-10-14T05:07:27",
  "committees": {
   "135": "North Ayrshire Council",
   "137": "Audit and Scrutiny Committee",
@@ -1691,6 +1691,116 @@
    "date": "2026-12-16",
    "status": "scheduled",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3963/Committee/135/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Licensing Committee",
+   "committeeId": 142,
+   "id": "4047",
+   "date": "2027-01-13",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4047/Committee/142/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Cabinet",
+   "committeeId": 139,
+   "id": "4054",
+   "date": "2027-01-26",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4054/Committee/139/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Audit and Scrutiny Committee",
+   "committeeId": 137,
+   "id": "4045",
+   "date": "2027-01-28",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4045/Committee/137/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Licensing Committee",
+   "committeeId": 142,
+   "id": "4048",
+   "date": "2027-02-03",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4048/Committee/142/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "North Ayrshire Council",
+   "committeeId": 135,
+   "id": "4050",
+   "date": "2027-02-10",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4050/Committee/135/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "North Ayrshire Council",
+   "committeeId": 135,
+   "id": "4051",
+   "date": "2027-02-24",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4051/Committee/135/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Cabinet",
+   "committeeId": 139,
+   "id": "4055",
+   "date": "2027-03-02",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4055/Committee/139/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Licensing Committee",
+   "committeeId": 142,
+   "id": "4049",
+   "date": "2027-03-03",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4049/Committee/142/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Police and Fire and Rescue Committee",
+   "committeeId": 148,
+   "id": "4053",
+   "date": "2027-03-08",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4053/Committee/148/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Audit and Scrutiny Committee",
+   "committeeId": 137,
+   "id": "4046",
+   "date": "2027-03-11",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4046/Committee/137/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "North Ayrshire Council",
+   "committeeId": 135,
+   "id": "4052",
+   "date": "2027-03-24",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4052/Committee/135/Default.aspx",
    "ahead": true,
    "documents": []
   }
