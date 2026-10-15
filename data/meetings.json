@@ -1,5 +1,5 @@
 {
- "collected": "2026-10-14T05:07:27",
+ "collected": "2026-10-15T05:07:14",
  "committees": {
   "135": "North Ayrshire Council",
   "137": "Audit and Scrutiny Committee",
@@ -1516,7 +1516,7 @@
    "committeeId": 137,
    "id": "4039",
    "date": "2026-10-08",
-   "status": "scheduled",
+   "status": "occurred",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4039/Committee/137/Default.aspx",
    "ahead": false,
    "documents": [
@@ -1531,6 +1531,10 @@
     {
      "title": "Call-In Report and Appendices",
      "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=gqISFqgJQy87%2ft8qrfi8wF0EC94M9sN8srWRYQfMkgnxYL8vSUIlBQ%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "261008 Special A&S Minute",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=1coJTPgpcUAMTEZW8sE5vyoP1hz0h8VhSHF1uUXKdu%2frwAvveWYYvQ%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
     }
    ]
   },
