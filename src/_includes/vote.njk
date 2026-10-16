@@ -1,0 +1,32 @@
+{# A council vote or consultation, on the North Ayrshire Council page
+   (votes.json). The site tells readers that a vote is on, how to take
+   part, and what is on the ballot — all of it, alphabetically, with the
+   council's own page as the link — and never which way to vote. The
+   section exists only while the vote is open (currentNotices: build-time,
+   self-expiring), so nothing has to be taken down on the 8th.
+
+   Why every project and not "the Largs ones": the ballot is the whole
+   locality, Largs readers can vote for any of them, and deciding which
+   ones count as Largs would itself be a judgement. #}
+{% set votesLive = votes.votes | currentNotices %}
+{% for v in votesLive %}
+<section class="vote" id="vote" aria-labelledby="vote-h">
+  <h2 id="vote-h">Have your say: {{ v.title }}</h2>
+  <p class="vote-lead">{{ v.lead }}</p>
+  <p class="vote-closes"><strong>Voting closes {{ v.closes }}.</strong></p>
+  <dl class="vote-how">
+    <dt>Who can vote</dt><dd>{{ v.who }}</dd>
+    <dt>Online</dt><dd>{{ v.online }} <a href="{{ v.voteUrl }}">Vote on the council's site →</a></dd>
+    <dt>On paper</dt><dd>{{ v.paper }}</dd>
+    <dt>Groups</dt><dd>{{ v.groups }}</dd>
+  </dl>
+  <h3>On the ballot — {{ v.projects | length }} projects, {{ v.pot }} to share</h3>
+  <p class="vote-note">In alphabetical order. Each link opens the project's own page on the council's site, where the group describes what the money is for. This site does not recommend any of them.</p>
+  <ul class="vote-list">
+  {% for p in v.projects %}
+    <li><a href="{{ p.url }}">{{ p.title }}</a>{% if p.by %} <span class="vote-by">— {{ p.by }}</span>{% endif %}</li>
+  {% endfor %}
+  </ul>
+  <p class="vote-src"><a href="{{ v.listUrl }}">The council's own list for this area →</a></p>
+</section>
+{% endfor %}

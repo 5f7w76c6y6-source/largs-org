@@ -1,0 +1,36 @@
+{# The civic band: one line, one button, on every page, for something the
+   town can act on by a date (civic.json). Rendered between the horizon
+   and <main> by the base layout, and rendered as NOTHING when no notice is
+   live, so the layout can carry it permanently.
+
+   Not a ticker and not an alarm: no motion, no red, the site's own foam
+   tint with a teal button, the same calm register as the safety notice
+   on the Today board. Readers who have acted can close it with the ×,
+   which is remembered in their browser for that notice's id only — a new
+   notice shows again. The remembering is a per-reader convenience and
+   nothing depends on it: with storage blocked, or JavaScript off, the
+   band simply shows every time until it expires on its own.
+
+   The script is the second inline script in the site and the smallest
+   possible: it reads one key, hides one element, writes one key. #}
+{% set civicLive = civic.notices | currentNotices %}
+{% for n in civicLive %}
+<div class="civic-band" id="civic-{{ n.id }}" role="region" aria-label="Notice">
+  <div class="wrap civic-band-inner">
+    <p class="civic-band-text"><strong>{{ n.text }}</strong>{% if n.detail %} <span class="civic-band-detail">{{ n.detail }}</span>{% endif %}</p>
+    <a class="civic-band-btn" href="{{ n.href }}">{{ n.label }} →</a>
+    <button class="civic-band-close" type="button" aria-label="Close this notice" data-civic="{{ n.id }}">×</button>
+  </div>
+</div>
+<script>
+(function () {
+  var key = "civic-closed:{{ n.id }}", band = document.getElementById("civic-{{ n.id }}");
+  if (!band) return;
+  try { if (localStorage.getItem(key)) band.hidden = true; } catch (e) {}
+  band.querySelector(".civic-band-close").addEventListener("click", function () {
+    band.hidden = true;
+    try { localStorage.setItem(key, "1"); } catch (e) {}
+  });
+})();
+</script>
+{% endfor %}

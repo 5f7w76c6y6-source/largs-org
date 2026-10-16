@@ -1,0 +1,170 @@
+{
+  "_comment": "Civic votes and consultations the site tells readers about, with every option listed and none favoured. Shown on /on-the-agenda/ while `starts`..`expires` covers today (currentNotices filter, build-time, self-expiring). Every project in the locality is listed, in alphabetical order, with the council's own page as the link; `by` is the organisation as the council's site shows it, and is left out where the council's site shows a private individual's name or a username. The site never says which to vote for. After the count (results phase from 23 Nov 2026) replace this entry with one that links to the results.",
+  "votes": [
+    {
+      "id": "community-pb-2026",
+      "title": "Community Participatory Budget 2026",
+      "lead": "North Ayrshire Council is letting residents decide how £15,804 is shared between 32 local projects in the North Coast and Cumbraes area — Largs, Fairlie, West Kilbride and Cumbrae. Nearly every bid is for £1,000 or less, so roughly half of them will be funded.",
+      "closes": "Saturday 7 November 2026",
+      "who": "Anyone who lives in North Ayrshire and is aged 8 or over. You vote in one area only, and choose three projects.",
+      "online": "At Shaping North Ayrshire (northayrshire.communitychoices.scot) — you need an account, which takes a minute to create. Young people aged 8 and up can sign in with a Young Scot card number or a login from their school.",
+      "paper": "Largs Library has paper ballot sheets. You give your name and the first five characters of your postcode (for example KA30 8), fill the sheet in at the library and hand it back; sheets do not leave the building.",
+      "groups": "A community group that would like council staff to help its members vote at a meeting can email participatorybudgeting@north-ayrshire.gov.uk.",
+      "voteUrl": "https://northayrshire.communitychoices.scot/budgets/19",
+      "listUrl": "https://northayrshire.communitychoices.scot/budgets/19/investments?heading_id=74",
+      "pot": "£15,804",
+      "starts": "2026-10-16",
+      "expires": "2026-11-07",
+      "projects": [
+        {
+          "title": "Access to food events – Largs",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1296",
+          "by": "Largs Community Council"
+        },
+        {
+          "title": "Active Travel walking and cycling",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1298"
+        },
+        {
+          "title": "Additional coaches and equipment to meet the numbers attending the club",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1369"
+        },
+        {
+          "title": "Barrfields Community Garden",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1243",
+          "by": "Largs Community Garden"
+        },
+        {
+          "title": "CWAS (Cycling Without Age Scotland) Largs Chapter",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1287"
+        },
+        {
+          "title": "Douglas Park Biodiversity and Community Nature Restoration Project",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1220"
+        },
+        {
+          "title": "Fairlie Family STEM Club",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1318",
+          "by": "Fairlie Primary Parent Council"
+        },
+        {
+          "title": "First Aid Training for Barony Centre West Kilbride",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1320"
+        },
+        {
+          "title": "Growing All Year: West Kilbride Children's Garden",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1325"
+        },
+        {
+          "title": "Help in the provision of essential safety equipment",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1200",
+          "by": "Firth of Clyde Coastal Rowing Club"
+        },
+        {
+          "title": "Installation of Petanque (Boules) Court at Millport Bowling Club",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1244",
+          "by": "Millport Bowling Club"
+        },
+        {
+          "title": "Largs & District Pipes and Drums",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1217",
+          "by": "Largs & District Pipes and Drums"
+        },
+        {
+          "title": "Largs Colts 2013",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1202"
+        },
+        {
+          "title": "Largs Food Hub",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1207",
+          "by": "Largs Food Hub"
+        },
+        {
+          "title": "Largs Music Club",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1232",
+          "by": "Largs Music Club"
+        },
+        {
+          "title": "Largs Pickleball for under 18s",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1270",
+          "by": "Largs Academy Parent Council"
+        },
+        {
+          "title": "Largs Radio – Reaching new listeners",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1326",
+          "by": "Largs Community Radio"
+        },
+        {
+          "title": "Loud and Clear",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1246",
+          "by": "Cumbrae Dramatic Club"
+        },
+        {
+          "title": "Millport Bothy Bowers",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1301",
+          "by": "Bothy Bowers"
+        },
+        {
+          "title": "Millport Pride 2027",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1373",
+          "by": "Millport Pride"
+        },
+        {
+          "title": "More Mobility Moves Mountains",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1237"
+        },
+        {
+          "title": "No Man Left Behind Cumbrae",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1256"
+        },
+        {
+          "title": "One Team, Five Communities: New Kit for Largs Colts 2016",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1231",
+          "by": "Largs Colts 2016"
+        },
+        {
+          "title": "Reading Rangers",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1286",
+          "by": "West Kilbride Parent Council"
+        },
+        {
+          "title": "Rhythm Rising",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1284"
+        },
+        {
+          "title": "Shine Care & Share Voucher Initiative",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1216",
+          "by": "SHINE Ayrshire"
+        },
+        {
+          "title": "Shopping Vouchers for Millport Community Shop Members",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1285",
+          "by": "Millport Community Shop"
+        },
+        {
+          "title": "This is Us",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1360",
+          "by": "coast collective"
+        },
+        {
+          "title": "Virtual Dementia Experience: Building a More Dementia Friendly Largs & District",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1289",
+          "by": "Dementia Friendly Largs & District"
+        },
+        {
+          "title": "West Kilbride Yuletide Activities",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1323"
+        },
+        {
+          "title": "West Kilbride – Kirktonhall Glen disabled and emergency access road",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1198",
+          "by": "West Kilbride Community Council"
+        },
+        {
+          "title": "Young Instructors, More Young Sailors",
+          "url": "https://northayrshire.communitychoices.scot/budgets/19/investments/1229"
+        }
+      ]
+    }
+  ]
+}

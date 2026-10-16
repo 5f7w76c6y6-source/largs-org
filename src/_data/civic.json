@@ -1,0 +1,21 @@
+{
+  "_comment": "The civic band: one line under the horizon on EVERY page, for something the town can act on by a date — a council vote, a consultation, a changed bin week, a road closure. Not for safety notices (notice.json, police-sourced, Today board only) and not for events (What's On). Shown while `starts`..`expires` covers today, via the same currentNotices filter as the safety notice: build-time, self-expiring, at most one at a time, nothing to remember to take down. `href` is normally a page on this site that carries the facts, so the band stays one sentence and the page does the explaining. The band never names a side, a candidate or a project.",
+  "_rules": [
+    "Something a reader can do, with a date it ends.",
+    "One sentence and one button. The button goes to a page on this site that has the full facts.",
+    "Never names a project, a candidate or a side. The page it points to lists every option equally.",
+    "One at a time. If two are live, the later `starts` waits.",
+    "Expires on its own; nothing is ever removed by hand."
+  ],
+  "notices": [
+    {
+      "id": "community-pb-2026",
+      "text": "Vote on how £15,804 is shared between 32 local projects — closes 7 November.",
+      "detail": "North Ayrshire Council's Community Participatory Budget. Anyone in North Ayrshire aged 8 and up gets three picks, online or at Largs Library.",
+      "href": "/on-the-agenda/#vote",
+      "label": "How to vote",
+      "starts": "2026-10-16",
+      "expires": "2026-11-07"
+    }
+  ]
+}

@@ -1436,3 +1436,34 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   #on-today:target .ontoday{animation:ontoday-arrive 1.6s ease-out}
 }
 @keyframes ontoday-arrive{0%{box-shadow:0 0 0 6px var(--foam)}100%{box-shadow:0 0 0 0 rgba(191,222,210,0)}}
+
+/* ---- Civic band (civic-band.njk) --------------------------------
+   One line under the horizon on every page while a civic notice is
+   live. Foam tint and slate, teal button: the site's own palette, no
+   red, no motion. Stacks on narrow screens. */
+.civic-band{background:var(--foam-tint);border-bottom:1px solid var(--foam);color:var(--ink)}
+.civic-band-inner{display:flex;align-items:center;gap:14px 18px;flex-wrap:wrap;padding-top:.7rem;padding-bottom:.7rem}
+.civic-band-text{margin:0;flex:1 1 320px;font-size:.98rem;line-height:1.45}
+.civic-band-detail{color:var(--muted)}
+.civic-band-btn{flex:0 0 auto;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;
+  padding:.5rem .95rem;border-radius:4px;white-space:nowrap}
+.civic-band-btn:hover,.civic-band-btn:focus{background:var(--slate)}
+.civic-band-close{flex:0 0 auto;background:none;border:1px solid var(--foam);color:var(--muted);
+  width:2rem;height:2rem;border-radius:50%;font-size:1.2rem;line-height:1;cursor:pointer}
+.civic-band-close:hover,.civic-band-close:focus{color:var(--ink);border-color:var(--muted)}
+
+/* ---- Council vote section (vote.njk) ---------------------------- */
+.vote{margin:0 0 2rem;padding:1.1rem 1.3rem 1rem;border:1px solid var(--foam);border-left-width:5px;
+  border-radius:3px;background:var(--card)}
+.vote h2{margin-top:0}
+.vote-lead{margin:0 0 .6rem}
+.vote-closes{margin:0 0 1rem}
+.vote-how{margin:0 0 1.2rem;display:grid;grid-template-columns:max-content 1fr;gap:.45rem 1rem}
+.vote-how dt{font-family:"Spline Sans Mono",monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-top:.2rem}
+.vote-how dd{margin:0}
+.vote-note{color:var(--muted);font-size:.92rem;margin:0 0 .6rem}
+.vote-list{columns:2;column-gap:2rem;padding-left:1.1rem;margin:0 0 .8rem}
+.vote-list li{break-inside:avoid;margin-bottom:.35rem}
+.vote-by{color:var(--muted)}
+.vote-src{margin:0;font-size:.92rem}
+@media (max-width:640px){.vote-how{grid-template-columns:1fr}.vote-list{columns:1}}
