@@ -552,7 +552,7 @@
       "venue": "Cameron Centre, 17–19 Lade Street",
       "time": "10:30–12:30",
       "blurb": "A morning of memories and music with Lawrence Lindsay, for people living with dementia, their families and friends. Run by Dementia Friendly Largs & District; refreshments included. To book, call Lawrence on 07766 710702.",
-      "image": "/assets/img/ev-dfl.jpg"
+      "image": "/assets/img/ev-dfl-memories.jpg"
     },
     {
       "date": "2026-11-03",
@@ -560,7 +560,7 @@
       "venue": "Cameron Centre, 17–19 Lade Street",
       "time": "13:00–15:00",
       "blurb": "Singing and rhythm with Beatrice Clark, 'The Music Lady', for people living with dementia, their families and friends. Run by Dementia Friendly Largs & District; refreshments included. To book, email info@dementialargs.co.uk.",
-      "image": "/assets/img/ev-dfl.jpg"
+      "image": "/assets/img/ev-dfl-music.jpg"
     },
     {
       "date": "2026-11-05",
@@ -568,7 +568,7 @@
       "venue": "Largs Library",
       "time": "14:15–16:30",
       "blurb": "An afternoon film for people living with dementia, their families and friends, run by Dementia Friendly Largs & District with the library. The title is a surprise; the clue is \"the rain in Spain stays mainly on the plain\". Refreshments included. To book, call Largs Library on 01475 673309.",
-      "image": "/assets/img/ev-dfl.jpg"
+      "image": "/assets/img/ev-dfl-film.jpg"
     },
     {
       "date": "2026-11-09",
@@ -576,7 +576,7 @@
       "venue": "Cameron Centre, 17–19 Lade Street",
       "time": "13:00–15:00",
       "blurb": "A relaxed afternoon of coffee and conversation for people living with dementia, their families and friends. Run by Dementia Friendly Largs & District; refreshments included. No need to book.",
-      "image": "/assets/img/ev-dfl.jpg"
+      "image": "/assets/img/ev-dfl-coffee.jpg"
     },
     {
       "date": "2026-11-17",
@@ -584,7 +584,7 @@
       "venue": "Cameron Centre, 17–19 Lade Street",
       "time": "13:00–15:00",
       "blurb": "Singing and rhythm with Beatrice Clark, 'The Music Lady', for people living with dementia, their families and friends. Run by Dementia Friendly Largs & District; refreshments included. To book, email info@dementialargs.co.uk.",
-      "image": "/assets/img/ev-dfl.jpg"
+      "image": "/assets/img/ev-dfl-music.jpg"
     },
     {
       "date": "2026-11-24",
@@ -592,7 +592,7 @@
       "venue": "Cameron Centre, 17–19 Lade Street",
       "time": "13:00–15:00",
       "blurb": "Singing and rhythm with Beatrice Clark, 'The Music Lady', for people living with dementia, their families and friends. Run by Dementia Friendly Largs & District; refreshments included. To book, email info@dementialargs.co.uk.",
-      "image": "/assets/img/ev-dfl.jpg"
+      "image": "/assets/img/ev-dfl-music.jpg"
     },
     {
       "date": "2026-11-27",
@@ -600,7 +600,7 @@
       "venue": "Cameron Centre, 17–19 Lade Street",
       "time": "10:30–12:00",
       "blurb": "A morning of memories and music with Lawrence Lindsay, for people living with dementia, their families and friends. Run by Dementia Friendly Largs & District; refreshments included. To book, call Lawrence on 07766 710702.",
-      "image": "/assets/img/ev-dfl.jpg"
+      "image": "/assets/img/ev-dfl-memories.jpg"
     },
     {
       "date": "2026-12-07",
@@ -608,7 +608,7 @@
       "venue": "Cameron Centre, 17–19 Lade Street",
       "time": "13:00–15:00",
       "blurb": "A Christmas afternoon for people living with dementia, their families and friends, with refreshments. £5 per person. Booking is essential and closes on Friday 27 November: email info@dementialargs.co.uk.",
-      "image": "/assets/img/ev-dfl.jpg"
+      "image": "/assets/img/ev-dfl-dance.jpg"
     },
     {
       "date": "2026-12-11",
@@ -616,7 +616,15 @@
       "venue": "Cameron Centre, 17–19 Lade Street",
       "time": "10:30–12:00",
       "blurb": "A morning of memories and music with Lawrence Lindsay, for people living with dementia, their families and friends. Run by Dementia Friendly Largs & District; refreshments included. To book, call Lawrence on 07766 710702.",
-      "image": "/assets/img/ev-dfl.jpg"
+      "image": "/assets/img/ev-dfl-memories.jpg"
+    },
+    {
+      "date": "2026-10-21",
+      "title": "Free first-aid training for café and befriending volunteers",
+      "venue": "Largs Bowling Club, Douglas Street",
+      "time": "13:00–15:00",
+      "blurb": "A free first-aid session from Heart Start for the volunteers of Ayrshire Independent Living Network's befriending service and the new Dementia Wellbeing Café. It is for volunteers rather than the general public — but anyone can become one, and AILN are looking for people who can spare a couple of hours a week at the café. To volunteer or to book a place, email befriending@ailn.org or call 07771 453192.",
+      "image": "/assets/img/ev-ailn-first-aid.jpg"
     }
   ],
   "regulars": [
