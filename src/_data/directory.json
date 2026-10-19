@@ -729,6 +729,34 @@
           "checked": "2026-08-30"
         },
         {
+          "name": "Isle View Spa",
+          "blurb": "Thai massage and wellness treatments on Bath Street. Open Monday to Saturday 9.30am–6pm and Sunday 10am–6pm; book online or by phone, and gift vouchers are available.",
+          "checked": "2026-09-03",
+          "where": "24 Bath Street, KA30 8BL",
+          "phone": "01475 339449",
+          "url": "https://www.isleviewspa.co.uk",
+          "logo": "/assets/img/logo-isle-view.png",
+          "social": {
+            "label": "Their Facebook page",
+            "url": "https://www.facebook.com/profile.php?id=61592864724675"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "care-homes",
+      "label": "Care homes",
+      "open": true,
+      "blurb": "Residential and nursing care homes in Largs.",
+      "asks": [
+        "The name of the home",
+        "The kinds of care you offer — residential, nursing, dementia, respite, palliative",
+        "The address",
+        "A phone number, a website or a Facebook page",
+        "Your logo, if you have one"
+      ],
+      "entries": [
+        {
           "name": "Bay Court Care Home",
           "blurb": "Care home on Anthony Road offering residential, nursing, dementia, respite and palliative care. It also opens its doors to the wider community each month: a free Carers' Brunch on the last Wednesday, and a cancer support group run by The Kindness Crew on the last Thursday. The next dates are on What's On.",
           "logo": "/assets/img/logo-bay-court-care-home.png",
@@ -753,19 +781,6 @@
             "url": "https://www.facebook.com/huttonparkcarehome/"
           },
           "phone": "01475 673184"
-        },
-        {
-          "name": "Isle View Spa",
-          "blurb": "Thai massage and wellness treatments on Bath Street. Open Monday to Saturday 9.30am–6pm and Sunday 10am–6pm; book online or by phone, and gift vouchers are available.",
-          "checked": "2026-09-03",
-          "where": "24 Bath Street, KA30 8BL",
-          "phone": "01475 339449",
-          "url": "https://www.isleviewspa.co.uk",
-          "logo": "/assets/img/logo-isle-view.png",
-          "social": {
-            "label": "Their Facebook page",
-            "url": "https://www.facebook.com/profile.php?id=61592864724675"
-          }
         }
       ]
     },
