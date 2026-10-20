@@ -1,5 +1,5 @@
 {
- "collected": "2026-10-19T05:07:36",
+ "collected": "2026-10-20T05:07:53",
  "committees": {
   "135": "North Ayrshire Council",
   "137": "Audit and Scrutiny Committee",
@@ -1549,16 +1549,6 @@
    "documents": []
   },
   {
-   "committee": "Local Review Body",
-   "committeeId": 144,
-   "id": "3995",
-   "date": "2026-10-28",
-   "status": "scheduled",
-   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3995/Committee/144/Default.aspx",
-   "ahead": true,
-   "documents": []
-  },
-  {
    "committee": "Planning Committee",
    "committeeId": 147,
    "id": "3976",
@@ -1709,6 +1699,26 @@
    "documents": []
   },
   {
+   "committee": "Local Review Body",
+   "committeeId": 144,
+   "id": "4059",
+   "date": "2027-01-20",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4059/Committee/144/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Planning Committee",
+   "committeeId": 147,
+   "id": "4056",
+   "date": "2027-01-20",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4056/Committee/147/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
    "committee": "Cabinet",
    "committeeId": 139,
    "id": "4054",
@@ -1749,6 +1759,16 @@
    "documents": []
   },
   {
+   "committee": "Planning Committee",
+   "committeeId": 147,
+   "id": "4057",
+   "date": "2027-02-17",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4057/Committee/147/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
    "committee": "North Ayrshire Council",
    "committeeId": 135,
    "id": "4051",
@@ -1785,6 +1805,16 @@
    "date": "2027-03-08",
    "status": "scheduled",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4053/Committee/148/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Planning Committee",
+   "committeeId": 147,
+   "id": "4058",
+   "date": "2027-03-10",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4058/Committee/147/Default.aspx",
    "ahead": true,
    "documents": []
   },
