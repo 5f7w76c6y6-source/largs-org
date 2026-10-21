@@ -1,5 +1,5 @@
 {
- "collected": "2026-10-20T05:07:53",
+ "collected": "2026-10-21T05:08:35",
  "committees": {
   "135": "North Ayrshire Council",
   "137": "Audit and Scrutiny Committee",
@@ -1759,6 +1759,16 @@
    "documents": []
   },
   {
+   "committee": "Integration Joint Board",
+   "committeeId": 141,
+   "id": "4062",
+   "date": "2027-02-11",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4062/Committee/141/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
    "committee": "Planning Committee",
    "committeeId": 147,
    "id": "4057",
@@ -1825,6 +1835,16 @@
    "date": "2027-03-11",
    "status": "scheduled",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4046/Committee/137/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Integration Joint Board",
+   "committeeId": 141,
+   "id": "4063",
+   "date": "2027-03-11",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4063/Committee/141/Default.aspx",
    "ahead": true,
    "documents": []
   },
