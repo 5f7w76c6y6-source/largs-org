@@ -1,5 +1,5 @@
 {
- "collected": "2026-10-21T05:08:35",
+ "collected": "2026-10-22T05:08:27",
  "committees": {
   "135": "North Ayrshire Council",
   "137": "Audit and Scrutiny Committee",
@@ -1481,7 +1481,7 @@
    "committeeId": 142,
    "id": "3944",
    "date": "2026-10-07",
-   "status": "scheduled",
+   "status": "occurred",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3944/Committee/142/Default.aspx",
    "ahead": false,
    "documents": [
@@ -1559,16 +1559,6 @@
    "documents": []
   },
   {
-   "committee": "Police and Fire and Rescue Committee",
-   "committeeId": 148,
-   "id": "3967",
-   "date": "2026-11-02",
-   "status": "scheduled",
-   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3967/Committee/148/Default.aspx",
-   "ahead": true,
-   "documents": []
-  },
-  {
    "committee": "North Ayrshire Council",
    "committeeId": 135,
    "id": "3962",
@@ -1615,6 +1605,16 @@
    "date": "2026-11-19",
    "status": "scheduled",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3935/Committee/137/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "Police and Fire and Rescue Committee",
+   "committeeId": 148,
+   "id": "3967",
+   "date": "2026-11-23",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3967/Committee/148/Default.aspx",
    "ahead": true,
    "documents": []
   },
