@@ -1,8 +1,24 @@
 {
- "collected": "2026-10-22T05:09:07+00:00",
+ "collected": "2026-10-23T05:09:33+00:00",
  "lookbackDays": 60,
  "method": "whole-word, case-insensitive \"largs\" in the text of the agenda pack; the same number the council's search reports",
  "records": [
+  {
+   "key": "2026-10-27|Cabinet|3985|Agenda Document Pack - Cabinet - 27/10/2026",
+   "committee": "Cabinet",
+   "date": "2026-10-27",
+   "meetingId": "3985",
+   "meetingUrl": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3985/Committee/139/Default.aspx",
+   "title": "Agenda Document Pack - Cabinet - 27/10/2026",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=NX3mcTAao0zozFWw%2bRZgSXxs%2bq1mwuOSrxRhM02PoUoiytWBSexfZg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d",
+   "pack": true,
+   "read": "2026-10-23T05:09:11+00:00",
+   "status": "ok",
+   "bytes": 14410966,
+   "pages": 344,
+   "hits": 25,
+   "pagesWithHits": 15
+  },
   {
    "key": "2026-10-08|Audit and Scrutiny Committee|4039|Agenda Document Pack - Audit and Scrutiny Committee - 08/10/2026",
    "committee": "Audit and Scrutiny Committee",
