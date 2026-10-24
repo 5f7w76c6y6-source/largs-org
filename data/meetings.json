@@ -1,5 +1,5 @@
 {
- "collected": "2026-10-23T05:08:30",
+ "collected": "2026-10-24T05:08:15",
  "committees": {
   "135": "North Ayrshire Council",
   "137": "Audit and Scrutiny Committee",
@@ -1604,16 +1604,6 @@
      "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=G0gX1jh2E3NaQrLIjAO4ruN%2feE6mFzLxPB62j%2fIUftCMYoiySyaBXg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
     }
    ]
-  },
-  {
-   "committee": "Planning Committee",
-   "committeeId": 147,
-   "id": "3976",
-   "date": "2026-10-28",
-   "status": "scheduled",
-   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3976/Committee/147/Default.aspx",
-   "ahead": true,
-   "documents": []
   },
   {
    "committee": "North Ayrshire Council",
