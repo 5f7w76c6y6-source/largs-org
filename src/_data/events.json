@@ -1468,6 +1468,24 @@
       "except": [
         "2026-10-22"
       ]
+    },
+    {
+      "title": "Largs & District Pipes & Drums — band practice",
+      "weekday": "wednesday",
+      "time": "19:00–21:00",
+      "venue": "Vikingar Leisure Centre, Greenock Road",
+      "blurb": "Weekly practice of the town's community pipe band. New pipers and drummers welcome, whatever your experience — get in touch through their website first.",
+      "contact": {
+        "label": "Largs & District Pipes & Drums website",
+        "url": "https://largspipeband.com"
+      },
+      "image": "/assets/img/ev-pipes-drums.jpg",
+      "org": {
+        "name": "Largs & District Pipes & Drums",
+        "url": "https://largspipeband.com"
+      },
+      "freq": "weekly",
+      "from": "2026-11-04"
     }
   ]
 }
