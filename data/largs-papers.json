@@ -1,8 +1,24 @@
 {
- "collected": "2026-10-28T05:08:44+00:00",
+ "collected": "2026-10-29T05:09:06+00:00",
  "lookbackDays": 60,
  "method": "whole-word, case-insensitive \"largs\" in the text of the agenda pack; the same number the council's search reports",
  "records": [
+  {
+   "key": "2026-11-04|North Ayrshire Council|3962|261104 Minute Volume",
+   "committee": "North Ayrshire Council",
+   "date": "2026-11-04",
+   "meetingId": "3962",
+   "meetingUrl": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3962/Committee/135/Default.aspx",
+   "title": "261104 Minute Volume",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=x9YubdQ%2fyR39vdoO%2bxTmGvDY6Tc8CjRD0jn%2fdMPRX4QxMGY4szrH7g%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d",
+   "pack": false,
+   "read": "2026-10-29T05:09:04+00:00",
+   "status": "ok",
+   "bytes": 603106,
+   "pages": 29,
+   "hits": 0,
+   "pagesWithHits": 0
+  },
   {
    "key": "2026-10-27|Cabinet|3985|Agenda Document Pack - Cabinet - 27/10/2026",
    "committee": "Cabinet",
