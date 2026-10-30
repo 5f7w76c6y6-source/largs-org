@@ -210,9 +210,16 @@ module.exports = function () {
   const all = [...rows.values()].map((r) => ({
     ...r,
     display: display(r.date),
+    // `none` is a real "no mention" and is claimed only when the agenda
+    // pack itself has been read. Early on, a meeting lists only loose
+    // documents (a minute volume, a notice) and the collector reads those;
+    // that is `partial` -- read, nothing found, pack still to come -- and
+    // the page must say so (4 Nov 2026 Council: minute volume read on the
+    // 29th, 154-page pack published on the 30th with Largs on nine pages).
     state: r.hits ? 'mentioned'
-      : r.read ? 'none'
-        : (r.papers ? 'nothing' : 'awaited'),
+      : r.read && r.docType === 'AgendaPack' ? 'none'
+        : r.read ? 'partial'
+          : (r.papers ? 'nothing' : 'awaited'),
   }));
 
   all.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
