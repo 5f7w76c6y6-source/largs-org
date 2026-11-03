@@ -1291,6 +1291,21 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   font-family:"Spline Sans Mono",monospace;font-size:.7rem;
   color:var(--muted);margin-left:auto;flex:none;
 }
+/* SEPA flood notice shares the frame. A Flood Alert ("possible") is
+   amber; a Flood Warning ("expected") keeps the red. */
+.flood-notice.flood-alert{border-left-color:var(--warn)}
+.flood-notice.flood-alert .power-notice-badge{background:var(--warn)}
+
+/* ---------- flood watch ---------- */
+/* The quiet-day face: a plain card, teal rule, no green — the absence of
+   a warning is a fact about SEPA's feed, not an all-clear from us. */
+.fw-status{background:var(--card);border:1px solid var(--sand);border-left:4px solid var(--teal);border-radius:10px;padding:14px 16px;max-width:70ch}
+.fw-status-down{border-left-color:var(--warn)}
+.fw-status-h{font-family:"Marcellus",serif;font-size:1.25rem;color:var(--slate);line-height:1.25}
+.fw-status .sub{font-size:.92rem;color:var(--muted);margin-top:4px}
+/* Big tides: the "biggest" rows carry the red-rule card frame used for an
+   active overflow, the others the amber; the chips say which. */
+.bt-list .dk-card.bt-king{border-color:var(--red);box-shadow:inset 0 0 0 1px var(--red)}
 
 /* "On now" -- an event whose run includes today, on What's On. Sits in
    the meta line rather than the badge, because the badge keeps the START

@@ -1,0 +1,21 @@
+{# SEPA flood notice. Rendered only when THIS build read Floodline
+   successfully AND an item names Largs or the Ayrshire and Arran alert
+   area -- see loadFloods in scripts/fetch-data.mjs. On a failed fetch the
+   previous items are kept for the Dookers' board but ok is false, so no
+   notice: a warning that may have been lifted must not stand on the
+   front page. Carries SEPA's full wording: on the day it matters it is
+   the most important thing on the site. Red for a Flood Warning (SEPA: flooding expected), amber
+   for a Flood Alert (flooding possible). The words are SEPA's; the site
+   adds only the time and the number. Same frame as the power-cut notice. #}
+{% if today.floods and today.floods.ok and today.floods.largs | length %}
+{% set f = today.floods.largs[0] %}
+<div class="wrap">
+  <div class="power-notice flood-notice{% if f.severity == 'alert' %} flood-alert{% endif %}" role="status">
+    <span class="power-notice-badge">{{ f.label }}</span>
+    <span class="power-notice-text">
+      <strong>{{ f.area }}</strong>{% if f.text %} — {{ f.text }}{% endif %}{% if f.issued %} · issued <span class="mono">{{ f.issued | hhmm }}</span> {{ f.issued | dow }}{% endif %}{% if (today.floods.largs | length) > 1 %} · and {{ (today.floods.largs | length) - 1 }} more for the area{% endif %} · Floodline <span class="mono">0345 988 1188</span> · <a href="/floods/">flood watch →</a> · <a href="{{ f.link or site.links.sepaFloodline }}">SEPA →</a>
+    </span>
+    <span class="power-notice-src">SEPA Floodline · checked {{ today.floods.checkedAt | hhmm }}</span>
+  </div>
+</div>
+{% endif %}

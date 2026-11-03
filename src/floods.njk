@@ -1,0 +1,81 @@
+---
+layout: layouts/base.njk
+permalink: /floods/
+pageTitle: "Flood watch · SEPA flood alerts and warnings for Largs, and the big tides ahead"
+heading: Flood watch
+subtitle: SEPA’s Floodline for the Largs coast, read every half hour; how to get their alerts yourself; and the dates a year ahead when the tide starts highest.
+---
+{# Flood watch, v1.0, 3 November 2026. Flooding is a town matter (Ian:
+   "all of the town will be interested"), so it has a page of its own,
+   permanent, with a quiet-day face: the live status from SEPA's Floodline
+   (loadFloods in scripts/fetch-data.mjs), what Alert and Warning mean and
+   which areas cover us, how to register with Floodline, who to call, and
+   the big-tides calendar (src/_data/bigtides.cjs — astronomy only).
+
+   RULES. SEPA's words, never ours, for any warning; the site adds the
+   time and the number. The big-tides table is never called a flood risk:
+   the tide alone has never flooded Largs, and the weather that would is
+   unknowable a year out. When a warning is in force the front-page
+   notice (flood-notice.njk) points here. #}
+
+{% set fl = today.floods %}
+
+<section class="board wrap" aria-labelledby="page-title">
+
+  {# ---- live status ---- #}
+  {% if fl and fl.ok and fl.largs | length %}
+  <h2 class="dk-h" id="now">In force now</h2>
+  <ul class="dk-list">
+    {% for f in fl.largs %}
+    <li class="dk-card {% if f.severity == 'alert' %}s14{% else %}s13{% endif %}">
+      <div class="dk-name">{{ f.area }} <small>SEPA {{ f.label }}</small></div>
+      <span class="chip {% if f.severity == 'alert' %}s14{% else %}s13{% endif %}">{{ f.label }}</span>
+      {% if f.text %}<div class="sub">{{ f.text }}</div>{% endif %}
+      <div class="sub">{% if f.issued %}Issued <span class="mono">{{ f.issued | dom }} {{ f.issued | monthShort }} {{ f.issued | hhmm }}</span> · {% endif %}<a href="{{ f.link or site.links.sepaFloodline }}">SEPA’s page →</a></div>
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="page-intro">SEPA’s words, as issued. Floodline: <span class="mono">0345 988 1188</span> · checked <span class="mono">{{ fl.checkedAt | hhmm }}</span>.</p>
+  {% elif fl and fl.ok %}
+  <div class="kicker"><span>Right now</span><span class="stamp">Floodline checked {{ fl.checkedAt | hhmm }} · rebuilt every half hour</span></div>
+  <div class="fw-status">
+    <div class="fw-status-h">No SEPA Flood Alert or Warning for Largs</div>
+    <div class="sub">None for the Ayrshire and Arran area either{% if fl.scotland == 0 %}, nor anywhere in Scotland{% endif %}. When SEPA issue one it appears here and on the front page within the half hour, in their words.</div>
+  </div>
+  {% else %}
+  <div class="fw-status fw-status-down">
+    <div class="fw-status-h">Floodline could not be reached at the last build</div>
+    <div class="sub">Check it directly for anything in force: <a href="{{ site.links.sepaFloodline }}">floodline.sepa.org.uk</a> · <span class="mono">0345 988 1188</span>.</div>
+  </div>
+  {% endif %}
+
+  {# ---- how Floodline works ---- #}
+  <h2 class="dk-h">How SEPA’s warnings work</h2>
+  <p class="page-intro">The Scottish Environment Protection Agency runs Floodline, the official flood warning service for Scotland. It issues two things for us. A <strong>Flood Alert</strong> covers the whole <strong>Ayrshire and Arran</strong> area and means flooding is <em>possible</em> — be aware, keep an eye on updates. A <strong>Flood Warning</strong> is for a named local area — ours is the <strong>Largs</strong> coastal warning area — and means flooding is <em>expected</em>: act now. A <strong>Severe Flood Warning</strong> means danger to life. On this coast nearly every warning is the same recipe: a big spring tide, a storm surge pushing the sea higher still, and a westerly gale throwing it over the prom.</p>
+
+  <h2 class="dk-h">Get the alerts yourself</h2>
+  <p class="page-intro">Floodline will phone or text you, free, the moment an Alert or Warning is issued for the Largs area — before it reaches any website, this one included. If you live or work near the shore, or keep a boat or a dinghy at the Quay, it is worth the two minutes: <a href="{{ site.links.sepaFloodlineRegister }}">register with Floodline →</a> or call <span class="mono">0345 988 1188</span>. The same number has recorded updates for every area, 24 hours a day.</p>
+
+  <h2 class="dk-h">If it floods</h2>
+  <p class="page-intro">If anyone is in danger, call <span class="mono">999</span>. For flooding from the sea or a burn, Floodline’s updates are the authority: <span class="mono">0345 988 1188</span>. For water coming up through drains or sewers, Scottish Water: <span class="mono">0800 0778 778</span>. For flooded roads, blocked gullies and sandbags, North Ayrshire Council: <a href="https://www.north-ayrshire.gov.uk/">north-ayrshire.gov.uk</a>. Power off? See the Today board — the site shows SP Energy Networks’ live faults for KA30 — or call <span class="mono">105</span>.</p>
+
+  {# ---- big tides ---- #}
+  <h2 class="dk-h" id="big-tides">Big tides ahead</h2>
+  <p class="page-intro">Every new and full moon brings spring tides, a day or two later on the Clyde. The biggest — the <strong>king tides</strong> — come when the Moon is also at its closest, and bigger still near the equinoxes. These are the dates for the coming year — worked out from the Moon alone, so they are known now. <strong>They are not flood forecasts.</strong> The tide by itself has never flooded Largs; what floods the prom is a surge and an onshore gale on top of a big tide, and that is weather, which nobody can see a year out. What these dates tell you is when the sea starts highest and the margin is thinnest — and, for the dookers, when the lowest lows fall too.</p>
+
+  {% if bigtides.notable | length %}
+  <ul class="dk-list bt-list">
+    {% for e in bigtides.notable %}
+    <li class="dk-card{% if e.cls == 'king' %} bt-king{% endif %}">
+      <div class="dk-name">{{ e.peakFrom | dow }} {{ e.peakFrom | dom }}–{{ e.peakTo | dom }} {{ e.peakTo | monthShort }}{% if (e.peakFrom | monthShort) != (e.peakTo | monthShort) %} <small>({{ e.peakFrom | monthShort }}/{{ e.peakTo | monthShort }})</small>{% endif %} <small>{{ e.label }}</small></div>
+      <span class="chip {% if e.cls == 'king' %}s13{% else %}s14{% endif %}">{{ e.label }}</span>
+      <div class="sub">{{ e.why }} · {{ e.phase }} moon <span class="mono">{{ e.when | dom }} {{ e.when | monthShort }} {{ e.when | hhmm }}</span></div>
+      <div class="sub">High water {{ e.hwText }}</div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <p class="note">Dates from the Moon’s phases and closest approaches (Meeus’s algorithms), computed at each build; spring tides are shown as peaking one to two days after the moon, the usual lag on this coast. High-water times are the port’s own: at Largs a spring tide’s high water comes within about half an hour of midday and midnight (GMT; an hour later in summer time), measured against the ocean model for the new moon of 9 November 2026. No heights: those need the Admiralty’s harmonic data, which this site does not hold — the <a href="/">Today board</a> has the next few days’ tide times.</p>
+
+  <p class="note">Sources: SEPA Floodline RSS feed, read every build, quoted verbatim; SEPA flood alert and warning area names; this site’s own astronomy for the tide calendar.</p>
+</section>

@@ -15,7 +15,10 @@ subtitle: Sea temperature, the tide, and what the sewer outfalls along the shore
    feeds, the nine monitored overflows from Scottish Water's public API
    (see loadOverflows in scripts/fetch-data.mjs), the bathing-water
    classification from SEPA (src/_data/bathing.cjs) -- and leaves the
-   judgement with the person on the shore. Scottish Water's own rule
+   judgement with the person on the shore. SEPA flood warnings are NOT
+   here: flooding is a town matter and lives on the front page
+   (flood-notice.njk), not a dookers' one (Ian, 3 Nov 2026). Scottish
+   Water's own rule
    travels with their data: a monitor "indicates" an overflow, it does not
    confirm one, and their map "should not be considered as advice on water
    quality". So: "indicated", never "confirmed"; never "safe" or "unsafe";
@@ -124,9 +127,6 @@ subtitle: Sea temperature, the tide, and what the sewer outfalls along the shore
   <h2 class="dk-h">What an overflow is</h2>
   <p class="page-intro">Largs, like most older towns, has one set of pipes for sewage and rainwater together. In heavy rain the pipe fills faster than the works can take it, and a relief outlet — a combined sewer overflow — lets the excess into the burn or the sea rather than back up the drains into streets and houses. It is a designed safety valve, not a fault, which is why a monitor can run for days in a storm.</p>
   <p class="page-intro">Each outfall has a monitor that records when it is operating. Scottish Water publish those readings every hour and ask that they be read carefully: a monitor <em>indicates</em> an overflow rather than confirming one, and their map “should not be considered as advice on water quality”. This page follows the same rule. It tells you what the monitors have said and when, links to <a href="{{ site.links.swOverflowMap }}">their map</a>, and leaves the decision about going in to you. In the bathing season SEPA add a daily water-quality forecast for Pencil Beach, posted by ten each morning; the Bathing water tile above says where to find it.</p>
-
-  <h2 class="dk-h">Floods and storms</h2>
-  <p class="page-intro">SEPA’s Floodline covers the Largs coast. When a Flood Alert or Warning is in force it will appear here and on the front page, in their words. Floodline: <span class="mono">0345 988 1188</span> · <a href="https://floodline.sepa.org.uk/">floodline.sepa.org.uk</a>.</p>
 
   <p class="note">Sources: Scottish Water overflow event monitoring (near-real-time API, updated hourly; positions are theirs except where a card says otherwise); SEPA bathing water classifications; sea temperature and tide from the ocean model behind the Today board. Map © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
 </section>

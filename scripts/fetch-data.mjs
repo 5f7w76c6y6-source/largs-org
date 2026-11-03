@@ -2399,11 +2399,90 @@ async function loadOverflows() {
   return swRecency(result);
 }
 
+/* ---------- SEPA Floodline (flood notice, Dookers' board) ---------- */
+/* SEPA's Floodline RSS is Scotland-wide, one <item> per live message,
+ * with no coordinates and no area codes: the only handle is the text. So
+ * this keeps every item whose text names the local coastal Flood Warning
+ * area, "Largs", or the regional Flood Alert area, "Ayrshire and Arran"
+ * (both confirmed against SEPA's published boundary names, 3 Nov 2026),
+ * and grades each by SEPA's own words -- "Severe Flood Warning" over
+ * "Flood Warning" over "Flood Alert". The feed was empty when this was
+ * written (a quiet day everywhere), so the parser is deliberately loose:
+ * title, description (HTML stripped), link, pubDate, whatever is there.
+ * Set SEPA_FEED_FILE=path to read a local file instead of the live feed
+ * -- for trying the notice out; CI never sets it.
+ *
+ * Freshness rule, as for the power-cut notice: a warning is shown on the
+ * front page only when THIS build read the feed. On failure the previous
+ * items are kept (the board can still list them) but ok is false, which
+ * the notice template treats as "say nothing" -- a warning that may have
+ * been lifted must not stand. The site adds only the time and the
+ * Floodline number; the words are SEPA's. */
+const SEPA_FEED_URL = "https://floodline.sepa.org.uk/feed/";
+const SEPA_AREAS = [
+  { re: /\bLargs\b/i, area: "Largs" },
+  { re: /\bAyrshire\s*(?:and|&)\s*Arran\b/i, area: "Ayrshire and Arran" },
+];
+
+function xmlText(block, tag) {
+  const m = block.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, "i"));
+  if (!m) return "";
+  return m[1].replace(/^\s*<!\[CDATA\[([\s\S]*?)\]\]>\s*$/, "$1")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ").trim();
+}
+function sepaSeverity(text) {
+  if (/severe\s+flood\s+warning/i.test(text)) return { severity: "severe", rank: 3, label: "Severe Flood Warning" };
+  if (/flood\s+warning/i.test(text)) return { severity: "warning", rank: 2, label: "Flood Warning" };
+  if (/flood\s+alert/i.test(text)) return { severity: "alert", rank: 1, label: "Flood Alert" };
+  return { severity: "notice", rank: 0, label: "Floodline" };
+}
+function shorten(s, n = 220) {
+  if (s.length <= n) return s;
+  const cut = s.slice(0, n).replace(/\s+\S*$/, "");
+  return cut + "…";
+}
+
+async function loadFloods() {
+  let xml;
+  if (process.env.SEPA_FEED_FILE) {
+    xml = await readFile(process.env.SEPA_FEED_FILE, "utf8");
+    console.warn(`floods: reading ${process.env.SEPA_FEED_FILE} instead of the live feed (SEPA_FEED_FILE is set)`);
+  } else {
+    const response = await fetch(SEPA_FEED_URL, {
+      headers: { "User-Agent": "largs.scot board (+https://largs.scot; hello@largs.scot)", Accept: "application/rss+xml, application/xml, text/xml" },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status} from SEPA Floodline`);
+    xml = await response.text();
+  }
+  if (!/<rss\b|<feed\b/i.test(xml)) throw new Error("SEPA Floodline response is not a feed");
+  const built = xmlText(xml, "lastBuildDate") || xmlText(xml, "pubDate");
+  const blocks = xml.match(/<item\b[\s\S]*?<\/item>/gi) || [];
+  const items = blocks.map((b) => {
+    const title = xmlText(b, "title"), text = xmlText(b, "description"), link = xmlText(b, "link");
+    const pub = xmlText(b, "pubDate");
+    const issued = pub && !Number.isNaN(Date.parse(pub)) ? new Date(Date.parse(pub)).toISOString() : null;
+    const sev = sepaSeverity(`${title} ${text}`);
+    const hit = SEPA_AREAS.find((a) => a.re.test(`${title} ${text}`));
+    return { title, text, short: shorten(text), link, issued, area: hit ? hit.area : "", local: !!hit, ...sev };
+  });
+  const largs = items.filter((i) => i.local).sort((a, b) => b.rank - a.rank || Date.parse(b.issued || 0) - Date.parse(a.issued || 0));
+  return {
+    ok: true, source: "sepa-floodline",
+    checkedAt: new Date().toISOString(),
+    feedBuilt: built && !Number.isNaN(Date.parse(built)) ? new Date(Date.parse(built)).toISOString() : null,
+    scotland: items.length,
+    largs,
+  };
+}
+
 /* ---------- main ---------- */
 
 // Start from the previous build's data so a failed source degrades to
 // stale rather than blank.
-let out = { fetchedAt: null, weather: { ok: false }, tides: { ok: false, events: [] }, roadworks: { ok: false, items: [] }, overflows: { ok: false } };
+let out = { fetchedAt: null, weather: { ok: false }, tides: { ok: false, events: [] }, roadworks: { ok: false, items: [] }, overflows: { ok: false }, floods: { ok: false, largs: [] } };
 try {
   out = { ...out, ...JSON.parse(await readFile(DATA_FILE, "utf8")) };
 } catch {
@@ -2444,6 +2523,18 @@ try {
   console.log(`overflows: ${o.active.length} overflowing, ${o.recent.length} in the last 48 h, ${o.noData} of ${o.assets.length} not reporting (Scottish Water ${o.updated})`);
 } catch (error) {
   console.warn(`overflows: keeping previous value — ${error.message}`);
+}
+
+try {
+  out.floods = await loadFloods();
+  anySuccess = true;
+  const f = out.floods;
+  console.log(`floods: ${f.largs.length} for Largs / Ayrshire & Arran, ${f.scotland} across Scotland (Floodline feed built ${f.feedBuilt})`);
+} catch (error) {
+  // Keep the items for the board, but not the ok: the notice must not
+  // show a warning this build could not confirm is still in force.
+  out.floods = { ...(out.floods || { largs: [] }), ok: false, failedAt: new Date().toISOString() };
+  console.warn(`floods: feed not read — ${error.message}`);
 }
 
 /* Buses are a separate data file, not part of today.json: the page needs
