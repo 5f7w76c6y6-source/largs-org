@@ -1,5 +1,5 @@
 {
- "collected": "2026-11-02T05:07:55",
+ "collected": "2026-11-03T05:08:16",
  "committees": {
   "135": "North Ayrshire Council",
   "137": "Audit and Scrutiny Committee",
@@ -1687,6 +1687,16 @@
    "documents": []
   },
   {
+   "committee": "Planning Committee",
+   "committeeId": 147,
+   "id": "4068",
+   "date": "2026-11-11",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4068/Committee/147/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
    "committee": "Integration Joint Board",
    "committeeId": 141,
    "id": "4010",
@@ -1887,6 +1897,16 @@
    "documents": []
   },
   {
+   "committee": "North Ayrshire Licensing Board",
+   "committeeId": 129,
+   "id": "4064",
+   "date": "2027-02-22",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4064/Committee/129/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
    "committee": "North Ayrshire Council",
    "committeeId": 135,
    "id": "4051",
@@ -1963,6 +1983,26 @@
    "date": "2027-03-24",
    "status": "scheduled",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4052/Committee/135/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "North Ayrshire Licensing Board",
+   "committeeId": 129,
+   "id": "4065",
+   "date": "2027-06-21",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4065/Committee/129/Default.aspx",
+   "ahead": true,
+   "documents": []
+  },
+  {
+   "committee": "North Ayrshire Licensing Board",
+   "committeeId": 129,
+   "id": "4066",
+   "date": "2027-09-27",
+   "status": "scheduled",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4066/Committee/129/Default.aspx",
    "ahead": true,
    "documents": []
   }
