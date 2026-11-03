@@ -251,6 +251,13 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 .badge.sample{background:#F6EEDD;color:var(--warn)}
 .badge.model{background:var(--sand);color:var(--muted)}
 .badge.daily{background:var(--foam-tint);color:var(--teal)}
+/* Sea temp tile: the Scottish Water overflow line, ruled off from the
+   temperature. Red only while a monitor says an overflow is happening;
+   amber for one within 48 h; the quiet line is plain muted text, not
+   green — absence of an indication is not an all-clear. */
+.tile .sub.sea-line{margin-top:6px;padding-top:6px;border-top:1px dotted var(--sand)}
+.sea-active{color:var(--red);font-weight:600}
+.sea-recent{color:var(--warn);font-weight:600}
 .board-legend{
   font-family:"Spline Sans Mono",monospace;font-size:.68rem;color:var(--muted);
   letter-spacing:.04em;margin-top:10px;

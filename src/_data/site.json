@@ -12,6 +12,7 @@
     "calmacStatus": "https://www.calmac.co.uk/en-gb/service-status/",
     "calmacTimetable": "https://www.calmac.co.uk/en-gb/route-information/largs-cumbrae-slip-millport/",
     "cmalWebcam": "https://www.cmassets.co.uk/location/largs/",
-    "rail": "https://www.nationalrail.co.uk"
+    "rail": "https://www.nationalrail.co.uk",
+    "swOverflowMap": "https://www.scottishwater.co.uk/Your-Home/Your-Waste-Water/Overflows/Live-Overflow-Map"
   }
 }

@@ -2240,11 +2240,110 @@ async function loadBuses() {
   };
 }
 
+/* ---------- Scottish Water overflows (Sea temp tile) ---------- */
+/* Monitored sewer overflows (CSOs) around Largs, from Scottish Water's
+ * public near-real-time API (3 Nov 2026): "open for public use", no key;
+ * their two asks are to cite Scottish Water as the source and to cache
+ * rather than hammer. The whole of Scotland arrives in one ~3 MB
+ * response refreshed hourly, so a distillate is kept in .cache and the
+ * API is only called again when that is over SW_MAX_AGE_MIN old (the
+ * CI cache step carries .cache between builds, as it does for SRWR).
+ * Reference: https://www.scottishwater.co.uk/Help-and-Resources/Open-Data/Overflow-Map-Data
+ *
+ * Wording rule, from their own disclaimer: an EDM monitor "indicates"
+ * an overflow, it does not confirm one, and the map "should not be
+ * considered as advice on water quality". So the tile says "indicated",
+ * names the outfall and the time, links to their map as the
+ * authoritative source, and never says safe or unsafe. Investment
+ * priority is not carried: it is their planning, not a fact about today.
+ *
+ * Assets are picked by ASSET_ID, never by name, so a renamed outfall
+ * cannot drop out silently (a missing id is logged). Status ids:
+ * 13 overflowing now, 14 overflowed within 48 h, 15 nothing in 48 h,
+ * 16 no data, with INTERNAL_OVERFLOW_STATUS_ID saying why (17 nothing
+ * received in 48 h, 18 no valid data, 19 under maintenance, 20 not
+ * real-time monitored, 21 device not active). Times are UTC with a Z. */
+const SW_OVERFLOW_URL = "https://api.scottishwater.co.uk/overflow-event-monitoring/v1/near-real-time";
+const SW_CACHE_FILE = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", ".cache", "sw-overflows.json");
+const SW_MAX_AGE_MIN = 50; // their data moves hourly; builds run every half hour
+// Sea outfalls first (the ones that matter to a swimmer), then the burns.
+const SW_ASSETS = [
+  "CSO000230", // Fort St Pier → Firth of Clyde
+  "CSO000231", // Gogo Street SPS No.4 → Firth of Clyde
+  "CSO000228", // Buchanan St SPS → Firth of Clyde
+  "CSO006771", // Warrenpark Road → Firth of Clyde
+  "CSO000236", // Greenock Road No.8 → Firth of Clyde
+  "CSO003390", // Gogo Street Syphon → Gogo Water
+  "CSO000240", // 3 Irvine Rd/Gogo St Bridge → Gogo Water
+  "CSO000244", // 2 New St/Waterside St → Gogo Water
+  "CSO000238", // 59 Brisbane Road No.7 → Moor Burn
+];
+const SW_NO_DATA_WHY = {
+  17: "nothing received in 48 h", 18: "no valid data in 48 h", 19: "under maintenance",
+  20: "not real-time monitored", 21: "device not active",
+};
+
+// "Largs, Gogo Street SPS No.4 CSO Event" → "Gogo Street SPS No.4": their
+// name, minus the town the tile already implies and the generic suffix.
+function swName(r) {
+  return String(r.SW_UNIQUE_MEASUREMENT_POINT_DESCRIPTION || r.ASSET_NAME || r.ASSET_ID)
+    .replace(/^Largs,?\s*/i, "").replace(/\s*CSO Event$/i, "").trim();
+}
+function swNum(v) {
+  return v === null || v === undefined || v === "" || Number.isNaN(Number(v)) ? null : Number(v);
+}
+
+async function loadOverflows() {
+  let cached = null;
+  try { cached = JSON.parse(await readFile(SW_CACHE_FILE, "utf8")); } catch { /* no cache yet */ }
+  if (cached && cached.ok && Date.now() - Date.parse(cached.checkedAt) < SW_MAX_AGE_MIN * 60000) {
+    console.log(`overflows: reusing the distillate pulled at ${cached.checkedAt}`);
+    return cached;
+  }
+  const response = await fetch(SW_OVERFLOW_URL, {
+    headers: { "User-Agent": "largs.scot board (+https://largs.scot; hello@largs.scot)", Accept: "application/json" },
+    signal: AbortSignal.timeout(30000),
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status} from Scottish Water`);
+  const data = await response.json();
+  const rows = Array.isArray(data.results) ? data.results : [];
+  if (!rows.length) throw new Error("Scottish Water response has no results");
+  const byId = new Map(rows.map((r) => [String(r.ASSET_ID).toUpperCase(), r]));
+  const assets = [];
+  for (const id of SW_ASSETS) {
+    const r = byId.get(id);
+    if (!r) { console.warn(`overflows: ${id} is missing from the feed`); continue; }
+    const status = swNum(r.OVERFLOW_STATUS_ID);
+    assets.push({
+      id, name: swName(r), water: r.RECEIVING_WATER || "", status,
+      why: status === 16 ? (SW_NO_DATA_WHY[swNum(r.INTERNAL_OVERFLOW_STATUS_ID)] || "no data") : "",
+      start: r.OVERFLOW_START_DATETIME || null,
+      end: r.OVERFLOW_END_DATETIME || null,
+      durationMin: swNum(r.OVERFLOW_DURATION_MIN),
+      lastTransmitted: r.LAST_TRANSMITTED_DATETIME || null,
+    });
+  }
+  if (!assets.length) throw new Error("none of the Largs assets found in the feed");
+  const updated = swNum(data.last_updated);
+  const result = {
+    ok: true, source: "scottish-water",
+    updated: updated ? new Date(updated).toISOString() : null,
+    checkedAt: new Date().toISOString(),
+    active: assets.filter((a) => a.status === 13),
+    recent: assets.filter((a) => a.status === 14),
+    noData: assets.filter((a) => a.status === 16).length,
+    assets,
+  };
+  await mkdir(path.dirname(SW_CACHE_FILE), { recursive: true });
+  await writeFile(SW_CACHE_FILE, JSON.stringify(result));
+  return result;
+}
+
 /* ---------- main ---------- */
 
 // Start from the previous build's data so a failed source degrades to
 // stale rather than blank.
-let out = { fetchedAt: null, weather: { ok: false }, tides: { ok: false, events: [] }, roadworks: { ok: false, items: [] } };
+let out = { fetchedAt: null, weather: { ok: false }, tides: { ok: false, events: [] }, roadworks: { ok: false, items: [] }, overflows: { ok: false } };
 try {
   out = { ...out, ...JSON.parse(await readFile(DATA_FILE, "utf8")) };
 } catch {
@@ -2276,6 +2375,15 @@ try {
   console.log(`roadworks: ${out.roadworks.count} active, ${out.roadworks.plannedCount ?? 0} planned in Largs (register data to ${out.roadworks.dataDate})`);
 } catch (error) {
   console.warn(`roadworks: keeping previous value — ${error.message}`);
+}
+
+try {
+  out.overflows = await loadOverflows();
+  anySuccess = true;
+  const o = out.overflows;
+  console.log(`overflows: ${o.active.length} overflowing, ${o.recent.length} in the last 48 h, ${o.noData} of ${o.assets.length} not reporting (Scottish Water ${o.updated})`);
+} catch (error) {
+  console.warn(`overflows: keeping previous value — ${error.message}`);
 }
 
 /* Buses are a separate data file, not part of today.json: the page needs
