@@ -2292,6 +2292,23 @@ function swName(r) {
 function swNum(v) {
   return v === null || v === undefined || v === "" || Number.isNaN(Number(v)) ? null : Number(v);
 }
+// Scottish Water's record puts Fort St Pier at 55.705°N — ten kilometres
+// south of the town, in open water off Hunterston. Fort Street is beside
+// the pier. Until they correct it (reported to opendata@scottishwater.co.uk,
+// Nov 2026) the map uses this position and the card says so.
+const SW_POSITION_FIX = {
+  CSO000230: { lat: 55.7948, lon: -4.8730, note: "Position is this site's: Scottish Water's record places this outfall 10 km south of the town, which is wrong." },
+};
+// "4235.00" minutes → "70 h 35 min"; "" → "".
+function swDuration(v) {
+  const m = swNum(v);
+  if (m === null || m < 0) return "";
+  const h = Math.floor(m / 60), r = Math.round(m % 60);
+  return h ? `${h} h${r ? ` ${r} min` : ""}` : `${r} min`;
+}
+function londonDay(iso) {
+  return new Intl.DateTimeFormat("en-GB", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(iso));
+}
 
 async function loadOverflows() {
   let cached = null;
@@ -2314,12 +2331,22 @@ async function loadOverflows() {
     const r = byId.get(id);
     if (!r) { console.warn(`overflows: ${id} is missing from the feed`); continue; }
     const status = swNum(r.OVERFLOW_STATUS_ID);
+    const fix = SW_POSITION_FIX[id];
+    const start = r.OVERFLOW_START_DATETIME || null;
+    const end = r.OVERFLOW_END_DATETIME || null;
     assets.push({
       id, name: swName(r), water: r.RECEIVING_WATER || "", status,
       why: status === 16 ? (SW_NO_DATA_WHY[swNum(r.INTERNAL_OVERFLOW_STATUS_ID)] || "no data") : "",
-      start: r.OVERFLOW_START_DATETIME || null,
-      end: r.OVERFLOW_END_DATETIME || null,
+      lat: fix ? fix.lat : swNum(r.DISCHARGE_OVERFLOW_LOCATION_LATITUDE),
+      lon: fix ? fix.lon : swNum(r.DISCHARGE_OVERFLOW_LOCATION_LONGITUDE),
+      note: fix ? fix.note : "",
+      start, end,
+      endSameDay: !!(start && end && londonDay(start) === londonDay(end)),
       durationMin: swNum(r.OVERFLOW_DURATION_MIN),
+      durationText: swDuration(r.OVERFLOW_DURATION_MIN),
+      prevStart: r.OVERFLOW_START_DATETIME_PREVIOUS || null,
+      prevEnd: r.OVERFLOW_END_DATETIME_PREVIOUS || null,
+      prevDurationText: swDuration(r.OVERFLOW_DURATION_MIN_PREVIOUS),
       lastTransmitted: r.LAST_TRANSMITTED_DATETIME || null,
     });
   }

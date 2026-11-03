@@ -104,24 +104,24 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       <div class="figure">—</div>
       <div class="sub">Live feed not fetched yet</div>
       {% endif %}
-      {# Scottish Water overflows. loadOverflows in scripts/fetch-data.mjs has
-         the source and the wording rule: "indicated" is their word for what
-         a monitor can know, and the line never says safe or unsafe. Active
-         outfalls lead, then any that overflowed in the last 48 h, else the
-         quiet line; the count not reporting is said rather than hidden. #}
+      {# Scottish Water overflows: a one-line verdict and a door. The detail
+         (map, each outfall's last events, bathing water) is on /dookers/;
+         keeping this to one line keeps the tile level with its row (3 Nov
+         2026: four lines here left the Daylight tile floating in space).
+         "Indicated" is Scottish Water's word for what a monitor can know;
+         the line never says safe or unsafe. #}
       {% set ov = today.overflows %}
-      {% if ov and ov.ok %}
-      <div class="sub sea-line">
-        {%- if ov.active.length -%}
-          <span class="sea-active">Overflow indicated</span> at {{ ov.active[0].name }}{% if ov.active.length > 1 %} and {{ ov.active.length - 1 }} more{% endif %}{% if ov.active[0].start %} since <span class="mono">{{ ov.active[0].start | hhmm }}</span> {{ ov.active[0].start | dow }}{% endif %}
-        {%- elif ov.recent.length -%}
-          <span class="sea-recent">Overflow indicated</span> at {{ ov.recent[0].name }}{% if ov.recent.length > 1 %} and {{ ov.recent.length - 1 }} more{% endif %}{% if ov.recent[0].end %}, ended <span class="mono">{{ ov.recent[0].end | hhmm }}</span> {{ ov.recent[0].end | dow }}{% endif %}
+      <div class="sub">
+        {%- if ov and ov.ok and ov.active.length -%}
+          <span class="sea-active">Overflow indicated</span> at {{ ov.active[0].name }}{% if ov.active[0].start %} since <span class="mono">{{ ov.active[0].start | hhmm }}</span> {{ ov.active[0].start | dow }}{% endif %}
+        {%- elif ov and ov.ok and ov.recent.length -%}
+          <span class="sea-recent">Overflow indicated</span> at {{ ov.recent[0].name }} in the last 48 h
+        {%- elif ov and ov.ok -%}
+          No overflow indicated in 48 h
         {%- else -%}
-          No overflow indicated at Largs outfalls in the last 48 h
-        {%- endif %}
-        · Scottish Water monitors{% if ov.updated %}, <span class="mono">{{ ov.updated | hhmm }}</span>{% endif %}{% if ov.noData %} · {{ ov.noData }} of {{ ov.assets.length }} not reporting{% endif %} · <a href="{{ site.links.swOverflowMap }}">their map →</a>
+          Tide, temperature and outfalls
+        {%- endif %} · <a href="/dookers/">dookers’ board →</a>
       </div>
-      {% endif %}
     </div>
 
     <div class="tile">

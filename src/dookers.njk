@@ -1,0 +1,182 @@
+---
+layout: layouts/base.njk
+permalink: /dookers/
+pageTitle: "Dookers’ board · sea temperature, tide and outfalls at Largs"
+heading: Dookers’ board
+subtitle: Sea temperature, the tide, and what the sewer outfalls along the shore have been doing — for dookers, paddlers, rowers and anyone with a dog that won’t stay out of it.
+---
+{# Dookers' board, v1.0, 3 November 2026. The sea-side sibling of
+   on-the-water (vessels) and overhead (aircraft), laid out like roadworks:
+   figures, then the map, then the cards, then the explanation.
+
+   WHAT IT SAYS AND WHY. The question people arrive with is "should I go
+   in?". The page never answers it. It gives the facts from the sources
+   that hold them -- temperature and tide from the Today board's model
+   feeds, the nine monitored overflows from Scottish Water's public API
+   (see loadOverflows in scripts/fetch-data.mjs), the bathing-water
+   classification from SEPA (src/_data/bathing.cjs) -- and leaves the
+   judgement with the person on the shore. Scottish Water's own rule
+   travels with their data: a monitor "indicates" an overflow, it does not
+   confirm one, and their map "should not be considered as advice on water
+   quality". So: "indicated", never "confirmed"; never "safe" or "unsafe";
+   their map linked as the authoritative source; investment priority not
+   shown.
+
+   The map is Leaflet + OpenStreetMap, the same as roadworks and
+   on-the-water. The nine points are fixed; only their colour changes. #}
+
+{% set ov = today.overflows %}
+{% set ev = today.tides.events %}
+
+<section class="board wrap" aria-labelledby="page-title">
+  <div class="kicker">
+    <span>Right now</span>
+    <span class="stamp">
+      {%- if ov and ov.ok and ov.updated %}Scottish Water monitors <span class="mono">{{ ov.updated | hhmm }}</span>{% endif %}
+      {%- if today.fetchedAt %} · tide and temperature <span class="mono">{{ today.fetchedAt | hhmm }}</span>{% endif %} · rebuilt every half hour
+    </span>
+  </div>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="label">Sea temp. {% if today.tides.seaTempC %}<span class="badge model">model</span>{% else %}<span class="badge sample">sample</span>{% endif %}</div>
+      {% if today.tides.seaTempC %}
+      <div class="figure">{{ today.tides.seaTempC }}°C</div>
+      <div class="sub">Firth of Clyde · Fairlie channel{% if today.weather.ok %} · air <span class="mono">{{ today.weather.tempC }}°C</span>{% endif %}</div>
+      {% else %}
+      <div class="figure">—</div>
+      <div class="sub">Live feed not fetched yet</div>
+      {% endif %}
+    </div>
+
+    <div class="tile">
+      <div class="label">Tide {% if today.tides.ok %}<span class="badge {% if today.tides.source == 'ukho' %}live{% else %}model{% endif %}">{% if today.tides.source == 'ukho' %}live{% else %}model{% endif %}</span>{% endif %}</div>
+      {% if today.tides.ok and ev.length >= 3 %}
+      <div class="figure">{{ ev[0].type }} {{ ev[0].time | hhmm }}</div>
+      <div class="sub">{{ ev[1].type }} <span class="mono">{{ ev[1].time | hhmm }}</span> · next {{ ev[2].type | lower }} <span class="mono">{{ ev[2].time | hhmm }}</span></div>
+      {% else %}
+      <div class="figure">—</div>
+      <div class="sub">Live feed not fetched yet</div>
+      {% endif %}
+    </div>
+
+    <div class="tile">
+      <div class="label">Outfalls {% if ov and ov.ok %}<span class="badge live">live</span>{% endif %}</div>
+      {% if ov and ov.ok %}
+        {% if ov.active.length %}
+        <div class="figure compact"><span class="sea-active">Overflow indicated</span> at {{ ov.active[0].name }}{% if ov.active.length > 1 %} and {{ ov.active.length - 1 }} more{% endif %}{% if ov.active[0].start %} since <span class="mono">{{ ov.active[0].start | hhmm }}</span> {{ ov.active[0].start | dow }}{% endif %}</div>
+        {% elif ov.recent.length %}
+        <div class="figure compact"><span class="sea-recent">Overflow indicated</span> at {{ ov.recent[0].name }}{% if ov.recent.length > 1 %} and {{ ov.recent.length - 1 }} more{% endif %}{% if ov.recent[0].end %}, ended <span class="mono">{{ ov.recent[0].end | hhmm }}</span> {{ ov.recent[0].end | dow }}{% endif %}</div>
+        {% else %}
+        <div class="figure compact">No overflow indicated in the last 48 h</div>
+        {% endif %}
+        <div class="sub">{{ ov.assets.length }} monitored outfalls{% if ov.noData %} · {{ ov.noData }} not reporting{% endif %} · <a href="{{ site.links.swOverflowMap }}">Scottish Water’s map →</a></div>
+      {% else %}
+      <div class="figure">—</div>
+      <div class="sub">Scottish Water feed not fetched yet</div>
+      {% endif %}
+    </div>
+
+    <div class="tile">
+      <div class="label">Bathing water <span class="badge annual">annual</span></div>
+      <div class="figure compact">{{ bathing.site }}: {{ bathing.grade }}</div>
+      <div class="sub">SEPA classification for {{ bathing.year }} · {{ bathing.seasonLine | safe }} ·<a href="{{ bathing.url }}">SEPA →</a></div>
+    </div>
+  </div>
+
+  <h2 class="dk-h">Where the outfalls are</h2>
+  <p class="page-intro">Nine monitored sewer overflows discharge along the town’s shore and into the Gogo Water. Tap one on the map for its last event; the cards below have the detail, <strong>sea outfalls first</strong>.</p>
+  <div class="works-legend" aria-hidden="true">
+    <span><i class="swatch s13"></i>overflowing now</span>
+    <span><i class="swatch s14"></i>in the last 48 h</span>
+    <span><i class="swatch s15"></i>nothing in 48 h</span>
+    <span><i class="swatch s16"></i>no data</span>
+  </div>
+  <div id="dk-map" aria-hidden="true"></div>
+
+  {% if ov and ov.ok %}
+  <ul class="dk-list">
+    {% for a in ov.assets %}
+    <li class="dk-card s{{ a.status }}" id="{{ a.id | lower }}">
+      <div class="dk-name">{{ a.name }} <small>{{ a.water }}</small></div>
+      <span class="chip s{{ a.status }}">
+        {%- if a.status == 13 %}Overflowing now{% elif a.status == 14 %}Overflowed in last 48 h{% elif a.status == 15 %}Nothing in 48 h{% else %}No data{% if a.why %} · {{ a.why }}{% endif %}{% endif -%}
+      </span>
+      {% if a.start %}
+      <div class="sub">Last event: <span class="mono">{{ a.start | dom }} {{ a.start | monthShort }} {{ a.start | hhmm }}</span>{% if a.end %} → <span class="mono">{% if not a.endSameDay %}{{ a.end | dom }} {{ a.end | monthShort }} {% endif %}{{ a.end | hhmm }}</span>{% endif %}{% if a.durationText %} ({{ a.durationText }}){% endif %}</div>
+      {% else %}
+      <div class="sub">No event on record</div>
+      {% endif %}
+      {% if a.prevStart %}
+      <div class="sub">Before that: <span class="mono">{{ a.prevStart | dom }} {{ a.prevStart | monthShort }} {{ a.prevStart | hhmm }}</span>{% if a.prevDurationText %}, {{ a.prevDurationText }}{% endif %}</div>
+      {% endif %}
+      {% if a.note %}<div class="sub dk-note">{{ a.note }}</div>{% endif %}
+      <a class="map-link sub" href="#dk-map" data-asset="{{ loop.index0 }}">show on map →</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="note">Overflow data hasn’t been fetched yet — Scottish Water’s feed will appear here after the next build.</p>
+  {% endif %}
+
+  <h2 class="dk-h">What an overflow is</h2>
+  <p class="page-intro">Largs, like most older towns, has one set of pipes for sewage and rainwater together. In heavy rain the pipe fills faster than the works can take it, and a relief outlet — a combined sewer overflow — lets the excess into the burn or the sea rather than back up the drains into streets and houses. It is a designed safety valve, not a fault, which is why a monitor can run for days in a storm.</p>
+  <p class="page-intro">Each outfall has a monitor that records when it is operating. Scottish Water publish those readings every hour and ask that they be read carefully: a monitor <em>indicates</em> an overflow rather than confirming one, and their map “should not be considered as advice on water quality”. This page follows the same rule. It tells you what the monitors have said and when, links to <a href="{{ site.links.swOverflowMap }}">their map</a>, and leaves the decision about going in to you. In the bathing season SEPA add a daily water-quality forecast for Pencil Beach, posted by ten each morning; the Bathing water tile above says where to find it.</p>
+
+  <h2 class="dk-h">Floods and storms</h2>
+  <p class="page-intro">SEPA’s Floodline covers the Largs coast. When a Flood Alert or Warning is in force it will appear here and on the front page, in their words. Floodline: <span class="mono">0345 988 1188</span> · <a href="https://floodline.sepa.org.uk/">floodline.sepa.org.uk</a>.</p>
+
+  <p class="note">Sources: Scottish Water overflow event monitoring (near-real-time API, updated hourly; positions are theirs except where a card says otherwise); SEPA bathing water classifications; sea temperature and tide from the ocean model behind the Today board. Map © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+</section>
+
+{% if ov and ov.ok %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* Same shape as roadworks.njk: data baked in at build time, Leaflet draws
+   it, the page stands without JavaScript as the list above. */
+(function () {
+  "use strict";
+  var ASSETS = {{ ov.assets | dump | safe }};
+  if (!window.L) return;
+  var FILL = { 13: "#C03B2B", 14: "#B07A1F", 15: "#25655C", 16: "#FBF8F1" };
+  var WORD = { 13: "Overflowing now", 14: "Overflowed in the last 48 h", 15: "Nothing in 48 h", 16: "No data" };
+  var map = L.map("dk-map", { scrollWheelZoom: false });
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  function when(iso) {
+    if (!iso) return "";
+    var d = new Date(iso);
+    if (isNaN(d)) return "";
+    return d.toLocaleString("en-GB", { timeZone: "Europe/London", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  }
+  var bounds = [], markers = {};
+  ASSETS.forEach(function (a, i) {
+    if (a.lat == null || a.lon == null) return;
+    var marker = L.circleMarker([a.lat, a.lon], {
+      radius: a.status === 13 ? 11 : 9, color: a.status === 16 ? "#849295" : "#FBF8F1", weight: 2,
+      fillColor: FILL[a.status] || "#849295", fillOpacity: 0.95
+    }).addTo(map);
+    var lines = ["<strong>" + a.name + "</strong>", a.water, WORD[a.status] || ""];
+    if (a.status === 16 && a.why) lines[2] += " — " + a.why;
+    if (a.start) lines.push("Last event " + when(a.start) + (a.durationText ? ", " + a.durationText : ""));
+    if (a.note) lines.push("<em>" + a.note + "</em>");
+    marker.bindPopup(lines.join("<br>"));
+    markers[i] = marker;
+    bounds.push([a.lat, a.lon]);
+  });
+  if (bounds.length) map.fitBounds(bounds, { padding: [28, 28], maxZoom: 15 });
+  else map.setView([55.795, -4.868], 14);
+  document.querySelectorAll(".map-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+      var i = Number(link.dataset.asset);
+      if (!ASSETS[i] || !markers[i]) return;
+      map.setView([ASSETS[i].lat, ASSETS[i].lon], 16);
+      markers[i].openPopup();
+    });
+  });
+})();
+</script>
+{% endif %}
