@@ -284,6 +284,13 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 .chip.s14{background:#F6EEDD;color:var(--warn)}
 .chip.s15{background:var(--foam-tint);color:var(--teal)}
 .chip.s16{background:var(--sand);color:var(--muted)}
+/* Recency inside the 48 h window: full amber for a discharge that ended
+   under 12 h ago, a paler amber for 12-48 h — "a couple of tides" is what
+   the shore reckons clears the bay. Still never a verdict. */
+.swatch.s14.older{background:#DCBE7A}
+.sea-recent.older{color:#8A7030}
+.chip.s14.older{background:#F8F2E3;color:#8A7030}
+.dk-card.s14.older{border-color:#DCBE7A}
 .dk-card .sub{font-size:.86rem;color:var(--muted);margin-top:2px}
 .dk-card .sub .mono{font-family:"Spline Sans Mono",monospace;font-size:.8rem;color:var(--ink)}
 .dk-card .dk-note{font-style:italic}

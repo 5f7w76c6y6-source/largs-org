@@ -64,9 +64,9 @@ subtitle: Sea temperature, the tide, and what the sewer outfalls along the shore
       <div class="label">Outfalls {% if ov and ov.ok %}<span class="badge live">live</span>{% endif %}</div>
       {% if ov and ov.ok %}
         {% if ov.active.length %}
-        <div class="figure compact"><span class="sea-active">Overflow indicated</span> at {{ ov.active[0].name }}{% if ov.active.length > 1 %} and {{ ov.active.length - 1 }} more{% endif %}{% if ov.active[0].start %} since <span class="mono">{{ ov.active[0].start | hhmm }}</span> {{ ov.active[0].start | dow }}{% endif %}</div>
+        <div class="figure compact"><span class="sea-active">Overflow indicated</span> at {{ ov.active[0].name }}{% if ov.active.length > 1 %} and {{ ov.active.length - 1 }} more{% endif %}{% if ov.active[0].start %} since <span class="mono">{{ ov.active[0].start | hhmm }}</span> {{ ov.active[0].start | dow }}{% endif %}{% if ov.active[0].agoText %}, {{ ov.active[0].agoText }}{% endif %}</div>
         {% elif ov.recent.length %}
-        <div class="figure compact"><span class="sea-recent">Overflow indicated</span> at {{ ov.recent[0].name }}{% if ov.recent.length > 1 %} and {{ ov.recent.length - 1 }} more{% endif %}{% if ov.recent[0].end %}, ended <span class="mono">{{ ov.recent[0].end | hhmm }}</span> {{ ov.recent[0].end | dow }}{% endif %}</div>
+        <div class="figure compact"><span class="sea-recent {{ ov.recent[0].recency }}">Overflow indicated</span> at {{ ov.recent[0].name }}{% if ov.recent.length > 1 %} and {{ ov.recent.length - 1 }} more{% endif %}, ended {{ ov.recent[0].agoText }}{% if ov.recent[0].tidesText %} ({{ ov.recent[0].tidesText }}){% endif %}</div>
         {% else %}
         <div class="figure compact">No overflow indicated in the last 48 h</div>
         {% endif %}
@@ -86,21 +86,23 @@ subtitle: Sea temperature, the tide, and what the sewer outfalls along the shore
 
   <h2 class="dk-h">Where the outfalls are</h2>
   <p class="page-intro">Nine monitored sewer overflows discharge along the town’s shore and into the Gogo Water. Tap one on the map for its last event; the cards below have the detail, <strong>sea outfalls first</strong>.</p>
-  <div class="works-legend" aria-hidden="true">
-    <span><i class="swatch s13"></i>overflowing now</span>
-    <span><i class="swatch s14"></i>in the last 48 h</span>
-    <span><i class="swatch s15"></i>nothing in 48 h</span>
-    <span><i class="swatch s16"></i>no data</span>
-  </div>
+  <p class="works-legend">
+    <span><span class="swatch s13"></span>overflowing now</span>
+    <span><span class="swatch s14"></span>ended under 12 h ago</span>
+    <span><span class="swatch s14 older"></span>ended 12–48 h ago</span>
+    <span><span class="swatch s15"></span>nothing in 48 h</span>
+    <span><span class="swatch s16"></span>no data</span>
+    <span>tap a dot for details</span>
+  </p>
   <div id="dk-map" aria-hidden="true"></div>
 
   {% if ov and ov.ok %}
   <ul class="dk-list">
     {% for a in ov.assets %}
-    <li class="dk-card s{{ a.status }}" id="{{ a.id | lower }}">
+    <li class="dk-card s{{ a.status }} {{ a.recency }}" id="{{ a.id | lower }}">
       <div class="dk-name">{{ a.name }} <small>{{ a.water }}</small></div>
-      <span class="chip s{{ a.status }}">
-        {%- if a.status == 13 %}Overflowing now{% elif a.status == 14 %}Overflowed in last 48 h{% elif a.status == 15 %}Nothing in 48 h{% else %}No data{% if a.why %} · {{ a.why }}{% endif %}{% endif -%}
+      <span class="chip s{{ a.status }} {{ a.recency }}">
+        {%- if a.status == 13 %}Overflowing now{% if a.agoText %} · {{ a.agoText }}{% endif %}{% elif a.status == 14 %}Ended {{ a.agoText }}{% if a.tidesText %} · {{ a.tidesText }}{% endif %}{% elif a.status == 15 %}Nothing in 48 h{% else %}No data{% if a.why %} · {{ a.why }}{% endif %}{% endif -%}
       </span>
       {% if a.start %}
       <div class="sub">Last event: <span class="mono">{{ a.start | dom }} {{ a.start | monthShort }} {{ a.start | hhmm }}</span>{% if a.end %} → <span class="mono">{% if not a.endSameDay %}{{ a.end | dom }} {{ a.end | monthShort }} {% endif %}{{ a.end | hhmm }}</span>{% endif %}{% if a.durationText %} ({{ a.durationText }}){% endif %}</div>
@@ -140,6 +142,7 @@ subtitle: Sea temperature, the tide, and what the sewer outfalls along the shore
   var ASSETS = {{ ov.assets | dump | safe }};
   if (!window.L) return;
   var FILL = { 13: "#C03B2B", 14: "#B07A1F", 15: "#25655C", 16: "#FBF8F1" };
+  var OLDER = "#DCBE7A"; // 12-48 h: the paler amber, as in the legend
   var WORD = { 13: "Overflowing now", 14: "Overflowed in the last 48 h", 15: "Nothing in 48 h", 16: "No data" };
   var map = L.map("dk-map", { scrollWheelZoom: false });
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -157,10 +160,12 @@ subtitle: Sea temperature, the tide, and what the sewer outfalls along the shore
     if (a.lat == null || a.lon == null) return;
     var marker = L.circleMarker([a.lat, a.lon], {
       radius: a.status === 13 ? 11 : 9, color: a.status === 16 ? "#849295" : "#FBF8F1", weight: 2,
-      fillColor: FILL[a.status] || "#849295", fillOpacity: 0.95
+      fillColor: (a.status === 14 && a.recency === "older") ? OLDER : (FILL[a.status] || "#849295"), fillOpacity: 0.95
     }).addTo(map);
     var lines = ["<strong>" + a.name + "</strong>", a.water, WORD[a.status] || ""];
     if (a.status === 16 && a.why) lines[2] += " — " + a.why;
+    if (a.status === 14 && a.agoText) lines[2] += ", ended " + a.agoText + (a.tidesText ? " (" + a.tidesText + ")" : "");
+    if (a.status === 13 && a.agoText) lines[2] += " " + a.agoText;
     if (a.start) lines.push("Last event " + when(a.start) + (a.durationText ? ", " + a.durationText : ""));
     if (a.note) lines.push("<em>" + a.note + "</em>");
     marker.bindPopup(lines.join("<br>"));

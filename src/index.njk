@@ -115,7 +115,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
         {%- if ov and ov.ok and ov.active.length -%}
           <span class="sea-active">Overflow indicated</span> at {{ ov.active[0].name }}{% if ov.active[0].start %} since <span class="mono">{{ ov.active[0].start | hhmm }}</span> {{ ov.active[0].start | dow }}{% endif %}
         {%- elif ov and ov.ok and ov.recent.length -%}
-          <span class="sea-recent">Overflow indicated</span> at {{ ov.recent[0].name }} in the last 48 h
+          <span class="sea-recent {{ ov.recent[0].recency }}">Overflow indicated</span> at {{ ov.recent[0].name }}, ended {{ ov.recent[0].agoText }}
         {%- elif ov and ov.ok -%}
           No overflow indicated in 48 h
         {%- else -%}

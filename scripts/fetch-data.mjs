@@ -2307,12 +2307,44 @@ function londonDay(iso) {
   return new Intl.DateTimeFormat("en-GB", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(iso));
 }
 
+// Recency, computed at build time (never cached, so it is right at every
+// build): how long since each recent discharge ended, and about how many
+// tides have turned since -- the dookers' own measure of a flushed bay.
+// 12 h 25 min is the semi-diurnal tidal period. "fresh" = ended under 12 h
+// ago, "older" = 12-48 h; both are inside Scottish Water's 48 h window.
+// NOT a safety verdict: die-off depends on sun, season and where the tide
+// carried it, so the numbers are given and the judgement is left.
+const TIDE_HOURS = 12.42;
+function swRecency(res) {
+  const now = Date.now();
+  for (const a of res.assets) {
+    a.agoHours = null; a.agoText = ""; a.tidesAgo = null; a.tidesText = ""; a.recency = "";
+    if (a.status === 14 && a.end) {
+      const h = Math.max(0, (now - Date.parse(a.end)) / 3600000);
+      a.agoHours = Math.round(h);
+      a.agoText = h < 1 ? "under an hour ago" : `${Math.round(h)} h ago`;
+      a.tidesAgo = Math.floor(h / TIDE_HOURS);
+      a.tidesText = a.tidesAgo === 0 ? "this tide" : a.tidesAgo === 1 ? "about 1 tide ago" : `about ${a.tidesAgo} tides ago`;
+      a.recency = h < 12 ? "fresh" : "older";
+    } else if (a.status === 13 && a.start) {
+      const h = Math.max(0, (now - Date.parse(a.start)) / 3600000);
+      a.agoHours = Math.round(h);
+      a.agoText = h < 1 ? "for under an hour" : `for ${Math.round(h)} h so far`;
+      a.recency = "fresh";
+    }
+  }
+  // Freshest first, so the one-line verdicts name the one that matters.
+  res.active = res.assets.filter((a) => a.status === 13).sort((x, y) => Date.parse(y.start || 0) - Date.parse(x.start || 0));
+  res.recent = res.assets.filter((a) => a.status === 14).sort((x, y) => Date.parse(y.end || 0) - Date.parse(x.end || 0));
+  return res;
+}
+
 async function loadOverflows() {
   let cached = null;
   try { cached = JSON.parse(await readFile(SW_CACHE_FILE, "utf8")); } catch { /* no cache yet */ }
   if (cached && cached.ok && cached.schema === SW_SCHEMA && Date.now() - Date.parse(cached.checkedAt) < SW_MAX_AGE_MIN * 60000) {
     console.log(`overflows: reusing the distillate pulled at ${cached.checkedAt}`);
-    return cached;
+    return swRecency(cached);
   }
   const response = await fetch(SW_OVERFLOW_URL, {
     headers: { "User-Agent": "largs.scot board (+https://largs.scot; hello@largs.scot)", Accept: "application/json" },
@@ -2364,7 +2396,7 @@ async function loadOverflows() {
   };
   await mkdir(path.dirname(SW_CACHE_FILE), { recursive: true });
   await writeFile(SW_CACHE_FILE, JSON.stringify(result));
-  return result;
+  return swRecency(result);
 }
 
 /* ---------- main ---------- */
