@@ -642,6 +642,34 @@
       "blurb": "Wild Ivy's thirty-stall artisan market in the pavilion at Kelburn Castle: handcrafted goods and produce from small independent makers — apothecary, art, candles and home fragrance, ceramics, dioramas, Japanese calligraphy, leather goods, lino prints, notebooks, pet accessories, photography, sea glass, stationery, textiles, yarns and more. To eat, there are pre-prepared Afghan meals, pakora and samosas, speciality coffee, cakes, bakes and pastries, and ready-mixed cocktails; tarot readings from Scottish Spellcraft can be pre-booked at enquiries@scottishspellcraft.com or taken as a walk-in. Entry is free and the pavilion is fully accessible, with the estate café open. Kelburn charges a flat daily parking fee, which covers the whole estate for the day.",
       "url": "https://wildivymarkets.co.uk",
       "image": "/assets/img/ev-kelburn-nov.jpg"
+    },
+    {
+      "date": "2026-11-11",
+      "until": "2026-11-21",
+      "days": [
+        "mon",
+        "tue",
+        "wed",
+        "thu",
+        "fri",
+        "sat",
+        "sun"
+      ],
+      "title": "Changing Perspectives",
+      "venue": "Studio 44 Gallery, 44 Boyd Street",
+      "time": "Daily, 10:00–17:00",
+      "image": "/assets/img/ev-studio44-changing.jpg",
+      "blurb": "Studio 44’s winter exhibition: five artists from Ayrshire and Inverclyde, with original paintings, prints and artisan pieces for sale. Open every day from Wednesday 11 to Saturday 21 November, 10am to 5pm; late opening until 8pm on Thursday 19 November for a Christmas shopping evening.",
+      "url": "https://www.studio44gallery.co.uk"
+    },
+    {
+      "date": "2026-11-19",
+      "title": "Christmas Shopping Event at Studio 44",
+      "venue": "Studio 44 Gallery, 44 Boyd Street",
+      "time": "10:00–20:00",
+      "image": "/assets/img/ev-studio44-changing.jpg",
+      "blurb": "A late-opening evening during the Changing Perspectives exhibition — original artworks, prints and artisan products from five Ayrshire and Inverclyde artists, open until 8pm.",
+      "url": "https://www.studio44gallery.co.uk"
     }
   ],
   "regulars": [
