@@ -2433,10 +2433,17 @@ function xmlText(block, tag) {
     .replace(/\s+/g, " ").trim();
 }
 function sepaSeverity(text) {
-  if (/severe\s+flood\s+warning/i.test(text)) return { severity: "severe", rank: 3, label: "Severe Flood Warning" };
-  if (/flood\s+warning/i.test(text)) return { severity: "warning", rank: 2, label: "Flood Warning" };
-  if (/flood\s+alert/i.test(text)) return { severity: "alert", rank: 1, label: "Flood Alert" };
+  if (/severe\s+flood\s+warning|danger\s+to\s+life/i.test(text)) return { severity: "severe", rank: 3, label: "Severe Flood Warning" };
+  if (/flood\s+warning|flooding\s+is\s+expected/i.test(text)) return { severity: "warning", rank: 2, label: "Flood Warning" };
+  if (/flood\s+alert|flooding\s+is\s+possible/i.test(text)) return { severity: "alert", rank: 1, label: "Flood Alert" };
   return { severity: "notice", rank: 0, label: "Floodline" };
+}
+// A message that lifts a warning ("No Warning", "no longer in force",
+// "removed", "cancelled", "lifted") names the area too, and must never be
+// shown as a live warning. Judged on the title; the body of a lifting
+// message often still describes the flooding it is standing down.
+function sepaLifted(title) {
+  return /\bno\s+(?:longer\s+)?(?:flood\s+)?(?:warning|alert)s?\b|no\s+longer\s+in\s+force|removed|cancell?ed|lifted|stood\s+down/i.test(title);
 }
 function shorten(s, n = 220) {
   if (s.length <= n) return s;
@@ -2466,9 +2473,11 @@ async function loadFloods() {
     const issued = pub && !Number.isNaN(Date.parse(pub)) ? new Date(Date.parse(pub)).toISOString() : null;
     const sev = sepaSeverity(`${title} ${text}`);
     const hit = SEPA_AREAS.find((a) => a.re.test(`${title} ${text}`));
-    return { title, text, short: shorten(text), link, issued, area: hit ? hit.area : "", local: !!hit, ...sev };
+    const lifted = sepaLifted(title);
+    return { title, text, short: shorten(text), link, issued, area: hit ? hit.area : "", local: !!hit, lifted, ...sev };
   });
-  const largs = items.filter((i) => i.local).sort((a, b) => b.rank - a.rank || Date.parse(b.issued || 0) - Date.parse(a.issued || 0));
+  for (const i of items) if (i.local && i.lifted) console.log(`floods: lifted — "${i.title}" (not shown)`);
+  const largs = items.filter((i) => i.local && !i.lifted && i.rank > 0).sort((a, b) => b.rank - a.rank || Date.parse(b.issued || 0) - Date.parse(a.issued || 0));
   return {
     ok: true, source: "sepa-floodline",
     checkedAt: new Date().toISOString(),
