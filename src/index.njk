@@ -141,16 +141,14 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
       <img class="tile-hero" src="/assets/img/ferry-2.png"
            alt="Silhouette of a Clyde ferry under way" width="720" height="420"
            loading="lazy" decoding="async">
-      {# Source: CalMac summer 2026 timetable for Largs–Cumbrae Slip, valid
-         27 Mar – 18 Oct 2026 (PDF last updated 26 Mar 2026). Departures every
-         20 minutes from 09:30 to 19:30 Mon–Sat and from 10:00 on Sundays;
-         sparser early morning and after 20:10. Last winter's timetable ran
-         every 30 minutes; winter 2026/27 not yet published as of 31 Aug 2026.
-         Corrected 31 Aug 2026 from "every 15 min", which was never sourced
-         (a resident-reported error, confirmed against the timetable).
-         RE-CHECK BEFORE 19 OCT 2026 — the winter figure will differ. #}
-      <div class="figure compact">Usually every 20 min</div>
-      <div class="sub">Largs to Cumbrae Slip · <a href="{{ site.links.calmacTimetable }}">timetable →</a> · <a href="{{ site.links.calmacStatus }}">live status →</a></div>
+      {# The frequency comes from src/_data/ferry.cjs, a date-bounded table
+         read off CalMac's timetable PDFs, so the summer/winter flip is
+         automatic and a lapsed table says "See timetable" rather than
+         carrying an old figure (3 Nov 2026: the hand-written "every 20 min"
+         had outlived the summer timetable by two weeks). Add each new
+         timetable there as CalMac publishes it. #}
+      <div class="figure compact">{{ ferry.figure }}</div>
+      <div class="sub">Largs to Cumbrae Slip · {{ ferry.detail }} · <a href="{{ site.links.calmacTimetable }}">timetable →</a> · <a href="{{ site.links.calmacStatus }}">live status →</a></div>
     </div>
 
     {# Harbour webcam — CMAL's camera at the Largs ferry slip. CMAL own
