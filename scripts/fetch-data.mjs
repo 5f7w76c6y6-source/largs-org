@@ -2266,39 +2266,36 @@ async function loadBuses() {
 const SW_OVERFLOW_URL = "https://api.scottishwater.co.uk/overflow-event-monitoring/v1/near-real-time";
 const SW_CACHE_FILE = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", ".cache", "sw-overflows.json");
 const SW_MAX_AGE_MIN = 50; // their data moves hourly; builds run every half hour
-// Sea outfalls first (the ones that matter to a swimmer), then the burns.
+const SW_SCHEMA = 2; // bump when the distillate shape changes: forces a fresh pull
+// The nine outfalls are fixed facts about the town, so they live here —
+// name, receiving water and position — and the feed supplies only each
+// one's state. The pins therefore never disappear: a monitor missing from
+// the feed, or silent, is a hollow "no data" pin. Names and positions are
+// Scottish Water's own (their SW_UNIQUE_MEASUREMENT_POINT_DESCRIPTION,
+// minus "Largs, " and " CSO Event"), checked 3 Nov 2026, except Fort St
+// Pier: their record puts it at 55.705°N, ten kilometres south in open
+// water off Hunterston; Fort Street is beside the pier, so that one is
+// ours and the card says so. Sea outfalls first, then the burns.
 const SW_ASSETS = [
-  "CSO000230", // Fort St Pier → Firth of Clyde
-  "CSO000231", // Gogo Street SPS No.4 → Firth of Clyde
-  "CSO000228", // Buchanan St SPS → Firth of Clyde
-  "CSO006771", // Warrenpark Road → Firth of Clyde
-  "CSO000236", // Greenock Road No.8 → Firth of Clyde
-  "CSO003390", // Gogo Street Syphon → Gogo Water
-  "CSO000240", // 3 Irvine Rd/Gogo St Bridge → Gogo Water
-  "CSO000244", // 2 New St/Waterside St → Gogo Water
-  "CSO000238", // 59 Brisbane Road No.7 → Moor Burn
+  { id: "CSO000230", name: "Fort St Pier", water: "Firth of Clyde", lat: 55.7948, lon: -4.8730,
+    note: "Position is this site's: Scottish Water's record places this outfall 10 km south of the town, which is wrong." },
+  { id: "CSO000231", name: "Gogo Street SPS No.4", water: "Firth of Clyde", lat: 55.791675, lon: -4.872448 },
+  { id: "CSO000228", name: "Buchanan St SPS", water: "Firth of Clyde", lat: 55.803016, lon: -4.879508 },
+  { id: "CSO006771", name: "Warrenpark Road", water: "Firth of Clyde", lat: 55.785606, lon: -4.8667367 },
+  { id: "CSO000236", name: "Greenock Road No.8", water: "Firth of Clyde", lat: 55.798577, lon: -4.8694457 },
+  { id: "CSO003390", name: "Gogo Street Syphon", water: "Gogo Water", lat: 55.791638, lon: -4.8702115 },
+  { id: "CSO000240", name: "3 Irvine Rd/Gogo St Bridge", water: "Gogo Water", lat: 55.792489, lon: -4.8645302 },
+  { id: "CSO000244", name: "2 New St/Waterside St", water: "Gogo Water", lat: 55.792796, lon: -4.8629572 },
+  { id: "CSO000238", name: "59 Brisbane Road No.7", water: "Moor Burn", lat: 55.799115, lon: -4.8656554 },
 ];
 const SW_NO_DATA_WHY = {
   17: "nothing received in 48 h", 18: "no valid data in 48 h", 19: "under maintenance",
   20: "not real-time monitored", 21: "device not active",
 };
 
-// "Largs, Gogo Street SPS No.4 CSO Event" → "Gogo Street SPS No.4": their
-// name, minus the town the tile already implies and the generic suffix.
-function swName(r) {
-  return String(r.SW_UNIQUE_MEASUREMENT_POINT_DESCRIPTION || r.ASSET_NAME || r.ASSET_ID)
-    .replace(/^Largs,?\s*/i, "").replace(/\s*CSO Event$/i, "").trim();
-}
 function swNum(v) {
   return v === null || v === undefined || v === "" || Number.isNaN(Number(v)) ? null : Number(v);
 }
-// Scottish Water's record puts Fort St Pier at 55.705°N — ten kilometres
-// south of the town, in open water off Hunterston. Fort Street is beside
-// the pier. Until they correct it (reported to opendata@scottishwater.co.uk,
-// Nov 2026) the map uses this position and the card says so.
-const SW_POSITION_FIX = {
-  CSO000230: { lat: 55.7948, lon: -4.8730, note: "Position is this site's: Scottish Water's record places this outfall 10 km south of the town, which is wrong." },
-};
 // "4235.00" minutes → "70 h 35 min"; "" → "".
 function swDuration(v) {
   const m = swNum(v);
@@ -2313,7 +2310,7 @@ function londonDay(iso) {
 async function loadOverflows() {
   let cached = null;
   try { cached = JSON.parse(await readFile(SW_CACHE_FILE, "utf8")); } catch { /* no cache yet */ }
-  if (cached && cached.ok && Date.now() - Date.parse(cached.checkedAt) < SW_MAX_AGE_MIN * 60000) {
+  if (cached && cached.ok && cached.schema === SW_SCHEMA && Date.now() - Date.parse(cached.checkedAt) < SW_MAX_AGE_MIN * 60000) {
     console.log(`overflows: reusing the distillate pulled at ${cached.checkedAt}`);
     return cached;
   }
@@ -2327,19 +2324,23 @@ async function loadOverflows() {
   if (!rows.length) throw new Error("Scottish Water response has no results");
   const byId = new Map(rows.map((r) => [String(r.ASSET_ID).toUpperCase(), r]));
   const assets = [];
-  for (const id of SW_ASSETS) {
-    const r = byId.get(id);
-    if (!r) { console.warn(`overflows: ${id} is missing from the feed`); continue; }
-    const status = swNum(r.OVERFLOW_STATUS_ID);
-    const fix = SW_POSITION_FIX[id];
+  let found = 0;
+  for (const a of SW_ASSETS) {
+    const r = byId.get(a.id);
+    if (!r) {
+      console.warn(`overflows: ${a.id} (${a.name}) is missing from the feed — shown as no data`);
+      assets.push({ ...a, note: a.note || "", status: 16, why: "not in Scottish Water's feed today",
+        start: null, end: null, endSameDay: false, durationMin: null, durationText: "",
+        prevStart: null, prevEnd: null, prevDurationText: "", lastTransmitted: null });
+      continue;
+    }
+    found++;
+    const status = swNum(r.OVERFLOW_STATUS_ID) ?? 16;
     const start = r.OVERFLOW_START_DATETIME || null;
     const end = r.OVERFLOW_END_DATETIME || null;
     assets.push({
-      id, name: swName(r), water: r.RECEIVING_WATER || "", status,
+      ...a, note: a.note || "", status,
       why: status === 16 ? (SW_NO_DATA_WHY[swNum(r.INTERNAL_OVERFLOW_STATUS_ID)] || "no data") : "",
-      lat: fix ? fix.lat : swNum(r.DISCHARGE_OVERFLOW_LOCATION_LATITUDE),
-      lon: fix ? fix.lon : swNum(r.DISCHARGE_OVERFLOW_LOCATION_LONGITUDE),
-      note: fix ? fix.note : "",
       start, end,
       endSameDay: !!(start && end && londonDay(start) === londonDay(end)),
       durationMin: swNum(r.OVERFLOW_DURATION_MIN),
@@ -2350,10 +2351,10 @@ async function loadOverflows() {
       lastTransmitted: r.LAST_TRANSMITTED_DATETIME || null,
     });
   }
-  if (!assets.length) throw new Error("none of the Largs assets found in the feed");
+  if (!found) throw new Error("none of the Largs assets found in the feed");
   const updated = swNum(data.last_updated);
   const result = {
-    ok: true, source: "scottish-water",
+    ok: true, schema: SW_SCHEMA, source: "scottish-water",
     updated: updated ? new Date(updated).toISOString() : null,
     checkedAt: new Date().toISOString(),
     active: assets.filter((a) => a.status === 13),
