@@ -16,6 +16,15 @@
       "label": "How to vote",
       "starts": "2026-10-16",
       "expires": "2026-11-07"
+    },
+    {
+      "id": "a78-shore-road-2026",
+      "text": "A78 to Wemyss Bay closed 09:30–15:00 every day from Monday 9 November for storm repairs — Clyde Flyer buses stop at Wemyss Bay while it’s shut.",
+      "detail": "One lane under temporary lights when it’s open. A 905 shuttle links Largs and Greenock during the closure.",
+      "href": "/buses/",
+      "label": "Buses",
+      "starts": "2026-11-08",
+      "expires": "2026-11-30"
     }
   ]
 }

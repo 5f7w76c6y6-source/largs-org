@@ -60,6 +60,19 @@ eleventyComputed:
   {% if pendingOps.length == 1 %}is{% else %}are{% endif %} not in this data yet, so a stop
   may have more buses than are listed.{% endif %}</p>
 
+  {# Dated operator notices (src/_data/busnotices.json): what the timetable
+     data cannot say — a road closed, a service cut back, a shuttle that is
+     not in the feed. Build-time, self-expiring, at most one, the operator's
+     words, link to their update. #}
+  {% set busLive = busnotices.notices | currentNotices %}
+  {% for n in busLive %}
+  <div class="bus-notice bus-notice-alert" role="status" id="notice-{{ n.id }}">
+    <p class="bus-notice-title">{{ n.title }}</p>
+    <p>{{ n.text }}</p>
+    <p class="bus-notice-foot"><a href="{{ n.href }}">{{ n.label }} →</a> · until {{ n.expires | dom }} {{ n.expires | monthShort }} unless updated</p>
+  </div>
+  {% endfor %}
+
   <nav class="bus-filter" aria-label="Choose an operator">
     {% for v in b.views %}
     <a href="{{ v.path }}"{% if v.key == view.key %} aria-current="page"{% endif %}>{{ v.label }}{% if b.operators[v.key] and b.operators[v.key].loaded == false %} <small>(not loaded yet)</small>{% endif %}</a>
@@ -173,6 +186,11 @@ eleventyComputed:
   .bus-filter a small{font-weight:400;opacity:.8}
   .bus-notice{background:var(--foam-tint);border:1px solid var(--foam);border-radius:10px;
     padding:12px 16px;margin:12px 0;font-size:.95rem}
+  .bus-notice-alert{background:var(--card);border-color:var(--sand);border-left:4px solid var(--warn)}
+  .bus-notice-alert p{margin:0 0 6px}
+  .bus-notice-alert p:last-child{margin:0}
+  .bus-notice-title{font-family:"Marcellus",serif;font-size:1.1rem;color:var(--slate)}
+  .bus-notice-foot{font-family:"Spline Sans Mono",monospace;font-size:.74rem;color:var(--muted)}
   #bus-map{height:420px;border-radius:12px;border:1px solid var(--sand);margin:12px 0 6px;background:var(--foam-tint)}
   .bus-legend{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
     font-family:"Spline Sans Mono",monospace;font-size:.74rem;color:var(--muted);margin-bottom:14px}

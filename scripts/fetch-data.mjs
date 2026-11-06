@@ -1454,6 +1454,7 @@ const BUSES_ROUTE_LABELS = {
   "578": "Largs – Greenock (evenings)",
   "40": "Largs town service",
   "50": "Largs – Kilwinning",
+  "905": "Largs – Greenock shuttle (A78 repairs)",
 };
 const BUSES_VIEWS = [
   { key: "all", label: "All buses", path: "/buses/" },
@@ -2084,6 +2085,7 @@ const BUSES_ROUTE_STYLE = {
   "40": { colour: "#C8891E" },    // amber, the town bus
   "50": { colour: "#2F7D4F" },    // green
   "585": { colour: "#8C4A3C" },   // red-brown, Stagecoach
+  "905": { colour: "#B07A1F", dash: "10 7" }, // amber dashed: the A78-repairs shuttle, Nov 2026
 };
 
 // Each route's most-run patterns as lines for the map, from the operators'

@@ -1,0 +1,14 @@
+{
+  "_comment": "Dated notices for the Buses page — the things the operators' timetable data cannot say: a road closed, a service cut back, a shuttle that is not in the feed. Same shape and discipline as the civic band: shown while `starts`..`expires` covers today (build-time, self-expiring, at most one at a time via currentNotices), the words are the operator's, `href` goes to the operator's own update. Nothing is ever removed by hand; set `expires` to the date you are sure of and revisit.",
+  "notices": [
+    {
+      "id": "a78-shore-road-repairs-2026",
+      "title": "A78 Shore Road repairs: Clyde Flyer cut back, 905 shuttle",
+      "text": "After the storm damage between Wemyss Bay and Largs, McGill's say the A78 Shore Road partially reopens at 06:30 on Monday 9 November but closes every day from 09:30 to 15:00 while repairs continue, with one lane under temporary lights when it is open. During the daily closure the 901, 906 and 906X terminate at Wemyss Bay, with no through service to Largs. A 905 shuttle runs a limited number of journeys between Largs and Greenock from 10:00 to 14:30; for Braehead and Glasgow change at Candren Road, Linwood for the X7, and coming back take the X7 to Candren Road and change to the 905.",
+      "href": "https://www.mcgillsbuses.co.uk/service-update-905-shuttle-bus",
+      "label": "McGill's service update",
+      "starts": "2026-11-06",
+      "expires": "2026-11-30"
+    }
+  ]
+}
