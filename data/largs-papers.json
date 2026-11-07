@@ -1,8 +1,40 @@
 {
- "collected": "2026-11-06T05:08:37+00:00",
+ "collected": "2026-11-07T05:08:59+00:00",
  "lookbackDays": 60,
  "method": "whole-word, case-insensitive \"largs\" in the text of the agenda pack; the same number the council's search reports",
  "records": [
+  {
+   "key": "2026-11-16|North Ayrshire Licensing Board|4001|Agenda 16 November 2026",
+   "committee": "North Ayrshire Licensing Board",
+   "date": "2026-11-16",
+   "meetingId": "4001",
+   "meetingUrl": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4001/Committee/129/Default.aspx",
+   "title": "Agenda 16 November 2026",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=A2pIYn3IpIJ3E%2bYaJcYTaeaMh%2bYuuBDnZxpzRfSwF0aU%2f%2bpFR5Gx5w%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d",
+   "pack": true,
+   "read": "2026-11-07T05:08:55+00:00",
+   "status": "ok",
+   "bytes": 14151413,
+   "pages": 130,
+   "hits": 2,
+   "pagesWithHits": 1
+  },
+  {
+   "key": "2026-11-12|Integration Joint Board|4010|Agenda Document Pack - Integration Joint Board - 12/11/2026",
+   "committee": "Integration Joint Board",
+   "date": "2026-11-12",
+   "meetingId": "4010",
+   "meetingUrl": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4010/Committee/141/Default.aspx",
+   "title": "Agenda Document Pack - Integration Joint Board - 12/11/2026",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=%2fdyHQvcnwTONKAqADHCUifqgiMfptU8U180ZbMhDrRlmtLbetf2tfg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d",
+   "pack": true,
+   "read": "2026-11-07T05:08:42+00:00",
+   "status": "ok",
+   "bytes": 7545076,
+   "pages": 246,
+   "hits": 1,
+   "pagesWithHits": 1
+  },
   {
    "key": "2026-11-11|Planning Committee|4068|Agenda Document Pack - Planning Committee - 11/11/2026",
    "committee": "Planning Committee",
