@@ -3,6 +3,7 @@ layout: layouts/base.njk
 pageTitle: "Largs.scot — what’s on, bins, tides and ferries in Largs"
 heading: Largs today
 subtitle: The day's essentials for the town — sea, sky, boats, trains and roads.
+hideHeading: true
 ---
 {% import "tile-icons.njk" as icons %}
 {# ================= LARGS TODAY ================= #}
@@ -22,19 +23,19 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
   {% set todayEvents = events.items | todayOnly %}
   {% set todayRegulars = events.regulars | regularsToday %}
   {% set onTodayCount = (todayEvents | length) + (todayRegulars | length) %}
+  {# The "updated" stamp rides inside the strip (10 Nov 2026) rather than on
+     a line of its own, so the tiles start one line higher. With nothing on
+     today there is no strip, and the stamp keeps its old line. #}
+  {% set stampText %}{% if today.fetchedAt %}Updated {{ today.fetchedAt | hhmm }} · rebuilt every half hour{% else %}Sample values — run npm run fetch{% endif %}{% endset %}
   {% if onTodayCount > 0 %}
   <div class="today-strip">
     <span class="count"><strong>{{ onTodayCount }}</strong> {% if onTodayCount == 1 %}event{% else %}events{% endif %} on in Largs today</span>
+    <span class="stamp">{{ stampText }}</span>
     <a class="pill" href="#on-today">See what’s on ↓</a>
   </div>
+  {% else %}
+  <div class="kicker"><span class="stamp">{{ stampText }}</span></div>
   {% endif %}
-  <div class="kicker">
-    {% if today.fetchedAt %}
-    <span class="stamp">Updated {{ today.fetchedAt | hhmm }} · rebuilt every half hour</span>
-    {% else %}
-    <span class="stamp">Sample values — run npm run fetch</span>
-    {% endif %}
-  </div>
   <div class="tiles">
 
     <div class="tile">
@@ -65,7 +66,7 @@ subtitle: The day's essentials for the town — sea, sky, boats, trains and road
     {% set ev = today.tides.events or [] %}
     {% set tidesOk = today.tides.ok and (ev | length) >= 3 %}
     <div class="tile">
-      <div class="label">Largs tides
+      <div class="label">Tides
         {% if tidesOk and today.tides.source == "ukho" %}<span class="badge live">live</span>{% elif tidesOk %}<span class="badge model">model</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
       {% if tidesOk %}

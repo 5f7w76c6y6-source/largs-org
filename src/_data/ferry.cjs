@@ -26,7 +26,12 @@ const PERIODS = [
   {
     from: "2026-10-19", to: "2027-03-25",
     figure: "Usually every 40 min",
-    detail: "winter timetable · first 06:35, last 20:10 from Largs (Sun from 08:15)",
+    // `detail` is two or three words, no more: the tile row is as tall as
+    // its tallest tile, and a long line here left Weather and Tides half
+    // empty (10 Nov 2026). First and last sailings are kept in `hours`,
+    // which the tile does not print; the timetable link has them.
+    detail: "winter timetable",
+    hours: "first 06:35, last 20:10 from Largs (Sun from 08:15)",
     source: "CalMac winter 2026/27 timetable (PDF of 2 Nov 2026): Largs departures mostly 34–40 minutes apart, one 60-minute gap after 13:40; no sailings 25 Dec and 1 Jan; Sunday timetable on 26 Dec and 2 Jan.",
   },
 ];

@@ -113,6 +113,39 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 }
 .mainnav a:hover{background:rgba(255,255,255,.1)}
 .mainnav a[aria-current="page"]{background:var(--teal)}
+/* "More" (10 Nov 2026). On a phone ten links ran to three rows, about 15%
+   of the first screen, before any content. Under 600px the row keeps four
+   and the other six sit under a <details> "More" -- no script. The six are
+   in the markup twice (see base.njk) and exactly one set is displayed.
+   The open panel hangs below the masthead, over the horizon, which is why
+   the masthead's overflow:hidden (further down, with the longship) now
+   applies above 600px only. If the row cannot fit a very narrow phone it
+   wraps, as it always has. */
+.mainnav .nav-more{display:none}
+.mainnav summary{
+  display:block;cursor:pointer;list-style:none;color:var(--paper);
+  font-weight:500;font-size:.95rem;border-radius:4px;
+  border:1px solid rgba(255,255,255,.28);padding:5px 11px;
+}
+.mainnav summary::-webkit-details-marker{display:none}
+.mainnav summary::after{content:" \25BE"}
+.mainnav details[open] summary{background:rgba(255,255,255,.12)}
+.mainnav summary.has-current{background:var(--teal);border-color:var(--teal)}
+.mainnav summary:focus-visible{outline:3px solid var(--foam);outline-offset:2px}
+@media (max-width:600px){
+  .mainnav > ul{gap:2px}
+  .mainnav a,.mainnav summary{font-size:.9rem}
+  .mainnav > ul > li > a{padding:6px 8px}
+  .mainnav summary{padding:5px 7px}
+  .mainnav .nav-wide{display:none}
+  .mainnav .nav-more{display:block;margin-left:auto}
+  .mainnav details > ul{
+    position:absolute;left:0;right:0;top:100%;z-index:5;
+    background:var(--slate);border-top:1px solid rgba(255,255,255,.14);
+    padding:8px 20px 12px;gap:4px;box-shadow:0 10px 18px rgba(15,38,44,.25);
+  }
+  .mainnav details > ul a{padding:8px 12px;font-size:.95rem}
+}
 
 /* ---------- horizon signature ---------- */
 /* The band stretches; the objects do not. --wl is the waterline, and both
@@ -937,7 +970,10 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
    dateline aligns on desktop. Replaced Magnus in the right-hand corner
    on 26 Sep 2026 (the header is ~16px taller on desktop, a few px on a
    phone — accepted when the mock-up was chosen). */
-.masthead{position:relative;overflow:hidden}
+/* overflow:hidden above 600px only (10 Nov 2026): on phones the nav's
+   "More" panel hangs below the masthead and must not be clipped. */
+.masthead{position:relative}
+@media (min-width:601px){.masthead{overflow:hidden}}
 .brand{display:flex;align-items:center;gap:16px}
 /* 67px (90% of the first 74px, 26 Sep 2026): a touch taller than the
    ink of "Largs …for you" (57px), which reads as the same size because
@@ -1484,6 +1520,17 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   padding:5px 13px;min-height:36px;
 }
 .today-strip .pill:hover{background:var(--slate)}
+/* The "updated" stamp inside the strip (10 Nov 2026): pushed right, with
+   the button after it. On a phone it drops to its own line in the strip. */
+.today-strip .stamp{
+  margin-left:auto;font-family:"Spline Sans Mono",monospace;font-size:.72rem;
+  letter-spacing:.08em;color:var(--muted);
+}
+.today-strip .stamp + .pill{margin-left:0}
+@media (max-width:600px){
+  .today-strip .stamp{order:3;flex-basis:100%;margin-left:0}
+  .today-strip .stamp + .pill{margin-left:auto}
+}
 .ontoday{
   background:var(--card);border:1px solid var(--sand);border-left:5px solid var(--teal);
   border-radius:10px;padding:14px 18px 10px;

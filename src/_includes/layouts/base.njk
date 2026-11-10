@@ -98,21 +98,46 @@
       </div>
       <div class="dateline">{{ buildTime | dateLong }} · Firth of Clyde</div>
     </div>
+    {# MAIN NAV (10 Nov 2026). One list, defined once. `primary` marks the
+       four links that stay on the row on a phone; the other six follow on
+       the same row on wider screens and sit under "More" on phones. "More"
+       is a <details> element, so it opens with no JavaScript. Those six are
+       printed twice -- once for the wide row, once inside "More" -- and the
+       CSS displays exactly one set; display:none also keeps the hidden set
+       out of the tab order and away from screen readers. `sub` highlights a
+       link on its sub-pages too. "Bins" and "Community Council" are short
+       so that all ten fit one row on a desktop; the pages keep full names. #}
+    {% set navItems = [
+      { "href": "/", "label": "Today", "primary": true },
+      { "href": "/whats-on/", "label": "What's on", "primary": true },
+      { "href": "/bins/", "label": "Bins", "primary": true },
+      { "href": "/roadworks/", "label": "Roadworks", "primary": true, "sub": true },
+      { "href": "/floods/", "label": "Floods" },
+      { "href": "/dookers/", "label": "Dookers' board" },
+      { "href": "/council/", "label": "Community Council" },
+      { "href": "/on-the-agenda/", "label": "North Ayrshire Council", "sub": true },
+      { "href": "/photos/", "label": "Photos" },
+      { "href": "/directory/", "label": "Directory", "sub": true }
+    ] %}
+    {% set moreHasCurrent = [] %}
     <nav class="mainnav" aria-label="Main">
       <ul>
-        <li><a href="/"{% if page.url == "/" %} aria-current="page"{% endif %}>Today</a></li>
-        <li><a href="/whats-on/"{% if page.url == "/whats-on/" %} aria-current="page"{% endif %}>What's on</a></li>
-        <li><a href="/bins/"{% if page.url == "/bins/" %} aria-current="page"{% endif %}>Bin days</a></li>
-        <li><a href="/roadworks/"{% if page.url and "/roadworks/" in page.url %} aria-current="page"{% endif %}>Roadworks</a></li>
-        <li><a href="/floods/"{% if page.url == "/floods/" %} aria-current="page"{% endif %}>Floods</a></li>
-        <li><a href="/dookers/"{% if page.url == "/dookers/" %} aria-current="page"{% endif %}>Dookers' board</a></li>
-        <li><a href="/council/"{% if page.url == "/council/" %} aria-current="page"{% endif %}>Largs Community Council</a></li>
-        <li><a href="/on-the-agenda/"{% if page.url and "/on-the-agenda/" in page.url %} aria-current="page"{% endif %}>North Ayrshire Council</a></li>
-        <li><a href="/photos/"{% if page.url == "/photos/" %} aria-current="page"{% endif %}>Photos</a></li>
-        {# "Directory" not "Town directory": the nav is eight items now and two
-           of them are long council names. The page and the card both say the
-           full name, where there is room for it. #}
-        <li><a href="/directory/"{% if page.url and "/directory/" in page.url %} aria-current="page"{% endif %}>Directory</a></li>
+        {%- for item in navItems %}
+        {%- set cur = (page.url and (item.href in page.url)) if item.sub else (page.url == item.href) %}
+        {%- if cur and not item.primary %}{% set moreHasCurrent = (moreHasCurrent.push(1), moreHasCurrent) %}{% endif %}
+        <li{% if not item.primary %} class="nav-wide"{% endif %}><a href="{{ item.href }}"{% if cur %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+        {%- endfor %}
+        <li class="nav-more">
+          <details>
+            <summary{% if moreHasCurrent.length %} class="has-current"{% endif %}>More</summary>
+            <ul>
+              {%- for item in navItems %}{% if not item.primary %}
+              {%- set cur = (page.url and (item.href in page.url)) if item.sub else (page.url == item.href) %}
+              <li><a href="{{ item.href }}"{% if cur %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+              {%- endif %}{% endfor %}
+            </ul>
+          </details>
+        </li>
       </ul>
     </nav>
   </div>
@@ -160,8 +185,12 @@
 {# Every page names itself once, in plain English, at a size the whole
    town can read. Set `heading` and `subtitle` in a page's front matter;
    the spaced-uppercase kicker below it is a secondary label only. #}
+{# `hideHeading: true` (home page, 10 Nov 2026) keeps the h1 for screen
+   readers and search but takes it off the screen: the highlighted "Today"
+   tab already says where you are, and the title block was pushing the
+   board a tenth of a phone screen further down. #}
 {% if heading %}
-<div class="wrap page-head">
+<div class="wrap page-head{% if hideHeading %} visually-hidden{% endif %}">
   <h1 class="page-title" id="page-title">{{ heading }}</h1>
   {% if subtitle %}<p class="page-subtitle">{{ subtitle }}</p>{% endif %}
 </div>
