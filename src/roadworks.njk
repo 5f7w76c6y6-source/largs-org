@@ -16,6 +16,9 @@ views:
   - key: soon
     label: Starting soon
     path: /roadworks/starting-soon/
+  - key: a760
+    label: Haylie Brae road (A760)
+    path: /roadworks/a760/
 permalink: "{{ view.path }}"
 eleventyComputed:
   title: "{{ view.label }} · Roadworks and street closures"
@@ -31,7 +34,13 @@ eleventyComputed:
    `shown` is used for BOTH the list and the map's WORKS array, so the
    dots always match the rows, and the data-work indices stay in step. #}
 {% set rw = today.roadworks %}
-{% set shown = rw.items | filterWorks(view.key, rw.dataDate) %}
+{# The A760 view is a second list from the same register file: works on
+   the line of the Haylie Brae road from Largs to the A737, picked by
+   position (see the A760 notes in scripts/fetch-data.mjs). It has its own
+   map and counts; the Largs list and counts above are not changed by it. #}
+{% set rt = rw.a760 %}
+{% set isRoute = view.key == "a760" %}
+{% set shown = (rt.items if rt else []) if isRoute else (rw.items | filterWorks(view.key, rw.dataDate)) %}
 {% set countAll = rw.items | length %}
 {% set countActive = rw.items | filterWorks("active", rw.dataDate) | length %}
 {% set countSoon = rw.items | filterWorks("soon", rw.dataDate) | length %}
@@ -55,11 +64,19 @@ eleventyComputed:
     {% endif %}
   </div>
 
+  {% if isRoute %}
+  <p class="page-intro">Works registered on the Haylie Brae road — the A760 —
+  from Largs over the hill, through Kilbirnie and Lochwinnoch, to the A737 at
+  Roadhead. <strong>Red</strong> is under way now; <strong>amber</strong> is
+  planned. These are planned works from the Scottish Road Works Register:
+  a closure for snow or an accident on the day is not in this record.</p>
+  {% else %}
   <p class="page-intro">Every registered occupation of a Largs street, from the
   Scottish Road Works Register — the statutory record all utilities and the
   council must file into. <strong>Red</strong> is under way now;
   <strong>amber</strong> is planned, so you can route round it before it
   arrives. The map shows where; the list below has the detail.</p>
+  {% endif %}
 
   {% if rw.ok %}
   {# The legend counts the whole register, so it belongs only on the
@@ -72,6 +89,12 @@ eleventyComputed:
     {% if rw.permitCount %}<span>{{ rw.permitCount }} of them permits — skips, scaffolding and the like</span>{% endif %}
     <span>tap a dot for details</span>
   </p>
+  {% elif isRoute and rt %}
+  <p class="works-legend">
+    <span><span class="swatch active"></span>{{ rt.activeCount }} under way</span>
+    <span><span class="swatch planned"></span>{{ rt.plannedCount }} planned</span>
+    <span>tap a dot for details</span>
+  </p>
   {% else %}
   <p class="works-legend"><span>tap a dot for details</span></p>
   {% endif %}
@@ -80,13 +103,14 @@ eleventyComputed:
     <a href="/roadworks/"{% if view.key == "all" %} aria-current="page"{% endif %}>All works <span class="n">{{ countAll }}</span></a>
     <a href="/roadworks/under-way/"{% if view.key == "active" %} aria-current="page"{% endif %}>Under way <span class="n">{{ countActive }}</span></a>
     <a href="/roadworks/starting-soon/"{% if view.key == "soon" %} aria-current="page"{% endif %}>Starting soon <span class="n">{{ countSoon }}</span></a>
+    {% if rt %}<a href="/roadworks/a760/"{% if isRoute %} aria-current="page"{% endif %}>Haylie Brae road (A760) <span class="n">{{ rt.items | length }}</span></a>{% endif %}
   </nav>
 
   {% if view.key == "soon" %}
   <p class="note">Works registered as starting within a fortnight of {{ rw.dataDate | dom }} {{ rw.dataDate | monthShort }}.{% if countNoStart %} {{ countNoStart }} planned {% if countNoStart == 1 %}work has{% else %}works have{% endif %} no start date registered and {% if countNoStart == 1 %}is{% else %}are{% endif %} only shown under all works.{% endif %}</p>
   {% endif %}
 
-  <div id="works-map" role="application" aria-label="Map of road works in Largs. The same information is listed below."></div>
+  <div id="works-map" role="application" aria-label="Map of road works {% if isRoute %}on the A760 between Largs and the A737{% else %}in Largs{% endif %}. The same information is listed below."></div>
 
   {# The register's work-type labels are load-bearing jargon — each names a
      specific traffic arrangement, and plain substitutes lose the distinction.
@@ -121,7 +145,7 @@ eleventyComputed:
   </details>
 
   {% if shown | length == 0 %}
-  <p class="note">Nothing registered under this filter. <a href="/roadworks/">See all works →</a></p>
+  <p class="note">{% if isRoute %}Nothing registered on the Haylie Brae road at the moment.{% else %}Nothing registered under this filter.{% endif %} <a href="/roadworks/">See all works →</a></p>
   {% endif %}
 
   {% for w in shown %}
@@ -130,6 +154,7 @@ eleventyComputed:
     <div class="work-main">
       <h3>{{ w.what }}{% if w.what and w.where %} — {% endif %}{{ w.where }}</h3>
       <p class="meta">
+        {%- if isRoute and w.town %}{{ w.town }} · {% endif -%}
         {%- if w.promoter %}{{ w.promoter }}{% endif -%}
         {%- if w.status == "active" and w.until %} · {% if w.until < rw.dataDate %}was due to finish{% else %}due to finish{% endif %} {{ w.until | dom }} {{ w.until | monthShort }}{% if w.untilYear %} {{ w.untilYear }}{% endif %}{% endif -%}
         {# A works registered to start and finish on one day reads badly as
@@ -149,6 +174,10 @@ eleventyComputed:
         {%- if w.lat and w.lng %} · <a class="map-link" href="#works-map" data-work="{{ loop.index0 }}">show on map →</a>{% endif -%}
       </p>
       {% if whatGloss[w.what] %}<p class="work-gloss">{{ whatGloss[w.what] }}</p>{% endif %}
+      {# Most of this work is off the A760's line: a side road shut at its
+         junction, or an event passing along part of the road. Listed because
+         it touches the road; flagged so it cannot read as the road closed. #}
+      {% if isRoute and w.offRoute %}<p class="work-gloss">Meets the Haylie Brae road — most of this work is on other streets.</p>{% endif %}
       {# "May affect" is deliberate. The register records that a service
           passes within ten metres of the works, not that anything was ever
           delayed — anything firmer would claim more than the source does. #}
@@ -160,7 +189,9 @@ eleventyComputed:
   <p class="note">Source: Scottish Road Works Register open data (OGL v3),
   updated each night. Positions are as registered by the works promoter and
   can be approximate. Full national map:
-  <a href="https://www.roadworksscotland.org">Scottish Road Works Online</a>.</p>
+  <a href="https://www.roadworksscotland.org">Scottish Road Works Online</a>.{% if isRoute %}
+  The line of the A760 used to pick out these works is from
+  <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>.{% endif %}</p>
 
   {% else %}
   <p class="note">Road works data hasn't been fetched yet — the register feed

@@ -1030,7 +1030,68 @@ const SRWR_DISRUPT_CACHE_FILE = path.join(
   ".cache",
   "srwr-disruptions-state.json"
 );
-const SRWR_DISRUPT_SCHEMA = 5;
+const SRWR_DISRUPT_SCHEMA = 6; // 6: adds the a760 list (10 Nov 2026)
+
+/* ---- The Haylie Brae road (A760), Largs to the A737 at Roadhead ----
+ * Locals ask "is the Haylie Brae road open?", and the Largs box above
+ * stops at the edge of the town. Works on the road are picked by POSITION,
+ * against the road's own line in scripts/a760-route.json, not by name:
+ * checked against a national file on 10 Nov 2026, only six records said
+ * "A760" and three of those were side roads or the A737, while through
+ * Kilbirnie the road is Largs Road, Bridge Street, Bridgend and so on, and
+ * works there never mention the number. "Haylie Brae" in the register
+ * means the A78 junction in the town, so that name is no use either.
+ *
+ * A work is on the route when any of its points is within A760_NEAR_M of
+ * the line. `share` is the fraction of its points that are: a work mostly
+ * off the line (a side road shut at its junction, an event passing along
+ * part of it) is still listed, with a note saying so, because a closed
+ * junction matters to someone using the road -- but it must not read as
+ * the road itself being closed.
+ *
+ * The Largs list and its counts are untouched; this is a second list. If
+ * the route file is missing the list is simply absent. */
+const A760_ROUTE_FILE = path.join(path.dirname(fileURLToPath(import.meta.url)), "a760-route.json");
+const A760_NEAR_M = 12;
+// A loose grid box round the whole road, so far-away points are skipped
+// before any arithmetic (British National Grid metres).
+const A760_BOX = { eMin: 220000, eMax: 238000, nMin: 654000, nMax: 660500 };
+const A760_K = Math.cos((55.77 * Math.PI) / 180);
+
+async function loadA760Segments() {
+  try {
+    const route = JSON.parse(await readFile(A760_ROUTE_FILE, "utf8"));
+    const segs = [];
+    for (const way of route.ways || []) {
+      for (let i = 0; i < way.length - 1; i++) {
+        segs.push([way[i][1] * 111320 * A760_K, way[i][0] * 110574, way[i + 1][1] * 111320 * A760_K, way[i + 1][0] * 110574]);
+      }
+    }
+    return segs.length ? segs : null;
+  } catch (error) {
+    console.warn(`roadworks(a760): route file not usable (${error.message}) — the A760 list is skipped`);
+    return null;
+  }
+}
+
+// { near: any point within A760_NEAR_M of the line, share: fraction that are }
+function a760Match(wkt, segs) {
+  if (!wkt || !segs) return { near: false, share: 0 };
+  const re = /(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)/g;
+  let m, points = 0, on = 0;
+  while ((m = re.exec(wkt)) !== null) {
+    points++;
+    const e = Number(m[1]), n = Number(m[2]);
+    if (e < A760_BOX.eMin || e > A760_BOX.eMax || n < A760_BOX.nMin || n > A760_BOX.nMax) continue;
+    const p = osgbToWgs84(e, n), px = p.lng * 111320 * A760_K, py = p.lat * 110574;
+    for (const [ax, ay, bx, by] of segs) {
+      const dx = bx - ax, dy = by - ay, len = dx * dx + dy * dy;
+      const t = len ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / len)) : 0;
+      if (Math.hypot(px - ax - t * dx, py - ay - t * dy) <= A760_NEAR_M) { on++; break; }
+    }
+  }
+  return { near: on > 0, share: points ? on / points : 0 };
+}
 
 /* The disruptions export gives TrafficManagement as text, not a code, so
  * this maps its vocabulary onto the same phrases SRWR_TM already produces.
@@ -1133,7 +1194,8 @@ async function loadRoadworksDisruptions() {
       ok: true, source: "srwr-disruptions", dataDate: state.dataDate,
       count: state.count, activeCount: state.activeCount, plannedCount: state.plannedCount,
       permitCount: state.permitCount || 0,
-      items: state.items
+      items: state.items,
+      a760: state.a760 || null
     };
   };
 
@@ -1227,6 +1289,22 @@ async function loadRoadworksDisruptions() {
     console.warn(`roadworks(disruptions): ${noGeometry} rows carried no geometry and were skipped`);
   }
 
+  // ---- the Haylie Brae road: every row on the A760's own line, in the
+  // town or out of it. Same one-row-per-activity rule as the Largs list.
+  const a760Segs = await loadA760Segments();
+  const routeLatest = new Map();
+  const routeShare = new Map();
+  if (a760Segs) {
+    for (const r of rows) {
+      const hit = a760Match(r.GeometryFull || r.GeometryCentroid, a760Segs);
+      if (!hit.near) continue;
+      const ref = (r.ActivityReference || r.LocalReference || "").trim();
+      if (!ref) continue;
+      const prev = routeLatest.get(ref);
+      if (!prev || Number(r.PhaseNumber || 0) > Number(prev.PhaseNumber || 0)) { routeLatest.set(ref, r); routeShare.set(ref, hit.share); }
+    }
+  }
+
   // ---- one row per activity: latest phase wins, mirroring loadRoadworks().
   // Without this the page shows the A78 sea-wall scheme twice.
   const latest = new Map();
@@ -1237,6 +1315,8 @@ async function loadRoadworksDisruptions() {
     if (!prev || Number(r.PhaseNumber || 0) > Number(prev.PhaseNumber || 0)) latest.set(ref, r);
   }
 
+  // One builder for both lists, so a work reads the same in each.
+  const buildItems = (list, shares) => {
   const items = [];
   let activeCount = 0;
   let plannedCount = 0;
@@ -1245,7 +1325,7 @@ async function loadRoadworksDisruptions() {
   // falls in the register's own year, which a six-month horizon breaks.
   const registerYear = String(covers || "").slice(0, 4);
 
-  for (const r of latest.values()) {
+  for (const r of list) {
     const status = SRWR_DISRUPT_STATUS[(r.ActivityStatus || "").trim().toLowerCase()] ?? null;
     if (!status) continue;
 
@@ -1302,6 +1382,12 @@ async function loadRoadworksDisruptions() {
         .trim(),
       lat: Number(r.Latitude) || null,
       lng: Number(r.Longitude) || null,
+      // The gazetteer's town for the street: wrong as a FILTER (see the
+      // Largs rule above) but right as a label on the A760 list, where
+      // "Kilbirnie" tells a reader which end of the road a work is at.
+      town: (r.Town || "").trim(),
+      // A760 list only: mostly off the road's line, so say so.
+      offRoute: Boolean(shares) && (shares.get((r.ActivityReference || r.LocalReference || "").trim()) ?? 1) < 0.5,
 
       // new, and the reason for doing any of this
       impact,
@@ -1311,6 +1397,10 @@ async function loadRoadworksDisruptions() {
       busDepartures: Number(r.PotentialBusDeparturesAffectedCount) || 0,
     });
   }
+  return { items, activeCount, plannedCount, permitCount };
+  };
+  const { items, activeCount, plannedCount, permitCount } = buildItems(latest.values(), null);
+  const routeList = a760Segs ? buildItems(routeLatest.values(), routeShare) : null;
 
   const todayIso = new Intl.DateTimeFormat("en-CA", {
     timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit"
@@ -1323,6 +1413,7 @@ async function loadRoadworksDisruptions() {
     ? (w.until && w.until >= todayIso ? "A1" + w.until : w.until ? "A2" + w.until : "A3")
     : (w.from ? "B1" + w.from : "B3");
   items.sort((x, y) => (sortKey(x) < sortKey(y) ? -1 : 1));
+  if (routeList) routeList.items.sort((x, y) => (sortKey(x) < sortKey(y) ? -1 : 1));
 
   const now = new Date().toISOString();
   const state = {
@@ -1335,6 +1426,11 @@ async function loadRoadworksDisruptions() {
     plannedCount,
     permitCount,
     items: items.slice(0, 120),
+    a760: routeList ? {
+      activeCount: routeList.activeCount,
+      plannedCount: routeList.plannedCount,
+      items: routeList.items.slice(0, 60),
+    } : null,
   };
   try {
     await mkdir(path.dirname(SRWR_DISRUPT_CACHE_FILE), { recursive: true });
@@ -1343,7 +1439,8 @@ async function loadRoadworksDisruptions() {
 
   return {
     ok: true, source: "srwr-disruptions", dataDate: covers,
-    count: activeCount, activeCount, plannedCount, permitCount, items: state.items
+    count: activeCount, activeCount, plannedCount, permitCount, items: state.items,
+    a760: state.a760
   };
 }
 
@@ -2523,6 +2620,7 @@ try {
   out.roadworks = await loadRoadworksDisruptions();
   anySuccess = true;
   console.log(`roadworks: ${out.roadworks.count} active, ${out.roadworks.plannedCount ?? 0} planned in Largs (register data to ${out.roadworks.dataDate})`);
+  if (out.roadworks.a760) console.log(`roadworks: ${out.roadworks.a760.activeCount} active, ${out.roadworks.a760.plannedCount} planned on the A760 (Haylie Brae road)`);
 } catch (error) {
   console.warn(`roadworks: keeping previous value — ${error.message}`);
 }
