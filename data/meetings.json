@@ -1,5 +1,5 @@
 {
- "collected": "2026-11-11T05:08:08",
+ "collected": "2026-11-12T05:08:55",
  "committees": {
   "135": "North Ayrshire Council",
   "137": "Audit and Scrutiny Committee",
@@ -1689,9 +1689,9 @@
    "committeeId": 142,
    "id": "3945",
    "date": "2026-11-11",
-   "status": "scheduled",
+   "status": "occurred",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3945/Committee/142/Default.aspx",
-   "ahead": true,
+   "ahead": false,
    "documents": [
     {
      "title": "Agenda Contents",
@@ -1722,7 +1722,7 @@
    "date": "2026-11-11",
    "status": "scheduled",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4068/Committee/147/Default.aspx",
-   "ahead": true,
+   "ahead": false,
    "documents": [
     {
      "title": "Agenda Contents",
