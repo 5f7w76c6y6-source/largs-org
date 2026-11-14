@@ -249,6 +249,56 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   background:var(--card);border:1px solid var(--sand);border-radius:10px;
   padding:14px 16px 12px;
 }
+/* Depth (14 Nov 2026). A soft shadow under every tile so the board reads as
+   cards on a table rather than boxes drawn on the page. */
+.tile{box-shadow:0 1px 2px rgba(23,51,58,.07),0 8px 20px -8px rgba(23,51,58,.22)}
+
+/* THE FRONT-PAGE BOARD (14 Nov 2026): two named rows and a slim row.
+   A row is a flex line, not a fixed five-column grid, so that it fills its
+   width whether it holds five tiles or four (Fuel can be absent). Between
+   601px and 899px a row wraps three-and-two; on a phone it is the usual two
+   columns and an odd last tile runs full width with its picture beside the
+   text. Under 360px the base .tiles rule gives one column, as before. */
+.tile-group{
+  font-family:"Spline Sans Mono",monospace;font-weight:400;font-size:.7rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--teal);
+  margin:18px 0 8px;
+}
+.today-strip + .tile-group,.kicker + .tile-group{margin-top:0}
+.tiles-row > .tile{min-width:0}
+.tiles-row .tile-hero{max-width:260px}
+@media (min-width:601px){
+  .tiles-row{display:flex;flex-wrap:wrap}
+  .tiles-row > .tile{flex:1 1 30%}
+}
+@media (min-width:900px){
+  .tiles-row{flex-wrap:nowrap}
+  .tiles-row > .tile{flex:1 1 0}
+}
+@media (max-width:600px) and (min-width:360px){
+  .tiles-row > .tile:last-child:nth-child(odd){grid-column:span 2}
+  .tiles-row > .tile:last-child:nth-child(odd) .tile-hero{float:right;width:42%;margin:0 0 4px 12px}
+  .tiles-row > .tile:last-child:nth-child(odd)::after{content:"";display:block;clear:both}
+}
+.tiles-slim{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+.tile-slim{
+  display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:center;
+  padding:8px 16px;
+}
+.tile-slim .tile-thumb{height:34px;width:auto;grid-row:span 2}
+.tiles-slim .tile-slim .label,.tiles-slim .tile-slim .sub{margin:0}
+@media (max-width:899px){
+  .tiles-slim{grid-template-columns:1fr;gap:8px}
+}
+/* A small lift under a mouse pointer, front page only. Not on touch screens,
+   and not for anyone who has asked for reduced motion. */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .tiles-row > .tile,.tiles-slim > .tile{transition:transform .15s ease,box-shadow .15s ease}
+  .tiles-row > .tile:hover,.tiles-slim > .tile:hover{
+    transform:translateY(-3px);
+    box-shadow:0 2px 4px rgba(23,51,58,.08),0 16px 28px -10px rgba(23,51,58,.30);
+  }
+}
 .tile .label{
   font-family:"Spline Sans Mono",monospace;font-size:.68rem;
   letter-spacing:.18em;text-transform:uppercase;color:var(--muted);

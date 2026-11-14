@@ -36,7 +36,15 @@ hideHeading: true
   {% else %}
   <div class="kicker"><span class="stamp">{{ stampText }}</span></div>
   {% endif %}
-  <div class="tiles">
+  {# THE BOARD, 14 Nov 2026. Two named rows of five and a slim row of three.
+     "Getting about" is what people check before leaving the house; "The
+     water and the sky" is the rest. The three tiles that are only a link
+     (webcam, Waverley, overhead) sit in a slim row so they no longer leave
+     a ragged third row. Fuel can be absent (see its comment); the row then
+     holds four tiles and they share the width. The layout is in site.css
+     under .tiles-row and .tiles-slim. Each tile's own notes are unchanged. #}
+  <h2 class="tile-group">Getting about</h2>
+  <div class="tiles tiles-row">
 
     <div class="tile">
       <div class="label">Weather
@@ -61,6 +69,122 @@ hideHeading: true
       <div class="figure">—</div>
       <div class="sub">Live feed not fetched yet</div>
       {% endif %}
+    </div>
+
+    {# Bins hero v3 — the pair follows the week, and the conditional bin says so
+       out loud. The coloured week is town-wide — bins.cjs verified the whole
+       town runs one phase — so the main bin needs no qualifier at all; brown
+       is the fortnightly half, so it names the calendar. Only the conditional
+       bin is labelled: a bare bin beside a labelled one reads as the
+       unconditional one, and at this tile's real width (about 194px on the
+       board, 164px on a phone) two captions cannot both be legible and
+       separated. Shrinking them to fit would undo the reason the coloured
+       bins exist. The sub-line answers the question the label raises,
+       because most people do not know their calendar letter.
+
+       The labels are aria-hidden and the alt text carries the same statement
+       as one sentence: two floating fragments read aloud, out of order and
+       out of context, would be worse than useless. This hero states a fact
+       rather than decorating one, so its alt says what it means.
+
+       Festive weeks assert no colour: ink bin, no labels. #}
+    <div class="tile">
+      <div class="label">Bins this week</div>
+      {% if bins.current.note %}
+      <img class="tile-hero" src="/assets/img/bins-ink.png"
+           alt="Silhouette of a dustbin" width="560" height="420"
+           loading="lazy" decoding="async">
+      <div class="figure">Dates move</div>
+      <div class="sub">Festive collections this week · <a href="/bins/">bin days →</a></div>
+      {% else %}
+      <img class="tile-hero" src="/assets/img/bins-{{ bins.current.colour }}-brown.png"
+           alt="Two dustbins at the kerb: {{ bins.current.name | lower }} for every street this week, brown for {{ bins.current.brownCalendar }} streets only"
+           width="720" height="420" loading="lazy" decoding="async">
+      <div class="bin-labels" aria-hidden="true">
+        <span class="bin-label at-brown">{{ bins.current.brownCalendar }} only</span>
+      </div>
+      <div class="figure">{{ bins.current.name }}</div>
+      <div class="sub">Not sure which calendar? · <a href="/bins/">bin days →</a></div>
+      {% endif %}
+    </div>
+
+    {% set rw = today.roadworks %}
+    <div class="tile">
+      <div class="label">Roadworks
+        {% if rw.ok %}<span class="badge daily">daily</span>{% else %}<span class="badge sample">sample</span>{% endif %}
+      </div>
+      <img class="tile-hero" src="/assets/img/roadworks.png"
+           alt="Silhouette of a road worker leaning on a shovel" width="720" height="420"
+           loading="lazy" decoding="async">
+      {# No example works here any more. With twenty active, naming one is
+         arbitrary -- it was only ever the first in the list -- and it read
+         as THE roadworks rather than one of twenty. The sign says what the
+         tile is, the figure says how many, the page has the detail. #}
+      {% if rw.ok %}
+      <div class="figure">{% if rw.count == 0 %}None{% else %}{{ rw.count }} active{% endif %}</div>
+      {% else %}
+      <div class="figure">1 active</div>
+      {% endif %}
+      <div class="sub"><a href="/roadworks/">see on map →</a></div>
+    </div>
+
+    {# Buses — McGill's timetable now, Stagecoach's 585 to follow. No figure
+       on purpose: "every 15 min" is true on a weekday until 16:30 and false
+       on a Sunday or after tea, and "next" needs the clock, which lives on
+       /buses/. So this tile is static, like everything on the board, and
+       the page does the computing. Hero: bus.png, Alison's pipeline.
+       Data notes in scripts/fetch-data.mjs (buses section). #}
+    <div class="tile">
+      <div class="label">Buses <span class="badge timetable">timetable</span></div>
+      <img class="tile-hero" src="/assets/img/bus.png"
+           alt="Silhouette of a single-deck bus" width="720" height="420"
+           loading="lazy" decoding="async">
+      <div class="sub">Glasgow, Greenock, Paisley and every stop in town · <a href="/buses/">next buses →</a></div>
+    </div>
+
+    <div class="tile">
+      <div class="label">Trains to Glasgow</div>
+      <img class="tile-hero" src="/assets/img/train-2.png"
+           alt="Silhouette of a steam express locomotive" width="720" height="420"
+           loading="lazy" decoding="async">
+      {# CORRECTED 30 Aug 2026, reported by a resident within a day of the site
+         going up. It previously claimed two an hour, which is the
+         GLASGOW-ARDROSSAN CORRIDOR figure — two trains an hour run down the
+         coast and only one carries on to Largs. ScotRail's own timetable gives
+         one train per hour between Glasgow and Largs at core daytime and at
+         both peaks; their route page gives up to 18 a day between 06:35 and
+         22:53, which is hourly and slightly over.
+
+         A qualifier about evenings being thinner was drafted and dropped: the
+         only support was a 2024 newspaper summary, and 18 trains across 16
+         hours argues against it. The tile states the frequency it can stand
+         behind; anyone needing an actual time follows the live departures
+         link, which is authoritative in a way this line can never be.
+
+         This tile and the Cumbrae ferry are the only two on the board carrying
+         a hand-typed claim with no badge and no source. One of the two was
+         wrong. Treat the other as unverified until checked against CalMac. #}
+      <div class="figure compact">Usually hourly</div>
+      <div class="sub">Largs to Glasgow Central · <a href="{{ site.links.rail }}">live departures →</a></div>
+    </div>
+
+  </div>
+  <h2 class="tile-group">The water and the sky</h2>
+  <div class="tiles tiles-row">
+
+    <div class="tile">
+      <div class="label">Cumbrae ferry</div>
+      <img class="tile-hero" src="/assets/img/ferry-2.png"
+           alt="Silhouette of a Clyde ferry under way" width="720" height="420"
+           loading="lazy" decoding="async">
+      {# The frequency comes from src/_data/ferry.cjs, a date-bounded table
+         read off CalMac's timetable PDFs, so the summer/winter flip is
+         automatic and a lapsed table says "See timetable" rather than
+         carrying an old figure (3 Nov 2026: the hand-written "every 20 min"
+         had outlived the summer timetable by two weeks). Add each new
+         timetable there as CalMac publishes it. #}
+      <div class="figure compact">{{ ferry.figure }}</div>
+      <div class="sub">Largs to Cumbrae Slip · {{ ferry.detail }} · <a href="{{ site.links.calmacTimetable }}">timetable →</a> · <a href="{{ site.links.calmacStatus }}">live status →</a></div>
     </div>
 
     {% set ev = today.tides.events or [] %}
@@ -156,120 +280,6 @@ hideHeading: true
       {% endif %}
     </div>
 
-    <div class="tile">
-      <div class="label">Cumbrae ferry</div>
-      <img class="tile-hero" src="/assets/img/ferry-2.png"
-           alt="Silhouette of a Clyde ferry under way" width="720" height="420"
-           loading="lazy" decoding="async">
-      {# The frequency comes from src/_data/ferry.cjs, a date-bounded table
-         read off CalMac's timetable PDFs, so the summer/winter flip is
-         automatic and a lapsed table says "See timetable" rather than
-         carrying an old figure (3 Nov 2026: the hand-written "every 20 min"
-         had outlived the summer timetable by two weeks). Add each new
-         timetable there as CalMac publishes it. #}
-      <div class="figure compact">{{ ferry.figure }}</div>
-      <div class="sub">Largs to Cumbrae Slip · {{ ferry.detail }} · <a href="{{ site.links.calmacTimetable }}">timetable →</a> · <a href="{{ site.links.calmacStatus }}">live status →</a></div>
-    </div>
-
-    {# Harbour webcam — CMAL's camera at the Largs ferry slip. CMAL own
-       the harbour; CalMac only run the ferry. We LINK to CMAL's page and
-       never embed the Twitch player: it needs Twitch cookies and scripts,
-       and this page carries none. Not labelled "live" — the stream can
-       sit minutes behind, and its burned-in clock is only as good as the
-       encoder's. Courtesy email to webcams@cmassets.co.uk, Sep 2026
-       (also asked about a periodic still frame and the pier tide gauge). #}
-    <div class="tile">
-      <div class="label">Harbour webcam</div>
-      <img class="tile-hero" src="/assets/img/webcam.png"
-           alt="Silhouette of a webcam on a stand" width="720" height="420"
-           loading="lazy" decoding="async">
-      <div class="sub">CMAL's camera at the ferry slip · <a href="{{ site.links.cmalWebcam }}" target="_blank" rel="noopener">watch the harbour →</a></div>
-    </div>
-
-    {# PS Waverley — the last seagoing paddle steamer, a Clyde icon.
-       Permanent tile: the link answers "where is she right now?"
-       wherever she is — Firth, Thames or south coast — so no location
-       is claimed and no season gate is needed. Identity verified from
-       her VesselFinder page, 12 Aug 2026: MMSI 232001540. #}
-    <div class="tile">
-      <div class="label">PS Waverley <span class="badge timetable">1946</span></div>
-      <img class="tile-hero" src="/assets/img/waverley.png"
-           alt="Silhouette of the paddle steamer Waverley"
-           width="720" height="238" loading="lazy" decoding="async">
-      <div class="sub">The last seagoing paddle steamer, still sailing · <a href="{{ waverley.trackerUrl }}" target="_blank" rel="noopener">where is she right now? →</a></div>
-    </div>
-
-    {# Overhead — live aircraft within 20 nm, the Waverley's sibling
-       tile: her 1946 silhouette and a DC-3-era propliner, the aircraft
-       that shared her sky. Page and data notes in src/overhead.njk. #}
-    <div class="tile">
-      <div class="label">Overhead <span class="badge live">live</span></div>
-      <img class="tile-hero" src="/assets/img/overhead.png"
-           alt="Silhouette of a vintage propeller airliner"
-           width="720" height="238" loading="lazy" decoding="async">
-      <div class="sub">Glasgow, Prestwick and the transatlantics · <a href="/overhead/">what's up there right now? →</a></div>
-    </div>
-
-    <div class="tile">
-      <div class="label">Trains to Glasgow</div>
-      <img class="tile-hero" src="/assets/img/train-2.png"
-           alt="Silhouette of a steam express locomotive" width="720" height="420"
-           loading="lazy" decoding="async">
-      {# CORRECTED 30 Aug 2026, reported by a resident within a day of the site
-         going up. It previously claimed two an hour, which is the
-         GLASGOW-ARDROSSAN CORRIDOR figure — two trains an hour run down the
-         coast and only one carries on to Largs. ScotRail's own timetable gives
-         one train per hour between Glasgow and Largs at core daytime and at
-         both peaks; their route page gives up to 18 a day between 06:35 and
-         22:53, which is hourly and slightly over.
-
-         A qualifier about evenings being thinner was drafted and dropped: the
-         only support was a 2024 newspaper summary, and 18 trains across 16
-         hours argues against it. The tile states the frequency it can stand
-         behind; anyone needing an actual time follows the live departures
-         link, which is authoritative in a way this line can never be.
-
-         This tile and the Cumbrae ferry are the only two on the board carrying
-         a hand-typed claim with no badge and no source. One of the two was
-         wrong. Treat the other as unverified until checked against CalMac. #}
-      <div class="figure compact">Usually hourly</div>
-      <div class="sub">Largs to Glasgow Central · <a href="{{ site.links.rail }}">live departures →</a></div>
-    </div>
-
-    {# Buses — McGill's timetable now, Stagecoach's 585 to follow. No figure
-       on purpose: "every 15 min" is true on a weekday until 16:30 and false
-       on a Sunday or after tea, and "next" needs the clock, which lives on
-       /buses/. So this tile is static, like everything on the board, and
-       the page does the computing. Hero: bus.png, Alison's pipeline.
-       Data notes in scripts/fetch-data.mjs (buses section). #}
-    <div class="tile">
-      <div class="label">Buses <span class="badge timetable">timetable</span></div>
-      <img class="tile-hero" src="/assets/img/bus.png"
-           alt="Silhouette of a single-deck bus" width="720" height="420"
-           loading="lazy" decoding="async">
-      <div class="sub">Glasgow, Greenock, Paisley and every stop in town · <a href="/buses/">next buses →</a></div>
-    </div>
-
-    {% set rw = today.roadworks %}
-    <div class="tile">
-      <div class="label">Roadworks
-        {% if rw.ok %}<span class="badge daily">daily</span>{% else %}<span class="badge sample">sample</span>{% endif %}
-      </div>
-      <img class="tile-hero" src="/assets/img/roadworks.png"
-           alt="Silhouette of a road worker leaning on a shovel" width="720" height="420"
-           loading="lazy" decoding="async">
-      {# No example works here any more. With twenty active, naming one is
-         arbitrary -- it was only ever the first in the list -- and it read
-         as THE roadworks rather than one of twenty. The sign says what the
-         tile is, the figure says how many, the page has the detail. #}
-      {% if rw.ok %}
-      <div class="figure">{% if rw.count == 0 %}None{% else %}{{ rw.count }} active{% endif %}</div>
-      {% else %}
-      <div class="figure">1 active</div>
-      {% endif %}
-      <div class="sub"><a href="/roadworks/">see on map →</a></div>
-    </div>
-
     {# Fuel. A door, not a gauge.
 
        Deliberately NO price here. One number cannot answer its own
@@ -299,41 +309,40 @@ hideHeading: true
     </div>
     {% endif %}
 
-    {# Bins hero v3 — the pair follows the week, and the conditional bin says so
-       out loud. The coloured week is town-wide — bins.cjs verified the whole
-       town runs one phase — so the main bin needs no qualifier at all; brown
-       is the fortnightly half, so it names the calendar. Only the conditional
-       bin is labelled: a bare bin beside a labelled one reads as the
-       unconditional one, and at this tile's real width (about 194px on the
-       board, 164px on a phone) two captions cannot both be legible and
-       separated. Shrinking them to fit would undo the reason the coloured
-       bins exist. The sub-line answers the question the label raises,
-       because most people do not know their calendar letter.
+  </div>
+  <div class="tiles-slim">
 
-       The labels are aria-hidden and the alt text carries the same statement
-       as one sentence: two floating fragments read aloud, out of order and
-       out of context, would be worse than useless. This hero states a fact
-       rather than decorating one, so its alt says what it means.
+    {# Harbour webcam — CMAL's camera at the Largs ferry slip. CMAL own
+       the harbour; CalMac only run the ferry. We LINK to CMAL's page and
+       never embed the Twitch player: it needs Twitch cookies and scripts,
+       and this page carries none. Not labelled "live" — the stream can
+       sit minutes behind, and its burned-in clock is only as good as the
+       encoder's. Courtesy email to webcams@cmassets.co.uk, Sep 2026
+       (also asked about a periodic still frame and the pier tide gauge). #}
+    <div class="tile tile-slim">
+      <img class="tile-thumb" src="/assets/img/webcam.png" alt="" width="720" height="420" loading="lazy" decoding="async">
+      <div class="label">Harbour webcam</div>
+      <div class="sub"><a href="{{ site.links.cmalWebcam }}" target="_blank" rel="noopener">watch the harbour →</a></div>
+    </div>
 
-       Festive weeks assert no colour: ink bin, no labels. #}
-    <div class="tile">
-      <div class="label">Bins this week</div>
-      {% if bins.current.note %}
-      <img class="tile-hero" src="/assets/img/bins-ink.png"
-           alt="Silhouette of a dustbin" width="560" height="420"
-           loading="lazy" decoding="async">
-      <div class="figure">Dates move</div>
-      <div class="sub">Festive collections this week · <a href="/bins/">bin days →</a></div>
-      {% else %}
-      <img class="tile-hero" src="/assets/img/bins-{{ bins.current.colour }}-brown.png"
-           alt="Two dustbins at the kerb: {{ bins.current.name | lower }} for every street this week, brown for {{ bins.current.brownCalendar }} streets only"
-           width="720" height="420" loading="lazy" decoding="async">
-      <div class="bin-labels" aria-hidden="true">
-        <span class="bin-label at-brown">{{ bins.current.brownCalendar }} only</span>
-      </div>
-      <div class="figure">{{ bins.current.name }}</div>
-      <div class="sub">Not sure which calendar? · <a href="/bins/">bin days →</a></div>
-      {% endif %}
+    {# PS Waverley — the last seagoing paddle steamer, a Clyde icon.
+       Permanent tile: the link answers "where is she right now?"
+       wherever she is — Firth, Thames or south coast — so no location
+       is claimed and no season gate is needed. Identity verified from
+       her VesselFinder page, 12 Aug 2026: MMSI 232001540. #}
+    <div class="tile tile-slim">
+      <img class="tile-thumb" src="/assets/img/waverley.png" alt="" width="720" height="238" loading="lazy" decoding="async">
+      <div class="label">PS Waverley</div>
+      <div class="sub"><a href="{{ waverley.trackerUrl }}" target="_blank" rel="noopener">where is she right now? →</a></div>
+    </div>
+
+    {# Overhead — live aircraft within 20 nm, the Waverley's sibling
+       tile: her 1946 silhouette and a DC-3-era propliner, the aircraft
+       that shared her sky. Page and data notes in src/overhead.njk. #}
+    <div class="tile tile-slim">
+      <img class="tile-thumb" src="/assets/img/overhead.png" alt="" width="720" height="238" loading="lazy" decoding="async">
+      <div class="label">Overhead</div>
+      <div class="sub"><a href="/overhead/">what's up there right now? →</a></div>
     </div>
 
   </div>
