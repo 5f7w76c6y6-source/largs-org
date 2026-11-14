@@ -277,15 +277,19 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 }
 @media (max-width:600px) and (min-width:360px){
   .tiles-row > .tile:last-child:nth-child(odd){grid-column:span 2}
-  .tiles-row > .tile:last-child:nth-child(odd) .tile-hero{float:right;width:42%;margin:0 0 4px 12px}
+  /* Capped by height, not width (14 Nov 2026): at 42% of the tile the
+     picture was about 77px tall beside two lines of text. */
+  .tiles-row > .tile:last-child:nth-child(odd) .tile-hero{float:right;width:auto;height:56px;max-width:45%;object-fit:contain;margin:0 0 4px 12px}
   .tiles-row > .tile:last-child:nth-child(odd)::after{content:"";display:block;clear:both}
 }
 .tiles-slim{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
 .tile-slim{
-  display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:center;
+  /* A fixed picture column (14 Nov 2026) so the three names line up: the
+     webcam is much narrower than the steamer and the aeroplane. */
+  display:grid;grid-template-columns:104px 1fr;column-gap:14px;align-items:center;
   padding:8px 16px;
 }
-.tile-slim .tile-thumb{height:34px;width:auto;grid-row:span 2}
+.tile-slim .tile-thumb{max-height:34px;max-width:104px;height:auto;width:auto;grid-row:span 2;justify-self:center}
 .tiles-slim .tile-slim .label,.tiles-slim .tile-slim .sub{margin:0}
 @media (max-width:899px){
   .tiles-slim{grid-template-columns:1fr;gap:8px}
