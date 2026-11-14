@@ -36,6 +36,12 @@ hideHeading: true
   {% else %}
   <div class="kicker"><span class="stamp">{{ stampText }}</span></div>
   {% endif %}
+  {# SIX AND FOUR (14 Nov 2026, later the same day): Fuel moved up to end
+     "Getting about", so the rows hold six and four. Even numbers mean no
+     tile is left on its own on a phone, where an odd last tile had to be
+     squashed into a short full-width strip -- and Trains and Fuel were the
+     two that got squashed. If Fuel is absent the first row has five and
+     Trains takes that strip again. #}
   {# THE BOARD, 14 Nov 2026. Two named rows of five and a slim row of three.
      "Getting about" is what people check before leaving the house; "The
      water and the sky" is the rest. The three tiles that are only a link
@@ -43,8 +49,10 @@ hideHeading: true
      a ragged third row. Fuel can be absent (see its comment); the row then
      holds four tiles and they share the width. The layout is in site.css
      under .tiles-row and .tiles-slim. Each tile's own notes are unchanged. #}
+  <div class="board-groups">
+  <div class="board-group">
   <h2 class="tile-group">Getting about</h2>
-  <div class="tiles tiles-row">
+  <div class="tiles tiles-row tiles-six">
 
     <div class="tile">
       <div class="label">Weather
@@ -168,9 +176,40 @@ hideHeading: true
       <div class="sub">Largs to Glasgow Central · <a href="{{ site.links.rail }}">live departures →</a></div>
     </div>
 
+    {# Fuel. A door, not a gauge.
+
+       Deliberately NO price here. One number cannot answer its own
+       question -- "157.9p" prompts "is that good?" and does not say, so
+       the reader has to tap anyway and the number bought nothing. Two
+       numbers would answer it, but a range on the most-visited page,
+       every day, is the homepage passing daily comment on the only
+       forecourt in the town.
+
+       No label icon, because the tile body DRAWS its subject -- the same
+       rule that retired the weather cloud, the tide wave and the grey
+       bin. fuel() stays in tile-icons.njk for any other surface.
+
+       No status dot either: the dot answers "is this running normally",
+       and fuel has no such state, same as sea temperature and bins. The
+       badge is `sample` while the page runs on the frozen 23 August
+       pull, and flips on its own when `fixture` goes false. #}
+    {% if fuel and fuel.ok %}
+    <div class="tile">
+      <div class="label">Fuel
+        {% if fuel.fixture %}<span class="badge sample">sample</span>{% else %}<span class="badge daily">daily</span>{% endif %}
+      </div>
+      <img class="tile-hero" src="/assets/img/fuel-2.png"
+           alt="Silhouette of a forecourt fuel pump"
+           width="560" height="420" loading="lazy" decoding="async">
+      <div class="sub"><a href="/fuel/">local fuel prices →</a></div>
+    </div>
+    {% endif %}
+
   </div>
+  </div>
+  <div class="board-group">
   <h2 class="tile-group">The water and the sky</h2>
-  <div class="tiles tiles-row">
+  <div class="tiles tiles-row tiles-four">
 
     <div class="tile">
       <div class="label">Cumbrae ferry</div>
@@ -280,35 +319,8 @@ hideHeading: true
       {% endif %}
     </div>
 
-    {# Fuel. A door, not a gauge.
-
-       Deliberately NO price here. One number cannot answer its own
-       question -- "157.9p" prompts "is that good?" and does not say, so
-       the reader has to tap anyway and the number bought nothing. Two
-       numbers would answer it, but a range on the most-visited page,
-       every day, is the homepage passing daily comment on the only
-       forecourt in the town.
-
-       No label icon, because the tile body DRAWS its subject -- the same
-       rule that retired the weather cloud, the tide wave and the grey
-       bin. fuel() stays in tile-icons.njk for any other surface.
-
-       No status dot either: the dot answers "is this running normally",
-       and fuel has no such state, same as sea temperature and bins. The
-       badge is `sample` while the page runs on the frozen 23 August
-       pull, and flips on its own when `fixture` goes false. #}
-    {% if fuel and fuel.ok %}
-    <div class="tile">
-      <div class="label">Fuel
-        {% if fuel.fixture %}<span class="badge sample">sample</span>{% else %}<span class="badge daily">daily</span>{% endif %}
-      </div>
-      <img class="tile-hero" src="/assets/img/fuel-2.png"
-           alt="Silhouette of a forecourt fuel pump"
-           width="560" height="420" loading="lazy" decoding="async">
-      <div class="sub"><a href="/fuel/">local fuel prices →</a></div>
-    </div>
-    {% endif %}
-
+  </div>
+  </div>
   </div>
   <div class="tiles-slim">
 

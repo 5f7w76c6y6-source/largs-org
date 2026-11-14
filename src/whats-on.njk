@@ -71,7 +71,9 @@ subtitle: Events in and around the town, every one checked before it goes up.
       <div class="event-body">
         <h3>{{ e.title }}</h3>
         <div class="meta">{% if e.onNow %}<span class="on-now">On now</span> · {% endif %}{{ e.venue | upper }} · {{ e.time | upper }}</div>
-        <p>{{ e.blurb }}</p>
+        {# Over 150 characters, a phone shows three lines and "More" (site.css,
+           14 Nov 2026). Shorter blurbs are printed plain and never cut. #}
+        {% if (e.blurb | length) > 150 %}<p><label class="clamp"><input type="checkbox" class="clamp-toggle visually-hidden" aria-label="Show all of this description"><span class="clamp-text">{{ e.blurb }}</span><span class="clamp-more" aria-hidden="true"></span></label></p>{% else %}<p>{{ e.blurb }}</p>{% endif %}
         {% if e.url %}<a class="event-link" href="{{ e.url }}">More info →</a>{% endif %}
       </div>
     </div>

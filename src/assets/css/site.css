@@ -1627,3 +1627,96 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .vote-by{color:var(--muted)}
 .vote-src{margin:0;font-size:.92rem}
 @media (max-width:640px){.vote-how{grid-template-columns:1fr}.vote-list{columns:1}}
+
+/* ==== PHONE POLISH (14 Nov 2026) ====================================
+   Four changes agreed from a before-and-after mock at phone width. This
+   block sits last in the file on purpose: several rules have the same
+   weight as the ones they adjust and win by coming later. */
+
+/* The tiles' shadow on the other front-page cards, at every width. */
+.ontoday,.today-link-card{box-shadow:0 1px 2px rgba(23,51,58,.07),0 8px 20px -8px rgba(23,51,58,.22)}
+
+/* The description control (What's on). Hidden above 600px, where nothing
+   is cut; the label is then just text. */
+.clamp-more,.civic-more{display:none}
+
+@media (max-width:600px){
+  /* 1. NOTICE BAND. Text and the close button share the first line; "More"
+     and the button share the second. Only a notice that carries the
+     checkbox (see civic-band.njk) is cut to two lines. */
+  .civic-band-inner{align-items:flex-start;gap:6px 12px;padding-top:.55rem;padding-bottom:.55rem}
+  .civic-band-text{order:1;flex:1 1 calc(100% - 1.8rem - 12px);min-width:0;font-size:.95rem;line-height:1.4}
+  .civic-band-close{order:2;width:1.8rem;height:1.8rem}
+  .civic-more{order:3;display:block;margin-right:auto;font-weight:700;font-size:.9rem;color:var(--teal);padding:.25rem 0;cursor:pointer}
+  .civic-more::after{content:"More \25BE"}
+  .civic-band-btn{order:4;margin-left:auto;padding:.28rem .8rem;font-size:.9rem}
+  .civic-toggle:not(:checked) ~ .civic-band-text{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .civic-toggle:checked ~ .civic-more::after{content:"Less \25B4"}
+  .civic-toggle:focus-visible ~ .civic-more{outline:2px solid var(--teal);outline-offset:2px}
+
+  /* 2. WHAT'S ON. Every listing is the same card, so a card confers no rank
+     (see the note on featured cards in whats-on.njk). The date or time is
+     a line of its own above the picture and never over it. The picture
+     keeps ONE BOX FOR EVERY LISTING, as before -- a square, cropped to
+     fit -- but the box is now the width of the card rather than 190px, so
+     wording on a poster is easier to read. Still a column, not a row. */
+  .event-list .event,.regular{
+    display:block;background:var(--card);border:1px solid var(--sand);border-radius:12px;
+    padding:12px 14px 14px;margin:0 0 12px;
+    box-shadow:0 1px 2px rgba(23,51,58,.07),0 8px 20px -8px rgba(23,51,58,.22);
+  }
+  .event-list .event:last-of-type,.regular:last-of-type{border-bottom:1px solid var(--sand)}
+  .event-list .event .when,.regular .regular-time{
+    display:inline-flex;align-items:baseline;gap:7px;width:auto;height:auto;
+    padding:4px 11px 5px;margin:0 0 10px;
+  }
+  .event-list .event .when .yr{display:inline;margin:0}
+  .regular .regular-time{display:inline-block;font-size:.8rem}
+  .event-list .event-img,.regular .event-img{
+    /* Three-quarters of the card, not all of it: at full width one listing
+       filled a phone screen and a group's logo dominated its card. */
+    display:block;width:75%;height:auto;aspect-ratio:1/1;object-fit:cover;margin:0 0 10px;
+  }
+  .event-list .event h3,.regular .regular-title{font-size:1.14rem}
+  /* Three lines and "More", for the blurbs that carry the checkbox. */
+  .clamp{display:block;cursor:pointer}
+  .clamp-toggle:not(:checked) ~ .clamp-text{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .clamp-more{display:block;font-weight:700;font-size:.9rem;color:var(--teal);margin-top:2px}
+  .clamp-more::after{content:"Read more \25BE"}
+  .clamp-toggle:checked ~ .clamp-more::after{content:"Show less \25B4"}
+  .clamp-toggle:focus-visible ~ .clamp-more{outline:2px solid var(--teal);outline-offset:2px}
+
+  /* 3. TILE BADGES on the same line as the tile's name. In a half-width
+     tile "Roadworks" and "Daily" did not fit at the old sizes and the badge
+     dropped to a second line, leaving the tile tops uneven. */
+  .tile .label{flex-wrap:nowrap;white-space:nowrap;letter-spacing:.12em;font-size:.64rem;gap:5px}
+  .tile .badge{letter-spacing:.08em;padding:1px 6px;font-size:.56rem}
+
+  /* 4. The train is a small drawing in a large canvas, so at the height
+     that suits the fuel pump it looked lost in the full-width tile. */
+  .tiles-row > .tile:last-child:nth-child(odd) .tile-hero[src$="/train-2.png"]{height:86px;margin-left:8px;transform:translateX(34px) scale(1.5);transform-origin:right center}
+}
+
+/* ==== SIX AND FOUR (14 Nov 2026) ====================================
+   "Getting about" holds six tiles and "The water and the sky" four (see
+   index.njk). Phone: two across, as before, and now no tile is left over.
+   601-899px: three across and two across. From 900px the two groups sit
+   side by side, 3fr and 2fr, each in two equal rows -- five tiles by two,
+   every tile the width it was when the rows were five and five. Last in
+   the file on purpose: these rules win over .tiles-row's by coming later. */
+.board-group:first-child > .tile-group{margin-top:0}
+@media (min-width:601px){
+  .tiles-six,.tiles-four{display:grid;grid-auto-rows:1fr}
+  .tiles-six{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tiles-four{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (min-width:900px){
+  .board-groups{display:grid;grid-template-columns:3fr 2fr;gap:12px}
+  .board-group{display:flex;flex-direction:column;min-width:0}
+  .board-group > .tile-group{margin-top:0}
+  .board-group > .tiles-row{flex:1}
+}
+/* The train drawing fills only about half of its canvas, so it looked
+   small beside the bus and the roadworks figure. Enlarged in place; the
+   extra is empty canvas and covers nothing. */
+.tile-hero[src$="/train-2.png"]{transform:scale(1.35)}
