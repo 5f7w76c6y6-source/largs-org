@@ -1744,3 +1744,25 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 @media (max-width:600px){
   .issue-summary .clamp-toggle:not(:checked) ~ .clamp-text{-webkit-line-clamp:5}
 }
+
+/* ==== ROADWORKS ROWS AS CARDS (15 Nov 2026) =========================
+   The list of works was the last long list still drawn as ruled rows. It
+   now uses the shared card. Last in the file on purpose: these rules have
+   the same weight as the .work-row rules above and win by coming later. */
+.work-row{
+  background:var(--card);border:1px solid var(--sand);border-radius:12px;
+  padding:13px 16px;margin:0 0 10px;align-items:flex-start;
+  box-shadow:0 1px 2px rgba(23,51,58,.07),0 8px 20px -8px rgba(23,51,58,.22);
+}
+.work-row:last-of-type{border-bottom:1px solid var(--sand)}
+/* One width for both labels, so every title starts at the same place. */
+.work-row .chip{min-width:6.6em;text-align:center;margin-top:2px}
+/* The details are a sentence, not a reading: set in the main face they wrap
+   cleanly, where the typewriter face broke raggedly on a phone. */
+.work-main .meta{font-family:"Alegreya Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:.93rem;line-height:1.45;margin-top:3px}
+.work-main .meta .map-link{white-space:nowrap}
+@media (max-width:600px){
+  /* The label on its own line; the title and details get the full width. */
+  .work-row{display:block;padding:12px 14px}
+  .work-row .chip{display:inline-block;margin:0 0 6px}
+}
