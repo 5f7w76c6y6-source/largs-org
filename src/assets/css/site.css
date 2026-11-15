@@ -1722,19 +1722,25 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .tile-hero[src$="/train-2.png"]{transform:scale(1.35)}
 
 /* ==== COUNCIL REGISTER FOLD (15 Nov 2026) ===========================
-   The same soft shadow as the other cards, at every width. */
+   AT EVERY WIDTH. First built for phones only; the desktop page was just
+   as wordy, so the same fold now applies everywhere. Three lines on a wide
+   screen, five on a phone (a wide line holds about twice as much). Only
+   records over 300 characters carry the control (see register.njk), and
+   three wide lines hold less than that, so a control never appears with
+   nothing behind it. */
 .issue{box-shadow:0 1px 2px rgba(23,51,58,.07),0 8px 20px -8px rgba(23,51,58,.22)}
-.hist-more{display:none}
+.issue-summary .clamp{display:block;cursor:pointer}
+.issue-summary .clamp-toggle:not(:checked) ~ .clamp-text{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.issue-summary .clamp-more{display:block;font-family:"Alegreya Sans",system-ui,sans-serif;font-weight:700;font-size:.9rem;color:var(--teal);margin-top:4px}
+.issue-summary .clamp-more::after{content:"Show less \25B4"}
+.issue-summary .clamp-toggle:not(:checked) ~ .clamp-more::after{content:"Read the full record \25BE"}
+.issue-summary .clamp-toggle:focus-visible ~ .clamp-more{outline:2px solid var(--teal);outline-offset:2px}
+.hist-more{display:block;font-family:"Alegreya Sans",system-ui,sans-serif;font-weight:700;font-size:.88rem;color:var(--teal);cursor:pointer}
+.hist-more::after{content:" \25BE"}
+.hist-toggle:checked ~ .hist-more::after{content:" \25B4"}
+.hist-toggle:not(:checked) ~ .hist-dates{display:none}
+.hist-toggle:checked ~ .hist-dates{display:block;margin-top:4px}
+.hist-toggle:focus-visible ~ .hist-more{outline:2px solid var(--teal);outline-offset:2px}
 @media (max-width:600px){
-  /* Five lines, not What's on's three: a record needs a little more to make
-     sense. The control's wording differs too. */
   .issue-summary .clamp-toggle:not(:checked) ~ .clamp-text{-webkit-line-clamp:5}
-  .issue-summary .clamp-toggle:not(:checked) ~ .clamp-more::after{content:"Read the full record \25BE"}
-  .issue-summary .clamp-more{font-family:"Alegreya Sans",system-ui,sans-serif;margin-top:4px}
-  .hist-more{display:block;font-family:"Alegreya Sans",system-ui,sans-serif;font-weight:700;font-size:.88rem;color:var(--teal);cursor:pointer}
-  .hist-more::after{content:" \25BE"}
-  .hist-toggle:checked ~ .hist-more::after{content:" \25B4"}
-  .hist-toggle:not(:checked) ~ .hist-dates{display:none}
-  .hist-toggle:checked ~ .hist-dates{display:block;margin-top:4px}
-  .hist-toggle:focus-visible ~ .hist-more{outline:2px solid var(--teal);outline-offset:2px}
 }

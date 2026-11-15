@@ -35,7 +35,8 @@
   </div>
 
   {# FOLDED ON A PHONE (15 Nov 2026). A record over 300 characters shows
-     five lines and "Read the full record" at 600px and under; site.css does
+     its first lines and "Read the full record" (five lines on a phone,
+     three on a wider screen, where a line holds more); site.css does
      the cutting, at the same length for every record, so the digest stays
      neutral: nothing is summarised, reworded or reordered, and the whole
      text is always in the page. A checkbox and its label, no script. Note
@@ -59,8 +60,8 @@
     written record, not necessarily what has happened since.</p>
     {% endif %}
     {% if item.alsoRecorded and item.alsoRecorded.length %}
-    {# On a phone the dates sit behind a one-line count (same checkbox
-       pattern); wider screens show the dates and hide the count. #}
+    {# The dates sit behind a one-line count at every width (same
+       checkbox pattern). #}
     <div class="issue-history"><input type="checkbox" class="hist-toggle visually-hidden" id="hist-{{ item.id }}" aria-label="Show the earlier meetings"><label class="hist-more" for="hist-{{ item.id }}" aria-hidden="true">Also recorded at {{ item.alsoRecorded.length }} earlier meeting{% if item.alsoRecorded.length != 1 %}s{% endif %}</label><span class="hist-dates">Also recorded {% for d in item.alsoRecorded %}{{ d | dateLong }}{% if not loop.last %}, {% endif %}{% endfor %}</span></div>
     {% endif %}
   </div>
