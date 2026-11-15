@@ -131,7 +131,8 @@ hideHeading: true
       {% if rw.ok %}
       <div class="figure">{% if rw.count == 0 %}None{% else %}{{ rw.count }} active{% endif %}</div>
       {% else %}
-      <div class="figure">1 active</div>
+      <div class="figure">—</div>
+      <div class="sub">Register not read at the last build</div>
       {% endif %}
       <div class="sub"><a href="/roadworks/">see on map →</a></div>
     </div>

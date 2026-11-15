@@ -2591,47 +2591,81 @@ async function loadFloods() {
 // Start from the previous build's data so a failed source degrades to
 // stale rather than blank.
 let out = { fetchedAt: null, weather: { ok: false }, tides: { ok: false, events: [] }, roadworks: { ok: false, items: [] }, overflows: { ok: false }, floods: { ok: false, largs: [] } };
-try {
-  out = { ...out, ...JSON.parse(await readFile(DATA_FILE, "utf8")) };
-} catch {
-  console.warn("today.json missing or unreadable — starting fresh");
+// "PREVIOUS" MUST MEAN THE LAST BUILD (15 Nov 2026). On the build server
+// every run starts from a clean checkout, so the today.json on disk is the
+// one committed to the repo months ago. Reading that as "the previous
+// value" put August's weather on the front page, badged live, the first
+// morning the weather fetch failed. The last good file is therefore kept
+// in .cache/ (carried between runs by actions/cache) and read from there;
+// the committed file is only the fallback for a first run or a laptop.
+const LAST_GOOD_FILE = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", ".cache", "today-last.json");
+let base = null;
+try { base = JSON.parse(await readFile(LAST_GOOD_FILE, "utf8")); } catch { /* no cache yet */ }
+if (!base) {
+  try { base = JSON.parse(await readFile(DATA_FILE, "utf8")); }
+  catch { console.warn("today.json missing or unreadable — starting fresh"); }
+}
+if (base) out = { ...out, ...base };
+
+// A kept value is only honest while it is recent. Each source is stamped
+// with `at` when it is fetched; on failure it survives only inside its
+// limit, and anything older (or unstamped, like the committed sample) is
+// replaced by ok:false so its tile shows a dash rather than a stale figure.
+const KEEP_MINUTES = { weather: 90, tides: 180, overflows: 120, roadworks: 36 * 60 };
+const EMPTY = { weather: { ok: false }, tides: { ok: false, events: [] }, roadworks: { ok: false, items: [] }, overflows: { ok: false } };
+function stamp(key) { out[key] = { ...out[key], at: new Date().toISOString() }; }
+function keepIfRecent(key, error) {
+  const at = out[key] && out[key].at ? Date.parse(out[key].at) : NaN;
+  const ageMin = Number.isFinite(at) ? (Date.now() - at) / 60000 : Infinity;
+  if (ageMin <= KEEP_MINUTES[key]) {
+    console.warn(`${key}: keeping the reading from ${Math.round(ageMin)} min ago — ${error.message}`);
+  } else {
+    out[key] = { ...EMPTY[key], failedAt: new Date().toISOString() };
+    console.warn(`${key}: no recent reading to keep, showing none — ${error.message}`);
+  }
 }
 
 let anySuccess = false;
 
 try {
-  out.weather = await loadWeather();
+  // Tried twice: one refused request should not blank the tile.
+  try { out.weather = await loadWeather(); }
+  catch { await new Promise((r) => setTimeout(r, 3000)); out.weather = await loadWeather(); }
+  stamp("weather");
   anySuccess = true;
   console.log(`weather: ${out.weather.tempC}°C, ${out.weather.description}`);
 } catch (error) {
-  console.warn(`weather: keeping previous value — ${error.message}`);
+  keepIfRecent("weather", error);
 }
 
 try {
   out.tides = await loadTides();
+  stamp("tides");
   anySuccess = true;
   const label = out.tides.source === "ukho" ? `UKHO station "${out.tides.station}"` : "ocean model";
   console.log(`tides: ${label} — next ${out.tides.events[0].type.toLowerCase()} at ${out.tides.events[0].time}`);
 } catch (error) {
-  console.warn(`tides: keeping previous value — ${error.message}`);
+  keepIfRecent("tides", error);
 }
 
 try {
   out.roadworks = await loadRoadworksDisruptions();
+  stamp("roadworks");
   anySuccess = true;
   console.log(`roadworks: ${out.roadworks.count} active, ${out.roadworks.plannedCount ?? 0} planned in Largs (register data to ${out.roadworks.dataDate})`);
   if (out.roadworks.a760) console.log(`roadworks: ${out.roadworks.a760.activeCount} active, ${out.roadworks.a760.plannedCount} planned on the A760 (Haylie Brae road)`);
 } catch (error) {
-  console.warn(`roadworks: keeping previous value — ${error.message}`);
+  keepIfRecent("roadworks", error);
 }
 
 try {
   out.overflows = await loadOverflows();
+  stamp("overflows");
   anySuccess = true;
   const o = out.overflows;
   console.log(`overflows: ${o.active.length} overflowing, ${o.recent.length} in the last 48 h, ${o.noData} of ${o.assets.length} not reporting (Scottish Water ${o.updated})`);
 } catch (error) {
-  console.warn(`overflows: keeping previous value — ${error.message}`);
+  keepIfRecent("overflows", error);
 }
 
 try {
@@ -2671,4 +2705,10 @@ try {
 if (anySuccess) out.fetchedAt = new Date().toISOString();
 
 await writeFile(DATA_FILE, JSON.stringify(out, null, 2) + "\n");
+try {
+  await mkdir(path.dirname(LAST_GOOD_FILE), { recursive: true });
+  await writeFile(LAST_GOOD_FILE, JSON.stringify(out));
+} catch (error) {
+  console.warn(`could not save the last good data — ${error.message}`);
+}
 console.log(anySuccess ? "today.json updated" : "no live data reachable — previous values kept");
