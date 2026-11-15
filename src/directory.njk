@@ -179,4 +179,26 @@ eleventyComputed:
   @media (max-width:600px){
     .directory-list{--logo:56px}
   }
+
+  /* ENTRIES AS CARDS (15 Nov 2026). The entries ran together down the page
+     with very large underlined names. Each is now a card, the same one as
+     What's on and the council register. EVERY entry gets the identical card
+     and the identical logo box, with or without a logo, so the card confers
+     no rank -- the same test the logo trial above has to pass. */
+  .directory-item{
+    background:var(--card);border:1px solid var(--sand);border-radius:12px;
+    padding:14px 18px;margin:0 0 12px;
+    box-shadow:0 1px 2px rgba(23,51,58,.07),0 8px 20px -8px rgba(23,51,58,.22);
+  }
+  .directory-item .directory-name{font-size:1.35rem;line-height:1.25;margin:0}
+  .directory-item .directory-name a{text-decoration-thickness:1px;text-underline-offset:3px}
+  .directory-item .directory-body > :first-child{margin-top:0}
+  .directory-item .directory-body > :last-child{margin-bottom:0}
+  @media (max-width:600px){
+    /* On a phone the text uses the full width of the card. The card now
+       makes each entry one block, which is what the indent was for. */
+    .directory-item{padding:12px 14px}
+    .directory-item .directory-name{font-size:1.15rem}
+    .directory-item .directory-body{margin-left:0;margin-top:8px}
+  }
 </style>

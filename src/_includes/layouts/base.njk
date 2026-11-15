@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% if pageTitle %}{{ pageTitle }}{% elif title %}{{ title }} — Largs{% else %}{{ site.title }}{% endif %}</title>
+<title>{% if pageTitle %}{{ pageTitle }}{% elif title %}{{ title }}{% if not ("Largs" in title) %} — Largs{% endif %}{% else %}{{ site.title }}{% endif %}</title>
 {# Fonts are served from this domain, not Google's. Two reasons: a
    request to fonts.gstatic.com hands a reader's IP address to a third
    party to load a typeface, which this site should not do; and it cost
@@ -34,7 +34,7 @@
    search snippet than anything written for a search engine, so it is
    reused rather than duplicated. Set `description` in front matter only
    where a page wants different words in results than on the page. #}
-{%- set metaTitle = title + " — Largs" if title else site.title -%}
+{%- set metaTitle = (title if ("Largs" in title) else title + " — Largs") if title else site.title -%}
 {#- pageTitle: a full title used exactly as written (no " — Largs" added). Homepage only, so far. #}
 {%- if pageTitle %}{% set metaTitle = pageTitle %}{% endif -%}
 {%- set metaDesc = description or subtitle or site.description -%}
