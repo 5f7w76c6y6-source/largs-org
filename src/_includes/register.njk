@@ -34,7 +34,19 @@
     <span class="issue-status {{ item.status }}"><span aria-hidden="true">{{ glyphs[item.status] }}</span> {{ labels[item.status] }}</span>
   </div>
 
+  {# FOLDED ON A PHONE (15 Nov 2026). A record over 300 characters shows
+     five lines and "Read the full record" at 600px and under; site.css does
+     the cutting, at the same length for every record, so the digest stays
+     neutral: nothing is summarised, reworded or reordered, and the whole
+     text is always in the page. A checkbox and its label, no script. Note
+     that records are written oldest first, so the lines in view are the
+     start of the story; the status and "last recorded" below say where it
+     stands. #}
+  {% if (item.summary | length) > 300 %}
+  <p class="issue-summary"><label class="clamp"><input type="checkbox" class="clamp-toggle visually-hidden" aria-label="Show the full record"><span class="clamp-text">{{ item.summary }}</span><span class="clamp-more" aria-hidden="true"></span></label></p>
+  {% else %}
   <p class="issue-summary">{{ item.summary }}</p>
+  {% endif %}
 
   <div class="issue-meta">
     <div><span class="issue-label">Responsible</span> · {{ item.responsible }}</div>
@@ -47,7 +59,9 @@
     written record, not necessarily what has happened since.</p>
     {% endif %}
     {% if item.alsoRecorded and item.alsoRecorded.length %}
-    <div class="issue-history">Also recorded {% for d in item.alsoRecorded %}{{ d | dateLong }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+    {# On a phone the dates sit behind a one-line count (same checkbox
+       pattern); wider screens show the dates and hide the count. #}
+    <div class="issue-history"><input type="checkbox" class="hist-toggle visually-hidden" id="hist-{{ item.id }}" aria-label="Show the earlier meetings"><label class="hist-more" for="hist-{{ item.id }}" aria-hidden="true">Also recorded at {{ item.alsoRecorded.length }} earlier meeting{% if item.alsoRecorded.length != 1 %}s{% endif %}</label><span class="hist-dates">Also recorded {% for d in item.alsoRecorded %}{{ d | dateLong }}{% if not loop.last %}, {% endif %}{% endfor %}</span></div>
     {% endif %}
   </div>
 </article>
