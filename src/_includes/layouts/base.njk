@@ -189,7 +189,28 @@
    readers and search but takes it off the screen: the highlighted "Today"
    tab already says where you are, and the title block was pushing the
    board a tenth of a phone screen further down. #}
-{% if heading %}
+{# ILLUSTRATED HEADER (15 Nov 2026). A page that sets `headerArt` in its
+   front matter opens with a pale band: title, description and the
+   section's own drawing, the same one as its front-page tile. The title
+   keeps its ordinary size on purpose -- the wordmark stays the largest
+   lettering on the page, and the drawing says what the page is.
+   `headerArt` is an image path, or the word "bins" for this week's pair of
+   bins (the plain ink bin in a festive week, as on the tile). The image is
+   decorative: the h1 beside it already names the page, so alt is empty. #}
+{% set artSrc = headerArt %}
+{% if headerArt == "bins" %}
+  {% if bins.current.note %}{% set artSrc = "/assets/img/bins-ink.png" %}
+  {% else %}{% set artSrc = "/assets/img/bins-" + bins.current.colour + "-brown.png" %}{% endif %}
+{% endif %}
+{% if heading and artSrc and not hideHeading %}
+<div class="page-head page-hero">
+  <div class="wrap page-hero-in">
+    <h1 class="page-title" id="page-title">{{ heading }}</h1>
+    <img class="page-hero-art" src="{{ artSrc }}" alt="" decoding="async">
+    {% if subtitle %}<p class="page-subtitle">{{ subtitle }}</p>{% endif %}
+  </div>
+</div>
+{% elif heading %}
 <div class="wrap page-head{% if hideHeading %} visually-hidden{% endif %}">
   <h1 class="page-title" id="page-title">{{ heading }}</h1>
   {% if subtitle %}<p class="page-subtitle">{{ subtitle }}</p>{% endif %}

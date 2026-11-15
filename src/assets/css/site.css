@@ -1766,3 +1766,27 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   .work-row{display:block;padding:12px 14px}
   .work-row .chip{display:inline-block;margin:0 0 6px}
 }
+
+/* ==== ILLUSTRATED PAGE HEADER (15 Nov 2026) =========================
+   See base.njk. One band height on every page so each title lands in the
+   same place; a long description can make it a little taller. Last in the
+   file on purpose: .page-hero must win over .page-head's padding. */
+.page-hero{background:var(--foam-tint);border-bottom:1px solid var(--foam);padding:0}
+.page-hero-in{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  grid-template-areas:"title art" "sub art";column-gap:24px;align-content:center;
+  min-height:124px;padding-top:14px;padding-bottom:14px;
+}
+.page-hero-in .page-title{grid-area:title;align-self:end}
+.page-hero-in .page-subtitle{grid-area:sub;align-self:start;max-width:64ch;text-wrap:pretty}
+.page-hero-art{grid-area:art;align-self:center;display:block;height:96px;width:auto;margin-right:28px}
+.page-hero + .board,.page-hero + .council-page{padding-top:22px}
+@media (max-width:600px){
+  .page-hero-in{
+    grid-template-columns:minmax(0,1fr) 34%;grid-template-areas:"title art" "sub sub";
+    column-gap:12px;min-height:0;padding-top:16px;padding-bottom:16px;
+  }
+  .page-hero-in .page-title{align-self:center}
+  .page-hero-art{height:auto;width:100%;margin:0}
+  .page-hero-in .page-subtitle{max-width:none}
+}
