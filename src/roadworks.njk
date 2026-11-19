@@ -58,6 +58,9 @@ eleventyComputed:
   "Road restriction": "The register's catch-all — the exact arrangement isn't recorded.",
   "Street occupation": "Part of the street is in use for something other than road works."
 } %}
+{# Live incidents on the A78 and A737, every one of them (trunkAll). #}
+{% set trunkAll = true %}
+{% include "trunk-notice.njk" %}
 <section class="board wrap" aria-labelledby="page-title">
   <div class="kicker">
     {% if rw.ok %}
@@ -193,6 +196,15 @@ eleventyComputed:
   <a href="https://www.roadworksscotland.org">Scottish Road Works Online</a>.{% if isRoute %}
   The line of the A760 used to pick out these works is from
   <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>.{% endif %}</p>
+
+  {# Traffic Scotland's terms ask for an acknowledgement that Transport
+     Scotland owns the data, and a link. Always here, incident or not, so
+     the page says where that notice comes from when it appears. #}
+  <p class="note">When there is an accident or closure on the A78 or the
+  A737, it is shown at the top of this page in the words of
+  <a href="https://trafficscotland.org">Traffic Scotland</a>. That
+  information belongs to Transport Scotland and is used with its
+  permission.</p>
 
   {% else %}
   <p class="note">Road works data hasn't been fetched yet — the register feed

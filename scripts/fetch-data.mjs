@@ -2586,6 +2586,152 @@ async function loadFloods() {
   };
 }
 
+/* ---------- Traffic Scotland: unplanned events on the trunk roads ----------
+ * Accidents, closures and weather on the A78 and A737 as Traffic Scotland
+ * reports them (DATEX II, approved 19 Nov 2026). The roadworks register
+ * holds planned works only; this is the one source for "the road is shut
+ * right now". Trunk roads only: the A760 (Haylie Brae, Lochwinnoch) is a
+ * council road and never appears here.
+ *
+ * TERMS THAT SHAPE THIS CODE (Acceptable Use policy, read 19 Nov 2026):
+ *  - the Client ID and Key are never written to a file or a log; they come
+ *    from the environment, and without them this loader quietly stands down;
+ *  - raw data is not passed on: only the few local items are kept, in
+ *    .cache/trunk.json, never a copy of the feed;
+ *  - a fetcher that disrupts their system is "abuse" and ends the supply
+ *    at once: so ONE small Metadata.xml request per build, Content.xml only
+ *    when its confirmedTime has moved, a timeout on both and no retries;
+ *  - the notice carries their own sentence, a credit and a link.
+ *
+ * POSITION DECIDES. An event is ours when it names the road AND one of its
+ * ends lies inside that road's box. The name alone would bring in the A78
+ * at Irvine; the box alone would bring in the A8 through Greenock.
+ *
+ * Metadata.xml carries two times: confirmedTime (when Content.xml last
+ * changed) and confirmationTime (a heartbeat, about every minute). A
+ * heartbeat older than TS_HEARTBEAT_MIN means their publisher has stopped,
+ * so the content cannot be trusted as current and nothing is shown. */
+const TS_BASE = "https://datex2.trafficscotland.org/rest/2.3/publications/UnplannedEvents/";
+const TS_CACHE_FILE = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", ".cache", "trunk.json");
+const TS_SCHEMA = 1; // bump when the kept shape or the filter changes: forces one fresh download
+const TS_HEARTBEAT_MIN = 30;
+const TS_ROADS = [
+  // Ardrossan to Greenock (the Bullring roundabout is at 55.948, -4.757).
+  { road: "A78", re: /\bA78\b/, lead: "", box: { latMin: 55.63, latMax: 55.96, lonMin: -4.96, lonMax: -4.74 } },
+  // Dalry to Johnstone: where the Haylie Brae road ends up on the way to Glasgow.
+  { road: "A737", re: /\bA737\b/, lead: "Glasgow road beyond Kilbirnie", box: { latMin: 55.69, latMax: 55.845, lonMin: -4.75, lonMax: -4.49 } },
+];
+
+function tsDecode(s) {
+  return String(s || "").replace(/&apos;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
+}
+function tsTag(block, tag) {
+  // \b[^>]*: some tags carry attributes (groupOfLocations xsi:type="Linear").
+  const m = block.match(new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)</${tag}>`));
+  return m ? m[1].trim() : "";
+}
+
+/* The whole feed in, the local events out. */
+function tsParse(xml) {
+  if (!/<payloadPublication\b/.test(xml)) throw new Error("Traffic Scotland response is not a DATEX publication");
+  const blocks = xml.match(/<situation\b[\s\S]*?<\/situation>/g) || [];
+  const items = [];
+  for (const b of blocks) {
+    // Only real events: the schema also allows tests and exercises.
+    const status = tsTag(b, "informationStatus");
+    if (status && status !== "real") continue;
+    const commentBlock = tsTag(b, "generalPublicComment");
+    const text = tsDecode((commentBlock.match(/<value\b[^>]*>([\s\S]*?)<\/value>/) || [])[1]);
+    if (!text) continue;
+    const where = tsTag(b, "groupOfLocations");
+    const names = tsDecode((where.match(/<value\b[^>]*>[\s\S]*?<\/value>/g) || []).join(" ").replace(/<[^>]+>/g, " "));
+    const points = [...where.matchAll(/<latitude>([-\d.]+)<\/latitude>\s*<longitude>([-\d.]+)<\/longitude>/g)].map((m) => [Number(m[1]), Number(m[2])]);
+    const hit = TS_ROADS.find((r) => r.re.test(`${names} ${text}`) &&
+      points.some(([lat, lon]) => lat >= r.box.latMin && lat <= r.box.latMax && lon >= r.box.lonMin && lon <= r.box.lonMax));
+    if (!hit) continue;
+    const created = tsTag(b, "situationRecordCreationTime");
+    const closed = tsTag(b, "roadOrCarriagewayOrLaneManagementType") === "roadClosed" || /\b(?:is|are)\s+(?:currently\s+)?closed\b/i.test(text);
+    items.push({
+      id: (b.match(/<situationRecord\b[^>]*\bid="([^"]+)"/) || [])[1] || "",
+      road: hit.road, lead: hit.lead, closed, text,
+      created: created && !Number.isNaN(Date.parse(created)) ? new Date(Date.parse(created)).toISOString() : null,
+      end: tsTag(b, "overallEndTime") || null,
+    });
+  }
+  return { scotland: blocks.length, items };
+}
+
+/* Kept items into what the template prints. Run on every build, including
+ * one that reuses the cache, because "reported 14:05" becomes "since
+ * 19 Nov" at midnight and an event with an end time can lapse unprompted. */
+function tsDress(kept) {
+  const day = (d) => new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(d);
+  const now = new Date();
+  const items = kept.items
+    .filter((i) => !(i.end && Date.parse(i.end) < now.getTime()))
+    .map((i) => {
+      let whenLabel = "", whenValue = "";
+      if (i.created) {
+        const d = new Date(i.created);
+        if (day(d) === day(now)) {
+          whenLabel = "reported";
+          whenValue = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(d);
+        } else {
+          whenLabel = "since";
+          whenValue = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, day: "numeric", month: "short" }).format(d);
+        }
+      }
+      return { id: i.id, road: i.road, lead: i.lead, closed: i.closed, badge: `${i.road} ${i.closed ? "closed" : "incident"}`, text: i.text, whenLabel, whenValue, created: i.created };
+    })
+    .sort((a, b) => Number(b.closed) - Number(a.closed) ||
+      TS_ROADS.findIndex((r) => r.road === a.road) - TS_ROADS.findIndex((r) => r.road === b.road) ||
+      Date.parse(b.created || 0) - Date.parse(a.created || 0));
+  return { ok: true, source: "traffic-scotland", checkedAt: now.toISOString(), feedTime: kept.confirmedTime || null, scotland: kept.scotland, items };
+}
+
+async function loadTrunk() {
+  if (process.env.TS_FEED_FILE) {
+    console.warn(`trunk roads: reading ${process.env.TS_FEED_FILE} instead of the live feed (TS_FEED_FILE is set)`);
+    return tsDress(tsParse(await readFile(process.env.TS_FEED_FILE, "utf8")));
+  }
+  const id = process.env.TS_CLIENT_ID, key = process.env.TS_CLIENT_KEY;
+  if (!id || !key) {
+    const e = new Error("no Traffic Scotland credentials in this environment");
+    e.quiet = true;
+    throw e;
+  }
+  const headers = {
+    Authorization: "Basic " + Buffer.from(`${id}:${key}`).toString("base64"),
+    "User-Agent": "largs.scot board (+https://largs.scot; hello@largs.scot)",
+    Accept: "application/xml, text/xml",
+  };
+  const metaRes = await fetch(TS_BASE + "Metadata.xml", { headers, signal: AbortSignal.timeout(15000) });
+  if (!metaRes.ok) throw new Error(`HTTP ${metaRes.status} from Traffic Scotland (metadata)`);
+  const meta = await metaRes.text();
+  const confirmedTime = (meta.match(/\bconfirmedTime="([^"]+)"/) || [])[1];
+  const heartbeat = (meta.match(/\bconfirmationTime="([^"]+)"/) || [])[1];
+  if (!confirmedTime || !heartbeat) throw new Error("Traffic Scotland metadata has no timestamps");
+  const beatAgeMin = (Date.now() - Date.parse(heartbeat)) / 60000;
+  if (!(beatAgeMin < TS_HEARTBEAT_MIN)) throw new Error(`Traffic Scotland's publisher last confirmed ${Math.round(beatAgeMin)} min ago`);
+
+  let cached = null;
+  try { cached = JSON.parse(await readFile(TS_CACHE_FILE, "utf8")); } catch { /* no cache yet */ }
+  if (cached && cached.schema === TS_SCHEMA && cached.confirmedTime === confirmedTime && Array.isArray(cached.items)) {
+    console.log(`trunk roads: unchanged since ${confirmedTime}, not downloaded again`);
+    return tsDress(cached);
+  }
+  const res = await fetch(TS_BASE + "Content.xml", { headers, signal: AbortSignal.timeout(30000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status} from Traffic Scotland (content)`);
+  const kept = { schema: TS_SCHEMA, confirmedTime, ...tsParse(await res.text()) };
+  try {
+    await mkdir(path.dirname(TS_CACHE_FILE), { recursive: true });
+    await writeFile(TS_CACHE_FILE, JSON.stringify(kept));
+  } catch (error) {
+    console.warn(`trunk roads: could not save the kept items — ${error.message}`);
+  }
+  return tsDress(kept);
+}
+
 /* ---------- main ---------- */
 
 // Start from the previous build's data so a failed source degrades to
@@ -2678,6 +2824,17 @@ try {
   // show a warning this build could not confirm is still in force.
   out.floods = { ...(out.floods || { largs: [] }), ok: false, failedAt: new Date().toISOString() };
   console.warn(`floods: feed not read — ${error.message}`);
+}
+
+try {
+  out.trunk = await loadTrunk();
+  anySuccess = true;
+  console.log(`trunk roads: ${out.trunk.items.length} on the A78 / A737, ${out.trunk.scotland} across Scotland`);
+} catch (error) {
+  // No ok, no items: an incident this build could not confirm must not
+  // stay on the front page. Quiet when there are simply no credentials.
+  out.trunk = { ok: false, items: [], failedAt: new Date().toISOString() };
+  (error.quiet ? console.log : console.warn)(`trunk roads: not read — ${error.message}`);
 }
 
 /* Buses are a separate data file, not part of today.json: the page needs

@@ -1790,3 +1790,9 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   .page-hero-art{height:auto;width:100%;margin:0}
   .page-hero-in .page-subtitle{max-width:none}
 }
+
+/* ==== TRAFFIC SCOTLAND NOTICE (19 Nov 2026) =========================
+   See trunk-notice.njk. Shares the power-cut frame: red for a closure,
+   amber for anything less (the badge says which in words too). */
+.trunk-notice.trunk-incident{border-left-color:var(--warn)}
+.trunk-notice.trunk-incident .power-notice-badge{background:var(--warn)}

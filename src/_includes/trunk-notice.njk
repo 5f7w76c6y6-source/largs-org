@@ -1,0 +1,31 @@
+{# Traffic Scotland incident notice (19 Nov 2026). Rendered only when
+   THIS build read Traffic Scotland's Unplanned Events feed AND it holds a
+   live event on the A78 (Ardrossan to Greenock) or the A737 (Dalry to
+   Johnstone) -- see loadTrunk in scripts/fetch-data.mjs. On a failed
+   fetch there is no notice: a closure that may have cleared must not
+   stand on the front page. Never an all-clear; when Traffic Scotland
+   drops the event the notice goes.
+
+   The sentence is Traffic Scotland's, unedited. The site adds the badge,
+   the time and, for the A737, the words that say which road that is to a
+   Largs reader. Red for a closure, amber for anything less; the badge
+   says so in words as well, so the colour is never the only signal.
+
+   The front page shows the most serious event and counts the rest. A page
+   that sets `trunkAll` before the include (Roadworks) shows every one.
+   Same frame as the power-cut and flood notices. #}
+{% if today.trunk and today.trunk.ok and today.trunk.items | length %}
+{% set trunkShown = today.trunk.items if trunkAll else [today.trunk.items[0]] %}
+{% set trunkMore = (today.trunk.items | length) - (trunkShown | length) %}
+<div class="wrap">
+  {% for t in trunkShown %}
+  <div class="power-notice trunk-notice{% if not t.closed %} trunk-incident{% endif %}" role="status">
+    <span class="power-notice-badge">{{ t.badge }}</span>
+    <span class="power-notice-text">
+      {% if t.lead %}<strong>{{ t.lead }}</strong> — {% endif %}{{ t.text }}{% if t.whenValue %} · {{ t.whenLabel }} <span class="mono">{{ t.whenValue }}</span>{% endif %}{% if trunkMore > 0 %} · <a href="/roadworks/">and {{ trunkMore }} more →</a>{% endif %} · <a href="https://trafficscotland.org/currentincidents/">Traffic Scotland →</a>
+    </span>
+    <span class="power-notice-src">Traffic Scotland · checked {{ today.trunk.checkedAt | hhmm }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

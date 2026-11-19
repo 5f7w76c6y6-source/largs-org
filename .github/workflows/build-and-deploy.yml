@@ -19,6 +19,12 @@
 #                            Setting it is the go-live switch for UKHO
 #                            tides — only after their written OK for
 #                            the bake-and-display pattern.
+#   TS_CLIENT_ID,          — Traffic Scotland DATEX II Client ID and Key
+#   TS_CLIENT_KEY            (developer.trafficscotland.org, API Credentials).
+#                            Absent = no A78 / A737 incident notice. The
+#                            account is personal to the maintainer: a new
+#                            maintainer applies for their own. Their terms
+#                            forbid sharing these or passing on raw data.
 #
 # Two GitHub quirks worth knowing:
 #   - Jobs scheduled on the hour queue behind everyone else's; the odd
@@ -80,6 +86,8 @@ jobs:
         run: node scripts/fetch-data.mjs
         env:
           ADMIRALTY_KEY: ${{ secrets.ADMIRALTY_KEY }}
+          TS_CLIENT_ID: ${{ secrets.TS_CLIENT_ID }}
+          TS_CLIENT_KEY: ${{ secrets.TS_CLIENT_KEY }}
 
       # Fuel: the cron Worker (worker/fuel) keeps a snapshot of the 26
       # forecourts in R2, refreshed every five minutes. Pull it here so the
