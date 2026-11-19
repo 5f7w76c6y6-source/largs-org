@@ -11,10 +11,10 @@
    view already uses; the line underneath explains it. #}
 {% set jt = today.journeys %}
 {% if jt and jt.ok and jt.items | length %}
-<div class="jt" role="region" aria-labelledby="jt-h">
+<div class="jt" role="region" aria-labelledby="jt-h" data-measured="{{ jt.measuredAt }}">
   <div class="jt-head">
     <h2 id="jt-h">Journey times now</h2>
-    <span class="jt-stamp">Traffic Scotland · measured {{ jt.measuredAt | hhmm }}</span>
+    <span class="jt-stamp">Traffic Scotland · measured {{ jt.measuredAt | hhmm }}<span class="jt-age" hidden></span></span>
   </div>
   <div class="jt-grid jt-n{{ jt.items | length }}">
     {% for j in jt.items %}
@@ -25,10 +25,42 @@
     </div>
     {% endfor %}
   </div>
+  {# Shown by the script below in place of the cards once the figures are
+     too old to be called "now". #}
+  <p class="jt-stale" hidden>No current journey times. The last figures were
+  measured at {{ jt.measuredAt | hhmm }} and are too old to rely on; the page
+  is rebuilt every half hour.</p>
   <p class="jt-foot">By car on the A78 and A737, measured by Traffic Scotland
   every five minutes. Haylie Brae to the town centre is the A78 from the foot of
   the brae to Main Street. Roadhead is where the Haylie Brae road meets the
   A737.{% if jt.missing | length %} Not shown: {{ jt.missing | join(" and ") }}
   — part of that road is not reporting.{% endif %}</p>
 </div>
+{# HOW OLD (19 Nov 2026). This page is built, then read some time later --
+   minutes usually, hours if the build ever stops. Only the reader's
+   browser knows how long ago "measured 20:45" was, so it says so, and
+   past JT_STALE_MIN it swaps the cards for the plain line above. The
+   limit allows for a half-hourly rebuild plus the few minutes Traffic
+   Scotland's readings are already behind when we fetch them. #}
+<script>
+(function () {
+  var JT_STALE_MIN = 45;
+  var el = document.querySelector(".jt[data-measured]");
+  if (!el) return;
+  var at = Date.parse(el.getAttribute("data-measured"));
+  if (!at) return;
+  var age = el.querySelector(".jt-age"), stale = el.querySelector(".jt-stale");
+  function tick() {
+    var min = Math.round((Date.now() - at) / 60000);
+    if (min < 0) return; // a clock that is wrong says nothing
+    age.textContent = " \u00b7 " + (min < 1 ? "just now" : min < 100 ? min + " min ago" : "over " + Math.floor(min / 60) + " hours ago");
+    age.hidden = false;
+    var old = min > JT_STALE_MIN;
+    el.classList.toggle("jt-is-stale", old);
+    stale.hidden = !old;
+  }
+  tick();
+  setInterval(tick, 60000);
+})();
+</script>
 {% endif %}

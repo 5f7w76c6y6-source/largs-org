@@ -1828,3 +1828,12 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   .jt-n4 .jt-row,.jt-n8 .jt-row{grid-template-columns:1fr;row-gap:2px;padding:14px 16px}
   .jt-n4 .jt-time,.jt-n8 .jt-time{grid-row:auto;grid-column:auto;margin-top:6px}
 }
+
+/* ==== JOURNEY TIMES: TOO OLD TO SHOW (19 Nov 2026) ==================
+   journey-times.njk's script sets .jt-is-stale once the figures are past
+   their limit: the cards go and one plain line takes their place. */
+.jt-is-stale .jt-grid{display:none}
+.jt-stale{
+  background:var(--card);border:1px solid var(--sand);border-left:4px solid var(--warn);
+  border-radius:10px;padding:12px 16px;margin:0;font-size:.95rem;color:var(--ink);max-width:70ch;
+}
