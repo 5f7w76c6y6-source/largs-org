@@ -1821,8 +1821,10 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .jt-foot{font-size:.9rem;color:var(--muted);margin:10px 0 0;max-width:70ch}
 @media (min-width:601px){.jt-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:900px){
-  .jt-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .jt-grid.jt-n3,.jt-grid.jt-n5,.jt-grid.jt-n6{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .jt-row{grid-template-columns:1fr;row-gap:2px;padding:14px 16px}
-  .jt-time{grid-row:auto;grid-column:auto;margin-top:6px}
+  /* Four across only when the there-and-back pairs fill whole rows (four
+     or eight journeys). Any other count keeps two columns, so each pair
+     still sits side by side. */
+  .jt-grid.jt-n4,.jt-grid.jt-n8{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .jt-n4 .jt-row,.jt-n8 .jt-row{grid-template-columns:1fr;row-gap:2px;padding:14px 16px}
+  .jt-n4 .jt-time,.jt-n8 .jt-time{grid-row:auto;grid-column:auto;margin-top:6px}
 }

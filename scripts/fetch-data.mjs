@@ -2763,6 +2763,12 @@ const TS_JOURNEYS = [
   // A78 northbound: Largs (B7025) -> Wemyss Bay -> A770 -> A8 at Greenock.
   { id: "largs-greenock", pair: "Largs to Greenock", from: "Largs", to: "Greenock", sites: ["TT_100001532", "TT_100001534", "TT_100001536"] },
   { id: "greenock-largs", pair: "Largs to Greenock", from: "Greenock", to: "Largs", sites: ["TT_100001537", "TT_100001535", "TT_100001533"] },
+  // A78 through Largs: the A760 junction at the foot of the Haylie Brae to
+  // the B7025 junction on Main Street. About a mile; the queue through the
+  // town on a busy day shows here. There is no measuring point between the
+  // town centre and Wemyss Bay, so the north side of town has no figure.
+  { id: "haylie-centre", pair: "Haylie Brae to the town centre", from: "Haylie Brae", to: "the town centre", sites: ["TT_100001530"] },
+  { id: "centre-haylie", pair: "Haylie Brae to the town centre", from: "Town centre", to: "Haylie Brae", sites: ["TT_100001531"] },
   // A737 northbound: A760 junction (Roadhead) -> Howwood -> Kilbarchan -> Johnstone -> Linwood -> M8 J29.
   { id: "roadhead-m8", pair: "Roadhead to the M8", from: "Roadhead", to: "the M8", sites: ["TT_100000315", "TT_100000316", "TT_100000317", "TT_100000318", "TT_100000319"] },
   { id: "m8-roadhead", pair: "Roadhead to the M8", from: "The M8", to: "Roadhead", sites: ["TT_100000320", "TT_100000321", "TT_100000322", "TT_100000323", "TT_100000324"] },
