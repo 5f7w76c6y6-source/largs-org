@@ -1,8 +1,40 @@
 {
- "collected": "2026-11-18T05:09:01+00:00",
+ "collected": "2026-11-19T05:09:44+00:00",
  "lookbackDays": 60,
  "method": "whole-word, case-insensitive \"largs\" in the text of the agenda pack; the same number the council's search reports",
  "records": [
+  {
+   "key": "2026-11-25|North Ayrshire Council|4069|Agenda Document Pack - North Ayrshire Council - 25/11/2026",
+   "committee": "North Ayrshire Council",
+   "date": "2026-11-25",
+   "meetingId": "4069",
+   "meetingUrl": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4069/Committee/135/Default.aspx",
+   "title": "Agenda Document Pack - North Ayrshire Council - 25/11/2026",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=H1a1F51HamRwAqIouEyUnDuEhbBba7uYqkWDI%2bdVnXzlYNlGJjaDYg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d",
+   "pack": true,
+   "read": "2026-11-19T05:09:42+00:00",
+   "status": "ok",
+   "bytes": 616857,
+   "pages": 38,
+   "hits": 0,
+   "pagesWithHits": 0
+  },
+  {
+   "key": "2026-11-23|Police and Fire and Rescue Committee|3967|Agenda Document Pack - Police and Fire and Rescue Committee - 23/11/2026",
+   "committee": "Police and Fire and Rescue Committee",
+   "date": "2026-11-23",
+   "meetingId": "3967",
+   "meetingUrl": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3967/Committee/148/Default.aspx",
+   "title": "Agenda Document Pack - Police and Fire and Rescue Committee - 23/11/2026",
+   "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=vWBeUyhuPBGe5a53e04EjEWZK0Pdqzw0fp9LeWLov3yFCymmWG9Rkg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d",
+   "pack": true,
+   "read": "2026-11-19T05:09:35+00:00",
+   "status": "ok",
+   "bytes": 3952804,
+   "pages": 34,
+   "hits": 0,
+   "pagesWithHits": 0
+  },
   {
    "key": "2026-11-19|Audit and Scrutiny Committee|3935|Agenda Document Pack - Audit and Scrutiny Committee - 19/11/2026",
    "committee": "Audit and Scrutiny Committee",
