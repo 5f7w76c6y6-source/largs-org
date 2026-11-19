@@ -27,7 +27,7 @@ hideHeading: true
   {# The "updated" stamp rides inside the strip (10 Nov 2026) rather than on
      a line of its own, so the tiles start one line higher. With nothing on
      today there is no strip, and the stamp keeps its old line. #}
-  {% set stampText %}{% if today.fetchedAt %}Updated {{ today.fetchedAt | hhmm }} · rebuilt every half hour{% else %}Sample values — run npm run fetch{% endif %}{% endset %}
+  {% set stampText %}{% if today.fetchedAt %}Updated {{ today.fetchedAt | hhmm }} · rebuilt every 15 minutes{% else %}Sample values — run npm run fetch{% endif %}{% endset %}
   {% if onTodayCount > 0 %}
   <div class="today-strip">
     <span class="count"><strong>{{ onTodayCount }}</strong> {% if onTodayCount == 1 %}event{% else %}events{% endif %} on in Largs today</span>
@@ -366,7 +366,7 @@ hideHeading: true
   <details class="updates-note">
     <summary>About these updates</summary>
     <div class="updates-body">
-      <p>This board rebuilds roughly every half hour, on its own, whether or
+      <p>This board rebuilds roughly every 15 minutes, on its own, whether or
       not anyone is editing the site. Each tile says where its figure came
       from, and nothing on this page is a guess — where a feed is not wired up
       yet, the tile says so rather than showing a plausible number.</p>

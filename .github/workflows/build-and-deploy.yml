@@ -1,5 +1,5 @@
 # Rebuilds and deploys the site:
-#   - every half hour (so the "Largs today" board stays fresh)
+#   - every 15 minutes (so the "Largs today" board and the journey times stay fresh)
 #   - on every push to main
 #   - on demand, from the Actions tab ("Run workflow")
 #

@@ -3,7 +3,7 @@ layout: layouts/base.njk
 permalink: /floods/
 pageTitle: "Flood watch · SEPA flood alerts and warnings for Largs, and the big tides ahead"
 heading: Flood watch
-subtitle: SEPA’s Floodline for the Largs coast, read every half hour; how to get their alerts yourself; and the dates a year ahead when the tide starts highest.
+subtitle: SEPA’s Floodline for the Largs coast, read every 15 minutes; how to get their alerts yourself; and the dates a year ahead when the tide starts highest.
 ---
 {# Flood watch, v1.0, 3 November 2026. Flooding is a town matter (Ian:
    "all of the town will be interested"), so it has a page of its own,
@@ -37,7 +37,7 @@ subtitle: SEPA’s Floodline for the Largs coast, read every half hour; how to g
   </ul>
   <p class="page-intro">SEPA’s words, as issued. Floodline: <span class="mono">0345 988 1188</span> · checked <span class="mono">{{ fl.checkedAt | hhmm }}</span>.</p>
   {% elif fl and fl.ok %}
-  <div class="kicker"><span>Right now</span><span class="stamp">Floodline checked {{ fl.checkedAt | hhmm }} · rebuilt every half hour</span></div>
+  <div class="kicker"><span>Right now</span><span class="stamp">Floodline checked {{ fl.checkedAt | hhmm }} · rebuilt every 15 minutes</span></div>
   <div class="fw-status">
     <div class="fw-status-h">No SEPA Flood Alert or Warning for Largs</div>
     <div class="sub">None for the Ayrshire and Arran area either{% if fl.scotland == 0 %}, nor anywhere in Scotland{% endif %}. When SEPA issue one it appears here and on the front page within the half hour, in their words.</div>

@@ -115,7 +115,8 @@ its broadband at exactly the moment that feature matters — so the power
 poller runs on Cloudflare instead. The Pi is inside that failure
 domain; Cloudflare is not.
 
-**largs-metronome** (`worker/`) — nudges the site on `:03` and `:33`,
+**largs-metronome** (`worker/`) — nudges the site on `:03`, `:18`, `:33` and `:48`
+(every 15 minutes since 19 Nov 2026),
 offset from the Actions schedule so the two clocks rarely collide, and
 from 05:00 UTC each tick also starts Agenda watch, the nightly North
 Ayrshire collection, unless it has already run that day — its only

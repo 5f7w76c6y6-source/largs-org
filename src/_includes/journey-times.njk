@@ -29,7 +29,7 @@
      too old to be called "now". #}
   <p class="jt-stale" hidden>No current journey times. The last figures were
   measured at {{ jt.measuredAt | hhmm }} and are too old to rely on; the page
-  is rebuilt every half hour.</p>
+  is rebuilt every 15 minutes.</p>
   <p class="jt-foot">By car on the A78 and A737, measured by Traffic Scotland
   every five minutes. Haylie Brae to the town centre is the A78 from the foot of
   the brae to Main Street. Roadhead is where the Haylie Brae road meets the
@@ -40,11 +40,12 @@
    minutes usually, hours if the build ever stops. Only the reader's
    browser knows how long ago "measured 20:45" was, so it says so, and
    past JT_STALE_MIN it swaps the cards for the plain line above. The
-   limit allows for a half-hourly rebuild plus the few minutes Traffic
-   Scotland's readings are already behind when we fetch them. #}
+   limit allows for a quarter-hourly rebuild plus the time Traffic
+   Scotland's readings are already behind when we fetch them (19 minutes
+   on the first evening). #}
 <script>
 (function () {
-  var JT_STALE_MIN = 45;
+  var JT_STALE_MIN = 40;
   var el = document.querySelector(".jt[data-measured]");
   if (!el) return;
   var at = Date.parse(el.getAttribute("data-measured"));

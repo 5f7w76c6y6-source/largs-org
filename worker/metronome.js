@@ -5,10 +5,12 @@
  * Agenda watch's own nightly schedule ran six and a half hours late on
  * its first night. Cloudflare's cron triggers mostly fire, so this
  * Worker runs on Cloudflare's clock and pokes the repository's
- * workflow_dispatch — making "rebuilt every half hour" a fact rather
+ * workflow_dispatch — making "rebuilt every 15 minutes" (every half
+ * hour until 19 Nov 2026) a fact rather
  * than an aspiration.
  *
- * ONE TRIGGER, TWO JOBS (10 Oct 2026). Every :03 and :33 dispatches the
+ * ONE TRIGGER, TWO JOBS (10 Oct 2026). Every tick (:03, :18, :33 and :48
+ * since 19 Nov 2026; :03 and :33 before) dispatches the
  * build. From AGENDA_NOT_BEFORE (wrangler.toml, 05:00 UTC) onward, each
  * tick also asks GitHub whether Agenda watch — the nightly North
  * Ayrshire collection — has run yet today (UTC), and dispatches it if
@@ -48,7 +50,7 @@ const REPO = "largs-org";
 
 // Must match `crons` in wrangler.toml character for character;
 // Cloudflare hands the handler the string that fired.
-const BUILD_CRON = "3,33 * * * *";
+const BUILD_CRON = "3,18,33,48 * * * *";
 const BUILD = "build-and-deploy.yml";
 const AGENDA = "agenda-watch.yml";
 

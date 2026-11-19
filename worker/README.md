@@ -1,7 +1,7 @@
 # The metronome — runbook
 
-A Cloudflare Worker that fires on Cloudflare's cron (`:03` and `:33`,
-every hour) and dispatches workflows via GitHub's API. It exists
+A Cloudflare Worker that fires on Cloudflare's cron (`:03`, `:18`, `:33`
+and `:48`, every hour; half-hourly until 19 Nov 2026) and dispatches workflows via GitHub's API. It exists
 because GitHub's own cron honoured roughly one slot in sixteen over the
 first four days, and ran Agenda watch's nightly slot six and a half
 hours late on its first night; Cloudflare's half-hourly cron has fired

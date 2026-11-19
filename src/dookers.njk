@@ -37,7 +37,7 @@ subtitle: Sea temperature, the tide, and what the sewer outfalls along the shore
     <span>Right now</span>
     <span class="stamp">
       {%- if ov and ov.ok and ov.updated %}Scottish Water monitors <span class="mono">{{ ov.updated | hhmm }}</span>{% endif %}
-      {%- if today.fetchedAt %} · tide and temperature <span class="mono">{{ today.fetchedAt | hhmm }}</span>{% endif %} · rebuilt every half hour
+      {%- if today.fetchedAt %} · tide and temperature <span class="mono">{{ today.fetchedAt | hhmm }}</span>{% endif %} · rebuilt every 15 minutes
     </span>
   </div>
 
