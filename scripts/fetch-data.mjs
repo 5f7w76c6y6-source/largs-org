@@ -2770,8 +2770,8 @@ const TS_JOURNEYS = [
   { id: "haylie-centre", pair: "Haylie Brae to the town centre", from: "Haylie Brae", to: "the town centre", sites: ["TT_100001530"] },
   { id: "centre-haylie", pair: "Haylie Brae to the town centre", from: "Town centre", to: "Haylie Brae", sites: ["TT_100001531"] },
   // A737 northbound: A760 junction (Roadhead) -> Howwood -> Kilbarchan -> Johnstone -> Linwood -> M8 J29.
-  { id: "roadhead-m8", pair: "Roadhead to the M8", from: "Roadhead", to: "the M8", sites: ["TT_100000315", "TT_100000316", "TT_100000317", "TT_100000318", "TT_100000319"] },
-  { id: "m8-roadhead", pair: "Roadhead to the M8", from: "The M8", to: "Roadhead", sites: ["TT_100000320", "TT_100000321", "TT_100000322", "TT_100000323", "TT_100000324"] },
+  { id: "roadhead-m8", pair: "Roadhead Roundabout to the M8", from: "Roadhead Roundabout", to: "the M8", sites: ["TT_100000315", "TT_100000316", "TT_100000317", "TT_100000318", "TT_100000319"] },
+  { id: "m8-roadhead", pair: "Roadhead Roundabout to the M8", from: "The M8", to: "Roadhead Roundabout", sites: ["TT_100000320", "TT_100000321", "TT_100000322", "TT_100000323", "TT_100000324"] },
   // A78 southbound: A760 junction (Haylie Brae) -> Hunterston -> B781 -> A738 West at Ardrossan.
   { id: "largs-ardrossan", pair: "Largs to Ardrossan", from: "Largs", to: "Ardrossan", sites: ["TT_100001529", "TT_100001527", "TT_100001525"] },
   { id: "ardrossan-largs", pair: "Largs to Ardrossan", from: "Ardrossan", to: "Largs", sites: ["TT_100001524", "TT_100001526", "TT_100001528"] },
