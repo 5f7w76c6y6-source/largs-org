@@ -1,0 +1,33 @@
+{# Journey times now (19 Nov 2026). Rendered only when THIS build read
+   Traffic Scotland's Travel Time Data and at least one journey has a
+   fresh reading for every stretch -- see loadJourneys in
+   scripts/fetch-data.mjs. A journey with a silent stretch is left out and
+   named in the line underneath, never estimated.
+
+   The figure is the time now; the line under it compares it with the time
+   Traffic Scotland expects at this hour. The amber dot marks "slower" and
+   the words say by how much, so the colour is never the only signal.
+   "Roadhead" is the A760 / A737 junction, the name the Haylie Brae road
+   view already uses; the line underneath explains it. #}
+{% set jt = today.journeys %}
+{% if jt and jt.ok and jt.items | length %}
+<div class="jt" role="region" aria-labelledby="jt-h">
+  <div class="jt-head">
+    <h2 id="jt-h">Journey times now</h2>
+    <span class="jt-stamp">Traffic Scotland · measured {{ jt.measuredAt | hhmm }}</span>
+  </div>
+  <div class="jt-grid jt-n{{ jt.items | length }}">
+    {% for j in jt.items %}
+    <div class="jt-row">
+      <div class="jt-name">{{ j.from }} <span>to</span> {{ j.to }}</div>
+      <div class="jt-time">{{ j.minutes }}<small>min</small></div>
+      <div class="jt-note{% if j.state == 'slow' %} slow{% endif %}">{{ j.note }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  <p class="jt-foot">By car on the A78 and A737, measured by Traffic Scotland
+  every five minutes. Roadhead is where the Haylie Brae road meets the
+  A737.{% if jt.missing | length %} Not shown: {{ jt.missing | join(" and ") }}
+  — part of that road is not reporting.{% endif %}</p>
+</div>
+{% endif %}

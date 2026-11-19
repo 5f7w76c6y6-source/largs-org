@@ -62,6 +62,10 @@ eleventyComputed:
 {% set trunkAll = true %}
 {% include "trunk-notice.njk" %}
 <section class="board wrap" aria-labelledby="page-title">
+  {# The one part of this page that changes through the day, so it comes
+     first. On the main view and the Haylie Brae road view; the two filter
+     views are lists and stay lists. #}
+  {% if view.key == "all" or isRoute %}{% include "journey-times.njk" %}{% endif %}
   <div class="kicker">
     {% if rw.ok %}
     <span class="stamp">Register data to {{ rw.dataDate | dom }} {{ rw.dataDate | monthShort }} · refreshed overnight</span>
@@ -202,9 +206,9 @@ eleventyComputed:
      the page says where that notice comes from when it appears. #}
   <p class="note">When there is an accident or closure on the A78 or the
   A737, it is shown at the top of this page in the words of
-  <a href="https://trafficscotland.org">Traffic Scotland</a>. That
-  information belongs to Transport Scotland and is used with its
-  permission.</p>
+  <a href="https://trafficscotland.org">Traffic Scotland</a>. The journey
+  times are Traffic Scotland's measurements too. All of it belongs to
+  Transport Scotland and is used with its permission.</p>
 
   {% else %}
   <p class="note">Road works data hasn't been fetched yet — the register feed

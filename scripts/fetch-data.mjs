@@ -2732,6 +2732,114 @@ async function loadTrunk() {
   return tsDress(kept);
 }
 
+/* ---------- Traffic Scotland: journey times ----------
+ * The Travel Time Data publication gives, for each measured stretch of a
+ * trunk road and every five minutes: the time to drive it now, the time
+ * normally expected at this hour, and the time on an empty road. A journey
+ * here is a chain of stretches added up. The stretch ids come from the
+ * Travel Time Sites publication (read 19 Nov 2026); each chain was checked
+ * end to end against the coordinates there.
+ *
+ * HONESTY RULES. A journey is shown only when EVERY stretch has a reading
+ * no more than TS_TIMES_FRESH_MIN old; otherwise it is left out and named
+ * in `missing`, so the page can say so. On 19 Nov 2026 the A78 stretch
+ * Hunterston to the B781 (West Kilbride) had not reported since February
+ * 2022 in either direction, so the Ardrossan pair is absent until
+ * Traffic Scotland's detector comes back -- at which point it appears by
+ * itself. The stated difference is between the two ROUNDED figures, so the
+ * arithmetic a reader can do agrees with the words.
+ *
+ * "Usual" is Traffic Scotland's expected time for the hour. Long-running
+ * works seem to be absorbed into it, so "slower than usual" means slower
+ * than recent days, not slower than a clear road.
+ *
+ * Same terms as the incident loader above: credentials from the
+ * environment only, ONE request per build (this publication changes every
+ * five minutes, so there is nothing to gain from asking Metadata first),
+ * and only the totals are kept -- never the feed. */
+const TS_TIMES_URL = "https://datex2.trafficscotland.org/rest/2.3/publications/TravelTimeData/Content.xml";
+const TS_TIMES_FRESH_MIN = 30;
+const TS_JOURNEYS = [
+  // A78 northbound: Largs (B7025) -> Wemyss Bay -> A770 -> A8 at Greenock.
+  { id: "largs-greenock", pair: "Largs to Greenock", from: "Largs", to: "Greenock", sites: ["TT_100001532", "TT_100001534", "TT_100001536"] },
+  { id: "greenock-largs", pair: "Largs to Greenock", from: "Greenock", to: "Largs", sites: ["TT_100001537", "TT_100001535", "TT_100001533"] },
+  // A737 northbound: A760 junction (Roadhead) -> Howwood -> Kilbarchan -> Johnstone -> Linwood -> M8 J29.
+  { id: "roadhead-m8", pair: "Roadhead to the M8", from: "Roadhead", to: "the M8", sites: ["TT_100000315", "TT_100000316", "TT_100000317", "TT_100000318", "TT_100000319"] },
+  { id: "m8-roadhead", pair: "Roadhead to the M8", from: "The M8", to: "Roadhead", sites: ["TT_100000320", "TT_100000321", "TT_100000322", "TT_100000323", "TT_100000324"] },
+  // A78 southbound: A760 junction (Haylie Brae) -> Hunterston -> B781 -> A738 West at Ardrossan.
+  { id: "largs-ardrossan", pair: "Largs to Ardrossan", from: "Largs", to: "Ardrossan", sites: ["TT_100001529", "TT_100001527", "TT_100001525"] },
+  { id: "ardrossan-largs", pair: "Largs to Ardrossan", from: "Ardrossan", to: "Largs", sites: ["TT_100001524", "TT_100001526", "TT_100001528"] },
+];
+
+function tsTimesParse(xml, live) {
+  if (!/MeasuredDataPublication/.test(xml)) throw new Error("Traffic Scotland response is not a travel time publication");
+  const published = Date.parse(tsTag(xml, "publicationTime"));
+  if (!Number.isFinite(published)) throw new Error("Traffic Scotland travel times carry no publication time");
+  // A local test file is judged against its own publication time.
+  if (live && !((Date.now() - published) / 60000 < TS_TIMES_FRESH_MIN)) throw new Error(`Traffic Scotland travel times were published ${Math.round((Date.now() - published) / 60000)} min ago`);
+  const reading = (site) => {
+    const m = xml.match(new RegExp(`<siteMeasurements>\\s*<measurementSiteReference[^>]*\\bid="${site}"[\\s\\S]*?</siteMeasurements>`));
+    if (!m) return null;
+    const secs = (tag) => { const d = m[0].match(new RegExp(`<${tag}>\\s*<duration>([\\d.]+)</duration>`)); return d ? Number(d[1]) : NaN; };
+    const at = Date.parse(tsTag(m[0], "measurementTimeDefault"));
+    const r = { now: secs("travelTime"), usual: secs("normallyExpectedTravelTime"), clear: secs("freeFlowTravelTime"), at };
+    if (![r.now, r.usual, r.clear, r.at].every(Number.isFinite) || r.now <= 0) return null;
+    if ((published - r.at) / 60000 > TS_TIMES_FRESH_MIN) return null;
+    return r;
+  };
+  const items = [], dropped = [];
+  for (const j of TS_JOURNEYS) {
+    const parts = j.sites.map(reading);
+    if (parts.some((p) => !p)) { dropped.push(j); continue; }
+    const sum = (k) => parts.reduce((a, p) => a + p[k], 0);
+    const minutes = Math.max(1, Math.round(sum("now") / 60)), usual = Math.max(1, Math.round(sum("usual") / 60));
+    const delta = minutes - usual;
+    // "Slower" needs two whole minutes AND a twentieth of the journey, so a
+    // long run is not flagged for a difference nobody would notice.
+    const state = delta >= 2 && minutes >= usual * 1.05 ? "slow" : delta <= -2 ? "quick" : "usual";
+    items.push({
+      id: j.id, from: j.from, to: j.to, minutes, usual, clear: Math.max(1, Math.round(sum("clear") / 60)), state,
+      note: state === "slow" ? `${delta} min slower than usual` : state === "quick" ? `${-delta} min quicker than usual` : "about usual",
+      measuredAt: new Date(Math.min(...parts.map((p) => p.at))).toISOString(),
+    });
+  }
+  // Both directions gone: name the pair once. One direction gone: name it.
+  const missing = [];
+  for (const j of dropped) {
+    const both = dropped.filter((d) => d.pair === j.pair).length > 1;
+    const label = both ? j.pair : `${j.from} to ${j.to}`;
+    if (!missing.includes(label)) missing.push(label);
+  }
+  return {
+    ok: true, source: "traffic-scotland", checkedAt: new Date().toISOString(),
+    measuredAt: items.length ? items.map((i) => i.measuredAt).sort()[0] : null,
+    items, missing,
+  };
+}
+
+async function loadJourneys() {
+  if (process.env.TS_TIMES_FILE) {
+    console.warn(`journey times: reading ${process.env.TS_TIMES_FILE} instead of the live feed (TS_TIMES_FILE is set)`);
+    return tsTimesParse(await readFile(process.env.TS_TIMES_FILE, "utf8"), false);
+  }
+  const id = process.env.TS_CLIENT_ID, key = process.env.TS_CLIENT_KEY;
+  if (!id || !key) {
+    const e = new Error("no Traffic Scotland credentials in this environment");
+    e.quiet = true;
+    throw e;
+  }
+  const res = await fetch(TS_TIMES_URL, {
+    headers: {
+      Authorization: "Basic " + Buffer.from(`${id}:${key}`).toString("base64"),
+      "User-Agent": "largs.scot board (+https://largs.scot; hello@largs.scot)",
+      Accept: "application/xml, text/xml",
+    },
+    signal: AbortSignal.timeout(30000),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} from Traffic Scotland (travel times)`);
+  return tsTimesParse(await res.text(), true);
+}
+
 /* ---------- main ---------- */
 
 // Start from the previous build's data so a failed source degrades to
@@ -2835,6 +2943,17 @@ try {
   // stay on the front page. Quiet when there are simply no credentials.
   out.trunk = { ok: false, items: [], failedAt: new Date().toISOString() };
   (error.quiet ? console.log : console.warn)(`trunk roads: not read — ${error.message}`);
+}
+
+try {
+  out.journeys = await loadJourneys();
+  anySuccess = true;
+  const j = out.journeys;
+  console.log(`journey times: ${j.items.map((i) => `${i.from} to ${i.to} ${i.minutes} min`).join(", ") || "none"}${j.missing.length ? ` (not shown: ${j.missing.join(", ")})` : ""}`);
+} catch (error) {
+  // A journey time is only worth showing while it is current: no ok, no items.
+  out.journeys = { ok: false, items: [], missing: [], failedAt: new Date().toISOString() };
+  (error.quiet ? console.log : console.warn)(`journey times: not read — ${error.message}`);
 }
 
 /* Buses are a separate data file, not part of today.json: the page needs
