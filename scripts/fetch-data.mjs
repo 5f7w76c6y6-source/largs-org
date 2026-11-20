@@ -2613,7 +2613,7 @@ async function loadFloods() {
  * so the content cannot be trusted as current and nothing is shown. */
 const TS_BASE = "https://datex2.trafficscotland.org/rest/2.3/publications/UnplannedEvents/";
 const TS_CACHE_FILE = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", ".cache", "trunk.json");
-const TS_SCHEMA = 2; // 2: items keep `lat`, the span of the event (20 Nov 2026) // bump when the kept shape or the filter changes: forces one fresh download
+const TS_SCHEMA = 3; // 3: items keep `place`, the span named in the sentence // 2: items keep `lat`, the span of the event (20 Nov 2026) // bump when the kept shape or the filter changes: forces one fresh download
 const TS_HEARTBEAT_MIN = 30;
 const TS_ROADS = [
   // Ardrossan to Greenock (the Bullring roundabout is at 55.948, -4.757).
@@ -2621,6 +2621,47 @@ const TS_ROADS = [
   // Dalry to Johnstone: where the Haylie Brae road ends up on the way to Glasgow.
   { road: "A737", re: /\bA737\b/, lead: "Glasgow road beyond Kilbirnie", box: { latMin: 55.69, latMax: 55.845, lonMin: -4.75, lonMax: -4.49 } },
 ];
+
+/* WHERE THEY SAY IT IS (20 Nov 2026). An event's coordinates are only the
+ * nearest named junctions either side: the Meigle to Routenburn closure is
+ * recorded from the A760 junction to Skelmorlie, the whole of Largs
+ * included. The sentence is the exact part. This table gives the latitude
+ * of the places Traffic Scotland names on our two roads, so the places in
+ * the first sentence can fix the spot. Latitudes are from Traffic
+ * Scotland's own roadworks and travel-time records where they name the
+ * place (19-20 Nov 2026); the few marked ~ are read from the map.
+ * "Largs" is deliberately absent: it is a mile and a half of road, and an
+ * event "at Largs" must not be pinned to one end of it.
+ * ADD a name here when the build log says a sentence was not placed. */
+const TS_PLACES = {
+  A78: {
+    "ardrossan": 55.655, "seamill": 55.690, "west kilbride": 55.712, "hunterston": 55.729,
+    "fairlie": 55.756 /* ~ */, "kelburn": 55.767, "haylie": 55.784, "waterside": 55.793,
+    "gallowgate": 55.795, "main street": 55.796, "routenburn": 55.815,
+    "st fillans": 55.821, "st phillians": 55.821, "ashcraig": 55.841, "meigle": 55.848,
+    "skelmorlie": 55.868, "wemyss bay": 55.876, "inverkip": 55.908 /* ~ */,
+    "ibm": 55.926, "bullring": 55.948, "greenock": 55.945,
+  },
+  A737: {
+    "dalry": 55.714, "beith": 55.750 /* ~ */, "roadhead": 55.785, "lochwinnoch": 55.790 /* ~ */,
+    "howwood": 55.806, "kilbarchan": 55.830, "johnstone": 55.840, "linwood": 55.846,
+    "st james": 55.859,
+  },
+};
+/* The span named in the first sentence, or null when no place is known.
+ * `reported` is the feed's own span: a named place far outside it means
+ * the sentence was misread, and is discarded. */
+function tsPlaceSpan(road, text, reported) {
+  const table = TS_PLACES[road];
+  if (!table) return null;
+  const first = text.split(/\.\s/)[0].toLowerCase();
+  const found = Object.keys(table).filter((name) => new RegExp(`\\b${name}\\b`).test(first)).map((name) => table[name]);
+  if (!found.length) return null;
+  const lo = Math.min(...found), hi = Math.max(...found);
+  const span = hi - lo < 0.004 ? [lo - 0.002, hi + 0.002] : [lo, hi]; // one place: about 200 m either side
+  if (span[1] < reported[0] - 0.02 || span[0] > reported[1] + 0.02) return null;
+  return span;
+}
 
 function tsDecode(s) {
   return String(s || "").replace(/&apos;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
@@ -2657,6 +2698,7 @@ function tsParse(xml) {
       // South and north ends of the event. Both roads run near enough
       // south to north that latitude places an event along them.
       lat: [Math.min(...points.map((p) => p[0])), Math.max(...points.map((p) => p[0]))],
+      place: tsPlaceSpan(hit.road, text, [Math.min(...points.map((p) => p[0])), Math.max(...points.map((p) => p[0]))]),
       created: created && !Number.isNaN(Date.parse(created)) ? new Date(Date.parse(created)).toISOString() : null,
       end: tsTag(b, "overallEndTime") || null,
     });
@@ -2684,7 +2726,7 @@ function tsDress(kept) {
           whenValue = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, day: "numeric", month: "short" }).format(d);
         }
       }
-      return { id: i.id, road: i.road, lead: i.lead, closed: i.closed, lat: i.lat || null, badge: `${i.road} ${i.closed ? "closed" : "incident"}`, text: i.text, whenLabel, whenValue, created: i.created };
+      return { id: i.id, road: i.road, lead: i.lead, closed: i.closed, lat: i.lat || null, place: i.place || null, badge: `${i.road} ${i.closed ? "closed" : "incident"}`, text: i.text, whenLabel, whenValue, created: i.created };
     })
     .sort((a, b) => Number(b.closed) - Number(a.closed) ||
       TS_ROADS.findIndex((r) => r.road === a.road) - TS_ROADS.findIndex((r) => r.road === b.road) ||
@@ -2818,8 +2860,11 @@ function tsMarkClosed(journeys, trunk) {
       // 20 Nov 2026 the Meigle closure, on the link that begins at Main
       // Street, was wrongly taken to close the run through the town.
       const TS_SHARED_MIN = 0.003; // degrees of latitude, about 330 m
-      const inside = t.lat[0] >= route.lat[0] && t.lat[1] <= route.lat[1];
-      const shared = Math.min(t.lat[1], route.lat[1]) - Math.max(t.lat[0], route.lat[0]);
+      // The span named in their sentence when we could place it; failing
+      // that, the reported span, which is only the junctions either side.
+      const span = t.place || t.lat;
+      const inside = span[0] >= route.lat[0] && span[1] <= route.lat[1];
+      const shared = Math.min(span[1], route.lat[1]) - Math.max(span[0], route.lat[0]);
       if (!inside && !(shared > TS_SHARED_MIN)) return false;
       if (/both directions/i.test(t.text)) return true;
       const north = /\b(northbound|eastbound)\b/i.test(t.text), south = /\b(southbound|westbound)\b/i.test(t.text);
@@ -2827,8 +2872,12 @@ function tsMarkClosed(journeys, trunk) {
       return route.dir === (north ? "north" : "south");
     });
     if (hit) {
-      j.state = "closed";
-      j.note = `${hit.road} closed on this route`;
+      // Placed from their own words: say Closed. Not placed: the closure is
+      // somewhere between two junctions and may or may not be on this
+      // journey, so say only that, and show no figure either way.
+      j.state = hit.place ? "closed" : "near";
+      j.note = hit.place ? `${hit.road} closed on this route` : `${hit.road} closure reported near this route`;
+      if (!hit.place) console.warn(`journey times: could not place "${hit.text}" — add its place names to TS_PLACES`);
       marked.push(`${j.from} to ${j.to}`);
     }
   }
