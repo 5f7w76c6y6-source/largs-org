@@ -22,7 +22,7 @@
   <div class="power-notice trunk-notice{% if not t.closed %} trunk-incident{% endif %}" role="status">
     <span class="power-notice-badge">{{ t.badge }}</span>
     <span class="power-notice-text">
-      {% if t.lead %}<strong>{{ t.lead }}</strong> — {% endif %}{{ t.text }}{% if t.whenValue %} · {{ t.whenLabel }} <span class="mono">{{ t.whenValue }}</span>{% endif %}{% if trunkMore > 0 %} · <a href="/roadworks/">and {{ trunkMore }} more →</a>{% endif %} · <a href="https://trafficscotland.org/currentincidents/">Traffic Scotland →</a>
+      {% if t.lead %}<strong>{{ t.lead }}</strong> — {% endif %}{{ t.text }}{% if t.whenValue %} · {{ t.whenLabel }} <span class="mono">{{ t.whenValue }}</span>{% endif %}{% if trunkMore > 0 %} · <a href="/roadworks/">and {{ trunkMore }} more →</a>{% endif %} · <a href="https://www.traffic.gov.scot/traffic-information/incidents">Traffic Scotland →</a>
     </span>
     <span class="power-notice-src">Traffic Scotland · checked {{ today.trunk.checkedAt | hhmm }}</span>
   </div>

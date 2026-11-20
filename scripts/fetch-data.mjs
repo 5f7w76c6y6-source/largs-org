@@ -2613,7 +2613,7 @@ async function loadFloods() {
  * so the content cannot be trusted as current and nothing is shown. */
 const TS_BASE = "https://datex2.trafficscotland.org/rest/2.3/publications/UnplannedEvents/";
 const TS_CACHE_FILE = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", ".cache", "trunk.json");
-const TS_SCHEMA = 1; // bump when the kept shape or the filter changes: forces one fresh download
+const TS_SCHEMA = 2; // 2: items keep `lat`, the span of the event (20 Nov 2026) // bump when the kept shape or the filter changes: forces one fresh download
 const TS_HEARTBEAT_MIN = 30;
 const TS_ROADS = [
   // Ardrossan to Greenock (the Bullring roundabout is at 55.948, -4.757).
@@ -2654,6 +2654,9 @@ function tsParse(xml) {
     items.push({
       id: (b.match(/<situationRecord\b[^>]*\bid="([^"]+)"/) || [])[1] || "",
       road: hit.road, lead: hit.lead, closed, text,
+      // South and north ends of the event. Both roads run near enough
+      // south to north that latitude places an event along them.
+      lat: [Math.min(...points.map((p) => p[0])), Math.max(...points.map((p) => p[0]))],
       created: created && !Number.isNaN(Date.parse(created)) ? new Date(Date.parse(created)).toISOString() : null,
       end: tsTag(b, "overallEndTime") || null,
     });
@@ -2681,7 +2684,7 @@ function tsDress(kept) {
           whenValue = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, day: "numeric", month: "short" }).format(d);
         }
       }
-      return { id: i.id, road: i.road, lead: i.lead, closed: i.closed, badge: `${i.road} ${i.closed ? "closed" : "incident"}`, text: i.text, whenLabel, whenValue, created: i.created };
+      return { id: i.id, road: i.road, lead: i.lead, closed: i.closed, lat: i.lat || null, badge: `${i.road} ${i.closed ? "closed" : "incident"}`, text: i.text, whenLabel, whenValue, created: i.created };
     })
     .sort((a, b) => Number(b.closed) - Number(a.closed) ||
       TS_ROADS.findIndex((r) => r.road === a.road) - TS_ROADS.findIndex((r) => r.road === b.road) ||
@@ -2776,6 +2779,53 @@ const TS_JOURNEYS = [
   { id: "largs-ardrossan", pair: "Largs to Ardrossan", from: "Largs", to: "Ardrossan", sites: ["TT_100001529", "TT_100001527", "TT_100001525"] },
   { id: "ardrossan-largs", pair: "Largs to Ardrossan", from: "Ardrossan", to: "Largs", sites: ["TT_100001524", "TT_100001526", "TT_100001528"] },
 ];
+
+/* WHERE EACH JOURNEY RUNS (20 Nov 2026): its road, the latitudes of its two
+ * ends, and the direction Traffic Scotland would call it. Used only to
+ * match a closure to the journeys it cuts. */
+const TS_JOURNEY_ROUTE = {
+  "largs-greenock":  { road: "A78",  lat: [55.7964, 55.9490], dir: "north" },
+  "greenock-largs":  { road: "A78",  lat: [55.7964, 55.9490], dir: "south" },
+  "haylie-centre":   { road: "A78",  lat: [55.7839, 55.7964], dir: "north" },
+  "centre-haylie":   { road: "A78",  lat: [55.7839, 55.7964], dir: "south" },
+  "roadhead-m8":     { road: "A737", lat: [55.7850, 55.8590], dir: "north" },
+  "m8-roadhead":     { road: "A737", lat: [55.7850, 55.8590], dir: "south" },
+  "largs-ardrossan": { road: "A78",  lat: [55.6550, 55.7839], dir: "south" },
+  "ardrossan-largs": { road: "A78",  lat: [55.6550, 55.7839], dir: "north" },
+};
+
+/* A CLOSED ROAD HAS NO JOURNEY TIME. The travel-time publication does not
+ * know about closures: on 20 Nov 2026, with the A78 shut between Meigle
+ * and Routenburn, it still gave Largs to Greenock as 39 minutes, "about
+ * usual" -- with no traffic on a stretch it seems to fall back on the
+ * expected time. So the two feeds are checked against each other here. A
+ * closure on the journey's road whose span overlaps the journey's marks it
+ * closed; the template then shows "Closed" and no figure. A closure worded
+ * as one direction only closes only the journeys running that way;
+ * "both directions", or no direction given, closes both.
+ * Runs only when THIS build read both feeds: if the incident feed failed
+ * we do not know, and the figures stand as measured. */
+function tsMarkClosed(journeys, trunk) {
+  const marked = [];
+  for (const j of journeys.items) {
+    const route = TS_JOURNEY_ROUTE[j.id];
+    if (!route) continue;
+    const hit = trunk.items.find((t) => {
+      if (!t.closed || t.road !== route.road || !t.lat) return false;
+      if (t.lat[1] < route.lat[0] || t.lat[0] > route.lat[1]) return false;
+      if (/both directions/i.test(t.text)) return true;
+      const north = /\b(northbound|eastbound)\b/i.test(t.text), south = /\b(southbound|westbound)\b/i.test(t.text);
+      if (north === south) return true; // neither or both named
+      return route.dir === (north ? "north" : "south");
+    });
+    if (hit) {
+      j.state = "closed";
+      j.note = `${hit.road} closed on this route`;
+      marked.push(`${j.from} to ${j.to}`);
+    }
+  }
+  return marked;
+}
 
 function tsTimesParse(xml, live) {
   if (!/MeasuredDataPublication/.test(xml)) throw new Error("Traffic Scotland response is not a travel time publication");
@@ -2960,6 +3010,11 @@ try {
   // A journey time is only worth showing while it is current: no ok, no items.
   out.journeys = { ok: false, items: [], missing: [], failedAt: new Date().toISOString() };
   (error.quiet ? console.log : console.warn)(`journey times: not read — ${error.message}`);
+}
+
+if (out.trunk && out.trunk.ok && out.journeys && out.journeys.ok) {
+  const shut = tsMarkClosed(out.journeys, out.trunk);
+  if (shut.length) console.log(`journey times: shown as closed, not timed — ${shut.join(", ")}`);
 }
 
 /* Buses are a separate data file, not part of today.json: the page needs

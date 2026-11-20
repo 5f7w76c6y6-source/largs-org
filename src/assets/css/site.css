@@ -1837,3 +1837,10 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   background:var(--card);border:1px solid var(--sand);border-left:4px solid var(--warn);
   border-radius:10px;padding:12px 16px;margin:0;font-size:.95rem;color:var(--ink);max-width:70ch;
 }
+
+/* ==== JOURNEY TIMES: A CLOSED ROUTE (20 Nov 2026) ===================
+   See tsMarkClosed in fetch-data.mjs. The word takes the figure's place;
+   the red dot matches the closure notice above the panel. */
+.jt-time.jt-shut{font-size:1.45rem;color:var(--red)}
+.jt-note.shut{color:var(--ink)}
+.jt-note.shut::before{content:"";display:inline-block;width:.6em;height:.6em;border-radius:50%;background:var(--red);margin-right:.45em}

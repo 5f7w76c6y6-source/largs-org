@@ -20,8 +20,15 @@
     {% for j in jt.items %}
     <div class="jt-row">
       <div class="jt-name">{{ j.from }} <span>to</span> {{ j.to }}</div>
+      {# A closure in the incident feed on this route: no figure. The
+         travel-time feed does not know the road is shut (see tsMarkClosed). #}
+      {% if j.state == 'closed' %}
+      <div class="jt-time jt-shut">Closed</div>
+      <div class="jt-note shut">{{ j.note }}{% if today.trunk and today.trunk.ok %} · see the notice above{% endif %}</div>
+      {% else %}
       <div class="jt-time">{{ j.minutes }}<small>min</small></div>
       <div class="jt-note{% if j.state == 'slow' %} slow{% endif %}">{{ j.note }}</div>
+      {% endif %}
     </div>
     {% endfor %}
   </div>
