@@ -73,9 +73,12 @@ eleventyComputed:
      does. #}
   {% if view.key == "all" or isRoute %}
   <p class="cam-row">
-    <span class="cam-kicker">Road camera</span>
-    <a href="{{ site.links.nacRoadCams }}" target="_blank" rel="noopener">A760 road camera at Catburn (between Muirhead and Camphill reservoirs) →</a>
-    <span class="cam-src">North Ayrshire Council’s pictures of the Haylie Brae road, one each way, refreshed about every 15 minutes.</span>
+    <img class="cam-art" src="/assets/img/webcam.png" alt="" width="720" height="420" loading="lazy" decoding="async">
+    <span class="cam-text">
+      <span class="cam-kicker">Road camera</span>
+      <a href="{{ site.links.nacRoadCams }}" target="_blank" rel="noopener">A760 road camera at Catburn (between Muirhead and Camphill reservoirs) →</a>
+      <span class="cam-src">North Ayrshire Council’s pictures of the Haylie Brae road, one each way, refreshed about every 15 minutes.</span>
+    </span>
   </p>
   {% endif %}
   <div class="kicker">

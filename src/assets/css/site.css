@@ -1857,3 +1857,11 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .cam-kicker{flex:none;font-family:"Spline Sans Mono",monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal)}
 .cam-row a{font-weight:700;color:var(--teal)}
 .cam-src{flex-basis:100%;font-size:.9rem;color:var(--muted)}
+
+/* ==== ROAD CAMERA LINK: THE DRAWING (20 Nov 2026) ===================
+   The harbour webcam tile's camera, at the left of the card. The file is
+   a wide canvas with the camera in the middle, so it is cropped square.
+   Later in the file than the card's own rules on purpose. */
+.cam-row{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;align-items:center}
+.cam-art{display:block;width:50px;height:50px;object-fit:cover;object-position:center}
+.cam-text{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;min-width:0}
