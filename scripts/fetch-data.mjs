@@ -2812,7 +2812,15 @@ function tsMarkClosed(journeys, trunk) {
     if (!route) continue;
     const hit = trunk.items.find((t) => {
       if (!t.closed || t.road !== route.road || !t.lat) return false;
-      if (t.lat[1] < route.lat[0] || t.lat[0] > route.lat[1]) return false;
+      // The closure must lie inside the journey, or share real length with
+      // it. Traffic Scotland often places an event on a whole measured
+      // link, whose end is exactly where the next journey starts: on
+      // 20 Nov 2026 the Meigle closure, on the link that begins at Main
+      // Street, was wrongly taken to close the run through the town.
+      const TS_SHARED_MIN = 0.003; // degrees of latitude, about 330 m
+      const inside = t.lat[0] >= route.lat[0] && t.lat[1] <= route.lat[1];
+      const shared = Math.min(t.lat[1], route.lat[1]) - Math.max(t.lat[0], route.lat[0]);
+      if (!inside && !(shared > TS_SHARED_MIN)) return false;
       if (/both directions/i.test(t.text)) return true;
       const north = /\b(northbound|eastbound)\b/i.test(t.text), south = /\b(southbound|westbound)\b/i.test(t.text);
       if (north === south) return true; // neither or both named
