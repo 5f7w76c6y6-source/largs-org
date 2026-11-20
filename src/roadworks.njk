@@ -66,6 +66,18 @@ eleventyComputed:
      first. On the main view and the Haylie Brae road view; the two filter
      views are lists and stay lists. #}
   {% if view.key == "all" or isRoute %}{% include "journey-times.njk" %}{% endif %}
+  {# The council's A760 camera at Catburn: the only view of the Haylie Brae
+     road on the day. A link, not the pictures -- they are the council's,
+     and showing them here needs the council's agreement to a reuse
+     request first. Opens the council's own page, as the harbour camera
+     does. #}
+  {% if view.key == "all" or isRoute %}
+  <p class="cam-row">
+    <span class="cam-kicker">Road camera</span>
+    <a href="{{ site.links.nacRoadCams }}" target="_blank" rel="noopener">A760 road camera at Catburn (between Muirhead and Camphill reservoirs) →</a>
+    <span class="cam-src">North Ayrshire Council’s pictures of the Haylie Brae road, one each way, refreshed about every 15 minutes.</span>
+  </p>
+  {% endif %}
   <div class="kicker">
     {% if rw.ok %}
     <span class="stamp">Register data to {{ rw.dataDate | dom }} {{ rw.dataDate | monthShort }} · refreshed overnight</span>

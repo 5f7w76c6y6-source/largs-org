@@ -1844,3 +1844,16 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .jt-time.jt-shut{font-size:1.45rem;color:var(--red)}
 .jt-note.shut{color:var(--ink)}
 .jt-note.shut::before{content:"";display:inline-block;width:.6em;height:.6em;border-radius:50%;background:var(--red);margin-right:.45em}
+
+/* ==== ROAD CAMERA LINK (20 Nov 2026) ================================
+   See roadworks.njk. One card in the shared style: a small label, the
+   link, and a line saying whose pictures they are. */
+.cam-row{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;
+  background:var(--card);border:1px solid var(--sand);border-radius:10px;
+  padding:12px 16px;margin:0 0 22px;max-width:none;
+  box-shadow:0 1px 2px rgba(23,51,58,.07),0 8px 20px -8px rgba(23,51,58,.22);
+}
+.cam-kicker{flex:none;font-family:"Spline Sans Mono",monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal)}
+.cam-row a{font-weight:700;color:var(--teal)}
+.cam-src{flex-basis:100%;font-size:.9rem;color:var(--muted)}
