@@ -2030,3 +2030,8 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 @media (min-width:601px){.mainnav > ul > li > a{padding:6px 10px}}
 /* Front page: four slim tiles now, so two rows of two on a wide screen. */
 @media (min-width:900px){.tiles-slim{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ==== GAMES LOGO ON THE FRONT PAGE (21 Nov 2026) ====================
+   The games logo is a detailed drawing, not a silhouette: at the 34px of
+   its neighbours the numbers and squares turn to mush, so it gets 44px. */
+.tile-slim .tile-thumb.tile-thumb-tall{max-height:44px}
