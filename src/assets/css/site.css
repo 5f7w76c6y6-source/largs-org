@@ -2035,6 +2035,17 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
    canvas where the other drawings leave air round theirs, so it is shown
    at 80% width to sit level with them. */
 .wx-day{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:9px;border-top:1px solid var(--sand)}
-.wx-day .daylight-arc{width:38px;height:38px;margin:0;flex:none}
+.wx-day .daylight-arc{width:54px;height:54px;margin:0;flex:none}
 .wx-day .sub{margin:0}
 .tile-games .tile-hero{width:80%;margin-left:auto;margin-right:auto}
+
+/* ==== WEATHER TILE BALANCE (21 Nov 2026) ============================
+   The glyph and temperature give a little room to the daylight dial below
+   them. The sun dot and its white halo are non-scaling strokes sized for
+   the old 104px dial; on a small dial they covered a tenth of the rim, so
+   they are thinner here. The second rule is the dot, the first its halo. */
+.weather-row .weather-glyph{width:38px;height:38px}
+.weather-row .figure{font-size:1.3rem}
+.wx-day{gap:12px}
+.wx-day .daylight-arc path[stroke-linecap="round"]{stroke-width:9px}
+.wx-day .daylight-arc path[stroke-linecap="round"] + path[stroke-linecap="round"]{stroke-width:6px}
