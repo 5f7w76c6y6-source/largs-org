@@ -1522,6 +1522,23 @@
       },
       "freq": "weekly",
       "from": "2026-11-04"
+    },
+    {
+      "title": "Come and try rugby — Primary 4 to Primary 7",
+      "weekday": "wednesday",
+      "time": "19:00–20:30",
+      "venue": "The Weir 3G Indoor Hall, Inverclyde Sports Centre",
+      "blurb": "Ardrossan Accies RFC’s weekly come-and-try rugby for children. Primary 4 and 5 play from 7pm to 8pm; Primary 6 and 7 from 7pm to 8:30pm. Bring trainers or boots, and water. The club describes it as friendly, energetic and suitable for children and parents. For more information, message the club on Facebook or phone 01294 461651.",
+      "contact": {
+        "label": "Ardrossan Accies RFC on Facebook",
+        "url": "https://www.facebook.com/ArdrossanRugby"
+      },
+      "image": "/assets/img/ev-accies-rugby.jpg",
+      "org": {
+        "name": "Ardrossan Accies RFC",
+        "url": "https://rugbyardrossan.com"
+      },
+      "freq": "weekly"
     }
   ]
 }
