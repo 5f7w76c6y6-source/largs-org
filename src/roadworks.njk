@@ -10,19 +10,31 @@ views:
   - key: all
     label: All works
     path: /roadworks/
+    pageTitle: "Largs road closures today: A78, Haylie Brae and roadworks"
+    description: "Is the road open? Closures and incidents on the A78 from Traffic Scotland, journey times from Largs to Greenock, the Haylie Brae road camera, and every roadworks in Largs on a map."
   - key: active
     label: Under way
     path: /roadworks/under-way/
+    pageTitle: "Roadworks under way in Largs today"
+    description: "Every roadworks under way on Largs streets today, on a map, from the Scottish Road Works Register."
   - key: soon
     label: Starting soon
     path: /roadworks/starting-soon/
+    pageTitle: "Roadworks starting soon in Largs"
+    description: "Roadworks due to start on Largs streets in the next fortnight, on a map, from the Scottish Road Works Register."
   - key: a760
     label: Haylie Brae road (A760)
     path: /roadworks/a760/
+    pageTitle: "Haylie Brae road (A760), Largs: roadworks and road camera"
+    description: "The Haylie Brae road between Largs and Kilbirnie: registered roadworks on the A760, the council's road camera at Catburn, and journey times on the A737 beyond Roadhead Roundabout."
 permalink: "{{ view.path }}"
 headerArt: /assets/img/roadworks.png
 eleventyComputed:
   title: "{{ view.label }} · Roadworks and street closures"
+  # What a search result and the browser tab show (21 Nov 2026): written in
+  # the words people search with. The heading on the page is unchanged.
+  pageTitle: "{{ view.pageTitle }}"
+  description: "{{ view.description }}"
   heading: Roadworks and street closures
   subtitle: Where the works are in and around Largs, from the Scottish Road Works Register.
 ---

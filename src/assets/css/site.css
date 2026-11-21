@@ -1865,3 +1865,13 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .cam-row{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;align-items:center}
 .cam-art{display:block;width:50px;height:50px;object-fit:cover;object-position:center}
 .cam-text{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;min-width:0}
+
+/* ==== TRAFFIC SCOTLAND: A QUIET DAY (21 Nov 2026) ===================
+   See trunk-notice.njk. The frame of the incident notice with the teal
+   rule of a plain statement: nothing here is alerting. */
+.trunk-clear{
+  display:block;background:var(--card);border:1px solid var(--sand);border-left:4px solid var(--teal);
+  border-radius:10px;padding:11px 16px;margin:18px 0 0;max-width:none;font-size:.95rem;color:var(--ink);
+}
+.trunk-clear[hidden]{display:none}
+.trunk-clear-src{color:var(--muted);white-space:nowrap}

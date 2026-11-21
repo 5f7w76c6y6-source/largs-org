@@ -3,8 +3,17 @@
    live event on the A78 (Ardrossan to Greenock) or the A737 (Dalry to
    Johnstone) -- see loadTrunk in scripts/fetch-data.mjs. On a failed
    fetch there is no notice: a closure that may have cleared must not
-   stand on the front page. Never an all-clear; when Traffic Scotland
-   drops the event the notice goes.
+   stand on the front page. When Traffic Scotland drops the event
+   the notice goes.
+
+   A QUIET DAY (21 Nov 2026, Ian). "Is the road open?" is the commonest
+   search that reaches this site, and an empty page does not answer it.
+   So where every event is shown (`trunkAll`) and the page also carries
+   the road camera, a feed read by THIS build with nothing for our roads
+   is reported as exactly that: what Traffic Scotland is reporting, on
+   which stretches, when it was checked, and that the Haylie Brae road is
+   not covered. It is hidden by the reader's browser after 40 minutes,
+   and never shown after a failed fetch. The front page stays silent.
 
    The sentence is Traffic Scotland's, unedited. The site adds the badge,
    the time and, for the A737, the words that say which road that is to a
@@ -28,4 +37,24 @@
   </div>
   {% endfor %}
 </div>
+{% elif trunkAll and today.trunk and today.trunk.ok and view and (view.key == "all" or isRoute) %}
+<div class="wrap">
+  <p class="trunk-clear" role="status" data-checked="{{ today.trunk.checkedAt }}">
+    Traffic Scotland is reporting <strong>no closures or incidents</strong> on
+    the A78 between Ardrossan and Greenock, or on the A737 between Dalry and
+    Johnstone <span class="trunk-clear-src">· checked <span class="mono">{{ today.trunk.checkedAt | hhmm }}</span></span>.
+    It does not cover the Haylie Brae road (A760): see the road camera below.
+  </p>
+</div>
+<script>
+(function () {
+  var el = document.querySelector(".trunk-clear[data-checked]");
+  if (!el) return;
+  var at = Date.parse(el.getAttribute("data-checked"));
+  if (!at) return;
+  function tick() { if ((Date.now() - at) / 60000 > 40) el.hidden = true; }
+  tick();
+  setInterval(tick, 60000);
+})();
+</script>
 {% endif %}
