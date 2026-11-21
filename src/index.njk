@@ -78,6 +78,31 @@ hideHeading: true
       <div class="figure">—</div>
       <div class="sub">Live feed not fetched yet</div>
       {% endif %}
+      {# DAYLIGHT (21 Nov 2026, moved here from its own tile). Outside the
+         weather test above on purpose: sunrise and sunset are astronomy and
+         can be right when the forecast is missing. #}
+      {% if today.weather.sunrise %}
+      <div class="wx-day">
+        {% if sunarc.ok %}
+        {# The whole day as a clock face: noon at the top, midnight at the
+           bottom, the sky-coloured share running sunrise to sunset — fat in
+           June, a sliver at Christmas. The portion boundaries ARE sunrise
+           and sunset. The sun rides the rim at the current time; after
+           dark it crosses the night portion as a pale dot, because a
+           yellow sun at midnight would be a lie. #}
+        <svg class="daylight-arc" viewBox="0 0 100 100" role="img"
+             aria-label="The day drawn as a circle, its daylight share coloured as sky{% if sunarc.day %}, with the sun at the current time{% endif %}">
+          <path d="{{ sunarc.dayPath }}" fill="var(--sky-tint)"/>
+          <path d="{{ sunarc.nightPath }}" fill="var(--slate-deep)" opacity=".82"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--slate)"
+                  stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+          <path d="M {{ sunarc.sunX }} {{ sunarc.sunY }} l 0.01 0" stroke="var(--card)" stroke-width="14" stroke-linecap="round" vector-effect="non-scaling-stroke" fill="none"/>
+          <path d="M {{ sunarc.sunX }} {{ sunarc.sunY }} l 0.01 0" stroke="{% if sunarc.day %}#D9A72E{% else %}#C9D2CF{% endif %}" stroke-width="10" stroke-linecap="round" vector-effect="non-scaling-stroke" fill="none"/>
+        </svg>
+        {% endif %}
+        <div class="sub">Sunrise <span class="mono">{{ today.weather.sunrise }}</span><br>Sunset <span class="mono">{{ today.weather.sunset }}</span></div>
+      </div>
+      {% endif %}
     </div>
 
     {# Bins hero v3 — the pair follows the week, and the conditional bin says so
@@ -210,7 +235,7 @@ hideHeading: true
   </div>
   </div>
   <div class="board-group">
-  <h2 class="tile-group">The water and the sky</h2>
+  <h2 class="tile-group">The water, the sky and a puzzle</h2>
   <div class="tiles tiles-row tiles-four">
 
     <div class="tile">
@@ -291,34 +316,17 @@ hideHeading: true
       </div>
     </div>
 
-    <div class="tile">
-      <div class="label">Daylight
-        {% if today.weather.sunrise %}<span class="badge live">live</span>{% else %}<span class="badge sample">sample</span>{% endif %}
-      </div>
-      {% if today.weather.sunrise %}
-      <div class="figure">{{ today.weather.sunrise }}</div>
-      <div class="sub">Sunrise · sunset <span class="mono">{{ today.weather.sunset }}</span></div>
-      {% if sunarc.ok %}
-      {# The whole day as a clock face: noon at the top, midnight at the
-         bottom, the sky-coloured share running sunrise to sunset — fat in
-         June, a sliver at Christmas. The portion boundaries ARE sunrise
-         and sunset. The sun rides the rim at the current time; after
-         dark it crosses the night portion as a pale dot, because a
-         yellow sun at midnight would be a lie. #}
-      <svg class="daylight-arc" viewBox="0 0 100 100" role="img"
-           aria-label="The day drawn as a circle, its daylight share coloured as sky{% if sunarc.day %}, with the sun at the current time{% endif %}">
-        <path d="{{ sunarc.dayPath }}" fill="var(--sky-tint)"/>
-        <path d="{{ sunarc.nightPath }}" fill="var(--slate-deep)" opacity=".82"/>
-        <circle cx="50" cy="50" r="38" fill="none" stroke="var(--slate)"
-                stroke-width="1.5" vector-effect="non-scaling-stroke"/>
-        <path d="M {{ sunarc.sunX }} {{ sunarc.sunY }} l 0.01 0" stroke="var(--card)" stroke-width="14" stroke-linecap="round" vector-effect="non-scaling-stroke" fill="none"/>
-        <path d="M {{ sunarc.sunX }} {{ sunarc.sunY }} l 0.01 0" stroke="{% if sunarc.day %}#D9A72E{% else %}#C9D2CF{% endif %}" stroke-width="10" stroke-linecap="round" vector-effect="non-scaling-stroke" fill="none"/>
-      </svg>
-      {% endif %}
-      {% else %}
-      <div class="figure">—</div>
-      <div class="sub">Live feed not fetched yet</div>
-      {% endif %}
+    {# GAMES (21 Nov 2026). This slot was the Daylight tile; sunrise, sunset
+       and the dial now sit at the foot of the Weather tile. The games are
+       the one thing here people come back to every day, so they get a full
+       tile rather than a slim link. The logo is Ian's. Page: src/games.njk. #}
+    <div class="tile tile-games">
+      <div class="label">Games <span class="badge daily">daily</span></div>
+      <img class="tile-hero" src="/assets/img/games.png"
+           alt="A sudoku, a pencil, a crossword and a row of five letter tiles" width="720" height="577"
+           loading="lazy" decoding="async">
+      <div class="figure compact">Today’s puzzles</div>
+      <div class="sub">Crossword, sudoku and Wee Wurd · new at six · <a href="/games/">play →</a></div>
     </div>
 
   </div>
@@ -357,15 +365,6 @@ hideHeading: true
       <img class="tile-thumb" src="/assets/img/overhead.png" alt="" width="720" height="238" loading="lazy" decoding="async">
       <div class="label">Overhead</div>
       <div class="sub"><a href="/overhead/">what's up there right now? →</a></div>
-    </div>
-
-    {# Games (21 Nov 2026): a daily crossword, sudoku and Wee Wurd, new at
-       six each morning. A link tile like its three neighbours; the page
-       and its notes are src/games.njk. #}
-    <div class="tile tile-slim">
-      <img class="tile-thumb tile-thumb-tall" src="/assets/img/games.png" alt="" width="720" height="577" loading="lazy" decoding="async">
-      <div class="label">Games</div>
-      <div class="sub"><a href="/games/">today’s three puzzles →</a></div>
     </div>
 
   </div>

@@ -2028,10 +2028,13 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 /* Eleven links in the main navigation now: a little less padding keeps
    them on one row on a desktop. Phones are untouched (they use "More"). */
 @media (min-width:601px){.mainnav > ul > li > a{padding:6px 10px}}
-/* Front page: four slim tiles now, so two rows of two on a wide screen. */
-@media (min-width:900px){.tiles-slim{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
-/* ==== GAMES LOGO ON THE FRONT PAGE (21 Nov 2026) ====================
-   The games logo is a detailed drawing, not a silhouette: at the 34px of
-   its neighbours the numbers and squares turn to mush, so it gets 44px. */
-.tile-slim .tile-thumb.tile-thumb-tall{max-height:44px}
+/* ==== GAMES TILE, AND DAYLIGHT IN THE WEATHER TILE (21 Nov 2026) =====
+   See index.njk. The dial is the old Daylight tile's drawing at 38px,
+   beside sunrise and sunset, under a thin rule. The games logo fills its
+   canvas where the other drawings leave air round theirs, so it is shown
+   at 80% width to sit level with them. */
+.wx-day{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:9px;border-top:1px solid var(--sand)}
+.wx-day .daylight-arc{width:38px;height:38px;margin:0;flex:none}
+.wx-day .sub{margin:0}
+.tile-games .tile-hero{width:80%;margin-left:auto;margin-right:auto}
