@@ -1,0 +1,721 @@
+# largs.scot crossword clue bank. One answer per line; add new ones at the end, then run: node scripts/make-games.mjs crosswords <to-date>
+# ANSWER|plain clue|cryptic clue|check
+# check: A:fodder (anagram)  H:phrase (hidden in)  R:word (reversal)  I:phrase (first letters)
+#        C:PART+PART (charade)  P (palindrome)  D (double definition)  S (sounds like)  X (other)
+# A, H, R and I are verified letter by letter by the script, and the fodder must appear in the clue.
+ACE|Top card in the pack|Expert seen in palace|H:palace
+AGE|How old you are|Mature, as found in cottages|H:cottages
+AIR|What we breathe|Tune that is broadcast|D
+ALE|Beer from the cask|Beer seen in sales|H:sales
+ANT|Tiny insect that lives in a colony|Insect in pantry|H:pantry
+APE|Gorilla or chimpanzee|Copy a primate|D
+ARC|Curved line, part of a circle|Curve of car, bent|A:car
+ARK|Noah’s boat|Vessel found in park|H:park
+ARM|Limb with an elbow|Limb that is part of the army|H:army
+ASH|What is left when the fire goes out|Tree’s remains after a fire|D
+BAG|Carrier for the shopping|Sack gab when turned round|R:gab
+BAT|Flying mammal of the night|Tab returned for a cricketer’s club|R:tab
+BAY|Curve of coast, as at Largs|Bark at a brown horse|D
+BED|Where you sleep|Plot in the garden where one sleeps|D
+BEE|Maker of honey|Honey-maker heard to exist|S
+BIN|It goes out on collection day|Nib turned up in rubbish container|R:nib
+BOW|Front of a boat|Bend at the front of a ship|D
+BOX|Cardboard container|Spar in a container|D
+BUN|Small round bread roll|Roll of nub, turned over|R:nub
+BUS|It stops at the stop|Sub turned back for public transport|R:sub
+CAB|Taxi|Taxi found in scabbard|H:scabbard
+CAT|Pet that purrs|Act badly for a pet|A:act
+COD|Fish for a fish supper|Fish for a hoax|D
+COW|Dairy animal|Intimidate a dairy animal|D
+CUP|It holds your tea|Trophy for a drink holder|D
+DAM|Wall that holds back a reservoir|Mad about a barrier across the river|R:mad
+DAY|Twenty-four hours|Time found in holidays|H:holidays
+DEN|Lair, or a child’s hideout|Lair found in garden|H:garden
+DEW|Morning moisture on the grass|Morning moisture when wed is turned over|R:wed
+DOG|Man’s best friend|God returns as a pet|R:god
+DUE|Owing|Owed some of the residue|H:residue
+EAR|You hear with it|Organ found in bearing|H:bearing
+EBB|What the tide does after high water|Recede, as found in pebbles|H:pebbles
+EEL|Long, slippery fish|Fish found in wheel|H:wheel
+EGG|Laid by a hen|Urge on, with something from a hen|D
+ELM|Tall tree once common in hedgerows|Tree in helmet|H:helmet
+END|Finish|Finish found in legends|H:legends
+EON|An age almost beyond measuring|A long time for one to be at sea|A:one
+ERA|Period of history|Period when are disturbed|A:are
+EVE|The night before|Night before that reads the same either way|P
+EYE|You see with it|Looker that reads the same both ways|P
+FAN|Keen supporter|Supporter that keeps you cool|D
+FAR|A long way off|Distant, as seen in farm|H:farm
+FIG|Soft fruit with many seeds|Fruit in configuration|H:configuration
+FIN|Part of a fish|Fish part in final|H:final
+FOG|Thick mist|Some of ogres’ mist|H:of ogres
+FOX|Bushy-tailed raider of bins|Baffle a cunning animal|D
+GAS|Cooking fuel piped to homes|Sag back, making fuel|R:sag
+GEM|Precious stone|Jewel in stratagem|H:stratagem
+GUM|It holds your teeth|Mug up for something to chew|R:mug
+GUT|Clean a fish before cooking|Tug back to clean a fish|R:tug
+HAM|Cured pork|Bad actor’s meat|D
+HAT|Worn on the head|Headgear in that|H:that
+HEN|Female bird|Bird in kitchen|H:kitchen
+HUT|Small wooden shelter|Shelter in chutney|H:chutney
+ICE|Frozen water|Frost seen in twice|H:twice
+INK|Fluid in a pen|Writer’s fluid in sink|H:sink
+INN|Old word for a pub|Pub in dinner|H:dinner
+JAM|Spread for a scone|Preserve a traffic hold-up|D
+JAR|Glass pot with a lid|Jolt a glass container|D
+KEY|It opens a lock|Vital thing for a lock|D
+KIT|Set of equipment|Gear in kitchen|H:kitchen
+LAP|Once round the track|Pal comes back for a circuit|R:pal
+LEG|Limb you stand on|Gel turned for a stage of the journey|R:gel
+LID|Top of a jar|Cover in solid|H:solid
+LOG|Wood for the fire|Record a piece of timber|D
+MAP|Chart of the land|Chart made from amp, wrongly|A:amp
+MUD|Wet earth|Dirt found in emu droppings|H:emu droppings
+NET|Used to land a fish|Ten back for a fishing aid|R:ten
+NIB|Point of a pen|Bin upset for a pen point|R:bin
+NUT|Squirrel’s food|It fits a bolt and feeds a squirrel|D
+OAK|Tree that grows from an acorn|Tree in soak|H:soak
+OAR|Used to row a boat|Rower’s blade in roar|H:roar
+OAT|Grain for porridge|Grain in boat|H:boat
+OIL|North Sea product|Fuel in boiler|H:boiler
+OWL|Bird that hoots at night|Night bird in bowl|H:bowl
+PAN|Used for frying|Nap back in a cooking vessel|R:nap
+PEA|Small green vegetable|Vegetable ape cooked|A:ape
+PIE|A Scotch one is filled with mutton|Bit of shop, i.e. something from the baker|H:shop ie
+PIG|Animal kept in a sty|Greedy one in a sty|D
+PIT|Old coal mine|Tip over into a mine|R:tip
+PUB|Place for a pint|Local found in republic|H:republic
+RAM|Male sheep|Mar returns as a male sheep|R:mar
+RAT|Long-tailed rodent|Tar comes back as a rodent|R:tar
+ROW|Propel a boat with oars|Quarrel in a line|D
+RUG|Small carpet|Mat found in frugal|H:frugal
+SEA|Salt water all around Cumbrae|Main part of season|H:season
+SKY|Where the clouds are|Heavens seen in whisky|H:whisky
+SOS|Three dots, three dashes, three dots|Help! It’s the same coming or going|P
+SUN|It rises in the east|Star found in tsunami|H:tsunami
+TAR|Black stuff for the road|Rat back with road surface|R:rat
+TEA|Drink from a pot|Eat out for a drink|A:eat
+TIN|Metal once mined in Cornwall|Can of metal|D
+TON|2,240 pounds|Not back for a heavy weight|R:not
+TOP|Highest point|Pot upset at the summit|R:pot
+TUG|Small boat that tows big ones|Gut wrenched back by a boat|R:gut
+TWO|A pair|A couple in Fleetwood|H:fleetwood
+VAN|Delivery vehicle|Vehicle in caravan|H:caravan
+WEB|Spider’s trap|Trap in cobwebs|H:cobwebs
+WEE|Small, in Scots|We English are small in Scotland|C:WE+E
+WET|Soaked|Soaked when we talk at first|C:WE+T
+WIG|False hair|Hairpiece seen in twigs|H:twigs
+YEW|Churchyard tree|Tree heard to be you|S
+ZOO|Where animals are kept|Menagerie in kazoo|H:kazoo
+ACHE|Dull, steady pain|Pain of each, sadly|A:each
+AREA|Region|Space found in bare attic|H:bare attic
+BAIT|Worm on a hook|Lure with a bit, cast|A:a bit
+BANK|Side of a river|Where money is kept beside the river|D
+BARK|Sound a dog makes|Tree’s coat makes a dog’s noise|D
+BEAM|A ship’s width|Smile at a ray of light|D
+BELL|It rings|Ringer in rebellion|H:rebellion
+BOAT|Small vessel|Book and grain for a vessel|C:B+OAT
+BUOY|Floating marker in the channel|Floating marker heard to be a lad|S
+BURN|Small stream, in Scots|Scorch a Scottish stream|D
+CALM|No wind at all|Still a clam, stewed|A:clam
+CAPE|Headland|Headland cloak|D
+COAL|Black fuel from the pit|Fuel from cola, shaken|A:cola
+COVE|Small sheltered bay|Fellow in a small bay|D
+CRAB|Sideways walker on the shore|Shellfish, and one who grumbles|D
+DECK|Floor of a ship|Adorn the floor of a ship|D
+DOCK|Where ships tie up|Cut short where ships tie up|D
+EAST|Where the sun rises|Seat moved towards the sunrise|A:seat
+EDGE|Brink|Border found in hedgerow|H:hedgerow
+FARE|What you pay on the bus|Fear shifting bus price|A:fear
+FIRE|It burns in the grate|Dismiss a blaze|D
+FISH|Cod or haddock|Angle for a swimmer|D
+GALE|Very strong wind|Blow found in legal eagle|H:legal eagle
+GULL|Noisy seabird after your chips|Cheat a seabird|D
+HAAR|Cold sea fog|Sea fog starts to hide Arran, Ailsa’s rock|I:hide Arran Ailsa’s rock
+HALF|Fifty per cent|Small beer for one of two equal parts|D
+HARE|Fast runner with long ears|Hear about a fast runner|A:hear
+HELM|Where a boat is steered from|Hot tree at the wheel|C:H+ELM
+HERO|Brave person|Brave man in the room|H:the room
+HILL|Smaller than a mountain|Rise in chilly|H:chilly
+HULL|Body of a ship|Body of a ship in a Yorkshire port|D
+ISLE|Small island|Lies about a small island|A:lies
+KELP|Brown seaweed|Seaweed starts to keep every lobster pot|I:keep every lobster pot
+KILT|Tartan garment|Tartan wear starts to keep islanders looking tidy|I:keep islanders looking tidy
+KNOT|One nautical mile an hour|Speed at sea is tied up|D
+LAKE|Scotland has only one by that name|Leak out into inland water|A:leak
+LAND|What sailors long to see|Come ashore in Scotland|H:scotland
+LOCH|Scottish lake|Scottish water: look, church|C:LO+CH
+MAST|Tall spar that carries a sail|Pole has mother on street|C:MA+ST
+MILE|1,760 yards|Lime squashed over a distance|A:lime
+MIST|Thin fog|Fog said to be absent|S
+MOOR|Tie up a boat|Tie up a room, turned over|R:room
+MOON|It pulls the tides|Mono, broken, in the night sky|A:mono
+NEAP|Tide with the smallest range|Pane broken by a weak tide|A:pane
+NEST|Bird’s home|Nets tangled in a bird’s home|A:nets
+NOON|Midday|Midday reads the same either way|P
+PEAT|Fuel cut from the bog|Tape rewound for bog fuel|A:tape
+PIER|Where the ferry ties up|Ripe for rebuilding, the landing stage|A:ripe
+PINT|Measure of beer|Measure found in ship in trouble|H:ship in trouble
+PORT|Left, at sea|Left a harbour|D
+PROM|Seafront walk, for short|Seafront walk for a school dance|D
+QUAY|Harbour wall where boats tie up|Landing place sounds like a key|S
+RAIN|It falls from clouds|Wet weather heard to rule|S
+REEF|Rocks just under the surface|Free to move, hidden rocks|A:free
+ROPE|Thick cord on a boat|Pore over a line|A:pore
+SAIL|Canvas that catches the wind|Ails badly, so go by boat|A:ails
+SALT|It gives the sea its taste|Old sailor’s seasoning|D
+SAND|What the beach is made of|Smooth with grit from the beach|D
+SEAL|Whiskered swimmer seen off the shore|Close up a sea creature|D
+SHIP|Large vessel|Hips swaying on a vessel|A:hips
+SHOP|Place to buy things|Hops off to the store|A:hops
+SLIP|Where the Cumbrae ferry loads|Lips moving at the ferry ramp|A:lips
+STAR|It twinkles at night|Rats return as a leading light|R:rats
+STEM|Stalk of a plant|Stop the flow of a stalk|D
+SURF|Breaking waves|Waves heard as a peasant|S
+SWIM|Go for a dook|Dook seen in shows wimps|H:shows wimps
+TIDE|It comes in and goes out twice a day|Diet upset by the sea’s movement|A:diet
+TOWN|Bigger than a village|Wont to move to a burgh|A:wont
+WAVE|Greeting from the hand|Greet a breaker|D
+WEST|Where the sun sets|Stew stirred towards the sunset|A:stew
+WIND|It fills the sails|Turn the handle for a breeze|D
+YARD|Three feet|Dray overturned in an enclosure|R:dray
+ZINC|Bluish metal used to galvanise|Metal in quiz, incidentally|H:quiz incidentally
+ANGLE|Fish with rod and line|Fish in tangled line|H:tangled
+BARGE|Flat-bottomed cargo boat|Push rudely into a canal boat|D
+BEACH|Sand between the prom and the sea|Shore tree, we hear|S
+BERTH|Place to tie up a boat|Mooring sounds like a delivery|S
+BOARD|Plank|Get on a plank|D
+BRAVE|Courageous|Face a warrior|D
+BREAD|Loaf|Beard trimmed for a loaf|A:beard
+BRINE|Very salty water|Salt water: British in the East|C:BR+IN+E
+BROOM|Yellow-flowered shrub, or a sweeper|Sweeper is a flowering shrub|D
+CABIN|Sleeping quarters on a boat|Taxi in for room on a ship|C:CAB+IN
+CANOE|Paddled boat|Ocean stirred up by a small boat|A:ocean
+CHART|Sailor’s map|Map a table of figures|D
+CLOUD|It hides the sun|Could change the sky|A:could
+COAST|Where the land meets the sea|Travel without effort along the shore|D
+CRANE|Dockside lifting machine|Bird at the docks|D
+CREEL|Basket for the catch, or for lobsters|Basket found where scree lies|H:scree lies
+CREST|Top of a wave|Top of a wave on a coat of arms|D
+DRIFT|Be carried along by the current|Snow piled up by the general meaning|D
+EAGLE|Great bird of prey|Two under par for a bird|D
+FERRY|It crosses to Cumbrae from the slip|Iron, river and railway for a crossing|C:FE+R+RY
+FLEET|Group of ships|Fast group of ships|D
+FLOAT|Stay on the surface|Aloft, tossed, yet stay on the surface|A:aloft
+GLASS|Barometer, to an old sailor|Tumbler for a barometer|D
+GRAIN|Wheat or barley|A ring twisted for a seed|A:a ring
+GREEN|Colour of grass|Colour of the village common|D
+HEART|It beats in the chest|Earth moved at the centre|A:earth
+HORSE|Animal with a mane|Shore reshaped for a mount|A:shore
+HOTEL|Place to stay the night|Thole broken at the inn|A:thole
+HOUSE|Home|Accommodate a dwelling|D
+ISLET|Very small island|Stile rebuilt on a tiny island|A:stile
+LARGS|Clyde coast town, scene of a battle in 1263|Big, lacking energy, with small town on the Clyde|C:LARG+S
+LIGHT|Not heavy|Lamp that weighs little|D
+MARSH|Boggy ground|Harms, disturbed, the wetland|A:harms
+MUSIC|It has notes and bars|Tunes from emus I cook|H:emus i cook
+NIGHT|When the stars come out|Thing that changes after dark|A:thing
+NORSE|Of the Vikings|Snore loudly, disturbed, like a Viking|A:snore
+NORTH|Direction of Skelmorlie from Largs|Thorn bent towards the Pole|A:thorn
+OCEAN|The Atlantic, for one|Main result of a capsized canoe|A:canoe
+OTTER|Sleek swimmer seen on the shore at dusk|Torte ruined by a river animal|A:torte
+PEARL|Gem from an oyster|Paler, oddly, as a gem|A:paler
+PILOT|One who brings a ship safely into harbour|Sanctimonious fate for one bringing ships in|C:PI+LOT
+PLANK|Long flat piece of timber|Scheme with a thousand for a board|C:PLAN+K
+PRAWN|Small pink shellfish|Shellfish in soup, raw, naturally|H:soup raw naturally
+RADIO|Wireless set|A rod I bent into a wireless|A:a rod i
+RIVER|The Clyde, before it becomes a firth|Flower that you may cross by bridge|X
+ROCKS|Hazard marked on a chart|Sways on the stones|D
+SCONE|Baked round for jam and cream|Cones scattered at teatime|A:cones
+SHELL|Found on the beach|Bombard a seaside find|D
+SHORE|Where the beach is|Horse wandering by the sea|A:horse
+SKATE|Flat fish, or a blade for the ice|Stake out a flat fish|A:stake
+SLATE|Roofing stone|Least likely material for a roof|A:least
+SOUND|Narrow stretch of sea|Healthy stretch of water|D
+SPRAY|Fine drops blown off a wave|Prays for mist from the sea|A:prays
+STEAM|It drove the Clyde puffers|Mates working on old boat power|A:mates
+STERN|Back of a boat|Strict at the back of a boat|D
+STONE|Fourteen pounds|Notes scattered on a pebble|A:notes
+STORM|Gale with rain|Rage at violent weather|D
+SWELL|Long rolling waves|Excellent heaving of the sea|D
+TABLE|You eat at it|Bleat about furniture|A:bleat
+THANE|Medieval Scottish lord|Scottish lord, compared with East|C:THAN+E
+TIDAL|Rising and falling twice a day|Dial T, strangely, like the firth|A:dial t
+TOWER|Tall narrow building|One pulling a tall building|D
+TRAIN|It runs to Glasgow Central|Coach that runs on rails|D
+TWEED|Rough woollen cloth|Cloth river|D
+WATER|It comes out of the tap|Wet the garden from the tap|D
+WHALE|Largest animal in the sea|Great swimmer heard to cry|S
+WHEEL|Round thing on an axle|Steer with a ship’s helm|D
+WRECK|Ship lost on the rocks|Ruin a sunken ship|D
+ANCHORS|They hold ships in place|Newsreaders’ ship-holders|D
+BEACHES|Sandy shores|Runs aground on the sands|D
+CAPTAIN|Master of a ship|Hat, thanks, at home for the skipper|C:CAP+TA+IN
+CHANNEL|Deep-water route for ships|TV station in the sea lane|D
+COASTAL|By the sea|Shore with Alan, briefly, by the sea|C:COAST+AL
+CURRENT|Flow of water|Present flow of water|D
+FISHING|Angling|Angling for compliments|D
+HARBOUR|Shelter for boats|Shelter a grudge|D
+ISLANDS|Cumbrae and Arran, for two|Is touching down on Cumbrae and Arran|C:IS+LANDS
+JETTIES|Small piers|Black bonds for landing stages|C:JET+TIES
+KITCHEN|Room where meals are made|Gear, cold bird in the cooking room|C:KIT+C+HEN
+LANTERN|Lamp carried by hand|Local network with seabird gives light|C:LAN+TERN
+LOBSTER|Caught in a creel|Bolters scattered by a clawed creature|A:bolters
+MARINER|Sailor|Sea soldier by river is a sailor|C:MARINE+R
+MOORING|Place to tie up a boat|Heath in good place for a boat|C:MOOR+IN+G
+PADDLER|One wading at the water’s edge|Steamer with wheels, or a child at the shore|D
+PASSAGE|Voyage|Voyage along a corridor|D
+SEAGULL|It steals chips on the prom|Main dupe is a chip thief|C:SEA+GULL
+SEASIDE|Where Largs is|Main team at the coast|C:SEA+SIDE
+SEAWEED|Kelp or wrack|Main garden pest found on the shore|C:SEA+WEED
+SHINGLE|Pebbles on a beach|Roof tile on the beach|D
+STEAMER|The Waverley, for one|Vessel for cooking vegetables on the Clyde|D
+SUNRISE|Dawn|Star to get up at dawn|C:SUN+RISE
+VIKINGS|Losers at Largs in 1263|Six monarchs who came raiding|C:VI+KINGS
+WEATHER|Rain, wind and sunshine|Come through the rain and shine|D
+WHISTLE|Blown by a referee|Signal from the referee or the kettle|D
+ALEXANDER|King of Scots at the time of the Battle of Largs|Beer, kiss, and hesitation for a King of Scots|C:ALE+X+AND+ER
+BOATHOUSE|Shed for a rowing club|Vessel home at the water’s edge|C:BOAT+HOUSE
+BREAKFAST|First meal of the day|Smash quickly for the first meal|C:BREAK+FAST
+CROSSWIND|Hazard for a ferry coming onto the slip|Angry breeze from the side|C:CROSS+WIND
+EVERGREEN|Tree that keeps its leaves|Always inexperienced, like a pine|C:EVER+GREEN
+FISHERMAN|One who works a boat for a living|Angler with a chap who nets a living|C:FISHER+MAN
+FORESHORE|Beach between high and low water|In front, prop up the tidal beach|C:FORE+SHORE
+HEADLANDS|Capes|Leader touches down on capes|C:HEAD+LANDS
+HIGHLANDS|Mountainous north of Scotland|Tall grounds in the north of Scotland|C:HIGH+LANDS
+LANDSCAPE|View of the countryside|Arrives with cloak for the scenery|C:LANDS+CAPE
+LIFEBOATS|RNLI craft|Being with vessels that rescue|C:LIFE+BOATS
+LIGHTSHIP|Floating beacon|Not heavy vessel as a floating beacon|C:LIGHT+SHIP
+LONGSHIPS|Haakon’s fleet of 1263 was made up of these|Yearns to have joints for Viking vessels|C:LONGS+HIPS
+MOONLIGHT|Lunar glow|Do a second job by lunar glow|D
+NORTHEAST|Direction of Glasgow from Largs|Two points towards Glasgow from Largs|C:NORTH+EAST
+NORTHWARD|Towards Skelmorlie from Largs|Towards the Pole, a compass point and a hospital room|C:NORTH+WARD
+PASSENGER|One travelling on the ferry|Traveller who is not pulling his weight|D
+PROMENADE|Seafront walk|For chaps with a fruit drink, a seafront stroll|C:PRO+MEN+ADE
+ROADWORKS|Cones, temporary lights and a hole in the road|Street labours cause delays|C:ROAD+WORKS
+SANDSTONE|Red rock of the Clyde coast|Beaches with character for red rock|C:SANDS+TONE
+SEAFARERS|Sailors|Main passengers are sailors|C:SEA+FARERS
+SHORELINE|Where the sea meets the land|Prop up a row at the water’s edge|C:SHORE+LINE
+SOUTHWEST|Where the wind at Largs most often comes from|Two points to the prevailing wind|C:SOUTH+WEST
+STARLIGHT|Glow from the night sky|Leading lamp in the night sky|C:STAR+LIGHT
+STEAMSHIP|Coal-fired vessel|Vapour vessel|C:STEAM+SHIP
+WATERFALL|Where a burn drops over rock|Wet tumble is a cascade|C:WATER+FALL
+WHIRLPOOL|Corryvreckan is a famous one|Spin billiards in the Corryvreckan, say|C:WHIRL+POOL
+ADD|Do a sum|Sum up dad, confused|A:dad
+AID|Help|Help found in maiden|H:maiden
+AIM|Point a bow|Goal seen in claims|H:claims
+AWE|Wonder|Wonder shown in drawer|H:drawer
+AXE|Viking weapon for chopping|Chopper seen in taxes|H:taxes
+BAR|Counter in a pub|Bra undone at the pub counter|A:bra
+BOG|Wet, peaty ground|Gob back in the marsh|R:gob
+BUD|Flower not yet open|Dub back a young flower|R:dub
+CAP|Flat hat|Hat found in escape|H:escape
+CAR|Motor vehicle|Arc bent round a motor|A:arc
+COG|Tooth on a gear wheel|Gear tooth in incognito|H:incognito
+COT|Baby’s bed|Baby’s bed in Scotland|H:scotland
+CUB|Young fox or bear|Young animal in incubate|H:incubate
+DIP|Quick swim|Brief swim in sauce|D
+DOT|Full stop|Spot in anecdote|H:anecdote
+DYE|Colour for cloth|Colour heard to expire|S
+ELF|Small magical helper|Sprite in shelf|H:shelf
+EWE|Female sheep|Wee, wandering female sheep|A:wee
+FEE|Charge for a service|Charge found in coffee|H:coffee
+FLY|Bait on a trout line|Travel by air with an insect|D
+FOE|Enemy|Enemy starts to fight our efforts|I:fight our efforts
+FUR|Animal’s coat|Coat seen in unfurled sail|H:unfurled
+GAP|Space between|Opening in agape|H:agape
+GIG|Light rowing boat|Concert in a rowing boat|D
+HAY|Dried grass|Dried grass sounds like a greeting|S
+HEM|Edge of a skirt|Edge seen in them|H:them
+HIP|Joint at the top of the leg|Joint found in ship|H:ship
+HOP|Jump on one leg|Jump for a beer ingredient|D
+HUB|Centre of a wheel|Centre found in rhubarb|H:rhubarb
+HUE|Shade of colour|Colour starts to have unusual effects|I:have unusual effects
+HUG|Cuddle|Ugh! Wild cuddle|A:ugh
+IVY|Climbing evergreen|Climber in privy|H:privy
+JAW|It holds your lower teeth|Chatter with part of the face|D
+JET|Fast aircraft|Black stone plane|D
+JIG|Lively dance|Dance used to guide a tool|D
+JOG|Gentle run|Nudge into a gentle run|D
+JOY|Great happiness|Delight in enjoyment|H:enjoyment
+JUG|It pours the milk|Pitcher for jail|D
+KIN|Family|Ink spilt on family|A:ink
+LAD|Boy|Boy found in salad|H:salad
+LAW|Rules of the land|Awl twisted by a statute|A:awl
+LEA|Meadow, in old poems|Ale brewed in a meadow|A:ale
+LIP|Edge of a jug|Edge seen in slipper|H:slipper
+MAT|Small rug at the door|Tam turned over on a small rug|R:tam
+MOP|Used to wash a floor|Pom returns to clean the floor|R:pom
+MUG|Big cup|Gum up a big cup|R:gum
+NAP|Short sleep|Pan upset during a short sleep|R:pan
+NOD|Bow of the head|Don turns to give assent|R:don
+ORE|Rock that yields metal|Roe cooked in rock with metal|A:roe
+PAD|Block of writing paper|Notebook seen in spade|H:spade
+PAL|Friend|Lap round with a friend|R:lap
+PAW|Dog’s foot|Foot found in spawn|H:spawn
+PEG|It holds washing on the line|Pin found in scapegoat|H:scapegoat
+PEN|Female swan|Writer in an enclosure|D
+PET|Animal kept at home|Favourite animal at home|D
+POD|Where peas grow|School of whales in a pea case|D
+POT|Creel, to a lobster fisherman|Top turned on a container|R:top
+RAG|Scrap of cloth|Scrap seen in garage|H:garage
+RAY|Flat fish|Beam from a flat fish|D
+RIB|Fast inflatable boat|Tease with a chest bone|D
+RIG|Set up a boat’s sails|Oil platform’s outfit|D
+RIM|Edge of a cup|Edge seen in primer|H:primer
+ROD|Fishing pole|Pole found in produce|H:produce
+ROE|Fish eggs|Ore smelted for fish eggs|A:ore
+RUM|Sailor’s tipple|Odd spirit|D
+RYE|Grain for dark bread|Grain heard to be twisted|S
+SAP|Juice of a tree|Spa treated with tree juice|A:spa
+SAW|Tool with teeth|Was back with a cutting tool|R:was
+SKI|Slide down a snowy hill|Runner seen in asking|H:asking
+SPA|Place to take the waters|Sap stirred at a health resort|A:sap
+SPY|Secret agent|Agent seen in crispy|H:crispy
+STY|Pig’s home|Pig’s home in nasty|H:nasty
+TAB|Small flap|Bat back with a small flap|R:bat
+TAN|Brown from the sun|Ant squashed, turning brown|A:ant
+TAP|Where water comes out|Pat returns to knock gently|R:pat
+TEN|Number of fingers|Net turned over for a number|R:net
+TIE|Worn round the neck|Draw a neck band|D
+TOE|One of five on a foot|Digit seen in potatoes|H:potatoes
+TOW|Pull a boat along|Two wrongly pull a boat|A:two
+TOY|Child’s plaything|Plaything starts to tire older youngsters|I:tire older youngsters
+TUB|Bath|But back in the bath|R:but
+VAT|Large tank for liquid|Tank for a tax|D
+VET|Animal doctor|Check an animal doctor|D
+VOW|Solemn promise|Promise starts to vex our witness|I:vex our witness
+WAX|Candle material|Grow, as the moon does, with candle material|D
+WIT|Clever humour|Humour seen in twitch|H:twitch
+YAK|Shaggy ox of Tibet|Kay returns with a shaggy beast|R:kay
+YAM|Sweet potato|May turned up with a root vegetable|R:may
+ABLE|Capable|Bale tossed by one who can|A:bale
+ACRE|4,840 square yards|Care about a piece of land|A:care
+ARCH|Curved top of a doorway|Char badly under a curve|A:char
+ARMY|Soldiers|Mary upset the soldiers|A:mary
+AUNT|Mother’s sister|Tuna cooked for a relative|A:tuna
+BAKE|Cook in the oven|Beak twisted to cook|A:beak
+BALL|Thrown and caught|Dance with a round toy|D
+BAND|Group of musicians|Ring for a group of players|D
+BARN|Farm building|Bran scattered in a farm building|A:bran
+BATH|Tub|City tub|D
+BEAR|Large furry animal|Put up with a furry animal|D
+BEEF|Meat from a cow|Complain about meat|D
+BELT|It holds trousers up|Hit with a waist strap|D
+BIKE|Two-wheeler|Cycle seen in rabbi keenly riding|H:rabbi keenly
+BIRD|Feathered flyer|Feathered creature starts to build in red drainpipe|I:build in red drainpipe
+BLUE|Colour of a clear sky|Sad colour|D
+BONE|Part of a skeleton|Ebon carving from a skeleton|A:ebon
+BOOK|Something to read|Reserve a novel|D
+BOOT|Strong shoe|Kick the back of a car|D
+BOWL|Dish for soup|Blow about a dish|A:blow
+BULB|Planted in autumn for spring|Light source planted in autumn|D
+CAKE|Baked treat|Sweet treat starts to cheer all kids eating|I:cheer all kids eating
+CAMP|Tents in a field|Site found in scampi|H:scampi
+CARD|Sent at Christmas|Joker, perhaps, sent at Christmas|D
+CART|Two-wheeled wagon|Wagon in public arts|H:public arts
+CASH|Notes and coins|Money starts to come at some hour|I:come at some hour
+CAVE|Hollow in a cliff|Beware, in Latin, of a hollow in the rock|D
+CHIN|Below the mouth|Inch forward on the face|A:inch
+CLAY|Potter’s material|Lacy pattern in potter’s earth|A:lacy
+CLUB|Golf stick|Society for a golf stick|D
+COAT|Worn in the cold|Taco stuffed in a jacket|A:taco
+COIN|Piece of money|Icon reworked in a piece of money|A:icon
+COLD|Chilly|Clod turned chilly|A:clod
+COOK|Make a meal|Chef and captain|D
+CORK|Bottle stopper|Rock rolled over a bottle stopper|A:rock
+CORN|Cereal crop|Cereal on the foot|D
+CROW|Black bird|Boast like a black bird|D
+DAWN|Daybreak|Wand waved at daybreak|A:wand
+DEER|Animal with antlers|Reed bent back by a forest animal|R:reed
+DESK|Table for writing|Table found in hillside’s keep|H:hillsides keep
+DISH|Plate|Attractive person’s plate|D
+DOOR|Way into a room|Rood screen moved back to the entrance|R:rood
+DOVE|Bird of peace|Plunged, in America, like a bird of peace|D
+DRUM|Beaten instrument|It is beaten in a band|X
+DUCK|Bird on the pond|Avoid a pond bird|D
+DUSK|Twilight|Twilight starts to darken uplands, sheep kneeling|I:darken uplands sheep kneeling
+DUST|Fine dirt|Stud scattered in the dirt|A:stud
+FARM|Land with crops and animals|Land found in far meadow|H:far meadow
+FERN|Plant with fronds|Frond plant in inferno|H:inferno
+FLAG|The Saltire, for one|Tire, like a banner|D
+FOAM|Froth on the waves|Froth starts to form on a mooring|I:form on a mooring
+FOOT|Twelve inches|Pay the bill for twelve inches|D
+FORK|Used with a knife|Split in the road at the table|D
+GATE|Way into a field|Entrance found in frigates|H:frigates
+GLEN|Narrow valley|Valley found in single night|H:single night
+GOAT|Animal with a beard|Toga torn by a bearded animal|A:toga
+GOLD|Precious yellow metal|First prize metal|D
+GOLF|Game played on a links|Flog back for a game|R:flog
+HAND|Five fingers|Pass to a member of the crew|D
+HARP|Stringed instrument|Go on and on about an instrument|D
+HAWK|Bird of prey|Sell a bird of prey|D
+HEAT|Warmth|Hate changing warmth|A:hate
+HERD|Group of cattle|Cattle group caught by the ear|S
+HIVE|Home for bees|Bees’ home found in archive|H:archive
+HOOK|It holds the bait|Catch a pirate captain|D
+HORN|Sounded in fog|Fog warning on a bull|D
+IRON|Metal that rusts|Press a golf club|D
+KING|Chess piece|Monarch seen in takings|H:takings
+KITE|Flown on a string|Bird of prey on a string|D
+LAMB|Young sheep|Balm applied to a young sheep|A:balm
+LAMP|Light|Palm waving a light|A:palm
+LANE|Narrow road|Lean out over a narrow road|A:lean
+LARK|Bird that sings high above|Bit of fun for a songbird|D
+LEAF|Page of a book|Flea jumping on a page|A:flea
+LIME|Green citrus fruit|Mile out for a green fruit|A:mile
+LION|Big cat|Loin injured on a big cat|A:loin
+LOAF|Bread|Foal eating bread|A:foal
+LOFT|Room under the roof|Attic seen in aloft|H:aloft
+LUNG|Breathing organ|Breather found in flung|H:flung
+MEAL|Breakfast, lunch or dinner|Male cooking dinner|A:male
+MILK|It comes from a cow|Exploit a dairy product|D
+MINT|Herb for lamb|Where coins are made from a herb|D
+MOSS|Green growth on stones|Green growth starts to mark old sea stones|I:mark old sea stones
+MOTH|Insect drawn to a lamp|Night flyer found in smother|H:smother
+NAIL|Hit by a hammer|Lain awkwardly on a fastener|A:lain
+NECK|Between head and shoulders|Kiss a narrow strip of land|D
+NOSE|You smell with it|Ones shaken by a snout|A:ones
+OVEN|Where the baking is done|Baker’s box in woven|H:woven
+PALM|Inside of the hand|Lamp shone on a tropical tree|A:lamp
+PARK|Douglas, in Largs, for one|Leave the car on the green|D
+PATH|Way through the woods|Way seen in sympathy|H:sympathy
+PEAK|Mountain top|Top heard to peep|S
+PEAR|Fruit that grows on a tree|Reap wildly for a fruit|A:reap
+PINE|Tree with needles|Long for an evergreen|D
+PIPE|Smoked by an old sailor|Tube for a smoke|D
+PLUM|Purple fruit|Lump stewed as a fruit|A:lump
+POND|Small pool|Small pool seen in despondent|H:despondent
+POOL|Where you swim|Loop back to a swimming place|R:loop
+RAFT|Flat boat of logs|Flat boat seen in crafts|H:crafts
+RAIL|Track for a train|Liar turned on the track|R:liar
+RAKE|Garden tool for leaves|Garden tool for a dissolute man|D
+RING|Worn on a finger|Grin broadly at a band|A:grin
+ROAD|The A78, for one|Way heard to have been ridden|S
+ROOF|Top of a house|Top found in proof|H:proof
+ROOT|Underground part of a plant|Cheer for part of a plant|D
+ROSE|Thorny flower|Got up for a flower|D
+RUST|What salt air does to iron|Ruts worn by corrosion|A:ruts
+SALE|Reduced prices|Ales brewed for a bargain event|A:ales
+SEAT|Place to sit|Eats out in a chair|A:eats
+SEED|Planted to grow|Dees flowing back to a pip|R:dees
+SILK|Fine smooth cloth|Fine cloth starts to shine in lamplight, kindly|I:shine in lamplight kindly
+SNOW|White winter fall|Owns up to a white fall|A:owns
+SOAP|Used with water to wash|TV serial for washing|D
+SOCK|Worn inside a shoe|Punch in footwear|D
+SOUP|Broth|Opus composed in broth|A:opus
+SPAR|Mast or boom|Rasp out a wooden pole|A:rasp
+STAG|Male deer|Tags tangled on a male deer|A:tags
+STEP|Stair|Pets returning on the stair|R:pets
+SWAN|Graceful white bird|Sawn roughly by a white bird|A:sawn
+TAIL|It wags|Follow the end of a dog|D
+TEAM|Side|Meat cooked for the side|A:meat
+TENT|Canvas shelter|Shelter in attention|H:attention
+TERN|Sharp-winged seabird|Rent out to a seabird|A:rent
+TILE|Slate on a roof|Roofing piece seen in textiles|H:textiles
+TOAD|Warty cousin of the frog|Warty creature starts to trot over a drain|I:trot over a drain
+TRAY|It carries the tea things|Arty design for a tea carrier|A:arty
+TREE|Oak or ash|Oak found in street|H:street
+TUNA|Large fish, often tinned|Aunt cooked a big fish|A:aunt
+VASE|It holds flowers|Save broken flower holder|A:save
+VEIL|Worn by a bride|Evil twisted under a bride’s cover|A:evil
+VINE|Where grapes grow|Vein opened on a climbing plant|A:vein
+WALL|Side of a room|Barrier found in swallow|H:swallow
+WASP|Striped stinger|Swap about for a stinger|A:swap
+WEED|Unwanted plant|Small Scottish daughter is unwanted in the garden|C:WEE+D
+WELL|Source of water|In good health at the water source|D
+WHIN|Gorse, in Scotland|Gorse starts to wither here in November|I:wither here in November
+WING|Bird’s flying limb|Flyer’s limb in swings|H:swings
+WOLF|Wild cousin of the dog|Flow back to a wild animal|R:flow
+WOOD|Small forest|Golf club among the trees|D
+WOOL|Sheep’s coat|Fleece starts to warm our old lambs|I:warm our old lambs
+WORM|Bait dug from the sand|Bait starts to wriggle on rusty metal|I:wriggle on rusty metal
+WREN|Tiny brown bird|Tiny bird, and a builder of St Paul’s|D
+YARN|Wool for knitting|Tall tale told with wool|D
+APPLE|Fruit that keeps the doctor away|Fruit that fell on Newton|X
+BADGE|Pin worn to show membership|Debag, shockingly, for an emblem|A:debag
+BAKER|Maker of bread|Break out the bread maker|A:break
+BASIN|Sink|Sink in a river valley|D
+BENCH|Seat on the prom|Seat for the judges|D
+BERRY|Small fruit on a bramble|Fruit heard to inter|S
+BIRCH|Silver-barked tree|Tree used for a cane|D
+BLADE|Cutting edge of a knife|Baled out with part of an oar|A:baled
+BLAZE|Big fire|Mark a trail with fire|D
+BLOOM|Flower|Flower in the flush of youth|D
+BRIDE|She walks up the aisle|Rebid for one getting married|A:rebid
+BRICK|Building block|Good sort in a wall|D
+BRUSH|Used with a dustpan|Shrub trimmed with a sweeper|A:shrub
+CANAL|Man-made waterway|Can Al dig a waterway?|C:CAN+AL
+CARGO|What a ship carries|Vehicle to leave with freight|C:CAR+GO
+CEDAR|Scented evergreen tree|Raced round an evergreen|A:raced
+CHAIN|It holds an anchor|China broken by a row of links|A:china
+CHAIR|Seat with a back|Run the meeting from a seat|D
+CHALK|White rock for writing on a board|White stuff from the cliffs of Dover|X
+CHEST|Sea trunk|Trunk of the body|D
+CHIPS|Eaten with fish|Bits of wood eaten with fish|D
+CIDER|Drink made from apples|Cried out for an apple drink|A:cried
+CLOCK|It tells the time|Notice a timepiece|D
+COACH|Bus for a long trip|Train a bus|D
+CORAL|Reef builder|Carol sang about a reef|A:carol
+COVER|Lid|Lid for an insurance policy|D
+CROFT|Small Highland farm|Small farm starts to cut rushes on flooded turf|I:cut rushes on flooded turf
+CROWN|Worn by a king|Old coin on a king’s head|D
+CURVE|Bend|Bend seen where delays occur, vexed|H:occur vexed
+DAIRY|Where milk is bottled|Diary rewritten at the milk depot|A:diary
+DAISY|Small white lawn flower|Flower starts to dance among ivy some years|I:dance among ivy some years
+DANCE|Reel or jig|Caned wildly at the ceilidh|A:caned
+DEPTH|Measured in fathoms|Sounding starts to drop each plumb then haul|I:drop each plumb then haul
+DITCH|Drain at the edge of a field|Get rid of a field drain|D
+DIVER|One who works under water|Drive off a sea bird|A:drive
+DOZEN|Twelve|Zoned off for twelve|A:zoned
+DRAIN|Where the rain runs away|Nadir reached in a gutter|A:nadir
+DREAM|It comes in sleep|Armed, strangely, in a vision|A:armed
+DRESS|Frock|Put clothes on a frock|D
+DRINK|Glass of something|The sea, to a sailor, in a glass|D
+EARTH|Our planet|Heart broken by the world|A:heart
+ELDER|Tree with berries for wine|Senior tree|D
+FAIRY|Tiny winged being|Sprite starts to fly around in rainy yards|I:fly around in rainy yards
+FEAST|Great meal|Feats performed at a banquet|A:feats
+FENCE|Boundary of a garden|Sword-fight at the garden boundary|D
+FIELD|Where crops grow|Filed away in a meadow|A:filed
+FLAME|Tongue of fire|Old love’s fire|D
+FLOOD|What a burn in spate may do|Deluge of light|D
+FLOUR|Ground wheat|Baker’s powder heard to bloom|S
+FLUTE|Woodwind instrument|Tall glass for a piper|D
+FROST|It whitens the grass on cold mornings|Forts ruined by icy weather|A:forts
+FRUIT|Apples and pears|Result of the orchard|D
+GLOVE|Worn on the hand|Hand cover has good passion|C:G+LOVE
+GOOSE|Bird for Christmas dinner|Silly person’s Christmas bird|D
+GRAPE|Fruit of the vine|Pager buzzing by a vine fruit|A:pager
+GRASS|Lawn|Inform on the lawn|D
+GROVE|Small wood|Small wood in big rover|H:big rover
+GUARD|Sentry|Sentry on a train|D
+GUIDE|Leader of a tour|Girl in uniform leads the way|D
+HEATH|Open land with heather|Former prime minister on the moor|D
+HEDGE|Boundary of bushes|Avoid a straight answer at the garden boundary|D
+HERON|Long-legged bird that fishes the shallows|Her on the bank is a wading bird|C:HER+ON
+HONEY|Made by bees|Sweetheart’s spread|D
+KNIFE|It cuts|Cutter starts to keep nicking its fine edge|I:keep nicking its fine edge
+LEMON|Sour yellow fruit|Melon swapped for a sour fruit|A:melon
+LINEN|Cloth made from flax|Sheets seen in airline news|H:airline news
+MAPLE|Tree with syrup|Ample shade from a tree|A:ample
+MEDAL|Prize worn on a ribbon|Lamed, sadly, yet won a prize|A:lamed
+MOUSE|Small squeaker|Small squeaker beside the computer|D
+MOUTH|Where a river meets the sea|Speak silently where the river ends|D
+NURSE|Carer on a ward|Runes read by a hospital carer|A:runes
+OLIVE|Small green or black fruit|Voile dyed dull green|A:voile
+ONION|Vegetable that brings tears|Working, one working on a tearful vegetable|C:ON+I+ON
+ORGAN|Played in church|Groan about church music|A:groan
+PAINT|Coat for a boat|Inapt mixture for a coat of colour|A:inapt
+PEACH|Soft downy fruit|Cheap fruit, when squashed|A:cheap
+PIANO|Instrument with 88 keys|Softly, in music, at the keyboard|D
+PLATE|Dish|Leapt about with a dish|A:leapt
+QUEEN|Chess piece|Monarch and cat|D
+QUILT|Padded bed cover|Bed cover starts to quiet us in long twilight|I:quiet us in long twilight
+RANGE|Row of hills|Anger moved a row of hills|A:anger
+RAVEN|Great black bird|Black bird found in craven|H:craven
+ROBIN|Red-breasted bird|Steal in with a garden bird|C:ROB+IN
+ROUTE|Way to go|Outer ring is the way|A:outer
+SALAD|Lettuce and tomato|A lads’ mixed dish of greens|A:a lads
+SAUCE|Brown or red, on your chips|Cause a stir with cheek|A:cause
+SCALE|What covers a fish|Climb a fish’s covering|D
+SHEEP|Woolly grazers|Woolly ones start to shelter here each evening, penned|I:shelter here each evening penned
+SHIRT|Worn with a tie|Top starts to shrink hopelessly in rough tumbling|I:shrink hopelessly in rough tumbling
+SKIRT|A kilt is not one, whatever visitors say|Go round the edge of a garment|D
+SMOKE|It rises from a chimney|Cure fish with fumes|D
+SNAIL|Slow garden pest|Nails driven into a garden pest|A:nails
+SPADE|Tool for digging|One of a black suit in the garden shed|D
+SPOON|Used to stir tea|Snoop about with a stirrer|A:snoop
+SQUID|Ten-armed sea creature|Quids changed for a sea creature|A:quids
+STAIR|One step of a flight|Astir early on the step|A:astir
+STAMP|It goes on a letter|Bring the foot down on a letter|D
+STICK|Thrown for a dog|Ticks bothering a walker’s aid|A:ticks
+STOVE|Cooker|Votes cast round the cooker|A:votes
+SUGAR|It sweetens tea|Sweetener starts to stir up grumbles about rationing|I:stir up grumbles about rationing
+SWIFT|Fast|Fast bird|D
+TIGER|Striped big cat|Striped cat starts to terrify idle goats eating reeds|I:terrify idle goats eating reeds
+TOAST|Browned bread|Stoat nibbling browned bread|A:stoat
+TRAIL|Path through the hills|Trial run along a path|A:trial
+TROUT|Fish of the burn|Tutor hooked a river fish|A:tutor
+VERSE|Part of a poem|Serve up some poetry|A:serve
+WAGON|Truck on a railway|Wag on a railway truck|C:WAG+ON
+WHEAT|Crop for flour|Crop starts to wave high every August time|I:wave high every August time
+WITCH|She rides a broomstick|Spell-caster heard to ask what one|S
+YEAST|It makes bread rise|Riser starts to yield each airy soft texture|I:yield each airy soft texture
+BALLOON|Filled with air at a party|Dance, nothing on, for a party decoration|C:BALL+O+ON
+BISCUIT|Shortbread, for one|Twice-cooked, by its name, and dunked|X
+BLANKET|Bed cover|Empty alien bed cover|C:BLANK+ET
+BOATMAN|One who hires out rowing boats|Vessel fellow at the pier|C:BOAT+MAN
+BRAMBLE|Blackberry bush|Book a walk by the blackberry bush|C:B+RAMBLE
+CARAVAN|Holiday home on wheels|Motor, a delivery vehicle: a home on wheels|C:CAR+A+VAN
+CHIMNEY|Where the smoke goes|Narrow cleft for climbers and smoke|D
+COCKLES|Shellfish dug from the sand|They warm the heart, on the shore|X
+COTTAGE|Small country house|Baby’s bed, label, east: a small house|C:COT+TAG+E
+CURTAIN|Hung at a window|Dog, thanks, at home behind a drape|C:CUR+TA+IN
+DOLPHIN|Leaping sea mammal|Flipper, for one|X
+DRIFTER|Herring boat|Wanderer on a herring boat|D
+FEATHER|Part of a wing|Turn an oar blade flat, like part of a wing|D
+HADDOCK|Fish for a fish supper|Possessed a quay fish|C:HAD+DOCK
+HERRING|The silver darlings|Woman’s band of silver darlings|C:HER+RING
+HILLTOP|Summit|Rise with a spinning toy at the summit|C:HILL+TOP
+HOLIDAY|Time off|Originally a sacred time, now a week at the seaside|X
+KINGDOM|Fife, for one|Monarch with a monk’s title rules this|C:KING+DOM
+LIBRARY|Where books are borrowed|Scales and railway where books are lent|C:LIBRA+RY
+LIMPETS|They cling to the rocks|Hobble, alien, south: they cling to rocks|C:LIMP+ET+S
+MORNING|Before noon|Time before noon heard to be grieving|S
+MUSSELS|Blue-black shellfish|Shellfish heard to be strength|S
+OATMEAL|Ground grain for porridge|Grain dinner for porridge|C:OAT+MEAL
+OYSTERS|Shellfish with pearls|The world is yours, as these|X
+PICTURE|Painting|Imagine a painting|D
+PUFFINS|Clown-faced seabirds|Blows in south for seabirds|C:PUFF+IN+S
+RAILWAY|Line to Glasgow|Complain bitterly at the method of train travel|C:RAIL+WAY
+RAINBOW|Arc of colours after a shower|Shower with a bend in the sky|C:RAIN+BOW
+SKYLINE|Outline of hills against the heavens|Heavens above the row of hills|C:SKY+LINE
+SUNBURN|Result of a day on the beach without cream|Star stream leaves you red|C:SUN+BURN
+SUNDOWN|Dusk|Star feathers at dusk|C:SUN+DOWN
+TEACAKE|Fruited bun, toasted|Drink and gateau make a toasted bun|C:TEA+CAKE
+THISTLE|Emblem of Scotland|Prickly Scottish emblem, they say, of a barefoot Norseman|X
+TOPSAIL|Upper canvas|Best canvas, high on the mast|C:TOP+SAIL
+TRAWLER|Fishing boat with a dragged net|Fishing boat that searches thoroughly|D
+VILLAGE|Fairlie, for one|Small place with a green|X
+WARSHIP|Naval vessel|Conflict joint is a naval vessel|C:WAR+SHIP
+AFTERNOON|Between midday and evening|Later than twelve, between lunch and tea|C:AFTER+NOON
+BLACKBIRD|Garden songster|Dark flyer sings in the garden|C:BLACK+BIRD
+BUTTERCUP|Yellow meadow flower|Spread trophy for a meadow flower|C:BUTTER+CUP
+BUTTERFLY|Red admiral, for one|Spread insect, or a swimming stroke|C:BUTTER+FLY
+COASTLINE|Outline of the shore|Shore row on the map|C:COAST+LINE
+DRIFTWOOD|Timber washed up on the beach|Float timber, washed ashore|C:DRIFT+WOOD
+FIREPLACE|Hearth|Sack the spot by the hearth|C:FIRE+PLACE
+FIREWORKS|Seen over the bay at the Viking Festival|Sack labours for a display|C:FIRE+WORKS
+GOLDFINCH|Bird with a red face and yellow wing bars|Precious metal bird|C:GOLD+FINCH
+GREYHOUND|Fast racing dog|Dull dog is fast|C:GREY+HOUND
+HAILSTONE|Pellet of ice from the sky|Greets with character an icy pellet|C:HAILS+TONE
+HANDSHAKE|Greeting between two people|Give a tremble as a greeting|C:HAND+SHAKE
+HEARTBEAT|Pulse|Core rhythm|C:HEART+BEAT
+HILLSIDES|Slopes|Rise teams on the slopes|C:HILL+SIDES
+HONEYMOON|Holiday after a wedding|Sweet satellite after the wedding|C:HONEY+MOON
+HORSESHOE|Lucky find|Mount footwear for luck|C:HORSE+SHOE
+HOUSEBOAT|Floating home|Home vessel|C:HOUSE+BOAT
+LIGHTNING|Flash before thunder|Bolt from the blue|X
+MILESTONE|Marker by an old road|Distance rock by the road|C:MILE+STONE
+NEWSPAPER|The Largs and Millport Weekly News, for one|Reports sheet|C:NEWS+PAPER
+NIGHTFALL|Dusk|Dark drop at dusk|C:NIGHT+FALL
+OVERBOARD|Where a man may be lost at sea|Finished plank, into the sea|C:OVER+BOARD
+PINEAPPLE|Spiky tropical fruit|Evergreen and orchard fruit make a tropical one|C:PINE+APPLE
+RAINWATER|It fills the gutters|Shower with the tap’s supply in the gutters|C:RAIN+WATER
+RASPBERRY|Red soft fruit of Scotland|Harsh sound with fruit: a Scottish soft one|C:RASP+BERRY
+SALTWATER|What fills the firth|Sailor with the tap’s supply fills the sea|C:SALT+WATER
+SANDBANKS|Shoals|Beach relies on shoals|C:SAND+BANKS
+SEASHELLS|Collected on the beach|Main bombards beach finds|C:SEA+SHELLS
+SHELLFISH|Crabs, prawns and mussels|Bombard swimmer for seafood|C:SHELL+FISH
+SNOWFLAKE|Single winter crystal|Winter fall chip|C:SNOW+FLAKE
+SNOWSTORM|Blizzard|White rage|C:SNOW+STORM
+SPEEDBOAT|Fast craft|Rate vessel is a fast craft|C:SPEED+BOAT
+STARBOARD|Right, at sea|Leading plank on the right|C:STAR+BOARD
+SUNFLOWER|Tall yellow bloom|Star river is a tall bloom|C:SUN+FLOWER
+THUMBNAIL|Small picture|Digit fastener for a small picture|C:THUMB+NAIL
+TOOTHPICK|Used after a meal|Fang choice after a meal|C:TOOTH+PICK
+WATERSIDE|Edge of the loch|Wet team by the loch|C:WATER+SIDE
+WINDSWEPT|Blown about, like the prom in a gale|Gales cried, blown about|C:WINDS+WEPT
+WOODLANDS|Forests|Timber arrives in the forests|C:WOOD+LANDS
+YESTERDAY|The day before today|Beatles song of the day before|X

@@ -1,0 +1,78 @@
+BOTHY|a simple shelter in the hills, left open for walkers
+CAIRN|a pile of stones marking a summit or a path
+CROFT|a small rented farm in the Highlands and Islands
+BAIRN|a child
+SKIRL|the shrill sound of the bagpipes
+BROCH|an Iron Age round tower of dry stone
+FIRTH|a long arm of the sea, such as the Clyde’s
+LAIRD|the owner of a Scottish estate
+THANE|a medieval Scottish lord holding land from the king
+NEEPS|turnips, as served with haggis and tatties
+BRAES|hillsides or slopes
+CANNY|careful and shrewd, especially with money
+BONNY|fine-looking
+HAVER|to talk nonsense
+MIDGE|the small biting fly of a still summer evening
+KYLES|narrow sea channels, as at Bute
+WYNDS|narrow lanes leading off a main street
+LOCHS|Scotland’s lakes and sea inlets
+GLENS|narrow valleys
+TWEED|rough woollen cloth
+PEATY|smoky, as an island malt tastes
+DRAMS|small measures of whisky
+PIPER|one who plays the bagpipes
+KILTS|pleated tartan garments
+SCONE|a plain baked round, eaten with butter and jam
+CLEGS|horseflies
+GORSE|the prickly yellow-flowered shrub also called whin
+WHELK|a sea snail, sold boiled at the shore
+CRAGS|steep rugged rocks
+STAGS|male red deer
+WEANS|children, in the west of Scotland
+TAMMY|a flat woollen bonnet with a toorie on top
+CLYPE|to tell tales on someone
+GREET|to cry
+BURNS|small streams
+KIRKS|churches
+MANSE|the house provided for a minister
+SKELP|a slap
+SMIRR|fine drizzling rain
+TREWS|close-fitting tartan trousers
+PLAID|a length of tartan cloth worn over the shoulder
+CLANS|Highland families under a chief
+REELS|lively dances for sets of dancers
+FLING|a solo Highland dance
+PIPES|the bagpipes
+DRONE|one of the pipes that gives the bagpipes their steady note
+BROTH|a soup of barley, vegetables and mutton
+ROWAN|the mountain ash, planted to keep witches away
+WHINS|gorse bushes
+HINDS|female red deer
+CABER|the tree trunk tossed at Highland games
+LINKS|a golf course on sandy ground by the sea
+DIRKS|Highland daggers
+TARGE|a round Highland shield
+BURGH|a Scottish town with its own charter
+CASKS|the barrels whisky matures in
+MALTS|whiskies made from malted barley alone
+BYRES|cowsheds
+DYKES|dry-stone walls
+BROSE|oatmeal mixed with boiling water or milk
+FARLS|quarters of a round of oatcake or potato scone
+MINCE|what goes with tatties
+PIECE|a sandwich
+CLOSE|the shared entry and stair of a tenement
+PRESS|a cupboard
+SCREE|loose stones covering a hillside
+ISLES|islands
+MOORS|open uplands of heather
+PEATS|blocks of turf cut and dried for the fire
+THOLE|to put up with
+DOOKS|dips in the sea
+PAWKY|drily humorous
+GIRNS|complains peevishly
+FEART|afraid
+PLOOK|a spot or pimple
+EEJIT|a fool
+HOOSE|a house
+OXTER|the armpit
