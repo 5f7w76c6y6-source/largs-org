@@ -1603,6 +1603,42 @@
         "2027-01-01"
       ],
       "until": "2027-03-31"
+    },
+    {
+      "title": "Largs Bridge Club — Tuesday evening, online",
+      "weekday": "tuesday",
+      "time": "18:45",
+      "venue": "Online, on Bridge Base Online (BBO)",
+      "blurb": "Largs Bridge Club’s Tuesday evening session, played online on Bridge Base Online. To take part, get in touch with the club through its website. The club also plays face to face in Largs on Mondays, Wednesdays and Fridays.",
+      "contact": {
+        "label": "Largs Bridge Club’s website",
+        "url": "https://www.bridgewebs.com/largs"
+      },
+      "image": "/assets/img/logo-largs-bridge.png",
+      "org": {
+        "name": "Largs Bridge Club",
+        "url": "https://www.bridgewebs.com/largs"
+      },
+      "freq": "weekly",
+      "until": "2027-03-31"
+    },
+    {
+      "title": "Largs Bridge Club — Thursday evening, online",
+      "weekday": "thursday",
+      "time": "18:45",
+      "venue": "Online, on Bridge Base Online (BBO)",
+      "blurb": "Largs Bridge Club’s Thursday evening session, played online on Bridge Base Online. To take part, get in touch with the club through its website. The club also plays face to face in Largs on Mondays, Wednesdays and Fridays.",
+      "contact": {
+        "label": "Largs Bridge Club’s website",
+        "url": "https://www.bridgewebs.com/largs"
+      },
+      "image": "/assets/img/logo-largs-bridge.png",
+      "org": {
+        "name": "Largs Bridge Club",
+        "url": "https://www.bridgewebs.com/largs"
+      },
+      "freq": "weekly",
+      "until": "2027-03-31"
     }
   ]
 }
