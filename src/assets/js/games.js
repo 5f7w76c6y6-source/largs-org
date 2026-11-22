@@ -500,7 +500,9 @@
     gameBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.game === state.game)); });
     levelBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.level === state.level)); b.textContent = LEVELS[state.game][b.dataset.level === "easy" ? 0 : 1]; });
     store(PRE + "last", state);
-    try { history.replaceState(null, "", "#" + state.game); } catch (e) {}
+    // The address is deliberately NOT rewritten here (22 Nov 2026): analytics counts a
+    // page changing its own address as a new page view, which inflated the Games figures.
+    // A link such as /games/#sudoku still opens the right game; see fromHash above.
     var rep = $("gm-report"); if (rep) rep.href = "mailto:hello@largs.scot?subject=" + encodeURIComponent("Games: " + state.game + " (" + LEVELS[state.game][state.level === "easy" ? 0 : 1] + "), " + ISO);
   }
   gameBtns.forEach(function (b) { b.addEventListener("click", function () { state.game = b.dataset.game; show(); }); });

@@ -1545,6 +1545,64 @@
         "2026-12-30"
       ],
       "until": "2027-03-24"
+    },
+    {
+      "title": "Largs Bridge Club — Monday evening",
+      "weekday": "monday",
+      "time": "19:00",
+      "venue": "Largs Bowling Club",
+      "blurb": "Largs Bridge Club’s Monday evening session, played face to face. All skill levels play, and visitors are always welcome; the club asks anyone interested to get in touch through its website. It also plays online on Tuesday and Thursday evenings.",
+      "contact": {
+        "label": "Largs Bridge Club’s website",
+        "url": "https://www.bridgewebs.com/largs"
+      },
+      "image": "/assets/img/logo-largs-bridge.png",
+      "org": {
+        "name": "Largs Bridge Club",
+        "url": "https://www.bridgewebs.com/largs"
+      },
+      "freq": "weekly",
+      "until": "2027-03-31"
+    },
+    {
+      "title": "Largs Bridge Club — Wednesday afternoon",
+      "weekday": "wednesday",
+      "time": "13:30",
+      "venue": "Clark Memorial Church annex",
+      "blurb": "Largs Bridge Club’s Wednesday afternoon session, played face to face. All skill levels play, and visitors are always welcome; the club asks anyone interested to get in touch through its website. It also plays online on Tuesday and Thursday evenings.",
+      "contact": {
+        "label": "Largs Bridge Club’s website",
+        "url": "https://www.bridgewebs.com/largs"
+      },
+      "image": "/assets/img/logo-largs-bridge.png",
+      "org": {
+        "name": "Largs Bridge Club",
+        "url": "https://www.bridgewebs.com/largs"
+      },
+      "freq": "weekly",
+      "until": "2027-03-31"
+    },
+    {
+      "title": "Largs Bridge Club — Friday morning",
+      "weekday": "friday",
+      "time": "10:00",
+      "venue": "Clark Memorial Church annex",
+      "blurb": "Largs Bridge Club’s Friday morning session, played face to face. All skill levels play, and visitors are always welcome; the club asks anyone interested to get in touch through its website. It also plays online on Tuesday and Thursday evenings.",
+      "contact": {
+        "label": "Largs Bridge Club’s website",
+        "url": "https://www.bridgewebs.com/largs"
+      },
+      "image": "/assets/img/logo-largs-bridge.png",
+      "org": {
+        "name": "Largs Bridge Club",
+        "url": "https://www.bridgewebs.com/largs"
+      },
+      "freq": "weekly",
+      "except": [
+        "2026-12-25",
+        "2027-01-01"
+      ],
+      "until": "2027-03-31"
     }
   ]
 }
