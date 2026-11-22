@@ -143,6 +143,14 @@
           "logo": "/assets/img/logo-largs-bowling.png"
         },
         {
+          "name": "Largs Bridge Club",
+          "blurb": "Bridge for all skill levels, at a club that marks its 80th anniversary in January 2027. It plays face to face on Monday evenings at Largs Bowling Club through the winter, and on Wednesday afternoons and Friday mornings in the Clark Memorial Church annex all year, with online games on Tuesday and Thursday evenings. Visitors are always welcome, and the website has the calendar and results.",
+          "checked": "2026-11-22",
+          "where": "Clark Memorial Church annex and Largs Bowling Club",
+          "url": "https://www.bridgewebs.com/largs",
+          "logo": "/assets/img/logo-largs-bridge.png"
+        },
+        {
           "name": "Largs Colts",
           "blurb": "Youth football, training and playing at the Community Sport Hub on Alexander Avenue.",
           "checked": "2026-08-31",
@@ -272,6 +280,18 @@
           "social": {
             "label": "Their Largs Facebook page",
             "url": "https://www.facebook.com/profile.php?id=61555929897837"
+          }
+        },
+        {
+          "name": "The Douglas Park Project",
+          "blurb": "A registered charity (SC050523) set up during the 2020 lockdown to repair and restore Douglas Park. Its work in the park includes a book exchange, a bug hotel, a Burns garden, a butterfly garden, a faerie trail, memorial benches and flower beds adopted by local people, and a sensory garden is planned. It relies on fundraising and donations, and welcomes volunteers.",
+          "url": "https://www.douglasparklargs.org",
+          "checked": "2026-11-22",
+          "where": "Douglas Park, KA30 8HT",
+          "logo": "/assets/img/logo-douglas-park-project.png",
+          "social": {
+            "label": "Their Facebook group",
+            "url": "https://www.facebook.com/groups/539953130022073"
           }
         },
         {
