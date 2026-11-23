@@ -678,6 +678,14 @@
       "time": "11:00 onwards",
       "image": "/assets/img/ev-beach-clean-7nov.jpg",
       "blurb": "Cairnie's Quay Mooring Association's third community beach clean — Pencil Bay, South Bowencraig and the shore along the Fairlie Coastal Path. Meet at the Championship Slipway at 11am; everyone welcome, every pair of hands helps. Wear gloves, sturdy footwear and waterproofs, and bring a litter picker if you have one."
+    },
+    {
+      "date": "2027-01-06",
+      "title": "Dementia Wellbeing Café — New Year musical afternoon",
+      "venue": "Largs Bowling Club, Douglas Street",
+      "time": "13:00–15:00",
+      "image": "/assets/img/ev-ailn-dementia-cafe.jpg",
+      "blurb": "The café reopens after its festive break with a musical afternoon from local entertainer and singing taxi driver Stuart Conway. For people living with dementia, their families, carers and friends. Run by Ayrshire Independent Living Network; to come along, email befriending@ailn.org or call 07771 453192."
     }
   ],
   "regulars": [
@@ -1429,7 +1437,7 @@
       "time": "13:00–15:00",
       "venue": "Largs Bowling Club, Douglas Street",
       "image": "/assets/img/ev-ailn-dementia-cafe.jpg",
-      "blurb": "A warm welcome for people living with dementia, their families and carers: relax, connect and share in a friendly, supportive setting. Run by Ayrshire Independent Living Network with Meeting Centres Scotland, supported by the National Lottery Community Fund. Launches on Wednesday 28 October and runs every Wednesday after that. AILN are also looking for volunteers who can spare a couple of hours a week. To come along or to volunteer, email befriending@ailn.org or call 07771 453192.",
+      "blurb": "A warm welcome for people living with dementia, their families, carers and friends: relax, connect and share in a friendly, supportive setting. Run by Ayrshire Independent Living Network with Meeting Centres Scotland, supported by the National Lottery Community Fund. No café on 23 or 30 December; it reopens on 6 January. A free, volunteer-run transport service to and from the café is planned, and AILN hope to start it in December. They are looking for volunteer drivers, café helpers and befrienders: drop in on a Wednesday afternoon, email befriending@ailn.org or call 07771 453192.",
       "contact": {
         "label": "Email befriending@ailn.org",
         "url": "mailto:befriending@ailn.org"
@@ -1439,7 +1447,11 @@
         "url": "https://www.ailn.org"
       },
       "freq": "weekly",
-      "from": "2026-10-28"
+      "from": "2026-10-28",
+      "except": [
+        "2026-12-23",
+        "2026-12-30"
+      ]
     },
     {
       "title": "Your Space Residents Drop-In",
