@@ -1563,7 +1563,7 @@
       "weekday": "monday",
       "time": "19:00",
       "venue": "Largs Bowling Club",
-      "blurb": "Largs Bridge Club’s Monday evening session, played face to face. All skill levels play, and visitors are always welcome; the club asks anyone interested to get in touch through its website. It also plays online on Tuesday and Thursday evenings.",
+      "blurb": "Largs Bridge Club’s Monday evening session, played face to face. All skill levels play, and visitors are always welcome; the club asks anyone interested to get in touch through its website. It also plays online on Tuesday and Thursday evenings. The club takes a break over Christmas and New Year: the last session is on Wednesday 23 December and the first one back is on Monday 4 January.",
       "contact": {
         "label": "Largs Bridge Club’s website",
         "url": "https://www.bridgewebs.com/largs"
@@ -1574,6 +1574,9 @@
         "url": "https://www.bridgewebs.com/largs"
       },
       "freq": "weekly",
+      "except": [
+        "2026-12-28"
+      ],
       "until": "2027-03-31"
     },
     {
@@ -1581,7 +1584,7 @@
       "weekday": "wednesday",
       "time": "13:30",
       "venue": "Clark Memorial Church annex",
-      "blurb": "Largs Bridge Club’s Wednesday afternoon session, played face to face. All skill levels play, and visitors are always welcome; the club asks anyone interested to get in touch through its website. It also plays online on Tuesday and Thursday evenings.",
+      "blurb": "Largs Bridge Club’s Wednesday afternoon session, played face to face. All skill levels play, and visitors are always welcome; the club asks anyone interested to get in touch through its website. It also plays online on Tuesday and Thursday evenings. The club takes a break over Christmas and New Year: the last session is on Wednesday 23 December and the first one back is on Monday 4 January.",
       "contact": {
         "label": "Largs Bridge Club’s website",
         "url": "https://www.bridgewebs.com/largs"
@@ -1592,6 +1595,9 @@
         "url": "https://www.bridgewebs.com/largs"
       },
       "freq": "weekly",
+      "except": [
+        "2026-12-30"
+      ],
       "until": "2027-03-31"
     },
     {
@@ -1599,7 +1605,7 @@
       "weekday": "friday",
       "time": "10:00",
       "venue": "Clark Memorial Church annex",
-      "blurb": "Largs Bridge Club’s Friday morning session, played face to face. All skill levels play, and visitors are always welcome; the club asks anyone interested to get in touch through its website. It also plays online on Tuesday and Thursday evenings.",
+      "blurb": "Largs Bridge Club’s Friday morning session, played face to face. All skill levels play, and visitors are always welcome; the club asks anyone interested to get in touch through its website. It also plays online on Tuesday and Thursday evenings. The club takes a break over Christmas and New Year: the last session is on Wednesday 23 December and the first one back is on Monday 4 January.",
       "contact": {
         "label": "Largs Bridge Club’s website",
         "url": "https://www.bridgewebs.com/largs"
@@ -1621,7 +1627,7 @@
       "weekday": "tuesday",
       "time": "18:45",
       "venue": "Online, on Bridge Base Online (BBO)",
-      "blurb": "Largs Bridge Club’s Tuesday evening session, played online on Bridge Base Online. To take part, get in touch with the club through its website. The club also plays face to face in Largs on Mondays, Wednesdays and Fridays.",
+      "blurb": "Largs Bridge Club’s Tuesday evening session, played online on Bridge Base Online. To take part, get in touch with the club through its website. The club also plays face to face in Largs on Mondays, Wednesdays and Fridays. The club takes a break over Christmas and New Year: the last session is on Wednesday 23 December and the first one back is on Monday 4 January.",
       "contact": {
         "label": "Largs Bridge Club’s website",
         "url": "https://www.bridgewebs.com/largs"
@@ -1632,6 +1638,9 @@
         "url": "https://www.bridgewebs.com/largs"
       },
       "freq": "weekly",
+      "except": [
+        "2026-12-29"
+      ],
       "until": "2027-03-31"
     },
     {
@@ -1639,7 +1648,7 @@
       "weekday": "thursday",
       "time": "18:45",
       "venue": "Online, on Bridge Base Online (BBO)",
-      "blurb": "Largs Bridge Club’s Thursday evening session, played online on Bridge Base Online. To take part, get in touch with the club through its website. The club also plays face to face in Largs on Mondays, Wednesdays and Fridays.",
+      "blurb": "Largs Bridge Club’s Thursday evening session, played online on Bridge Base Online. To take part, get in touch with the club through its website. The club also plays face to face in Largs on Mondays, Wednesdays and Fridays. The club takes a break over Christmas and New Year: the last session is on Wednesday 23 December and the first one back is on Monday 4 January.",
       "contact": {
         "label": "Largs Bridge Club’s website",
         "url": "https://www.bridgewebs.com/largs"
@@ -1650,6 +1659,10 @@
         "url": "https://www.bridgewebs.com/largs"
       },
       "freq": "weekly",
+      "except": [
+        "2026-12-24",
+        "2026-12-31"
+      ],
       "until": "2027-03-31"
     }
   ]
