@@ -2049,3 +2049,11 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
 .wx-day{gap:12px}
 .wx-day .daylight-arc path[stroke-linecap="round"]{stroke-width:9px}
 .wx-day .daylight-arc path[stroke-linecap="round"] + path[stroke-linecap="round"]{stroke-width:6px}
+
+/* ==== CANCELLED EVENTS (24 Nov 2026) =================================
+   See whats-on.njk and the `upcoming` filter. Red, where "On now" is
+   teal: a cancellation is the one thing on this list that IS an alert.
+   The title is struck through; the word itself is in the details line
+   and, for screen readers, in front of the title. */
+.cancelled-flag{color:var(--red);font-weight:700}
+.event-cancelled h3{text-decoration:line-through;text-decoration-thickness:1.5px;color:var(--muted)}

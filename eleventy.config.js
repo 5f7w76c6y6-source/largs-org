@@ -225,7 +225,15 @@ module.exports = function (eleventyConfig) {
         // daysOk runs for every item so a bad `days` value fails the build
         // even before the span starts.
         const openToday = daysOk(e, today);
-        const onNow = e.date <= today && (e.until || e.date) >= today && openToday;
+        // CANCELLED (24 Nov 2026). `cancelled: true` keeps a called-off
+        // event on What's On, marked, until its date has passed -- someone
+        // who saw it listed here should learn that it is off -- but it is
+        // never "on now", is left off the Today board (todayOnly below) and
+        // is described to search engines as cancelled. Any value but true
+        // fails the build, the same discipline as `days`.
+        if (e.cancelled !== undefined && e.cancelled !== true)
+          throw new Error(`events.json item "${e.title}" (${e.date}): cancelled must be true or left out, got ${JSON.stringify(e.cancelled)}`);
+        const onNow = !e.cancelled && e.date <= today && (e.until || e.date) >= today && openToday;
         return Object.assign({}, e, { farOut, onNow, badgeTop: badgeTop(e.date, farOut), badgeYear: badgeYear(e.date, p.year) });
       })
       // Date order, whatever order events.json is in: a show moved a year
@@ -242,7 +250,8 @@ module.exports = function (eleventyConfig) {
     const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });
     const today = `${p.year}-${p.month}-${p.day}`;
     return (items || [])
-      .filter((e) => e.date <= today && (e.until || e.date) >= today && daysOk(e, today))
+      // A cancelled event is not on today: it is not counted and not shown here.
+      .filter((e) => !e.cancelled && e.date <= today && (e.until || e.date) >= today && daysOk(e, today))
       // Today by definition -- so the badge is built from TODAY, not from
       // e.date. For a one-day event those are the same; for a multi-day
       // span they are not, and badging the start date printed a day that
