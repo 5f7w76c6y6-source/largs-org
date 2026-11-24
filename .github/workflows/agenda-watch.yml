@@ -107,3 +107,26 @@ jobs:
           git commit -m "Agenda: nightly collection, $(date -u +%Y-%m-%d)"
           git pull --rebase origin main
           git push
+
+  # Venue watch (24 Nov 2026). Reads Barrfields Theatre's own page for each
+  # show we list and goes red if the venue says it is cancelled, postponed or
+  # rescheduled, if the page has gone, if our date is no longer on it, or if
+  # the theatre's sitemap lists a show we do not (see data/venue-watch.json).
+  # GitHub then emails the owner. It changes nothing: a person reads the
+  # venue's page and edits events.json. The alarm repeats nightly until the
+  # event is marked `cancelled: true` or corrected, then stops by itself.
+  #
+  # A separate job, not a step, so that the failure email names this job and
+  # is not mistaken for the council collection failing; and so that neither
+  # can stop the other. Read-only: it never commits.
+  venue-watch:
+    name: "Barrfields: does a listing need a look?"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the venue's page for each show we list
+        run: python3 scripts/venue-watch.py

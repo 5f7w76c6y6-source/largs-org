@@ -1,0 +1,9 @@
+{
+  "_comment": "Read by scripts/venue-watch.py, which explains it. `also` maps a Barrfields page to the exact title of our event when our own link goes to a ticket seller, so the theatre's page is still watched for it. `ignore` lists Barrfields pages we have seen and are not listing.",
+  "also": {
+    "https://www.barrfieldstheatre.com/events-3/rapunzel-pantomime": "Rapunzel",
+    "https://www.barrfieldstheatre.com/events-3/the-rod-stewart-songbook": "The Rod Stewart Songbook",
+    "https://www.barrfieldstheatre.com/events-3/across-the-universe": "Across the Universe: The Beatles '66–70'"
+  },
+  "ignore": []
+}
