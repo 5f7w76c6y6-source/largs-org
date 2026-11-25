@@ -13,6 +13,7 @@ permalink: "/buses/stop/{{ stop.id }}/"
 excludeFromSitemap: true
 eleventyComputed:
   title: "{{ stop.name | safe }} · Buses from Largs"
+  pageTitle: "{{ stop.name | safe }}, Largs: bus times today"
   heading: "{{ stop.name | safe }}"
   subtitle: "Every timetabled bus from this stop today{% if stop.towards | length %}, towards {{ stop.towards | join(' and ') | safe }}{% endif %}."
 ---

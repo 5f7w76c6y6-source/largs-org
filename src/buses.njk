@@ -9,6 +9,11 @@ pagination:
 permalink: "{{ view.path }}"
 eleventyComputed:
   title: "{{ view.label | safe }} · Buses from Largs"
+  # What a search result and the browser tab show (26 Nov 2026). Only the
+  # routes whose times are on the page are named: an operator whose feed is
+  # not loaded gets no pageTitle and keeps the plain title above.
+  pageTitle: "{% if view.key == 'all' %}Largs bus times today: local 40, McGill's 901 and 906, every stop{% elif view.key == 'mcgills' %}McGill's buses from Largs today: 901, 906, 904 and 578 times{% elif view.key == 'shuttle' %}Largs local bus 40 and 50 timetable today: Shuttle Buses{% endif %}"
+  description: "{% if view.key == 'all' %}Today's bus timetable from every stop in Largs: the local 40 and McGill's 901 and 906, with the next two buses from each stop and the last one tonight.{% elif view.key == 'mcgills' %}Today's McGill's bus times from every stop in Largs: the 901 and 906 to Greenock and Glasgow, the 904 and the 578, with the next two buses and the last one tonight.{% elif view.key == 'shuttle' %}Today's times for the Largs local buses, the 40 and the 50, from every stop in the town, with the next two buses and the last one tonight.{% endif %}"
   heading: Buses from Largs
   subtitle: Every stop in the town, with the next two buses and the last one tonight.
 ---
