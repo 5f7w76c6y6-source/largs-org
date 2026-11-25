@@ -1,0 +1,64 @@
+{# Planned, timed closure (25 Nov 2026, Ian). At 09:05 the Roadworks page
+   said Traffic Scotland was reporting no closures on the A78 while the
+   road was twenty-five minutes from its daily closure. Both were true:
+   the incident feed is unplanned events only. So the planned closure is
+   said here, from planned.json, on the Today board and on Roadworks, all
+   day and not only once it has started.
+
+   The sentence is true at any hour as written, so it stands with
+   JavaScript off. The script changes only the badge, by the Largs clock:
+   "Closes 09:30 today" before, "Closed until 15:00" (and red) inside the
+   hours, "Closes 09:30 tomorrow" after. These are the operator's
+   published hours, not a reading of the road, and the source line says so.
+
+   Amber, like any incident short of a closure; red only inside the hours.
+   Same frame as the power-cut, flood and Traffic Scotland notices.
+
+   Two lengths. Roadworks (the page that sets `trunkAll`) carries all of
+   it: lights, diversion, where the end date comes from. The Today board
+   carries one sentence and a link to Roadworks, because on a phone the
+   full text was most of the first screen. #}
+{% set plannedLive = planned.closures | currentNotices %}
+{% for c in plannedLive %}
+<div class="wrap">
+  <div class="power-notice planned-notice" role="status" id="planned-{{ c.id }}"
+       data-from="{{ c.closeFrom }}" data-to="{{ c.closeTo }}" data-expires="{{ c.expires }}">
+    <span class="power-notice-badge">Daily closure</span>
+    <span class="power-notice-text">
+      {% if trunkAll %}<strong>{{ c.road }}</strong> — closed <span class="mono planned-hours">{{ c.closeFrom }}–{{ c.closeTo }}</span> every day for {{ c.reason }}. {{ c.between }} {{ c.diversion }} {{ c.finish }} · <a href="/buses/">Buses →</a>
+      {% else %}<strong>{{ c.road }}</strong> — closed <span class="mono planned-hours">{{ c.closeFrom }}–{{ c.closeTo }}</span> every day for {{ c.reason }}, {{ c.finishShort }} · <a href="/roadworks/">Roadworks →</a> · <a href="/buses/">Buses →</a>{% endif %}
+    </span>
+    <span class="power-notice-src">{{ c.source }}</span>
+  </div>
+</div>
+<script>
+(function () {
+  var el = document.getElementById("planned-{{ c.id }}");
+  if (!el) return;
+  var badge = el.querySelector(".power-notice-badge");
+  var from = el.getAttribute("data-from"), to = el.getAttribute("data-to"), last = el.getAttribute("data-expires");
+  function largs() {
+    try {
+      var d = new Date();
+      return {
+        time: new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(d),
+        day: new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London", year: "numeric", month: "2-digit", day: "2-digit" }).format(d)
+      };
+    } catch (e) { return null; }
+  }
+  function tick() {
+    var n = largs();
+    if (!n || !/^\d\d:\d\d$/.test(n.time) || !/^\d{4}-\d\d-\d\d$/.test(n.day)) return;
+    if (n.day > last) { el.hidden = true; return; }
+    var closed = n.time >= from && n.time < to;
+    el.classList.toggle("is-closed", closed);
+    badge.textContent = closed ? "Closed until " + to
+      : n.time < from ? "Closes " + from + " today"
+      : n.day < last ? "Closes " + from + " tomorrow"
+      : "Daily closure";
+  }
+  tick();
+  setInterval(tick, 30000);
+})();
+</script>
+{% endfor %}

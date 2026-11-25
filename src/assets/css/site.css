@@ -2057,3 +2057,14 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
    and, for screen readers, in front of the title. */
 .cancelled-flag{color:var(--red);font-weight:700}
 .event-cancelled h3{text-decoration:line-through;text-decoration-thickness:1.5px;color:var(--muted)}
+
+/* ==== PLANNED DAILY CLOSURE (25 Nov 2026) ===========================
+   See planned-notice.njk. The power-cut frame: amber through the day,
+   red only inside the published closure hours (the script sets
+   .is-closed by the Largs clock). */
+.planned-notice{border-left-color:var(--warn)}
+.planned-notice .power-notice-badge{background:var(--warn)}
+.planned-notice.is-closed{border-left-color:var(--red)}
+.planned-notice.is-closed .power-notice-badge{background:var(--red)}
+.planned-notice[hidden]{display:none}
+.planned-hours{white-space:nowrap}

@@ -72,6 +72,8 @@ eleventyComputed:
 } %}
 {# Live incidents on the A78 and A737, every one of them (trunkAll). #}
 {% set trunkAll = true %}
+{# The planned daily closure first: it is the one a driver can plan round. #}
+{% include "planned-notice.njk" %}
 {% include "trunk-notice.njk" %}
 <section class="board wrap" aria-labelledby="page-title">
   {# The one part of this page that changes through the day, so it comes

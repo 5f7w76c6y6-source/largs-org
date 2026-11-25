@@ -40,10 +40,15 @@
 {% elif trunkAll and today.trunk and today.trunk.ok and view and (view.key == "all" or isRoute) %}
 <div class="wrap">
   <p class="trunk-clear" role="status" data-checked="{{ today.trunk.checkedAt }}">
-    Traffic Scotland is reporting <strong>no closures or incidents</strong> on
+    {# 25 Nov 2026: with a planned closure live (planned.json), "no
+       closures" read as a contradiction of the notice above it. The feed
+       is unplanned events only, so say that, and say the planned one is
+       not in it. #}
+    {% set trunkPlanned = planned.closures | currentNotices %}
+    {% if trunkPlanned | length %}Apart from the planned closure above, Traffic Scotland is reporting <strong>no incidents</strong> on{% else %}Traffic Scotland is reporting <strong>no closures or incidents</strong> on{% endif %}
     the A78 between Ardrossan and Greenock, or on the A737 between Dalry and
     Johnstone <span class="trunk-clear-src">· checked <span class="mono">{{ today.trunk.checkedAt | hhmm }}</span></span>.
-    It does not cover the Haylie Brae road (A760): see the road camera below.
+    {% if trunkPlanned | length %}Its feed carries unplanned events only. {% endif %}It does not cover the Haylie Brae road (A760): see the road camera below.
   </p>
 </div>
 <script>
