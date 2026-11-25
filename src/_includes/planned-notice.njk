@@ -51,11 +51,12 @@
     if (!n || !/^\d\d:\d\d$/.test(n.time) || !/^\d{4}-\d\d-\d\d$/.test(n.day)) return;
     if (n.day > last) { el.hidden = true; return; }
     var closed = n.time >= from && n.time < to;
+    // After the hours on the last day there is no closure left to announce.
+    if (n.day === last && n.time >= to) { el.hidden = true; return; }
     el.classList.toggle("is-closed", closed);
     badge.textContent = closed ? "Closed until " + to
       : n.time < from ? "Closes " + from + " today"
-      : n.day < last ? "Closes " + from + " tomorrow"
-      : "Daily closure";
+      : "Closes " + from + " tomorrow";
   }
   tick();
   setInterval(tick, 30000);

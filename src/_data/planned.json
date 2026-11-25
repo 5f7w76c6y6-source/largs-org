@@ -9,11 +9,11 @@
       "reason": "storm repairs",
       "between": "At other times it is open with one lane under temporary lights.",
       "diversion": "The signed diversion is by the A760, A737 and A761.",
-      "finish": "The road works register shows the work due to finish on Monday 30 November.",
-      "finishShort": "due to finish Monday 30 November",
+      "finish": "Friday 27 November is the last day of the closures: from 15:00 that day the road is open at all times, still with one lane under temporary lights.",
+      "finishShort": "for the last time on Friday 27 November",
       "source": "Amey’s published hours · not a live reading",
       "starts": "2026-11-09",
-      "expires": "2026-11-30"
+      "expires": "2026-11-27"
     }
   ]
 }
