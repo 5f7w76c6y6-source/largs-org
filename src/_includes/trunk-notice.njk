@@ -23,9 +23,15 @@
    The front page shows the most serious event and counts the rest. A page
    that sets `trunkAll` before the include (Roadworks) shows every one.
    Same frame as the power-cut and flood notices. #}
-{% if today.trunk and today.trunk.ok and today.trunk.items | length %}
-{% set trunkShown = today.trunk.items if trunkAll else [today.trunk.items[0]] %}
-{% set trunkMore = (today.trunk.items | length) - (trunkShown | length) %}
+{# 25 Nov 2026: a closure that is the planned one (planned.json, `match`)
+   is reported inside planned-notice.njk, so it is left out here. Everything
+   else Traffic Scotland reports is shown exactly as before. #}
+{% set trunkPlannedNow = planned.closures | currentNotices %}
+{% set trunkKept = [] %}
+{% if today.trunk and today.trunk.ok %}{% for t in today.trunk.items %}{% set trunkHit = [] %}{% if t.closed %}{% for c in trunkPlannedNow %}{% for w in (c.match or []) %}{% if (w | lower) in (t.text | lower) %}{% set trunkHit = (trunkHit.push(1), trunkHit) %}{% endif %}{% endfor %}{% endfor %}{% endif %}{% if not (trunkHit | length) %}{% set trunkKept = (trunkKept.push(t), trunkKept) %}{% endif %}{% endfor %}{% endif %}
+{% if today.trunk and today.trunk.ok and trunkKept | length %}
+{% set trunkShown = trunkKept if trunkAll else [trunkKept[0]] %}
+{% set trunkMore = (trunkKept | length) - (trunkShown | length) %}
 <div class="wrap">
   {% for t in trunkShown %}
   <div class="power-notice trunk-notice{% if not t.closed %} trunk-incident{% endif %}" role="status">

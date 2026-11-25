@@ -20,15 +20,25 @@
    full text was most of the first screen. #}
 {% set plannedLive = planned.closures | currentNotices %}
 {% for c in plannedLive %}
+{# ONE NOTICE, NOT TWO (25 Nov 2026, Ian). Inside the hours Traffic Scotland
+   reports this same closure, and the board showed two red boxes saying one
+   thing. If this build's feed holds a closure whose sentence names one of
+   the places in `match`, it is reported here, with their time and link,
+   and trunk-notice.njk leaves its own box out for that event. Their report
+   is the live reading, so it also makes this notice red (data-ts) whatever
+   the clock says. #}
+{% set plannedTs = [] %}
+{% if today.trunk and today.trunk.ok %}{% for t in today.trunk.items %}{% if t.closed %}{% for w in (c.match or []) %}{% if (w | lower) in (t.text | lower) and not (plannedTs | length) %}{% set plannedTs = (plannedTs.push(t), plannedTs) %}{% endif %}{% endfor %}{% endif %}{% endfor %}{% endif %}
 <div class="wrap">
-  <div class="power-notice planned-notice" role="status" id="planned-{{ c.id }}"
-       data-from="{{ c.closeFrom }}" data-to="{{ c.closeTo }}" data-expires="{{ c.expires }}">
+  <div class="power-notice planned-notice{% if plannedTs | length %} is-closed{% endif %}" role="status" id="planned-{{ c.id }}"
+       data-from="{{ c.closeFrom }}" data-to="{{ c.closeTo }}" data-expires="{{ c.expires }}"{% if plannedTs | length %} data-ts="1"{% endif %}>
     <span class="power-notice-badge">Daily closure</span>
     <span class="power-notice-text">
       {% if trunkAll %}<strong>{{ c.road }}</strong> — closed <span class="mono planned-hours">{{ c.closeFrom }}–{{ c.closeTo }}</span> every day for {{ c.reason }}. {{ c.between }} {{ c.diversion }} {{ c.finish }} · <a href="/buses/">Buses →</a>
       {% else %}<strong>{{ c.road }}</strong> — closed <span class="mono planned-hours">{{ c.closeFrom }}–{{ c.closeTo }}</span> every day for {{ c.reason }}, {{ c.finishShort }} · <a href="/roadworks/">Roadworks →</a> · <a href="/buses/">Buses →</a>{% endif %}
+      {% if plannedTs | length %}· Traffic Scotland says it is closed{% if plannedTs[0].whenValue %} · {{ plannedTs[0].whenLabel }} <span class="mono">{{ plannedTs[0].whenValue }}</span>{% endif %} · <a href="https://www.traffic.gov.scot/traffic-information/incidents">Traffic Scotland →</a>{% endif %}
     </span>
-    <span class="power-notice-src">{{ c.source }}</span>
+    <span class="power-notice-src">{% if plannedTs | length %}Amey’s published hours · Traffic Scotland · checked {{ today.trunk.checkedAt | hhmm }}{% else %}{{ c.source }}{% endif %}</span>
   </div>
 </div>
 <script>
@@ -50,11 +60,14 @@
     var n = largs();
     if (!n || !/^\d\d:\d\d$/.test(n.time) || !/^\d{4}-\d\d-\d\d$/.test(n.day)) return;
     if (n.day > last) { el.hidden = true; return; }
-    var closed = n.time >= from && n.time < to;
+    // Traffic Scotland reporting it closed (data-ts, set by the build)
+    // counts as closed whatever the published hours say.
+    var ts = el.hasAttribute("data-ts");
+    var closed = ts || (n.time >= from && n.time < to);
     // After the hours on the last day there is no closure left to announce.
-    if (n.day === last && n.time >= to) { el.hidden = true; return; }
+    if (!ts && n.day === last && n.time >= to) { el.hidden = true; return; }
     el.classList.toggle("is-closed", closed);
-    badge.textContent = closed ? "Closed until " + to
+    badge.textContent = closed ? (n.time < to ? "Closed until " + to : "Closed")
       : n.time < from ? "Closes " + from + " today"
       : "Closes " + from + " tomorrow";
   }
