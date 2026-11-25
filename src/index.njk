@@ -132,7 +132,7 @@ hideHeading: true
       <div class="figure">Dates move</div>
       <div class="sub">Festive collections this week · <a href="/bins/">bin days →</a></div>
       {% else %}
-      <img class="tile-hero" src="/assets/img/bins-{{ bins.current.colour }}-brown.png"
+      <img class="tile-hero" src="{{ ("/assets/img/bins-" + bins.current.colour + "-brown.png") | fx }}"
            alt="Two dustbins at the kerb: {{ bins.current.name | lower }} for every street this week, brown for {{ bins.current.brownCalendar }} streets only"
            width="720" height="420" loading="lazy" decoding="async">
       <div class="bin-labels" aria-hidden="true">
@@ -148,7 +148,7 @@ hideHeading: true
       <div class="label">Roadworks
         {% if rw.ok %}<span class="badge daily">daily</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
-      <img class="tile-hero" src="/assets/img/roadworks.png"
+      <img class="tile-hero" src="{{ "/assets/img/roadworks.png" | fx }}"
            alt="Silhouette of a road worker leaning on a shovel" width="720" height="420"
            loading="lazy" decoding="async">
       {# No example works here any more. With twenty active, naming one is
@@ -172,7 +172,7 @@ hideHeading: true
        Data notes in scripts/fetch-data.mjs (buses section). #}
     <div class="tile">
       <div class="label">Buses <span class="badge timetable">timetable</span></div>
-      <img class="tile-hero" src="/assets/img/bus.png"
+      <img class="tile-hero" src="{{ "/assets/img/bus.png" | fx }}"
            alt="Silhouette of a single-deck bus" width="720" height="420"
            loading="lazy" decoding="async">
       <div class="sub">Glasgow, Greenock, Paisley and every stop in town · <a href="/buses/">next buses →</a></div>
@@ -180,7 +180,7 @@ hideHeading: true
 
     <div class="tile">
       <div class="label">Trains to Glasgow</div>
-      <img class="tile-hero" src="/assets/img/train-2.png"
+      <img class="tile-hero" src="{{ "/assets/img/train-2.png" | fx }}"
            alt="Silhouette of a steam express locomotive" width="720" height="420"
            loading="lazy" decoding="async">
       {# CORRECTED 30 Aug 2026, reported by a resident within a day of the site
@@ -226,7 +226,7 @@ hideHeading: true
       <div class="label">Fuel
         {% if fuel.fixture %}<span class="badge sample">sample</span>{% else %}<span class="badge daily">daily</span>{% endif %}
       </div>
-      <img class="tile-hero" src="/assets/img/fuel-2.png"
+      <img class="tile-hero" src="{{ "/assets/img/fuel-2.png" | fx }}"
            alt="Silhouette of a forecourt fuel pump"
            width="560" height="420" loading="lazy" decoding="async">
       <div class="sub"><a href="/fuel/">local fuel prices →</a></div>
@@ -241,7 +241,7 @@ hideHeading: true
 
     <div class="tile">
       <div class="label">Cumbrae ferry</div>
-      <img class="tile-hero" src="/assets/img/ferry-2.png"
+      <img class="tile-hero" src="{{ "/assets/img/ferry-2.png" | fx }}"
            alt="Silhouette of a Clyde ferry under way" width="720" height="420"
            loading="lazy" decoding="async">
       {# The frequency comes from src/_data/ferry.cjs, a date-bounded table
@@ -287,7 +287,7 @@ hideHeading: true
       <div class="label">Sea temp.
         {% if today.tides.seaTempC %}<span class="badge model">model</span>{% else %}<span class="badge sample">sample</span>{% endif %}
       </div>
-      <img class="tile-hero" src="/assets/img/dookers-3.png"
+      <img class="tile-hero" src="{{ "/assets/img/dookers-3.png" | fx }}"
            alt="Silhouette of a group of sea swimmers in woolly hats"
            width="720" height="420" loading="lazy" decoding="async">
       {% if today.tides.seaTempC %}
@@ -323,7 +323,7 @@ hideHeading: true
        tile rather than a slim link. The logo is Ian's. Page: src/games.njk. #}
     <div class="tile tile-games">
       <div class="label">Games <span class="badge daily">daily</span></div>
-      <img class="tile-hero" src="/assets/img/games.png"
+      <img class="tile-hero" src="{{ "/assets/img/games.png" | fx }}"
            alt="A sudoku, a pencil, a crossword and a row of five letter tiles" width="720" height="577"
            loading="lazy" decoding="async">
       <div class="figure compact">Today’s puzzles</div>
@@ -363,7 +363,7 @@ hideHeading: true
        tile: her 1946 silhouette and a DC-3-era propliner, the aircraft
        that shared her sky. Page and data notes in src/overhead.njk. #}
     <div class="tile tile-slim">
-      <img class="tile-thumb" src="/assets/img/overhead.png" alt="" width="720" height="238" loading="lazy" decoding="async">
+      <img class="tile-thumb" src="{{ "/assets/img/overhead.png" | fx }}" alt="" width="720" height="238" loading="lazy" decoding="async">
       <div class="label">Overhead</div>
       <div class="sub"><a href="/overhead/">what's up there right now? →</a></div>
     </div>

@@ -125,6 +125,18 @@ module.exports = function (eleventyConfig) {
 
 
   // "15:45"
+  // fx("/assets/img/bus.png") -> "/assets/img/festive/bus.png" while the
+  // festive dressing is on (src/_data/festive.cjs) AND a picture of that
+  // name is in src/assets/img/festive/. Otherwise the path comes back
+  // untouched, so out of season, or for a picture with no festive twin,
+  // the filter does nothing at all.
+  const festiveState = require("./src/_data/festive.cjs");
+  eleventyConfig.addFilter("fx", (src) => {
+    const f = festiveState();
+    const name = String(src || "").split("/").pop();
+    return f.on && f.files.includes(name) ? `/assets/img/festive/${name}` : src;
+  });
+
   eleventyConfig.addFilter("hhmm", (value) => {
     const p = ukParts(value, { hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
     return `${p.hour}:${p.minute}`;

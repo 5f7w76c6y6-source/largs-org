@@ -81,7 +81,7 @@
 {"@context":"https://schema.org","@type":"WebSite","name":"largs.scot","alternateName":"Largs — …for you","url":"{{ site.url }}"}
 </script>
 </head>
-<body>
+<body{% if festive.on %} class="festive"{% endif %}>
 
 <header class="masthead">
   <div class="wrap">
@@ -92,7 +92,7 @@
            a 256-entry palette of one colour, alpha exact). Decorative, so
            "Largs" is announced once. Replaced Magnus in the corner on
            26 Sep 2026; magnus.png was removed on 2 Oct 2026; it is still in git history if ever wanted. #}
-        <img class="brand-mark" src="/assets/img/mark-longship.png"
+        <img class="brand-mark" src="{{ "/assets/img/mark-longship.png" | fx }}"
              alt="" aria-hidden="true" width="243" height="222"
              loading="eager" decoding="async">
         <div>
@@ -176,8 +176,14 @@
   <svg class="horizon-hills" viewBox="0 26.5 1200 35" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
     <path d="M0 61.5 L120 61.5 Q210 26.5 320 46.5 Q420 61.5 520 61.5 Z" fill="#17333A"/>
     <path d="M300 61.5 Q400 36.5 500 54 Q560 61.5 620 61.5 Z" fill="#17333A" opacity="0.55"/>
+    {# Snow on the Cumbraes while the festive dressing is on (festive.cjs). #}
+    {% if festive.on %}
+    <path d="M150 52 Q212 28 300 43.5" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    <path d="M352 48.5 Q400 37.5 470 50" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity=".85" vector-effect="non-scaling-stroke"/>
+    {% endif %}
   </svg>
-  <img class="horizon-obj horizon-ferry" src="/assets/img/horizon-ferry.png"
+  {% if festive.on %}<div class="horizon-snow" aria-hidden="true"></div>{% endif %}
+  <img class="horizon-obj horizon-ferry" src="{{ "/assets/img/horizon-ferry.png" | fx }}"
        alt="" aria-hidden="true" width="1026" height="420" loading="eager" decoding="async">
   <img class="horizon-shore" src="/assets/img/horizon-shore.svg"
        alt="" aria-hidden="true" width="800" height="14" loading="eager" decoding="async">
@@ -211,7 +217,7 @@
 <div class="page-head page-hero">
   <div class="wrap page-hero-in">
     <h1 class="page-title" id="page-title">{{ heading }}</h1>
-    <img class="page-hero-art" src="{{ artSrc }}" alt="" decoding="async">
+    <img class="page-hero-art" src="{{ artSrc | fx }}" alt="" decoding="async">
     {% if subtitle %}<p class="page-subtitle">{{ subtitle }}</p>{% endif %}
   </div>
 </div>
