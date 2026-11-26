@@ -211,12 +211,20 @@ module.exports = function (eleventyConfig) {
     return e.days.includes(DAY_NAMES[new Date(iso + "T12:00:00Z").getUTCDay()]);
   }
 
+  const SERIES_SHOWN = 3;
   eleventyConfig.addFilter("upcoming", (items) => {
     const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });
     const today = `${p.year}-${p.month}-${p.day}`;
     const now = Date.parse(today + "T00:00:00Z");
     return (items || [])
       .filter((e) => (e.until || e.date) >= today)
+      // SERIES (26 Nov 2026). Items sharing a `series` name are one body's
+      // run of dated meetings (the Community Council's twelve a year). Only
+      // the next SERIES_SHOWN of a run are listed, so a year of them does
+      // not bury everything else; as one passes the next appears. Counted
+      // here, after past dates are dropped. todayOnly is not affected.
+      .filter((e, i, all) => !e.series
+        || all.filter((o) => o.series === e.series && o.date < e.date).length < SERIES_SHOWN)
       // farOut is COMPUTED, never stored. Whether something is far out
       // depends on when you are reading it: a pantomime is months away in
       // August and this Thursday in December, and no field in a data file
