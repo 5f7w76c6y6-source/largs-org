@@ -115,6 +115,8 @@ permalink: /council/
     <li>Something for the agenda? Ask for it to be raised{% if council.ccContact %} —
     <a href="mailto:{{ council.ccContact }}">{{ council.ccContact }}</a>{% else %} —
     contact details will appear here once confirmed{% endif %}.</li>
+    {% if council.ccFacebook %}<li>Largs Community Council is on Facebook:
+    <a href="{{ council.ccFacebook }}">facebook.com/LargsCC</a>.</li>{% endif %}
     <li>Community councils run on volunteers and almost always have room for
     more. If you can give an evening a month, you'd be welcome — ask at any
     meeting.</li>
