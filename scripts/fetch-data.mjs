@@ -1030,7 +1030,7 @@ const SRWR_DISRUPT_CACHE_FILE = path.join(
   ".cache",
   "srwr-disruptions-state.json"
 );
-const SRWR_DISRUPT_SCHEMA = 7; // 7: adds `ahead`, the look-ahead on the roads out of Largs (27 Nov 2026) // 6: adds the a760 list (10 Nov 2026)
+const SRWR_DISRUPT_SCHEMA = 8; // 8: routeText drops a bracketed town prefix and all trailing counties (27 Nov 2026) // 7: adds `ahead`, the look-ahead on the roads out of Largs (27 Nov 2026) // 6: adds the a760 list (10 Nov 2026)
 
 /* ---- The Haylie Brae road (A760), Largs to the A737 at Roadhead ----
  * Locals ask "is the Haylie Brae road open?", and the Largs box above
@@ -1230,7 +1230,8 @@ function routeText(text, titleCase) {
   // Debris, not words: postcodes, and the depot prefix some trunk-road
   // rows carry before the road number ("Ayr - A78 ...", "Pais - A737 ...").
   t = t.replace(/\b[A-Z]{1,2}\d{1,2}[A-Z]?\s*\d[A-Z]{2}\b/gi, "").replace(/^[A-Za-z]{3,5}\s*-\s*(?=A\d)/, "")
-    .replace(/[,\s]+(Inverclyde|North Ayrshire|Renfrewshire|Scotland|United Kingdom)(?=[,\s]*$)/gi, "").replace(/\s+/g, " ").trim();
+    .replace(/^\(\s*[A-Za-z .'-]{3,30}\)\s*[-:,]?\s*/, "").replace(/\s+/g, " ").trim();
+  for (let i = 0; i < 4; i++) t = t.replace(/[,\s]+(Inverclyde|North Ayrshire|Renfrewshire|Scotland|United Kingdom|UK)[,\s]*$/i, "").trim();
   if (!t) return "";
   const letters = t.replace(/[^A-Za-z]/g, "");
   const upper = letters.replace(/[^A-Z]/g, "");
