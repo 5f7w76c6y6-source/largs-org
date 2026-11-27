@@ -19,7 +19,7 @@
    carries one sentence and a link to Roadworks, because on a phone the
    full text was most of the first screen. #}
 {% set plannedLive = planned.closures | currentNotices %}
-{% for c in plannedLive %}
+{% for c in plannedLive %}{% if c.nights %}{% include "planned-nights.njk" %}{% else %}
 {# ONE NOTICE, NOT TWO (25 Nov 2026, Ian). Inside the hours Traffic Scotland
    reports this same closure, and the board showed two red boxes saying one
    thing. If this build's feed holds a closure whose sentence names one of
@@ -75,4 +75,4 @@
   setInterval(tick, 30000);
 })();
 </script>
-{% endfor %}
+{% endif %}{% endfor %}

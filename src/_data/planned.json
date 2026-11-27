@@ -1,5 +1,5 @@
 {
-  "_comment": "Planned, timed road closures that the live feeds do not carry: Traffic Scotland's incident feed is unplanned events only, and the road works register gives dates but not hours. Hand-kept, from the road operator's own published hours. Shown on the Today board and on Roadworks while `starts`..`expires` covers today (currentNotices: build-time, self-expiring, one at a time). The words on the page are always true as written; the reader's browser only changes the badge by the clock (closes at / closed until / closes tomorrow) and turns it red inside the hours. `closeFrom` and `closeTo` are Largs time, HH:MM, and the closure is taken to be every day. `finish` is a whole sentence saying where the end date comes from, for Roadworks; `finishShort` is the same fact as a few words, for the Today board, which carries one short sentence and sends the reader to Roadworks for the rest. Nothing is removed by hand: set `expires` to the last day you are sure of and revisit it. `match` lists place names: when Traffic Scotland's feed reports a CLOSURE whose sentence names one of them, it is taken to be this same closure, and is reported inside this notice instead of in a second box beneath it.",
+  "_comment": "Planned, timed road closures that the live feeds do not carry: Traffic Scotland's incident feed is unplanned events only, and the road works register gives dates but not hours. Hand-kept, from the road operator's own published hours. Shown on the Today board and on Roadworks while `starts`..`expires` covers today (currentNotices: build-time, self-expiring, one at a time). The words on the page are always true as written; the reader's browser only changes the badge by the clock (closes at / closed until / closes tomorrow) and turns it red inside the hours. `closeFrom` and `closeTo` are Largs time, HH:MM, and the closure is taken to be every day. `finish` is a whole sentence saying where the end date comes from, for Roadworks; `finishShort` is the same fact as a few words, for the Today board, which carries one short sentence and sends the reader to Roadworks for the rest. Nothing is removed by hand: set `expires` to the last day you are sure of and revisit it. `match` lists place names: when Traffic Scotland's feed reports a CLOSURE whose sentence names one of them, it is taken to be this same closure, and is reported inside this notice instead of in a second box beneath it. OVERNIGHT: a closure carrying `nights` (a list of dates on whose evening the road closes at `closeFrom`, reopening at `closeTo` next morning) is drawn by planned-nights.njk instead: it is shown ahead of the first night, from `starts`; `text` and `textShort` are its whole sentences for Roadworks and the Today board; set `expires` to the morning the last night ends.",
   "closures": [
     {
       "id": "a78-skelmorlie-2026",
@@ -14,11 +14,26 @@
       "reason": "storm repairs",
       "between": "At other times it is open with one lane under temporary lights.",
       "diversion": "The signed diversion is by the A760, A737 and A761.",
-      "finish": "Friday 27 November is the last day of the closures: from 15:00 that day the road is open at all times, still with one lane under temporary lights.",
+      "finish": "Friday 27 November is the last day of these daytime closures: from 15:00 that day the road is open during the day, still with one lane under temporary lights. Separately, the A78 is closed overnight between Inverkip and Largs, 20:00 to 06:00, on the nights of Sunday 29 and Monday 30 November.",
       "finishShort": "for the last time on Friday 27 November",
       "source": "Amey’s published hours · not a live reading",
       "starts": "2026-11-09",
       "expires": "2026-11-27"
+    },
+    {
+      "id": "a78-brueacre-nights-2026",
+      "road": "A78 between Inverkip and Largs",
+      "nights": [
+        "2026-11-29",
+        "2026-11-30"
+      ],
+      "closeFrom": "20:00",
+      "closeTo": "06:00",
+      "text": "closed overnight, 20:00 to 06:00, on the nights of Sunday 29 and Monday 30 November, for resurfacing at Brueacre Junction between Wemyss Bay and Inverkip. The signed diversion is by the A760, B777, A737, A761 and B788. The road reopens at 06:00 on Tuesday 1 December. Amey say emergency vehicles will be let through, and that the works depend on the weather.",
+      "textShort": "closed overnight, 20:00 to 06:00, on Sunday 29 and Monday 30 November",
+      "source": "Amey’s published hours · not a live reading",
+      "starts": "2026-11-28",
+      "expires": "2026-12-01"
     }
   ]
 }
