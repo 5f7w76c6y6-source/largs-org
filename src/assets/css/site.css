@@ -2086,3 +2086,14 @@ a,button,.chips a,.tile{transition:background-color .15s ease,border-color .15s 
   position:absolute;left:0;top:0;width:100%;height:var(--wl);pointer-events:none;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='58' viewBox='0 0 260 58'%3E%3Cg fill='%23FFFFFF'%3E%3Ccircle cx='14' cy='9' r='1.4'/%3E%3Ccircle cx='47' cy='31' r='1.1' opacity='.8'/%3E%3Ccircle cx='72' cy='14' r='1.7'/%3E%3Ccircle cx='98' cy='44' r='1.2' opacity='.8'/%3E%3Ccircle cx='121' cy='22' r='1.3'/%3E%3Ccircle cx='150' cy='6' r='1.1' opacity='.8'/%3E%3Ccircle cx='168' cy='37' r='1.6'/%3E%3Ccircle cx='197' cy='18' r='1.2'/%3E%3Ccircle cx='221' cy='47' r='1.1' opacity='.8'/%3E%3Ccircle cx='243' cy='27' r='1.5'/%3E%3Ccircle cx='31' cy='50' r='1.3' opacity='.8'/%3E%3C/g%3E%3C/svg%3E") repeat-x left top;
 }
+
+/* COMING UP on the roads out of Largs (27 Nov 2026): the register's
+   look-ahead, on Roadworks. Rows are the ordinary work rows; these are
+   only the headings. See src/_includes/coming-up-list.njk. */
+.coming-up{margin:22px 0 30px}
+.coming-up h2{font-size:1.35rem;margin-bottom:6px}
+.coming-up-group{font-family:"Spline Sans Mono",monospace;font-size:.74rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:20px 0 2px}
+.coming-up .coming-up-none{margin-top:6px}
+.coming-up-more{margin:8px 0 0}
+.coming-up-more summary{cursor:pointer;color:var(--teal);font-weight:600;padding:8px 0}
+.work-main h4{font-size:1.02rem;font-weight:700;color:var(--slate)}

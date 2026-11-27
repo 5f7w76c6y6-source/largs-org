@@ -95,6 +95,7 @@ eleventyComputed:
     </span>
   </p>
   {% endif %}
+  {% if view.key == "all" %}{% include "coming-up-list.njk" %}{% endif %}
   <div class="kicker">
     {% if rw.ok %}
     <span class="stamp">Register data to {{ rw.dataDate | dom }} {{ rw.dataDate | monthShort }} · refreshed overnight</span>

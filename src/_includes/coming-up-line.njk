@@ -1,0 +1,19 @@
+{# Today board: a road closure on the roads out of Largs that the register
+   says starts within seven days (27 Nov 2026). Automatic, from the same
+   list as "Coming up" on Roadworks (today.roadworks.ahead). Amber: it is
+   a booking in a register, not a report from the road, and the sentence
+   says so. At most two are named; the rest are counted. Absent when there
+   is none, which is most weeks. #}
+{% set aheadSoon = (today.roadworks.ahead.items if (today.roadworks.ok and today.roadworks.ahead) else []) | aheadClosuresSoon %}
+{% if aheadSoon | length %}
+<div class="wrap">
+  <div class="power-notice planned-notice" role="status">
+    <span class="power-notice-badge">Coming up</span>
+    <span class="power-notice-text">
+      {% for w in aheadSoon %}{% if loop.index0 < 2 %}<strong>{{ w.title }}</strong> — a road closure is registered {% if w.from == w.until %}for {{ w.from | dom }} {{ w.from | monthShort }}{% else %}from {{ w.from | dom }} {{ w.from | monthShort }} to {{ w.until | dom }} {{ w.until | monthShort }}{% endif %}. {% endif %}{% endfor %}
+      {% if (aheadSoon | length) > 2 %}{{ (aheadSoon | length) - 2 }} more on Roadworks. {% endif %}The register gives dates, not hours · <a href="/roadworks/#coming-up">Roadworks →</a>
+    </span>
+    <span class="power-notice-src">Scottish Road Works Register · data to {{ today.roadworks.dataDate | dom }} {{ today.roadworks.dataDate | monthShort }} · not a live reading</span>
+  </div>
+</div>
+{% endif %}

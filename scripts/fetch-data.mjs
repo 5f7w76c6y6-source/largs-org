@@ -1030,7 +1030,7 @@ const SRWR_DISRUPT_CACHE_FILE = path.join(
   ".cache",
   "srwr-disruptions-state.json"
 );
-const SRWR_DISRUPT_SCHEMA = 6; // 6: adds the a760 list (10 Nov 2026)
+const SRWR_DISRUPT_SCHEMA = 7; // 7: adds `ahead`, the look-ahead on the roads out of Largs (27 Nov 2026) // 6: adds the a760 list (10 Nov 2026)
 
 /* ---- The Haylie Brae road (A760), Largs to the A737 at Roadhead ----
  * Locals ask "is the Haylie Brae road open?", and the Largs box above
@@ -1180,6 +1180,184 @@ function tidyBusServices(raw) {
   });
 }
 
+/* ---- COMING UP on the roads out of Largs (27 Nov 2026) ----
+ *
+ * Asked for after the A78 was shut overnight at Brueacre and the site had
+ * said nothing in advance. Traffic Scotland's "future roadworks" feed was
+ * looked at first and is not a look-ahead: on 19 November it held nothing
+ * about works starting on the 21st. THIS register did: that job was filed
+ * on 22 July, and by 9 November its description gave the nights of
+ * lights, convoy and closure.
+ *
+ * WHICH ROWS. A trunk road is one whose road authority is Transport
+ * Scotland, whoever is digging it up (BT and Scottish Water file works on
+ * the A78 too). A trunk-road row is ours when its registered point lies in
+ * one of the boxes below: the same boxes the Traffic Scotland notice uses,
+ * with the A78 divided at Largs Main Street. The box round the Bullring
+ * also holds the first of the A8, so a row that names the A8 and not the
+ * A78 is left out. The Haylie Brae road is not a trunk road: its rows are
+ * the ones already matched to the A760's own line, less those mostly off it.
+ *
+ * WHICH WORKS. Only arrangements that hold traffic up (AHEAD_TM), only
+ * bookings not yet begun, starting within AHEAD_DAYS of the file's date.
+ *
+ * ONE ROW PER JOB. The same job is often filed once per street name and
+ * once per status. Rows with the same arrangement, dates, promoter and
+ * description are one row, which says how many places it was filed for.
+ *
+ * THE WORDS ARE THE REGISTER'S. routeText() expands its shorthand (TTLs,
+ * NB, Rbt) and quietens capitals; it does not rewrite. Unlike
+ * cleanRegisterText() it keeps the word "Largs", which matters out here.
+ * Dates are turned into Largs dates: the register's are UTC. */
+const AHEAD_DAYS = 92;
+const AHEAD_TM = new Set([
+  "Road closure", "Contraflow", "Lane closure", "Temporary lights",
+  "Stop/go boards", "Give and take", "Priority working", "Convoy working",
+]);
+const AHEAD_GROUPS = [
+  { key: "north", road: "A78", roads: "A78", label: "To Wemyss Bay, Greenock and Glasgow by the coast",
+    box: { latMin: 55.796, latMax: 55.96, lonMin: -4.96, lonMax: -4.74 } },
+  { key: "south", road: "A78", roads: "A78", label: "To Fairlie, West Kilbride and Ardrossan",
+    box: { latMin: 55.63, latMax: 55.796, lonMin: -4.96, lonMax: -4.74 } },
+  { key: "glasgow", road: "A737", roads: "A760 and A737", label: "To Kilbirnie and Glasgow by the Haylie Brae",
+    box: { latMin: 55.69, latMax: 55.845, lonMin: -4.75, lonMax: -4.49 } },
+];
+
+function routeText(text, titleCase) {
+  let t = String(text || "").replace(/[ \s]+/g, " ").trim()
+    .replace(/^["'“‘-]+|["'”’]+$/g, "").trim();
+  if (!t) return "";
+  // Debris, not words: postcodes, and the depot prefix some trunk-road
+  // rows carry before the road number ("Ayr - A78 ...", "Pais - A737 ...").
+  t = t.replace(/\b[A-Z]{1,2}\d{1,2}[A-Z]?\s*\d[A-Z]{2}\b/gi, "").replace(/^[A-Za-z]{3,5}\s*-\s*(?=A\d)/, "")
+    .replace(/[,\s]+(Inverclyde|North Ayrshire|Renfrewshire|Scotland|United Kingdom)(?=[,\s]*$)/gi, "").replace(/\s+/g, " ").trim();
+  if (!t) return "";
+  const letters = t.replace(/[^A-Za-z]/g, "");
+  const upper = letters.replace(/[^A-Z]/g, "");
+  if (letters.length > 6 && upper.length / letters.length > 0.6) {
+    t = t.toLowerCase();
+    if (titleCase) {
+      t = t.replace(/(^|[\s\-/(])([a-z])/g, (all, pre, ch) => pre + ch.toUpperCase())
+        .replace(/\b(To|Of|At|And|From|With|Past|On|The|In|Up|Across)\b/g, (w, p, off) => (off === 0 ? w : w.toLowerCase()));
+    }
+    t = t.replace(/\b([abm])(\d{1,4})\b/gi, (all, a, n) => a.toUpperCase() + n);
+  }
+  t = t.replace(/\bTTL['’]?S?\b/gi, "temporary lights")
+    .replace(/\bTM\b/g, "traffic management")
+    .replace(/\bNB\s*(?:\/|&|and)\s*SB\b/gi, "northbound and southbound")
+    .replace(/\bNB\b/g, "northbound").replace(/\bSB\b/g, "southbound")
+    .replace(/\bRbt\b\.?/gi, "roundabout").replace(/\bJct\b\.?/gi, "junction")
+    .replace(/\bJ\/W\b/gi, "junction with").replace(/\bO\/S\b/gi, "outside")
+    .replace(/\bopp\b\.?/gi, "opposite").replace(/\b(A\d{1,4})t\b/g, "$1");
+  t = t.replace(/\s+/g, " ").replace(/[\s,;.\-]+$/, "");
+  if (t) t = t[0].toUpperCase() + t.slice(1);
+  if (t.length > 170) {
+    let cut = t.slice(0, 169);
+    const sp = cut.lastIndexOf(" ");
+    if (sp > 120) cut = cut.slice(0, sp);
+    t = cut.replace(/[\s,;.]+$/, "") + "…";
+  }
+  return t;
+}
+
+function largsDateOf(...values) {
+  for (const v of values) {
+    const ms = Date.parse(v || "");
+    if (Number.isNaN(ms)) continue;
+    return new Intl.DateTimeFormat("en-CA", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(ms));
+  }
+  return "";
+}
+
+function buildAhead(rows, a760Latest, a760Share, covers) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(covers || "")) return null;
+  const last = new Date(Date.parse(covers + "T12:00:00Z") + AHEAD_DAYS * 86400000).toISOString().slice(0, 10);
+  const year = covers.slice(0, 4);
+
+  // One row per activity, latest phase, as everywhere else in this file.
+  const picked = new Map();
+  const take = (group, road, r) => {
+    const ref = (r.ActivityReference || r.LocalReference || "").trim();
+    if (!ref) return;
+    const prev = picked.get(ref);
+    if (!prev || Number(r.PhaseNumber || 0) > Number(prev.r.PhaseNumber || 0)) picked.set(ref, { group, road, r });
+  };
+  for (const r of rows) {
+    if (!/^transport scotland\b/i.test((r.RoadAuthorityName || "").trim())) continue;
+    const lat = Number(r.Latitude), lon = Number(r.Longitude);
+    if (!lat || !lon) continue;
+    const text = `${r.Street || ""} ${r.Location || ""} ${r.Description || ""}`;
+    for (const g of AHEAD_GROUPS) {
+      if (lat < g.box.latMin || lat >= g.box.latMax || lon < g.box.lonMin || lon > g.box.lonMax) continue;
+      if (g.road === "A78" && /\bA\s?8\b/i.test(text) && !/\bA\s?78\b/i.test(text)) break;
+      take(g.key, g.road, r);
+      break;
+    }
+  }
+  if (a760Latest) {
+    for (const [ref, r] of a760Latest) {
+      if (((a760Share && a760Share.get(ref)) ?? 1) < 0.5) continue;
+      if (!picked.has(ref)) picked.set(ref, { group: "glasgow", road: "A760", r });
+    }
+  }
+
+  const merged = new Map();
+  for (const { group, road, r } of picked.values()) {
+    const statusWord = (r.ActivityStatus || "").trim().toLowerCase();
+    if (SRWR_DISRUPT_STATUS[statusWord] !== "planned") continue;
+    const tmText = (r.TrafficManagement || "").toLowerCase();
+    const what = (SRWR_DISRUPT_TM.find(([needle]) => tmText.includes(needle)) || [])[1] || "";
+    if (!AHEAD_TM.has(what)) continue;
+    const from = largsDateOf(r.StartDateTimeUTC, r.EarliestStartDateTimeUTC);
+    const until = largsDateOf(r.EndDateTimeUTC, r.LatestPossibleEndDateTimeUTC) || from;
+    if (!from || from < covers || from > last) continue;
+
+    const promoter = (r.WorksPromoterName || "").trim()
+      .replace(/\s*[-–]\s*\S.*\bUnit\s+Op(?:erating)?\s+Company\s*$/i, "").trim();
+    const text = routeText(r.Description, false);
+    const street = routeText(r.Street, true);
+    let where = routeText(r.Location, true);
+    if (!where || where.toLowerCase() === text.toLowerCase()) where = street || where;
+    else if (/^\d+[a-z]?$/i.test(where) && street) where = `${where} ${street}`;
+    let title = where || road;
+    if (!new RegExp("\\b" + road + "\\b", "i").test(title)) title = `${road}, ${title}`;
+    // The gazetteer's town is only a safe label for an ordinary street: a
+    // trunk-road section ("Greenock Road Largs to Shore Road Skelmorlie")
+    // is filed under the town at one end of it.
+    const town = (r.Town || "").trim();
+    if (town && !/\bto\b/i.test(r.Street || "") && !title.toLowerCase().includes(town.toLowerCase())) title += `, ${town}`;
+
+    const key = [group, what, from, until, promoter, (text || where).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()].join("|");
+    const have = merged.get(key);
+    if (have) {
+      if (!have.places.includes(where)) have.places.push(where);
+      if (!have.statuses.includes(statusWord)) have.statuses.push(statusWord);
+      have.busRaw.push(r.PotentialBusServicesAffected || "");
+      continue;
+    }
+    merged.set(key, {
+      group, road, what, where, title, text, from, until, promoter,
+      fromYear: from.slice(0, 4) !== year ? from.slice(0, 4) : "",
+      untilYear: until.slice(0, 4) !== year ? until.slice(0, 4) : "",
+      places: [where], statuses: [statusWord], busRaw: [r.PotentialBusServicesAffected || ""],
+    });
+  }
+
+  const items = [...merged.values()].map((i) => {
+    const { places, statuses, busRaw, ...keep } = i;
+    return { ...keep, more: places.length - 1, status: statuses.sort().join(" and "), busText: tidyBusServices(busRaw.join(",")).join(", ") };
+  });
+  // Date order; on one date a closure first, then by place.
+  items.sort((a, b) => a.from.localeCompare(b.from)
+    || Number(b.what === "Road closure") - Number(a.what === "Road closure")
+    || a.title.localeCompare(b.title));
+  return {
+    days: AHEAD_DAYS, from: covers, until: last,
+    groups: AHEAD_GROUPS.map((g) => ({ key: g.key, label: g.label, roads: g.roads })),
+    items: items.slice(0, 80),
+  };
+}
+
 async function loadRoadworksDisruptions() {
   let cached = null;
   try { cached = JSON.parse(await readFile(SRWR_DISRUPT_CACHE_FILE, "utf8")); } catch { /* no cache yet */ }
@@ -1195,7 +1373,8 @@ async function loadRoadworksDisruptions() {
       count: state.count, activeCount: state.activeCount, plannedCount: state.plannedCount,
       permitCount: state.permitCount || 0,
       items: state.items,
-      a760: state.a760 || null
+      a760: state.a760 || null,
+      ahead: state.ahead || null
     };
   };
 
@@ -1401,6 +1580,10 @@ async function loadRoadworksDisruptions() {
   };
   const { items, activeCount, plannedCount, permitCount } = buildItems(latest.values(), null);
   const routeList = a760Segs ? buildItems(routeLatest.values(), routeShare) : null;
+  // Never let the look-ahead cost the page its roadworks: on any error it is simply absent.
+  let ahead = null;
+  try { ahead = buildAhead(rows, a760Segs ? routeLatest : null, routeShare, covers); }
+  catch (error) { console.warn(`roadworks(ahead): not built (${error.message})`); }
 
   const todayIso = new Intl.DateTimeFormat("en-CA", {
     timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit"
@@ -1431,6 +1614,7 @@ async function loadRoadworksDisruptions() {
       plannedCount: routeList.plannedCount,
       items: routeList.items.slice(0, 60),
     } : null,
+    ahead,
   };
   try {
     await mkdir(path.dirname(SRWR_DISRUPT_CACHE_FILE), { recursive: true });
@@ -1440,7 +1624,8 @@ async function loadRoadworksDisruptions() {
   return {
     ok: true, source: "srwr-disruptions", dataDate: covers,
     count: activeCount, activeCount, plannedCount, permitCount, items: state.items,
-    a760: state.a760
+    a760: state.a760,
+    ahead: state.ahead
   };
 }
 
@@ -3021,6 +3206,7 @@ try {
   anySuccess = true;
   console.log(`roadworks: ${out.roadworks.count} active, ${out.roadworks.plannedCount ?? 0} planned in Largs (register data to ${out.roadworks.dataDate})`);
   if (out.roadworks.a760) console.log(`roadworks: ${out.roadworks.a760.activeCount} active, ${out.roadworks.a760.plannedCount} planned on the A760 (Haylie Brae road)`);
+  if (out.roadworks.ahead) console.log(`roadworks: ${out.roadworks.ahead.items.length} coming up on the roads out of Largs (to ${out.roadworks.ahead.until})`);
 } catch (error) {
   keepIfRecent("roadworks", error);
 }

@@ -211,6 +211,35 @@ module.exports = function (eleventyConfig) {
     return e.days.includes(DAY_NAMES[new Date(iso + "T12:00:00Z").getUTCDay()]);
   }
 
+  // COMING UP (27 Nov 2026): the register's look-ahead on the roads out of
+  // Largs is worked out overnight (fetch-data.mjs, buildAhead) but read at
+  // every build, so the day is decided here. A row is listed up to and
+  // including the day it starts. A closure "soon" starts within a week.
+  const largsToday = () => {
+    const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });
+    return `${p.year}-${p.month}-${p.day}`;
+  };
+  eleventyConfig.addFilter("aheadNow", (items) => {
+    const today = largsToday();
+    return (items || []).filter((w) => w.from >= today);
+  });
+  eleventyConfig.addFilter("aheadInGroup", (items, key) => (items || []).filter((w) => w.group === key));
+  // Shown at once: closures and convoy working, and the next two others.
+  eleventyConfig.addFilter("aheadSplit", (rows) => {
+    const big = (w) => w.what === "Road closure" || w.what === "Convoy working";
+    const others = (rows || []).filter((w) => !big(w));
+    const first = new Set(others.slice(0, 2));
+    return {
+      lead: (rows || []).filter((w) => big(w) || first.has(w)),
+      rest: others.slice(2),
+    };
+  });
+  eleventyConfig.addFilter("aheadClosuresSoon", (items) => {
+    const today = largsToday();
+    const limit = new Date(Date.parse(today + "T12:00:00Z") + 7 * 86400000).toISOString().slice(0, 10);
+    return (items || []).filter((w) => w.what === "Road closure" && w.from >= today && w.from <= limit);
+  });
+
   const SERIES_SHOWN = 3;
   eleventyConfig.addFilter("upcoming", (items) => {
     const p = ukParts(new Date(), { year: "numeric", month: "2-digit", day: "2-digit" });

@@ -1,0 +1,66 @@
+{# COMING UP on the roads out of Largs (27 Nov 2026, Ian: "people are
+   interested in more than just now", and it "needs to be automated, not a
+   manual process").
+
+   Everything here is worked out by scripts/fetch-data.mjs (buildAhead)
+   from the Scottish Road Works Register's nightly file: works on the A78
+   from Greenock to Ardrossan, the Haylie Brae road (A760) and the A737,
+   that hold up traffic and are registered to start within three months.
+   Nobody types any of it. The same job filed several times is one row.
+
+   The words are the register's own, shorthand expanded and nothing more:
+   this list does not rewrite what a works promoter filed. The register
+   gives dates and not hours, and says how firm a booking is; both are
+   said on the page. `aheadNow` drops a row on the day after it starts.
+
+   LENGTH. Three months of three roads was twenty-seven rows on the first
+   day, seven phone screens above the Largs list. So each road shows its
+   road closures and convoy working, and the next two of anything else;
+   the remainder open under one line (`aheadSplit`), no script needed.
+
+   A full closure whose nights and hours matter (A78, November 2026) is
+   still a hand-kept notice in planned.json, from the operator's own
+   published hours; the register cannot say that much. #}
+{% macro aheadRow(w) %}
+  <article class="work-row">
+    <span class="chip {% if w.what == "Road closure" %}active{% else %}planned{% endif %}">{{ w.from | dom }} {{ w.from | monthShort }}</span>
+    <div class="work-main">
+      <h4>{{ w.what }} — {{ w.title }}</h4>
+      {% if w.text and (w.text | lower) != (w.where | lower) %}<p class="work-gloss">{{ w.text }}</p>{% endif %}
+      <p class="meta">
+        {%- if w.promoter %}{{ w.promoter }} · {% endif -%}
+        {%- if w.from == w.until %}on {{ w.from | dom }} {{ w.from | monthShort }}{% if w.fromYear %} {{ w.fromYear }}{% endif %}
+        {%- else %}{{ w.from | dom }} {{ w.from | monthShort }} to {{ w.until | dom }} {{ w.until | monthShort }}{% if w.untilYear %} {{ w.untilYear }}{% endif %}{% endif -%}
+        {%- if w.status %} · {{ w.status }}{% endif -%}
+        {%- if w.more %} · filed for {{ w.more + 1 }} places{% endif -%}
+        {%- if w.busText %} · may affect buses {{ w.busText }}{% endif -%}
+      </p>
+    </div>
+  </article>
+{% endmacro %}
+{% set ahead = today.roadworks.ahead %}
+{% if today.roadworks.ok and ahead %}
+{% set aheadItems = ahead.items | aheadNow %}
+<section class="coming-up" id="coming-up" aria-labelledby="coming-up-h">
+  <h2 id="coming-up-h">Coming up on the roads out of Largs</h2>
+  <p class="page-intro">Works registered to start in the next three months on
+  the A78, the Haylie Brae road (A760) and the A737, from the Scottish Road
+  Works Register, each described in the words it was filed in. The register
+  gives dates, not hours, and a planned date can move. <strong>Red</strong>
+  is a road closure; amber is everything else.</p>
+  {% for g in ahead.groups %}
+  {% set groupRows = aheadItems | aheadInGroup(g.key) %}
+  <h3 class="coming-up-group">{{ g.label }} · {{ g.roads }}</h3>
+  {% if groupRows | length == 0 %}<p class="note coming-up-none">Nothing registered to start in the next three months.</p>{% endif %}
+  {% set split = groupRows | aheadSplit %}
+  {% for w in split.lead %}{{ aheadRow(w) }}{% endfor %}
+  {% if split.rest | length %}
+  <details class="coming-up-more">
+    <summary>{{ split.rest | length }} more on this road: lights, lane closures and the like</summary>
+    {% for w in split.rest %}{{ aheadRow(w) }}{% endfor %}
+  </details>
+  {% endif %}
+  {% endfor %}
+  <p class="note">Register data to {{ today.roadworks.dataDate | dom }} {{ today.roadworks.dataDate | monthShort }} · refreshed overnight · “advance planning” and “proposed” are the register’s own words for a booking that is not yet confirmed.</p>
+</section>
+{% endif %}
