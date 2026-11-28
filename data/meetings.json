@@ -1,5 +1,5 @@
 {
- "collected": "2026-11-27T05:08:04",
+ "collected": "2026-11-28T05:08:34",
  "committees": {
   "135": "North Ayrshire Council",
   "137": "Audit and Scrutiny Committee",
@@ -1833,7 +1833,7 @@
    "committeeId": 137,
    "id": "3935",
    "date": "2026-11-19",
-   "status": "scheduled",
+   "status": "occurred",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/3935/Committee/137/Default.aspx",
    "ahead": false,
    "documents": [
@@ -1884,6 +1884,10 @@
     {
      "title": "9 Void Management of Council Housing Stock",
      "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=yWDaYvZVQvZasdrjv5NCd46eQmeJh170Oamqv4GvoiLmqe9Ym544XA%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "261119 A&S Minute",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=xOxu1AGH3SnNxDyq0KAowxPVmwlPmUkZQaRZ1qBcGXqgi3vbP7%2boTg%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
     }
    ]
   },
@@ -1923,7 +1927,7 @@
    "committeeId": 135,
    "id": "4069",
    "date": "2026-11-25",
-   "status": "scheduled",
+   "status": "occurred",
    "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/CommitteesMeetings/MeetingsCalendar/tabid/70/ctl/ViewMeetingPublic/mid/397/Meeting/4069/Committee/135/Default.aspx",
    "ahead": false,
    "documents": [
@@ -1938,6 +1942,10 @@
     {
      "title": "Public Service Reform",
      "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=9HPYGzqjKn4N9k87I58RGK3f70VwlLOvluGEqompWSTbMauvi0vDFQ%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
+    },
+    {
+     "title": "261125 Special Council Minute",
+     "url": "https://north-ayrshire.cmis.uk.com/north-ayrshire/Document.ashx?czJKcaeAi5tUFL1DTL2UE4zNRBcoShgo=qMfY9srUOmDL%2fx3WyR9ut%2bdIBHPuU%2f%2f3BmYIZxf%2fjt952GUknazBnQ%3d%3d&rUzwRPf%2bZ3zd4E7Ikn8Lyw%3d%3d=pwRE6AGJFLDNlh225F5QMaQWCtPHwdhUfCZ%2fLUQzgA2uL5jNRG4jdQ%3d%3d&mCTIbCubSFfXsDGW9IXnlg%3d%3d=hFflUdN3100%3d&kCx1AnS9%2fpWZQ40DXFvdEw%3d%3d=hFflUdN3100%3d&uJovDxwdjMPoYv%2bAJvYtyA%3d%3d=ctNJFf55vVA%3d&FgPlIEJYlotS%2bYGoBi5olA%3d%3d=NHdURQburHA%3d&d9Qjj0ag1Pd993jsyOJqFvmyB7X0CSQK=ctNJFf55vVA%3d&WGewmoAfeNR9xqBux0r1Q8Za60lavYmz=ctNJFf55vVA%3d&WGewmoAfeNQ16B2MHuCpMRKZMwaG1PaO=ctNJFf55vVA%3d"
     }
    ]
   },
